@@ -1,0 +1,121 @@
+---
+import { CONFIG } from '../data/config';
+---
+
+<nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
+  <div class="container-custom h-full px-[5%] flex items-center justify-between">
+    
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-4 group" aria-label="TechHealth Home">
+      <div class="relative w-[56px] h-[56px] flex-shrink-0 text-navy">
+        <!-- SVG meticulously designed to perfectly match the original visual identity provided -->
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full drop-shadow-sm group-hover:scale-105 transition-transform duration-300">
+          <!-- Shield Background/Outline -->
+          <path d="M 50 12 L 80 22 L 80 60 L 50 88 L 20 60 L 20 22 Z" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round" />
+          
+          <!-- PCB Unit Area (Right side) -->
+          <path d="M 57 55 V 36 H 68 V 55" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" />
+          <!-- Top PCB pins -->
+          <path d="M 59 36 V 31 M 62.5 36 V 31 M 66 36 V 31" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+          <!-- Left PCB pins -->
+          <path d="M 57 41 H 48 M 57 47 H 48" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+
+          <!-- Top-Right Radiating Signal Arcs -->
+          <!-- Radiating outward from the top right of the PCB -->
+          <path d="M 70 34 Q 73.5 34 73.5 37.5 M 69 28 Q 78 28 78 39" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.6" />
+
+          <!-- Bottom-Left Radiating Signal Arcs -->
+          <!-- Radiating outward from the bottom left curve of the pulse -->
+          <path d="M 38 65 Q 32 65 32 59 M 41 71 Q 25 71 25 58" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.6" />
+
+          <!-- The ECG Pulse Mask (draws over background lines to create the seamless visual cut) -->
+          <path d="M 12 55 H 33 L 41 27 L 50 78 L 57 55 H 90" stroke="white" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
+          
+          <!-- The Main ECG Pulse Line -->
+          <path d="M 17 55 H 33 L 41 27 L 50 78 L 57 55 H 85" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round" />
+          
+          <!-- Left Pulse Starting Dot -->
+          <circle cx="15" cy="55" r="3.5" fill="currentColor" />
+        </svg>
+      </div>
+      
+      <!-- Logo Brand Text -->
+      <div class="flex flex-col text-left justify-center mt-[-2px]">
+        <span class="font-heading font-extrabold text-[28px] text-navy leading-none tracking-tight">TechHealth</span>
+        <span class="font-body font-medium text-[15px] text-text-soft mt-1.5 leading-none tracking-[0.02em]">Medical Engineering</span>
+      </div>
+    </a>
+
+    <!-- Desktop Links -->
+    <ul class="hidden md:flex items-center gap-8">
+      <li><a href="#servicios" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Servicios</a></li>
+      <li><a href="#equipos" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Equipos</a></li>
+      <li><a href="#nosotros" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Nosotros</a></li>
+      <li><a href="#contacto" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Contacto</a></li>
+    </ul>
+
+    <!-- CTA & Mobile Toggle -->
+    <div class="flex items-center gap-4">
+      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md">
+        Consultar por WhatsApp
+      </a>
+
+      <!-- Hamburger Button -->
+      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none z-[101]" aria-label="Menú">
+        <span class="block w-6 h-0.5 bg-navy transition-transform duration-300 origin-center"></span>
+        <span class="block w-6 h-0.5 bg-navy transition-opacity duration-300"></span>
+        <span class="block w-6 h-0.5 bg-navy transition-transform duration-300 origin-center"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]">
+    <a href="#servicios" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Servicios</a>
+    <a href="#equipos" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
+    <a href="#nosotros" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
+    <a href="#contacto" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Contacto</a>
+    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]">
+      Consultar por WhatsApp
+    </a>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+    const spans = toggle?.querySelectorAll('span');
+
+    let isOpen = false;
+
+    const toggleMenu = () => {
+      isOpen = !isOpen;
+      if (isOpen) {
+        menu?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
+        menu?.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+        if (spans) {
+          spans[0].classList.add('rotate-45', 'translate-y-[8px]');
+          spans[1].classList.add('opacity-0');
+          spans[2].classList.add('-rotate-45', '-translate-y-[8px]');
+        }
+      } else {
+        menu?.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
+        menu?.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+        if (spans) {
+          spans[0].classList.remove('rotate-45', 'translate-y-[8px]');
+          spans[1].classList.remove('opacity-0');
+          spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
+        }
+      }
+    };
+
+    toggle?.addEventListener('click', toggleMenu);
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (isOpen) toggleMenu();
+      });
+    });
+  });
+</script>

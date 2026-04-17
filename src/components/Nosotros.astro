@@ -1,0 +1,93 @@
+---
+import { CONFIG } from '../data/config';
+---
+
+<section id="nosotros" class="bg-off-white section-padding">
+  <div class="container-custom">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-[80px]">
+      
+      <!-- Left Column (Empresa & Equipo) -->
+      <div>
+        <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Nosotros</div>
+        <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] leading-[1.2] text-navy mb-6">
+          Experiencia técnica al servicio de la salud
+        </h2>
+        
+        <div class="font-body font-light text-[16px] text-text-soft flex flex-col gap-4 mb-10">
+          <p>
+            Somos una empresa familiar tucumana dedicada a garantizar que el equipamiento médico de alta complejidad funcione con la precisión y seguridad que el sector salud exige.
+          </p>
+          <p>
+            Nuestro enfoque combina una profunda especialización en microelectrónica con casi tres décadas de experiencia en el mantenimiento preventivo y correctivo de componentes electrónicos críticos.
+          </p>
+        </div>
+
+        <!-- Equipo -->
+        <h3 class="font-heading font-bold text-[20px] text-navy mb-6">Nuestro Equipo</h3>
+        <div class="flex flex-col gap-4">
+          {CONFIG.equipo.map(member => (
+            <div class="bg-white rounded-[16px] p-5 shadow-sm border border-border flex flex-col sm:flex-row gap-[20px] items-start sm:items-center">
+              
+              <!-- Avatar -->
+              <div class="w-[54px] h-[54px] rounded-full flex items-center justify-center flex-shrink-0" style={`background-color: ${member.color}`}>
+                <span class="font-heading font-bold text-white text-[20px]">
+                  {member.iniciales}
+                </span>
+              </div>
+
+              <!-- Info -->
+              <div>
+                <h4 class="font-heading font-bold text-navy text-[18px] leading-tight">
+                  {member.nombre}
+                </h4>
+                <div class="font-body font-medium text-[12px] text-blue uppercase tracking-wide mb-2 mt-1">
+                  {member.cargo}
+                </div>
+                <p class="font-body font-light text-[13px] text-text-soft leading-relaxed">
+                  {member.descripcion}
+                </p>
+              </div>
+
+            </div>
+          ))}
+        </div>
+
+      </div>
+
+      <!-- Right Column (Value Cards) -->
+      <div class="flex flex-col gap-6 lg:mt-12">
+        
+        <!-- Value 1 -->
+        <div class="relative bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover transition-shadow duration-300">
+          <div class="absolute top-6 right-8 font-heading font-black text-[42px] leading-none text-navy/[0.08]">01</div>
+          <h4 class="font-heading font-bold text-[20px] text-navy mb-3 pr-12">Precisión técnica</h4>
+          <p class="font-body font-light text-[15px] text-text-soft">
+            Diagnósticos exhaustivos y reparaciones a nivel de componente electrónico. No solo cambiamos placas, identificamos y solucionamos el origen del problema.
+          </p>
+        </div>
+
+        <!-- Value 2 -->
+        <div class="relative bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover transition-shadow duration-300">
+          <div class="absolute top-6 right-8 font-heading font-black text-[42px] leading-none text-navy/[0.08]">02</div>
+          <h4 class="font-heading font-bold text-[20px] text-navy mb-3 pr-12">Compromiso con la salud</h4>
+          <p class="font-body font-light text-[15px] text-text-soft">
+            Entendemos que detrás de cada equipo hay una vida humana. Actuamos con sentido de urgencia y bajo los más estrictos estándares de seguridad y calibración.
+          </p>
+        </div>
+
+        <!-- Value 3 -->
+        <div class="relative bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover transition-shadow duration-300">
+          <div class="absolute top-6 right-8 font-heading font-black text-[42px] leading-none text-navy/[0.08]">03</div>
+          <h4 class="font-heading font-bold text-[20px] text-navy mb-3 pr-12">Atención personalizada</h4>
+          <p class="font-body font-light text-[15px] text-text-soft">
+            Trato directo con los técnicos responsables. Informes claros, asesoramiento honesto y soporte continuo para acompañar la gestión tecnológica de su institución.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>

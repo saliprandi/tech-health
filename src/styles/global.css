@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --navy:       #12336A;   /* color primario dominante */
+    --navy-dark:  #0a2248;   /* hover de navy */
+    --blue:       #2563A8;   /* color secundario, acentos */
+    --blue-light: #4A90D9;   /* acentos suaves, íconos en fondo oscuro */
+    --blue-pale:  #EBF3FC;   /* fondos de íconos, badges */
+    --white:      #ffffff;
+    --off-white:  #F7F9FC;   /* fondo de secciones alternas */
+    --gray:       #8898AA;   /* texto muted */
+    --text:       #1a2332;   /* texto principal */
+    --text-soft:  #4A5568;   /* texto secundario */
+    --border:     rgba(18,51,106,0.12);
+  }
+
+  html {
+    font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
+    color: var(--text);
+    background-color: var(--white);
+  }
+
+  body {
+    @apply antialiased leading-relaxed;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--navy);
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  .section-padding {
+    padding: 100px 5%;
+  }
+
+  .container-custom {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center font-heading font-bold transition-all duration-300;
+    background-color: var(--navy);
+    color: var(--white);
+    border-radius: 8px;
+    padding: 12px 28px;
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--navy-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(18,51,106,0.15);
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center font-heading font-bold transition-all duration-300 bg-transparent;
+    color: var(--navy);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 28px;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--navy);
+    background-color: rgba(18,51,106, 0.03);
+    transform: translateY(-2px);
+  }
+}
