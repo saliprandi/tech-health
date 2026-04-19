@@ -86,7 +86,7 @@ export const CONFIG = {
     "Bombas de infusión y jeringa",
     "Electrocirugía y bisturí eléctrico",
     "Equipos de laboratorio clínico",
-    "Centrifugas y microscopios",
+    "Centrífugas y microscopios",
     "Autoclaves y esterilizadores",
     "Camas y camillas eléctricas",
     "Oxímetros y capnógrafos",
