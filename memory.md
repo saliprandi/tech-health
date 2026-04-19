@@ -15,7 +15,7 @@
 - **Visión**: TechHealth como proyecto de ingeniería clínica a largo plazo.
 
 ## Negocio: Gadget (Reparaciones Multimarca)
-- **Servicios actuales**: Apple (iPhone, Mac, AirPods), Computadoras (Formatéo con Ventoy/Debian), Consolas.
+- **Servicios actuales**:Servicio tencnico de reparacion de celulares multimarca, Apple (iPhone, Mac, AirPods), Computadoras (Formatéo con Ventoy/Debian), Consolas.
 - **Redes Sociales**: 
   - Instagram: Gadget Tucuman
   - Facebook: Gadget Tucuman (Gestión propia desde feb 2025).
