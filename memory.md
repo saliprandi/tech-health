@@ -4,30 +4,44 @@
 - **Cada vez que el usuario haga una corrección, guardarla en este archivo inmediatamente.**
 - Leer este archivo al inicio de cada sesión antes de hacer cualquier cosa.
 
-## Datos personales
-- El apellido del usuario es Aliprandi.
+## Perfil del Usuario: Santiago Aliprandi
+- **Nacimiento**: 30 de abril de 2009, San Miguel de Tucumán.
+- **Edad/Etapa**: Estudiante de secundaria (Orientación: Ciencias Naturales).
+- **Rol Empresarial**: Director de **Gadget** (Tucumán). Tomó el control total el **25 de febrero de 2025**.
+- **Perfil Psicológico**: Altamente competitivo (orgullo por superar a los demás), pragmático, reserva profesional (sus amigos conocen Gadget pero no la profundidad de su operación).
+- **Habilidades técnicas**: Reparación multimarca (Apple, PCs, Consolas), manejo de múltiples IAs, administración de sistemas (Ventoy, Debian), flasheo y mantenimiento de software.
+- **Experiencia**: Crecimiento en el taller familiar; trabajando por cuenta propia desde los 14 años.
+- **Rutina**: Colegio por la mañana, trabajo en **Celumania** por la tarde, gestión de Gadget y proyectos personales.
+- **Visión**: TechHealth como proyecto de ingeniería clínica a largo plazo.
 
-## Negocio: Gadget (Reparaciones Apple)
-- Número de WhatsApp: **381 565-8239**
-- Paleta corporativa: Amarillo `#ffe66d` y Verde-azulado `#1a535c`
-- Tipografía: **Myriad Pro** (Semi-Bold para títulos, Regular para cuerpo)
-- Formato de flyers: **1080x1080 px** SVG editable para Inkscape
-- Carpeta de flyers: `C:\Users\Santi\Flyers\`
-- El script para construir el flyer está en: `C:\Users\Santi\Github\tech-health\build_flyer.ps1`
+## Negocio: Gadget (Reparaciones Multimarca)
+- **Servicios actuales**: Apple (iPhone, Mac, AirPods), Computadoras (Formatéo con Ventoy/Debian), Consolas.
+- **Redes Sociales**: 
+  - Instagram: Gadget Tucuman
+  - Facebook: Gadget Tucuman (Gestión propia desde feb 2025).
+- **Evolución**: Dejó de vender equipos Apple para enfocarse 100% en servicio técnico especializado.
+- **WhatsApp**: 381 565-8239 (Uso comercial y personal).
+## Inversiones
+- **Estrategia**: 30% de la Ganancia Neta destinado a inversión.
 
-## Preferencias para flyers
-- **SIEMPRE mantener fondo amarillo `#ffe66d` y texto teal `#1a535c`** — nunca cambiar estos colores base, incluso al proponer estilos alternativos
-- **Tipografía siempre Myriad Pro / Montserrat** — no cambiar aunque el estilo varíe
-- NO incluir la frase "presupuesto sin cargo" / "consulta sin cargo"
-- **EL LOGO Y EL SÍMBOLO DE WHATSAPP SON SAGRADOS Y NO DEBEN MODIFICARSE NUNCA**. Reutilizar siempre la ruta/vectores exactos del diseño original.
-- Las imágenes de productos (iPhone, etc.) deben tener **fondo transparente**, integradas sobre el fondo amarillo
-- El diseño debe respetar la identidad visual de los flyers existentes (fondo, tipografia y logo están bien — no cambiarlos)
-- Agregar **respiración visual**: espaciado generoso entre elementos para no generar fatiga al leer
-- Cada servicio puede tener nombre en negrita + descripción secundaria más pequeña
-- Incluir propuestas de valor: ✓ Diagnóstico sin cargo / ✓ Repuestos originales / ✓ Garantía / ✓ Turno en el día
-- Pie de página con dispositivos: iPhone · iPad · MacBook · iMac · Apple Watch · AirPods
+
+## Principios de Comunicación y Atención (Tono de Voz)
+- **Calma y Confianza**: Mantener siempre la calma para transmitir seguridad al cliente, incluso ante quejas o presupuestos altos.
+- **Enfoque Educativo**: Explicar la diferencia técnica entre repuestos (ej: Incell vs. Original) para justificar el valor.
+- **Honestidad de Hardware**: Si un equipo es antiguo, asesorar sobre las limitaciones y ofrecer alternativas reales (Linux, versiones anteriores de OS) en lugar de vender soluciones ineficientes.
+- **Prueba de Calidad**: Utilizar registro fotográfico de reparaciones previas para demostrar experiencia en multimarcas (Consolas, PCs).
+- **Garantía Estándar**: **30 días** en todas las reparaciones.
+- **Resolución de Conflictos**: Análisis lógico basado en la proximidad de componentes reparados. Si el error es propio, se cubre la garantía; si no, se explica detalladamente al cliente.
+
+## Ética y Límites Operativos
+- **Política de Rechazo**: No se aceptan trabajos de clientes que falten el respeto ni equipos de procedencia dudosa (robados).
+- **Visión Gadget**: No es solo una continuación; es una **renovación total** de la marca bajo una nueva dirección más técnica y digital. El objetivo es que Gadget sea la base para migrar totalmente a TechHealth a los 21 años.
+- **Relación con Proveedores**: Tono formal pero que inspire confianza y busque la "amistad profesional" para asegurar calidad y soporte.
+- **Estilo de Inversión**: Basado en intuición técnica y "Buy the dip" (comprar ante bajas significativas), monitoreando fuentes de noticias confiables.
+- **Delegación al Agente**: El agente es responsable de la actualización de planillas administrativas, cálculos de inversión, mantenimiento del dashboard financiero y redacción de comunicaciones profesionales.
 
 ## ✅ Layout aprobado (flyer_servicios_apple.svg)
+...
 Este layout fue aprobado por el usuario. Usarlo como base para futuros flyers.
 
 **Estructura general (1080x1080)**
