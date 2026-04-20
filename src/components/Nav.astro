@@ -6,44 +6,8 @@ import { CONFIG } from '../data/config';
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
     <!-- Logo -->
-    <a href="#" class="flex items-center gap-4 group" aria-label="TechHealth Home">
-      <div class="relative w-[56px] h-[56px] flex-shrink-0 text-navy">
-        <!-- SVG meticulously designed to perfectly match the original visual identity provided -->
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full drop-shadow-sm group-hover:scale-105 transition-transform duration-300">
-          <!-- Shield Background/Outline -->
-          <path d="M 50 12 L 80 22 L 80 60 L 50 88 L 20 60 L 20 22 Z" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round" />
-          
-          <!-- PCB Unit Area (Right side) -->
-          <path d="M 57 55 V 36 H 68 V 55" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" />
-          <!-- Top PCB pins -->
-          <path d="M 59 36 V 31 M 62.5 36 V 31 M 66 36 V 31" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
-          <!-- Left PCB pins -->
-          <path d="M 57 41 H 48 M 57 47 H 48" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
-
-          <!-- Top-Right Radiating Signal Arcs -->
-          <!-- Radiating outward from the top right of the PCB -->
-          <path d="M 70 34 Q 73.5 34 73.5 37.5 M 69 28 Q 78 28 78 39" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.6" />
-
-          <!-- Bottom-Left Radiating Signal Arcs -->
-          <!-- Radiating outward from the bottom left curve of the pulse -->
-          <path d="M 38 65 Q 32 65 32 59 M 41 71 Q 25 71 25 58" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.6" />
-
-          <!-- The ECG Pulse Mask (draws over background lines to create the seamless visual cut) -->
-          <path d="M 12 55 H 33 L 41 27 L 50 78 L 57 55 H 90" stroke="white" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" />
-          
-          <!-- The Main ECG Pulse Line -->
-          <path d="M 17 55 H 33 L 41 27 L 50 78 L 57 55 H 85" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round" />
-          
-          <!-- Left Pulse Starting Dot -->
-          <circle cx="15" cy="55" r="3.5" fill="currentColor" />
-        </svg>
-      </div>
-      
-      <!-- Logo Brand Text -->
-      <div class="flex flex-col text-left justify-center mt-[-2px]">
-        <span class="font-heading font-extrabold text-[28px] text-navy leading-none tracking-tight">TechHealth</span>
-        <span class="font-body font-medium text-[15px] text-text-soft mt-1.5 leading-none tracking-[0.02em]">Medical Engineering</span>
-      </div>
+    <a href="#" class="flex items-center group" aria-label="TechHealth Home">
+      <img src="/logo-name.svg" alt="TechHealth Medical Engineering" class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-300" />
     </a>
 
     <!-- Desktop Links -->
