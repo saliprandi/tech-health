@@ -3,6 +3,7 @@
 ## ⚠️ Regla principal
 - **Cada vez que el usuario haga una corrección, guardarla en este archivo inmediatamente.**
 - Leer este archivo al inicio de cada sesión antes de hacer cualquier cosa.
+- **SOLO hablar de TechHealth cuando el usuario lo mencione directamente.** Por defecto, enfocarse en Gadget.
 
 ## Perfil del Usuario: Santiago Aliprandi
 - **Nacimiento**: 30 de abril de 2009, San Miguel de Tucumán.
