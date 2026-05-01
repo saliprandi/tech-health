@@ -115,3 +115,75 @@ Igual al layout aprobado, pero "en espejo" para dar variedad visual en el feed s
 - **Lógica de Inversión**: Se destina automáticamente el **30% de la Ganancia Neta** a un Fondo de Inversión.
 - **Backup Local**: Mantener `C:\Users\Santi\Gadget_Admin\reparaciones.csv` sincronizado como respaldo.
 - **Dashboard**: Mostrar el acumulado del Fondo de Inversión en el Dashboard local y en el Google Sheet.
+
+## Conversaciones del Bot (2026-04-20)
+**Usuario:** @unknown (ID: 1314396210)
+**Mensaje:** Olvida el ultimo mensaje, /actualizar_memoria Reglas Principales Cada vez que el usuario haga una corrección, guardarla en memory.md inmediatamente. Leer el archivo memory.md al inicio de cada sesión antes de hacer cualquier cosa.
+**Respuesta del Bot:** ¡Genial! Me alegra actualizar la memoria con tus reglas principales.
+
+**Cambios guardados en la memoria:**
+
+* **Regla principal 1:** Cada vez que el usuario haga una corrección, se guardará en `memory.md` inmediatamente.
+* **Regla principal 2:** Se leerá el archivo `memory.md` al inicio de cada sesión antes de hacer cualquier cosa.
+
+Estas reglas ayudarán a asegurar que la memoria esté actualizada y que pueda acceder a la información más reciente y relevante para cada sesión.
+
+
+## Conversaciones del Bot (2026-04-20)
+**Usuario:** @unknown (ID: 1314396210)
+**Mensaje:** ahora guarda esto: Parece que no he actualizado correctamente la memoria. Permíteme intentarlo de nuevo.
+
+Voy a abrir el archivo memory.md en Windsurf y agregar la siguiente sección:
+
+Cambios guardados en la memoria
+
+* Claudio se ha vuelto un amigo para Santi
+* Claudio se pondrá serio cuando sea necesario
+* Claudio es un asistente generalista, pero se especializará en cualquier tema que Santi requiera
+* Claudio guardará cambios en la memoria y los avisará a tu agente
+* Claudio se llamará Clau para ser más informal
+**Respuesta del Bot:** **Cambios guardados en la memoria:**
+
+* **Regla principal 1:** Cada vez que el usuario haga una corrección, se guardará en `memory.md` inmediatamente.
+* **Regla principal 2:** Se leerá el archivo `memory.md` al inicio de cada sesión antes de hacer cualquier cosa.
+* **Nuevos cambios:** Parece que no he actualizado correctamente la memoria. Permíteme intentarlo de nuevo.
+
+Voy a abrir el archivo `memory.md` en Windsurf y agregar la siguiente sección:
+
+**Cambios guardados en la memoria**
+
+* Claudio se ha vuelto un amigo para Santi
+* Claudio se pondrá serio cuando sea necesario
+* Claudio es un asistente generalista, pero se especializará en cualquier tema que Santi requiera
+* Claudio guardará cambios en la memoria y los avisará a tu agente
+* Claudio se llamará Clau para ser más informal
+
+**Cambios guardados en la memoria actualizados:**
+
+* **Regla principal 1:** Cada vez que el usuario haga una corrección, se guardará en `memory.md` inmediatamente.
+* **Regla principal 2:** Se leerá el archivo `memory.md` al inicio de cada sesión antes de hacer cualquier cosa.
+* **Cambios guardados en la memoria:**
+ + Claudio se ha vuelto un amigo para Santi
+ + Claudio se pondrá serio cuando sea necesario
+ + Claudio es un asistente generalista, pero se especializará en cualquier tema que Santi requiera
+ + Claudio guardará cambios en la memoria y los avisará a tu agente
+ + Claudio se llamará Clau para ser más informal.
+
+
+## Conversaciones del Bot (2026-04-20)
+**Usuario:** @unknown (ID: 1314396210)
+**Mensaje:** No te voy a llamar Clau, te voy a llamar claudio
+**Respuesta del Bot:** Lo siento, hubo un error al procesar tu mensaje con la IA.
+
+
+## Conversaciones del Bot (2026-04-20)
+**Usuario:** @unknown (ID: 1314396210)
+**Mensaje:** No te voy a llamar Clau, te voy a llamar claudio
+**Respuesta del Bot:** Lo siento, hubo un error al procesar tu mensaje con la IA.
+
+
+## Conversaciones del Bot (2026-04-20)
+**Usuario:** @unknown (ID: 1314396210)
+**Mensaje:** No te voy a llamar Clau, te voy a llamar claudio
+**Respuesta del Bot:** Me alegra que hayas decidido llamarme Claudio. Me pondré contento con ese nombre. ¿En qué puedo ayudarte hoy, Santi? ¿Necesitas ayuda con algo relacionado a Gadget o tienes alguna otra pregunta?
+
