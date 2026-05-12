@@ -35,7 +35,10 @@ const getIconPath = (iconName: string) => {
     <!-- Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
-        <div class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer" data-index={index}>
+        <div
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4"
+          data-index={index} role="button" tabindex="0" aria-label={`Ver detalles de ${servicio.titulo}`}
+        >
           
           <!-- Animated Top Bar -->
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out"></div>
@@ -103,6 +106,7 @@ const getIconPath = (iconName: string) => {
     const closeBtn = document.getElementById('close-modal');
     
     let isModalOpen = false;
+    let lastFocus = null;
 
     // Helper function to get correct SVG path in JS
     const getIconSvg = (iconName) => {
@@ -112,9 +116,10 @@ const getIconPath = (iconName: string) => {
       return '';
     };
 
-    const openModal = (index) => {
+    const openModal = (index, trigger) => {
       const servicio = config.servicios[index];
       if (!servicio) return;
+      lastFocus = trigger;
 
       // Populate content
       modalContent.innerHTML = `
@@ -141,39 +146,41 @@ const getIconPath = (iconName: string) => {
       backdrop.classList.remove('opacity-0', 'pointer-events-none');
       modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
       modal.classList.add('scale-100');
-      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+      document.body.style.overflow = 'hidden';
       isModalOpen = true;
+      setTimeout(() => closeBtn?.focus(), 100);
     };
 
     const closeModal = () => {
       if (!isModalOpen) return;
-      
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100');
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
-      document.body.style.overflow = ''; // Restore scrolling
+      document.body.style.overflow = '';
       isModalOpen = false;
-      
-      // Clear content after animation
-      setTimeout(() => {
-        if (!isModalOpen) modalContent.innerHTML = '';
-      }, 400);
+      lastFocus?.focus();
+      setTimeout(() => { if (!isModalOpen) modalContent.innerHTML = ''; }, 400);
     };
 
-    // Attach events
+    const handleTab = (e) => {
+      if (!isModalOpen || e.key !== 'Tab') return;
+      const els = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      const first = els[0], last = els[els.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
+
     cards.forEach(card => {
-      card.addEventListener('click', () => {
-        const index = card.getAttribute('data-index');
-        openModal(parseInt(index));
-      });
+      const open = () => openModal(parseInt(card.getAttribute('data-index')), card);
+      card.addEventListener('click', open);
+      card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }});
     });
 
     backdrop.addEventListener('click', closeModal);
     closeBtn.addEventListener('click', closeModal);
-    
-    // Close on Escape key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeModal();
+      if (e.key === 'Tab') handleTab(e);
     });
   });
 </script>

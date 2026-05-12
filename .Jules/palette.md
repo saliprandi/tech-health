@@ -1,0 +1,3 @@
+## 2025-05-22 - Focus Trap and Keyboard Accessibility in Astro Components
+**Learning:** In Astro projects where interactive elements (like cards) are created using divs, they must be explicitly given `role="button"` and `tabindex="0"` for accessibility. Additionally, modals require manual focus management: capturing the trigger element, focusing the first interactive element (usually the close button) on open, trapping the Tab key, and restoring focus on close.
+**Action:** Use a reusable focus-trap pattern for all modals and ensure div-based buttons have keyboard listeners for 'Enter' and 'Space'.
