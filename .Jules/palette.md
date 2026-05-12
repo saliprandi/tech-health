@@ -1,0 +1,3 @@
+## 2025-05-22 - Modal Focus Management and Accessibility
+**Learning:** For interactive elements like cards that act as buttons, it is critical to provide proper ARIA roles (`role="button"`), tab indexing (`tabindex="0"`), and keyboard event listeners (Enter/Space). Furthermore, when these interactions open a modal, focus management is essential: capturing the `lastFocusedElement`, shifting focus to the modal (e.g., the close button), and restoring focus upon closure. Focus trapping within the modal ensures a seamless keyboard navigation experience.
+**Action:** Always implement `lastFocusedElement` storage and restoration, and use a standard focus trapping listener in components that use modals or overlays.
