@@ -1,0 +1,3 @@
+## 2025-05-15 - Accessible Modal Focus Management in Astro
+**Learning:** When implementing modals in Astro components, manual focus management is essential for accessibility. Simply showing/hiding the modal doesn't move the screen reader's focus. We must capture the triggering element, move focus to the modal (e.g., the close button) on open, and restore focus to the trigger on close. Using `setTimeout` with a small delay (e.g., 100ms) helps ensure the element is visible and focusable before attempting to call `.focus()`.
+**Action:** Always capture `document.activeElement` before opening a modal and restore it upon closing. Add a `focus-visible` ring to the triggering elements to provide visual feedback for keyboard users.

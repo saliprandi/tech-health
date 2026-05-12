@@ -35,7 +35,13 @@ const getIconPath = (iconName: string) => {
     <!-- Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
-        <div class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer" data-index={index}>
+        <div
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4"
+          data-index={index}
+          role="button"
+          tabindex="0"
+          aria-label={servicio.titulo}
+        >
           
           <!-- Animated Top Bar -->
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out"></div>
@@ -103,6 +109,7 @@ const getIconPath = (iconName: string) => {
     const closeBtn = document.getElementById('close-modal');
     
     let isModalOpen = false;
+    let lastFocusedElement = null;
 
     // Helper function to get correct SVG path in JS
     const getIconSvg = (iconName) => {
@@ -115,6 +122,8 @@ const getIconPath = (iconName: string) => {
     const openModal = (index) => {
       const servicio = config.servicios[index];
       if (!servicio) return;
+
+      lastFocusedElement = document.activeElement;
 
       // Populate content
       modalContent.innerHTML = `
@@ -143,6 +152,11 @@ const getIconPath = (iconName: string) => {
       modal.classList.add('scale-100');
       document.body.style.overflow = 'hidden'; // Prevent background scrolling
       isModalOpen = true;
+
+      // Focus close button for accessibility
+      setTimeout(() => {
+        closeBtn?.focus();
+      }, 100);
     };
 
     const closeModal = () => {
@@ -154,6 +168,11 @@ const getIconPath = (iconName: string) => {
       document.body.style.overflow = ''; // Restore scrolling
       isModalOpen = false;
       
+      // Restore focus
+      if (lastFocusedElement instanceof HTMLElement) {
+        lastFocusedElement.focus();
+      }
+
       // Clear content after animation
       setTimeout(() => {
         if (!isModalOpen) modalContent.innerHTML = '';
@@ -165,6 +184,14 @@ const getIconPath = (iconName: string) => {
       card.addEventListener('click', () => {
         const index = card.getAttribute('data-index');
         openModal(parseInt(index));
+      });
+
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const index = card.getAttribute('data-index');
+          openModal(parseInt(index));
+        }
       });
     });
 
