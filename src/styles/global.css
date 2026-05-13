@@ -53,7 +53,7 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center font-heading font-bold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4;
+    @apply inline-flex items-center justify-center font-heading font-bold transition-all duration-300;
     background-color: var(--navy);
     color: var(--white);
     border-radius: 8px;
@@ -67,7 +67,7 @@
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center font-heading font-bold transition-all duration-300 bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4;
+    @apply inline-flex items-center justify-center font-heading font-bold transition-all duration-300 bg-transparent;
     color: var(--navy);
     border: 1px solid var(--border);
     border-radius: 8px;

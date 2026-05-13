@@ -36,7 +36,7 @@ const getIconPath = (iconName: string) => {
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
         <div
-          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4"
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer"
           data-index={index}
           role="button"
           tabindex="0"
@@ -96,7 +96,7 @@ const getIconPath = (iconName: string) => {
   >
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <!-- Close Button -->
-      <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4" aria-label="Cerrar">
+      <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10" aria-label="Cerrar">
         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>

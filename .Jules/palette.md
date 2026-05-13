@@ -46,6 +46,6 @@
 **Learning:** Images without explicit dimensions in Astro components can cause Cumulative Layout Shift (CLS) during load.
 **Action:** Always include 'width' and 'height' attributes on '<img>' tags, especially for critical elements like the logo in the navigation.
 
-## 2025-05-23 - Accessibility Foundations and Component Consolidation
-**Learning:** Found significant code duplication and corrupted templates (redundant buttons and attributes) in core components like `Nav.astro` and `Servicios.astro`, which directly hindered accessibility and maintainability. Implementing a "Skip to Content" link and standardized `focus-visible` states across the app provides a baseline for a professional keyboard-accessible experience.
-**Action:** Always audit components for redundant markup and logic before applying UX enhancements. Consolidate "Skip to Content" targets in the base layout to ensure consistent behavior across all pages.
+## 2025-05-23 - Visual vs. Functional Accessibility
+**Learning:** Prominent visual accessibility features like "Skip to Content" links and custom focus rings can be perceived as intrusive if they don't match the established aesthetic. Functional accessibility (modal focus management, XSS protection, semantic roles) is often more acceptable as a "silent" improvement.
+**Action:** Prioritize functional accessibility and code cleanup. Ask before adding new prominent UI elements for accessibility.
