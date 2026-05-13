@@ -45,3 +45,7 @@
 ## 2025-05-14 - Layout Shift Prevention
 **Learning:** Images without explicit dimensions in Astro components can cause Cumulative Layout Shift (CLS) during load.
 **Action:** Always include 'width' and 'height' attributes on '<img>' tags, especially for critical elements like the logo in the navigation.
+
+## 2025-05-15 - Template Consolidation and Skip Link Implementation
+**Learning:** Significant code duplication in Astro components (e.g., multiple logo images and button tags) can lead to invalid HTML and broken accessibility. Centralizing common features like 'Skip to Content' in the base layout ensures consistent usability for keyboard users across the entire site.
+**Action:** Audit components for redundant markup and consolidate them into clean, accessible structures. Always provide a 'Skip to Content' link targeting a unique `id` on the main content wrapper.
