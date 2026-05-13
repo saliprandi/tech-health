@@ -35,7 +35,7 @@
 **Action:** Always provide explicit `width` and `height` attributes for images, even when using CSS for responsive sizing.
 ## 2025-05-15 - Accessible Modal Pattern
 **Learning:** For interactive cards that trigger modals, it is essential to implement full keyboard support (role="button", tabindex="0", Enter/Space listeners), focus management (focusing the initial element on open and restoring focus on close), and a focus trap to keep the Tab cycle within the modal.
-**Action:** Always apply these three pillars (Attributes, Management, Trap) when implementing custom modal triggers to ensure WCAG compliance.
+**Action:** Always apply these these three pillars (Attributes, Management, Trap) when implementing custom modal triggers to ensure WCAG compliance.
 # Palette's Journal - TechHealth
 
 ## 2025-05-14 - Modal Focus Management
@@ -46,6 +46,9 @@
 **Learning:** Images without explicit dimensions in Astro components can cause Cumulative Layout Shift (CLS) during load.
 **Action:** Always include 'width' and 'height' attributes on '<img>' tags, especially for critical elements like the logo in the navigation.
 
+## 2025-05-24 - HTML Sanitization in Client-Side Scripts
+**Learning:** When injecting dynamic content into the DOM using `innerHTML` within Astro `<script>` tags, it is critical to sanitize the data to prevent XSS vulnerabilities, especially when the data comes from a configuration object that might be modified.
+**Action:** Implement a robust `escapeHtml` helper function and use it for all dynamic content injected via `innerHTML`.
 ## 2025-05-23 - Centralized Accessibility: Skip to Content
 **Learning:** In multi-section landing pages with complex navigation, a 'Skip to Content' link is a high-impact, low-effort accessibility win. Centralizing it in the base layout ensures consistency, while targeting the main content with `tabindex="-1"` enables programmatic focus without adding a focus ring.
 **Action:** Always include a visually hidden skip link in `Layout.astro` and ensure the main content wrapper in pages has a matching ID and `tabindex="-1"`.

@@ -114,7 +114,7 @@ const modalData = CONFIG.servicios.map(s => ({
       <!-- Close Button -->
       <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4" aria-label="Cerrar">
         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
       
@@ -156,6 +156,13 @@ const modalData = CONFIG.servicios.map(s => ({
       if (iconName === 'circuit') return '<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M5.25 12h13.5m-13.5 3h13.5m-12 5.25V19.5m10.5 1.5V19.5M10.5 8.25v-1.5m3 1.5v-1.5M8.25 15.75v-1.5m3 1.5v-1.5m3 1.5v-1.5" /><rect x="6" y="6" width="12" height="12" rx="2" stroke-linecap="round" stroke-linejoin="round" />';
       return '';
     };
+
+    const openModal = (index, trigger) => {
+      const servicio = CONFIG.servicios[index];
+      if (!servicio) return;
+
+      triggerElement = trigger;
+      triggerElement?.setAttribute('aria-expanded', 'true');
 
     const openModal = (index, element) => {
       const servicio = CONFIG.servicios[index];
@@ -242,6 +249,8 @@ const modalData = CONFIG.servicios.map(s => ({
     };
 
     cards.forEach(card => {
+      const handleOpen = () => {
+        const index = card.getAttribute('data-index');
       const handleOpen = () => {
         const index = card.getAttribute('data-index');
       const handleOpen = () => {
