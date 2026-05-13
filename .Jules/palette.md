@@ -1,3 +1,6 @@
+## 2025-05-12 - Mobile Menu Accessibility and Logo CLS
+**Learning:** Adding ARIA attributes (aria-expanded, aria-hidden) and visible focus indicators to mobile menu toggles is essential for keyboard and screen reader accessibility. Additionally, providing explicit width and height for hero logos prevents Cumulative Layout Shift (CLS).
+**Action:** Always audit mobile navigation for proper state representation in the DOM and ensure images have defined dimensions.
 ## 2025-05-15 - Improving Mobile Menu and FAB Accessibility
 **Learning:** Mobile menus often lack the `aria-expanded` attribute, which is critical for screen reader users to understand the state of the navigation. Additionally, fixed elements like floating WhatsApp buttons often miss visible focus states, making them difficult to find for keyboard-only users.
 **Action:** Always include `aria-expanded` on toggle buttons and ensure it's updated via script. Apply project-standard `focus-visible` rings to all interactive elements, especially those with fixed positioning or unusual styles.
