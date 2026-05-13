@@ -1,3 +1,6 @@
+## 2025-05-15 - Interactive Card and Modal Accessibility
+**Learning:** Found that service cards were interactive but lacked ARIA roles, keyboard support, and focus management (focus trapping and restoration) which are essential for accessibility.
+**Action:** Always implement `role="button"`, `tabindex="0"`, and keyboard listeners for interactive `div` elements. Ensure modals manage focus properly by focusing the close button on open, trapping focus while open, and restoring focus on close.
 ## 2025-05-15 - [Accessible Modals and Focus Management]
 **Learning:** In Astro components where interactive elements (like cards) trigger modals via client-side scripts, standard HTML attributes (`role="button"`, `tabindex="0"`) and proper focus management (storing the trigger element, focusing the close button on open, restoring focus on close, and trapping focus) are essential for a professional and accessible UX.
 **Action:** Always implement focus trapping and restoration logic for any custom modal dialogs to ensure keyboard-only users can navigate the interface effectively.
