@@ -8,6 +8,7 @@ import { CONFIG } from '../data/config';
     <!-- Logo: Width and height added to prevent Cumulative Layout Shift (CLS)
          by reserving space before the SVG is fully loaded. -->
     <a href="#" class="flex items-center group" aria-label="TechHealth Home">
+      <img src="/logo-name.svg" alt="TechHealth Medical Engineering" width="228" height="56" class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 group-focus-visible:scale-105 transition-transform duration-300" />
       <img src="/logo-name.svg" alt="TechHealth Medical Engineering" width="228" height="56" class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-300" />
     </a>
 
@@ -26,7 +27,9 @@ import { CONFIG } from '../data/config';
       </a>
 
       <!-- Hamburger Button -->
-      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none z-[101]" aria-label="Menú">
+      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 z-[101]" aria-label="Menú" aria-expanded="false" aria-controls="mobile-menu">
+      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-sm transition-shadow z-[101]" aria-label="Menú" aria-expanded="false">
+      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none z-[101]" aria-label="Menú" aria-expanded="false">
         <span class="block w-6 h-0.5 bg-navy transition-transform duration-300 origin-center"></span>
         <span class="block w-6 h-0.5 bg-navy transition-opacity duration-300"></span>
         <span class="block w-6 h-0.5 bg-navy transition-transform duration-300 origin-center"></span>
@@ -35,7 +38,7 @@ import { CONFIG } from '../data/config';
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]">
+  <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
     <a href="#servicios" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Servicios</a>
     <a href="#equipos" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
     <a href="#nosotros" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
@@ -57,6 +60,12 @@ import { CONFIG } from '../data/config';
 
     const toggleMenu = () => {
       isOpen = !isOpen;
+
+      // Update ARIA attributes
+      toggle?.setAttribute('aria-expanded', isOpen.toString());
+      menu?.setAttribute('aria-hidden', (!isOpen).toString());
+      toggle?.setAttribute('aria-expanded', isOpen.toString());
+
       if (isOpen) {
         menu?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
         menu?.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
