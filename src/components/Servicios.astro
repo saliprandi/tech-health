@@ -37,6 +37,10 @@ const getIconPath = (iconName: string) => {
       {CONFIG.servicios.map((servicio, index) => (
         <div
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4"
+          data-index={index}
+          role="button"
+          tabindex="0"
+          aria-haspopup="dialog"
           data-index={index} role="button" tabindex="0" aria-label={`Ver detalles de ${servicio.titulo}`}
           data-index={index}
           role="button"
@@ -87,7 +91,7 @@ const getIconPath = (iconName: string) => {
   <!-- Maximize Modal -->
   <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[100] opacity-0 pointer-events-none transition-opacity duration-400"></div>
 
-  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[101] opacity-0 pointer-events-none transition-all duration-400 scale-95">
+  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[101] opacity-0 pointer-events-none transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <!-- Close Button -->
       <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4" aria-label="Cerrar">
@@ -111,6 +115,7 @@ const getIconPath = (iconName: string) => {
     const closeBtn = document.getElementById('close-modal');
     
     let isModalOpen = false;
+    let lastFocusedElement = null;
     let lastFocus = null;
     let lastFocusedElement = null;
 
@@ -148,6 +153,8 @@ const getIconPath = (iconName: string) => {
             ${getIconSvg(servicio.icono)}
           </svg>
         </div>
+        <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${servicio.titulo}</h3>
+        <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${servicio.descripcion}</p>
         <h3 class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
         <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
         
@@ -168,6 +175,12 @@ const getIconPath = (iconName: string) => {
       modal.classList.add('scale-100');
       document.body.style.overflow = 'hidden';
       isModalOpen = true;
+
+      // Focus management: store last element and focus close button
+      lastFocusedElement = document.activeElement;
+      setTimeout(() => {
+        closeBtn?.focus();
+      }, 100);
       setTimeout(() => closeBtn?.focus(), 100);
 
       // Focus close button
@@ -230,10 +243,32 @@ const getIconPath = (iconName: string) => {
           handleOpen();
         }
       });
+
+      // Keyboard support
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const index = card.getAttribute('data-index');
+          openModal(parseInt(index));
+        }
+      });
     });
 
     backdrop.addEventListener('click', closeModal);
     closeBtn.addEventListener('click', closeModal);
+    
+    // Modal key handlers
+    document.addEventListener('keydown', (e) => {
+      if (!isModalOpen) return;
+
+      // Close on Escape key
+      if (e.key === 'Escape') {
+        closeModal();
+        return;
+      }
+
+      // Focus trapping
+      if (e.key === 'Tab') {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeModal();
       if (e.key === 'Tab') handleTab(e);
@@ -246,11 +281,13 @@ const getIconPath = (iconName: string) => {
         const firstElement = focusableElements[0];
         const lastElement = focusableElements[focusableElements.length - 1];
 
+        if (e.shiftKey) { // Shift + Tab
         if (e.shiftKey) {
           if (document.activeElement === firstElement) {
             e.preventDefault();
             lastElement.focus();
           }
+        } else { // Tab
         } else {
           if (document.activeElement === lastElement) {
             e.preventDefault();
