@@ -2,6 +2,7 @@
 import { CONFIG } from '../data/config';
 
 // Helper to return the correct SVG path based on icon name
+// These are hardcoded and trusted, so no XSS risk here.
 const getIconPath = (iconName: string) => {
   if (iconName === 'shield') {
     return `<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />`;
@@ -36,34 +37,12 @@ const getIconPath = (iconName: string) => {
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
         <div
-          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue/50"
-          data-index={index}
-          role="button"
-          tabindex="0"
-          aria-haspopup="dialog"
-          aria-label={`${servicio.titulo}. Ver detalles.`}
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4"
           data-index={index}
           role="button"
           tabindex="0"
-          aria-label={`Ver más detalles sobre ${servicio.titulo}`}
-          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer"
-          data-index={index}
-          role="button"
-          tabindex="0"
-          aria-haspopup="dialog"
-          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4"
-          data-index={index}
-          role="button"
-          tabindex="0"
-          aria-label={servicio.titulo}
           aria-haspopup="dialog"
           aria-expanded="false"
-          data-index={index} role="button" tabindex="0" aria-label={`Ver detalles de ${servicio.titulo}`}
-          data-index={index}
-          role="button"
-          tabindex="0"
-          aria-label={`Ver detalles sobre ${servicio.titulo}`}
           aria-label={`Ver detalles de ${servicio.titulo}`}
         >
           
@@ -106,9 +85,10 @@ const getIconPath = (iconName: string) => {
 
   </div>
 
-  <!-- Maximize Modal -->
+  <!-- Modal Backdrop -->
   <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[100] opacity-0 pointer-events-none transition-opacity duration-400"></div>
 
+  <!-- Modal -->
   <div
     id="service-modal"
     class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[101] opacity-0 pointer-events-none transition-all duration-400 scale-95"
@@ -116,7 +96,6 @@ const getIconPath = (iconName: string) => {
     aria-modal="true"
     aria-labelledby="modal-title"
   >
-  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[101] opacity-0 pointer-events-none transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <!-- Close Button -->
       <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4" aria-label="Cerrar">
@@ -140,27 +119,12 @@ const getIconPath = (iconName: string) => {
     const closeBtn = document.getElementById('close-modal');
     
     let isModalOpen = false;
-    let lastFocusedElement = null;
     let triggerElement = null;
-    let lastFocusedElement = null;
-    let lastFocus = null;
     let lastFocusedElement = null;
 
     /**
      * Sanitizes a string to prevent XSS vulnerabilities when using innerHTML.
-     * @param {any} unsafe - The value to sanitize.
      */
-    const escapeHtml = (unsafe) => {
-      if (typeof unsafe !== 'string') return unsafe;
-      return unsafe
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    };
-
-    // Security: Escape HTML to prevent XSS
     const escapeHtml = (unsafe) => {
       if (typeof unsafe !== 'string') return '';
       return unsafe
@@ -180,25 +144,13 @@ const getIconPath = (iconName: string) => {
     };
 
     const openModal = (index, element) => {
-    const openModal = (index) => {
       const servicio = CONFIG.servicios[index];
-    const openModal = (index, trigger) => {
-      const servicio = config.servicios[index];
       if (!servicio) return;
-      lastFocus = trigger;
-
-      lastFocusedElement = document.activeElement;
-
-      triggerElement = document.activeElement;
-      triggerElement?.setAttribute('aria-expanded', 'true');
 
       triggerElement = element;
-
       lastFocusedElement = document.activeElement;
+      triggerElement.setAttribute('aria-expanded', 'true');
 
-      lastFocusedElement = document.activeElement;
-
-      // Populate content
       // Populate content with sanitized data
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
@@ -206,9 +158,7 @@ const getIconPath = (iconName: string) => {
             ${getIconSvg(servicio.icono)}
           </svg>
         </div>
-        <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${servicio.titulo}</h3>
-        <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${servicio.descripcion}</p>
-        <h3 class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
+        <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
         <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
         
         <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
@@ -232,59 +182,23 @@ const getIconPath = (iconName: string) => {
       // Focus close button
       setTimeout(() => {
         closeBtn?.focus();
-      }, 100);
-      setTimeout(() => closeBtn?.focus(), 100);
-      // Focus management: store last element and focus close button
-      lastFocusedElement = document.activeElement;
-      setTimeout(() => {
-        closeBtn?.focus();
-      }, 100);
-      setTimeout(() => closeBtn?.focus(), 100);
-
-      // Focus close button
-      setTimeout(() => {
-        closeBtn?.focus();
-      }, 100);
-      // Focus management: focus the close button
-      setTimeout(() => {
-        closeBtn?.focus();
       }, 50);
     };
 
     const closeModal = () => {
       if (!isModalOpen) return;
       
-      triggerElement?.setAttribute('aria-expanded', 'false');
-      triggerElement?.focus();
-
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100');
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       document.body.style.overflow = '';
       isModalOpen = false;
 
-      // Restore focus
-      if (lastFocusedElement) {
-        lastFocusedElement.focus();
-      }
-      lastFocus?.focus();
-      setTimeout(() => { if (!isModalOpen) modalContent.innerHTML = ''; }, 400);
-    };
-
-    const handleTab = (e) => {
-      if (!isModalOpen || e.key !== 'Tab') return;
-      const els = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-      const first = els[0], last = els[els.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-      
-      // Restore focus
-      lastFocusedElement?.focus();
+      // Accessibility: restore focus and ARIA state
       if (triggerElement) {
+        triggerElement.setAttribute('aria-expanded', 'false');
         triggerElement.focus();
-        triggerElement = null;
-      if (lastFocusedElement && lastFocusedElement.focus) {
-      if (lastFocusedElement) {
+      } else if (lastFocusedElement) {
         lastFocusedElement.focus();
       }
 
@@ -297,68 +211,16 @@ const getIconPath = (iconName: string) => {
     cards.forEach(card => {
       const index = card.getAttribute('data-index');
 
-      card.addEventListener('click', () => {
-      const openAction = () => {
-        const index = card.getAttribute('data-index');
+      const handleOpen = () => {
         openModal(parseInt(index), card);
       };
 
-      card.addEventListener('click', openAction);
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          openAction();
-      const index = card.getAttribute('data-index');
-
-      card.addEventListener('click', () => {
-      const open = () => openModal(parseInt(card.getAttribute('data-index')), card);
-      card.addEventListener('click', open);
-      card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }});
-      const handleTrigger = () => {
-      const handleOpen = () => {
-        const index = card.getAttribute('data-index');
-        lastFocusedElement = card;
-        openModal(parseInt(index));
-      };
-
-      card.addEventListener('click', handleTrigger);
       card.addEventListener('click', handleOpen);
 
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          handleTrigger();
           handleOpen();
-        }
-      });
-
-      // Keyboard support
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          const index = card.getAttribute('data-index');
-          openModal(parseInt(index));
-        }
-      });
-
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          openModal(parseInt(index));
-        }
-      });
-
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          card.click();
-        }
-      });
-
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          if (e.key === ' ') e.preventDefault();
-          openModal(parseInt(index));
         }
       });
     });
@@ -366,15 +228,7 @@ const getIconPath = (iconName: string) => {
     backdrop.addEventListener('click', closeModal);
     closeBtn.addEventListener('click', closeModal);
     
-    // Close on Escape key and Focus Trapping
-    document.addEventListener('keydown', (e) => {
-      if (!isModalOpen) return;
-
-    // Global key listeners
-    document.addEventListener('keydown', (e) => {
-      if (!isModalOpen) return;
-
-    // Modal key handlers
+    // Global key listeners for Modal
     document.addEventListener('keydown', (e) => {
       if (!isModalOpen) return;
 
@@ -386,29 +240,16 @@ const getIconPath = (iconName: string) => {
 
       // Focus trapping
       if (e.key === 'Tab') {
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
-      if (e.key === 'Tab') handleTab(e);
-      if (e.key === 'Escape') {
-        closeModal();
-      }
-
-      if (e.key === 'Tab') {
-      // Focus trapping
-      if (e.key === 'Tab') {
-      if (e.key === 'Tab' && isModalOpen) {
         const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
         const firstElement = focusableElements[0];
         const lastElement = focusableElements[focusableElements.length - 1];
 
         if (e.shiftKey) { // Shift + Tab
-        if (e.shiftKey) {
           if (document.activeElement === firstElement) {
             e.preventDefault();
             lastElement.focus();
           }
         } else { // Tab
-        } else {
           if (document.activeElement === lastElement) {
             e.preventDefault();
             firstElement.focus();
@@ -416,69 +257,5 @@ const getIconPath = (iconName: string) => {
         }
       }
     });
-
-    // Focus trap
-    modal?.addEventListener('keydown', (e) => {
-      if (e.key !== 'Tab' || !isModalOpen) return;
-
-      const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-
-      if (e.shiftKey) { // Shift + Tab
-        if (document.activeElement === firstElement) {
-          e.preventDefault();
-          lastElement.focus();
-        }
-      } else { // Tab
-        if (document.activeElement === lastElement) {
-          e.preventDefault();
-          firstElement.focus();
-        }
-      }
-    });
-
-    // Focus trapping
-    modal?.addEventListener('keydown', (e) => {
-      if (e.key !== 'Tab') return;
-
-      const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-      const firstElement = focusableElements[0] as HTMLElement;
-      const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
-
-      if (e.shiftKey) {
-        if (document.activeElement === firstElement) {
-          lastElement.focus();
-          e.preventDefault();
-        }
-      } else {
-        if (document.activeElement === lastElement) {
-          firstElement.focus();
-          e.preventDefault();
-        }
-      }
-    });
-
-    // Focus trapping
-    modal?.addEventListener('keydown', (e) => {
-      if (e.key !== 'Tab') return;
-
-      const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-
-      if (e.shiftKey) {
-        if (document.activeElement === firstElement) {
-          e.preventDefault();
-          lastElement.focus();
-        }
-      } else {
-        if (document.activeElement === lastElement) {
-          e.preventDefault();
-          firstElement.focus();
-        }
-      }
-    });
   });
 </script>
-
