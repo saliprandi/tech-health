@@ -84,26 +84,22 @@ import { CONFIG } from '../data/config';
         <div class="bg-navy rounded-card p-8 md:p-11 shadow-hero-card">
           <h3 class="font-heading font-bold text-[24px] text-white mb-6">Envíenos su consulta</h3>
           
-          <form id="contact-form" class="flex flex-col gap-5">
+          <div id="contact-form" class="flex flex-col gap-5">
             
             <div class="flex flex-col gap-1.5">
-              <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
-                Nombre completo <span class="text-blue-light" aria-hidden="true">*</span>
-              </label>
-              <input type="text" id="f-nombre" name="nombre" required placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
+              <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Nombre completo</label>
+              <input type="text" id="f-nombre" placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
 
             <div class="flex flex-col gap-1.5">
-              <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
-                Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span>
-              </label>
-              <input type="tel" id="f-tel" name="tel" required placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
+              <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Teléfono / WhatsApp</label>
+              <input type="tel" id="f-tel" placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
 
             <div class="flex flex-col gap-1.5">
               <label for="f-servicio" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Tipo de servicio</label>
               <div class="relative">
-                <select id="f-servicio" name="servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus:border-blue-light transition-colors w-full appearance-none pr-10">
+                <select id="f-servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus:border-blue-light transition-colors w-full appearance-none pr-10">
                 <option value="Consulta general" class="bg-navy text-white">Consulta general</option>
                 <option value="Mantenimiento preventivo" class="bg-navy text-white">Mantenimiento preventivo</option>
                 <option value="Reparación / Mantenimiento correctivo" class="bg-navy text-white">Reparación / Mantenimiento correctivo</option>
@@ -117,17 +113,17 @@ import { CONFIG } from '../data/config';
 
             <div class="flex flex-col gap-1.5 mb-2">
               <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
-              <textarea id="f-desc" name="descripcion" rows="3" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
+              <textarea id="f-desc" rows="3" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
             </div>
 
-            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale focus:outline-none focus:ring-2 focus:ring-blue-light focus:ring-offset-2 focus:ring-offset-navy transition-colors shadow-sm mt-2">
+            <button id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors shadow-sm mt-2">
               Enviar por WhatsApp
             </button>
             <p class="font-body text-[12px] text-white/40 text-center mt-2">
               Será redirigido a WhatsApp para enviar el mensaje.
             </p>
 
-          </form>
+          </div>
         </div>
       </div>
 
@@ -138,20 +134,12 @@ import { CONFIG } from '../data/config';
 
 <script define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
   document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('contact-form');
+    const btn = document.getElementById('f-submit');
     
-    if(form) {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const nombre = document.getElementById('f-nombre')?.value.trim();
-        const tel = document.getElementById('f-tel')?.value.trim();
-
-        if (!nombre || !tel) {
-          alert('Por favor, complete los campos obligatorios.');
-          return;
-        }
-
+    if(btn) {
+      btn.addEventListener('click', () => {
+        const nombre = document.getElementById('f-nombre')?.value.trim() || 'No especificado';
+        const tel = document.getElementById('f-tel')?.value.trim() || 'No especificado';
         const servicioel = document.getElementById('f-servicio');
         const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
         const desc = document.getElementById('f-desc')?.value.trim() || 'Sin detalles adicionales';
