@@ -1,3 +1,6 @@
+## 2025-05-15 - Interactive Div-Buttons Pattern
+**Learning:** Components acting as buttons (e.g., clickable cards) often lack proper ARIA roles, tabindex, and keyboard listeners, making them inaccessible to screen readers and keyboard-only users.
+**Action:** Always check for `cursor-pointer` elements that trigger actions and ensure they have `role="button"`, `tabindex="0"`, and `keydown` listeners for Enter/Space.
 ## 2026-05-12 - Interactive Cards and Modal Accessibility Pattern
 **Learning:** Found that interactive 'div' cards used to trigger modals lacked basic accessibility (keyboard support, ARIA roles). Also, the detail modal lacked focus management and trapping.
 **Action:** Always add 'role="button"', 'tabindex="0"', and keyboard listeners (Enter/Space) to card-like buttons. Ensure modals follow a strict focus management pattern: focus close button on open, restore focus on close, and implement focus trapping logic.
