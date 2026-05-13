@@ -5,31 +5,39 @@ import { CONFIG } from '../data/config';
 <nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
-    <!-- Logo: Width and height added to prevent Cumulative Layout Shift (CLS)
-         by reserving space before the SVG is fully loaded. -->
+    <!-- Logo -->
     <a href="#" class="flex items-center group" aria-label="TechHealth Home">
-      <img src="/logo-name.svg" alt="TechHealth Medical Engineering" width="228" height="56" class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 group-focus-visible:scale-105 transition-transform duration-300" />
-      <img src="/logo-name.svg" alt="TechHealth Medical Engineering" width="228" height="56" class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-300" />
+      <img
+        src="/logo-name.svg"
+        alt="TechHealth Medical Engineering"
+        width="228"
+        height="56"
+        class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 group-focus-visible:scale-105 transition-transform duration-300"
+      />
     </a>
 
     <!-- Desktop Links -->
     <ul class="hidden md:flex items-center gap-8">
-      <li><a href="#servicios" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Servicios</a></li>
-      <li><a href="#equipos" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Equipos</a></li>
-      <li><a href="#nosotros" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Nosotros</a></li>
-      <li><a href="#contacto" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Contacto</a></li>
+      <li><a href="#servicios" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-8 rounded-sm">Servicios</a></li>
+      <li><a href="#equipos" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-8 rounded-sm">Equipos</a></li>
+      <li><a href="#nosotros" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-8 rounded-sm">Nosotros</a></li>
+      <li><a href="#contacto" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-8 rounded-sm">Contacto</a></li>
     </ul>
 
     <!-- CTA & Mobile Toggle -->
     <div class="flex items-center gap-4">
-      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md">
+      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4">
         Consultar por WhatsApp
       </a>
 
       <!-- Hamburger Button -->
-      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 z-[101]" aria-label="Menú" aria-expanded="false" aria-controls="mobile-menu">
-      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-sm transition-shadow z-[101]" aria-label="Menú" aria-expanded="false">
-      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none z-[101]" aria-label="Menú" aria-expanded="false">
+      <button
+        id="menu-toggle"
+        class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-sm transition-shadow z-[101]"
+        aria-label="Menú"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
         <span class="block w-6 h-0.5 bg-navy transition-transform duration-300 origin-center"></span>
         <span class="block w-6 h-0.5 bg-navy transition-opacity duration-300"></span>
         <span class="block w-6 h-0.5 bg-navy transition-transform duration-300 origin-center"></span>
@@ -38,12 +46,16 @@ import { CONFIG } from '../data/config';
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
-    <a href="#servicios" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Servicios</a>
-    <a href="#equipos" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
-    <a href="#nosotros" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
-    <a href="#contacto" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Contacto</a>
-    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]">
+  <div
+    id="mobile-menu"
+    class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]"
+    aria-hidden="true"
+  >
+    <a href="#servicios" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 px-4 rounded-sm">Servicios</a>
+    <a href="#equipos" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 px-4 rounded-sm">Equipos</a>
+    <a href="#nosotros" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 px-4 rounded-sm">Nosotros</a>
+    <a href="#contacto" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 px-4 rounded-sm">Contacto</a>
+    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4">
       Consultar por WhatsApp
     </a>
   </div>
@@ -64,7 +76,6 @@ import { CONFIG } from '../data/config';
       // Update ARIA attributes
       toggle?.setAttribute('aria-expanded', isOpen.toString());
       menu?.setAttribute('aria-hidden', (!isOpen).toString());
-      toggle?.setAttribute('aria-expanded', isOpen.toString());
 
       if (isOpen) {
         menu?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
