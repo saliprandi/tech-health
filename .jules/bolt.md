@@ -5,3 +5,7 @@
 ## 2025-05-12 - [CLS Prevention for Logo]
 **Learning:** The main logo used h-[56px] w-auto but lacked explicit width/height attributes, causing layout shifts during initial load.
 **Action:** Always provide explicit width and height on key branding elements in the navigation bar.
+
+## 2025-05-14 - [DOM and Payload Optimization]
+**Learning:** Passing large global configuration objects to client-side scripts via 'define:vars' in Astro can significantly bloat the HTML payload. Additionally, redundant DOM elements and duplicate attributes in loops increase DOM complexity.
+**Action:** Always subset data objects before passing them to client-side scripts and audit templates for attribute/element redundancy.
