@@ -9,7 +9,7 @@ const { title = "TechHealth Medical Engineering | TÃ©cnicos en Electromedicina â
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 	<head>
 		<meta charset="UTF-8" />
 		<title>{title}</title>
@@ -41,6 +41,9 @@ const { title = "TechHealth Medical Engineering | TÃ©cnicos en Electromedicina â
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
 	</head>
 	<body>
+		<a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-6 focus:py-3 focus:bg-blue focus:text-white focus:rounded-lg focus:font-bold focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue focus:ring-offset-2">
+			Saltar al contenido principal
+		</a>
 		<slot />
 	</body>
 </html>
