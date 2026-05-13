@@ -5,7 +5,8 @@ import { CONFIG } from '../data/config';
 <nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
-    <!-- Logo -->
+    <!-- Logo: Width and height added to prevent Cumulative Layout Shift (CLS)
+         by reserving space before the SVG is fully loaded. -->
     <a href="#" class="flex items-center group" aria-label="TechHealth Home">
       <img src="/logo-name.svg" alt="TechHealth Medical Engineering" width="228" height="56" class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 group-focus-visible:scale-105 transition-transform duration-300" />
       <img src="/logo-name.svg" alt="TechHealth Medical Engineering" width="228" height="56" class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-300" />
