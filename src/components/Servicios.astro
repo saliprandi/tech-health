@@ -45,6 +45,11 @@ const getIconPath = (iconName: string) => {
           data-index={index}
           role="button"
           tabindex="0"
+          aria-haspopup="dialog"
+          data-index={index} role="button" tabindex="0" aria-label={`Ver detalles de ${servicio.titulo}`}
+          data-index={index}
+          role="button"
+          tabindex="0"
           aria-label={`Ver detalles sobre ${servicio.titulo}`}
           aria-label={`Ver detalles de ${servicio.titulo}`}
         >
@@ -116,6 +121,8 @@ const getIconPath = (iconName: string) => {
     
     let isModalOpen = false;
     let lastFocusedElement = null;
+    let lastFocus = null;
+    let lastFocusedElement = null;
 
     /**
      * Sanitizes a string to prevent XSS vulnerabilities when using innerHTML.
@@ -141,7 +148,10 @@ const getIconPath = (iconName: string) => {
 
     const openModal = (index) => {
       const servicio = CONFIG.servicios[index];
+    const openModal = (index, trigger) => {
+      const servicio = config.servicios[index];
       if (!servicio) return;
+      lastFocus = trigger;
 
       lastFocusedElement = document.activeElement;
 
@@ -173,8 +183,15 @@ const getIconPath = (iconName: string) => {
       backdrop.classList.remove('opacity-0', 'pointer-events-none');
       modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
       modal.classList.add('scale-100');
-      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+      document.body.style.overflow = 'hidden';
       isModalOpen = true;
+
+      // Focus management: store last element and focus close button
+      lastFocusedElement = document.activeElement;
+      setTimeout(() => {
+        closeBtn?.focus();
+      }, 100);
+      setTimeout(() => closeBtn?.focus(), 100);
 
       // Focus close button
       setTimeout(() => {
@@ -188,12 +205,21 @@ const getIconPath = (iconName: string) => {
 
     const closeModal = () => {
       if (!isModalOpen) return;
-      
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100');
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
-      document.body.style.overflow = ''; // Restore scrolling
+      document.body.style.overflow = '';
       isModalOpen = false;
+      lastFocus?.focus();
+      setTimeout(() => { if (!isModalOpen) modalContent.innerHTML = ''; }, 400);
+    };
+
+    const handleTab = (e) => {
+      if (!isModalOpen || e.key !== 'Tab') return;
+      const els = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      const first = els[0], last = els[els.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       
       // Restore focus
       if (lastFocusedElement && lastFocusedElement.focus) {
@@ -207,8 +233,10 @@ const getIconPath = (iconName: string) => {
       }, 400);
     };
 
-    // Attach events
     cards.forEach(card => {
+      const open = () => openModal(parseInt(card.getAttribute('data-index')), card);
+      card.addEventListener('click', open);
+      card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }});
       const handleTrigger = () => {
       const handleOpen = () => {
         const index = card.getAttribute('data-index');
@@ -227,6 +255,7 @@ const getIconPath = (iconName: string) => {
         }
       });
 
+      // Keyboard support
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -239,8 +268,21 @@ const getIconPath = (iconName: string) => {
     backdrop.addEventListener('click', closeModal);
     closeBtn.addEventListener('click', closeModal);
     
-    // Close on Escape key
+    // Modal key handlers
     document.addEventListener('keydown', (e) => {
+      if (!isModalOpen) return;
+
+      // Close on Escape key
+      if (e.key === 'Escape') {
+        closeModal();
+        return;
+      }
+
+      // Focus trapping
+      if (e.key === 'Tab') {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'Tab') handleTab(e);
       if (e.key === 'Escape') {
         closeModal();
       }
@@ -250,11 +292,13 @@ const getIconPath = (iconName: string) => {
         const firstElement = focusableElements[0];
         const lastElement = focusableElements[focusableElements.length - 1];
 
+        if (e.shiftKey) { // Shift + Tab
         if (e.shiftKey) {
           if (document.activeElement === firstElement) {
             e.preventDefault();
             lastElement.focus();
           }
+        } else { // Tab
         } else {
           if (document.activeElement === lastElement) {
             e.preventDefault();

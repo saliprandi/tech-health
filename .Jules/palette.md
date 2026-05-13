@@ -1,6 +1,16 @@
 ## 2025-05-22 - Modal Focus Management and Accessibility
 **Learning:** For interactive elements like cards that act as buttons, it is critical to provide proper ARIA roles (`role="button"`), tab indexing (`tabindex="0"`), and keyboard event listeners (Enter/Space). Furthermore, when these interactions open a modal, focus management is essential: capturing the `lastFocusedElement`, shifting focus to the modal (e.g., the close button), and restoring focus upon closure. Focus trapping within the modal ensures a seamless keyboard navigation experience.
 **Action:** Always implement `lastFocusedElement` storage and restoration, and use a standard focus trapping listener in components that use modals or overlays.
+## 2025-05-15 - Modal Focus Management Pattern
+**Learning:** Proper accessibility for custom modals requires three key interactions:
+1. **Initial Focus:** When the modal opens, focus should move to the first interactive element (usually the close button) to orient the user.
+2. **Focus Trapping:** Keyboard navigation (Tab) must be restricted within the modal to prevent focus from escaping to the background page.
+3. **Focus Restoration:** When the modal closes, focus must be returned to the element that triggered it, maintaining the user's position in the document.
+
+**Action:** Use the `lastFocusedElement = document.activeElement` pattern before opening, and implement a `keydown` listener on the modal container to intercept `Tab` events for trapping. Use `setTimeout` for focusing on open if there are CSS transitions.
+## 2025-05-22 - Focus Trap and Keyboard Accessibility in Astro Components
+**Learning:** In Astro projects where interactive elements (like cards) are created using divs, they must be explicitly given `role="button"` and `tabindex="0"` for accessibility. Additionally, modals require manual focus management: capturing the trigger element, focusing the first interactive element (usually the close button) on open, trapping the Tab key, and restoring focus on close.
+**Action:** Use a reusable focus-trap pattern for all modals and ensure div-based buttons have keyboard listeners for 'Enter' and 'Space'.
 ## 2025-05-12 - Mobile Menu Accessibility and Logo CLS
 **Learning:** Adding ARIA attributes (aria-expanded, aria-hidden) and visible focus indicators to mobile menu toggles is essential for keyboard and screen reader accessibility. Additionally, providing explicit width and height for hero logos prevents Cumulative Layout Shift (CLS).
 **Action:** Always audit mobile navigation for proper state representation in the DOM and ensure images have defined dimensions.
