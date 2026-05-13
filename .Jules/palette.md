@@ -45,3 +45,7 @@
 ## 2025-05-14 - Layout Shift Prevention
 **Learning:** Images without explicit dimensions in Astro components can cause Cumulative Layout Shift (CLS) during load.
 **Action:** Always include 'width' and 'height' attributes on '<img>' tags, especially for critical elements like the logo in the navigation.
+
+## 2025-05-23 - Centralized Accessibility: Skip to Content
+**Learning:** In multi-section landing pages with complex navigation, a 'Skip to Content' link is a high-impact, low-effort accessibility win. Centralizing it in the base layout ensures consistency, while targeting the main content with `tabindex="-1"` enables programmatic focus without adding a focus ring.
+**Action:** Always include a visually hidden skip link in `Layout.astro` and ensure the main content wrapper in pages has a matching ID and `tabindex="-1"`.
