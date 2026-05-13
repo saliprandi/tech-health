@@ -49,3 +49,6 @@
 ## 2025-05-24 - HTML Sanitization in Client-Side Scripts
 **Learning:** When injecting dynamic content into the DOM using `innerHTML` within Astro `<script>` tags, it is critical to sanitize the data to prevent XSS vulnerabilities, especially when the data comes from a configuration object that might be modified.
 **Action:** Implement a robust `escapeHtml` helper function and use it for all dynamic content injected via `innerHTML`.
+## 2025-05-23 - Centralized Accessibility: Skip to Content
+**Learning:** In multi-section landing pages with complex navigation, a 'Skip to Content' link is a high-impact, low-effort accessibility win. Centralizing it in the base layout ensures consistency, while targeting the main content with `tabindex="-1"` enables programmatic focus without adding a focus ring.
+**Action:** Always include a visually hidden skip link in `Layout.astro` and ensure the main content wrapper in pages has a matching ID and `tabindex="-1"`.
