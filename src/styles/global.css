@@ -20,6 +20,7 @@
   html {
     font-family: 'Inter', sans-serif;
     scroll-behavior: smooth;
+    scroll-padding-top: 68px;
     color: var(--text);
     background-color: var(--white);
   }
@@ -78,5 +79,9 @@
     border-color: var(--navy);
     background-color: rgba(18,51,106, 0.03);
     transform: translateY(-2px);
+  }
+
+  .nav-link-active {
+    @apply text-navy !important;
   }
 }
