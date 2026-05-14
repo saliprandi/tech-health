@@ -56,3 +56,7 @@
 ## 2025-05-15 - Semantic Forms and Submission Feedback
 **Learning:** Converting non-semantic interaction areas (like a collection of divs) into proper semantic HTML elements (like a `<form>`) enables native browser features such as 'required' validation and correct screen reader announcement. Additionally, providing immediate visual feedback (e.g., changing button text to "Redirigiendo...") during async-like operations (like WhatsApp redirection) prevents double submissions and improves user confidence.
 **Action:** Always prefer semantic HTML for interactive components and implement clear "loading" or "in-progress" states for all primary actions.
+
+## 2025-05-14 - ScrollSpy and Global Focus Indicators
+**Learning:** Implementing a "ScrollSpy" pattern using IntersectionObserver significantly improves navigation clarity by providing real-time visual feedback of the user's location. Coupling this with the 'aria-current="location"' attribute ensures that this state is also communicated to assistive technologies. Additionally, standardizing focus-visible rings across all interactive elements (links and buttons) is a high-impact, low-effort accessibility improvement that follows the project's design system.
+**Action:** Always apply 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2' to interactive elements. Use IntersectionObserver for navigation state with a balanced rootMargin (e.g., '-20% 0px -70% 0px') to ensure sections are highlighted when they occupy the primary reading area.
