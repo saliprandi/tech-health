@@ -7,6 +7,15 @@
 ## 2025-05-15 - Interactive Card and Modal Accessibility
 **Learning:** Found that service cards were interactive but lacked ARIA roles, keyboard support, and focus management (focus trapping and restoration) which are essential for accessibility.
 **Action:** Always implement `role="button"`, `tabindex="0"`, and keyboard listeners for interactive `div` elements. Ensure modals manage focus properly by focusing the close button on open, trapping focus while open, and restoring focus on close.
+## 2025-05-24 - Navigation UX: ScrollSpy, Focus Rings, and Escape Key
+**Learning:** For landing pages with fixed headers and section-based navigation:
+1. **ScrollSpy:** Use `IntersectionObserver` with a specific `rootMargin` (e.g., `-20% 0px -70% 0px`) to provide visual feedback on the current section.
+2. **Scroll Padding:** `scroll-padding-top` on the `html` element is essential to prevent fixed headers from obscuring section targets.
+3. **Focus Indicators:** Explicitly define `focus-visible` rings for all interactive elements (links, buttons) to ensure keyboard accessibility.
+4. **Escape to Close:** Mobile menus and modals should always be closeable via the `Escape` key for a consistent user experience.
+
+**Action:** Implement these four pillars in any project using a fixed header and anchor-based navigation.
+
 ## 2025-05-15 - [Accessible Modals and Focus Management]
 **Learning:** In Astro components where interactive elements (like cards) trigger modals via client-side scripts, standard HTML attributes (`role="button"`, `tabindex="0"`) and proper focus management (storing the trigger element, focusing the close button on open, restoring focus on close, and trapping focus) are essential for a professional and accessible UX.
 **Action:** Always implement focus trapping and restoration logic for any custom modal dialogs to ensure keyboard-only users can navigate the interface effectively.
