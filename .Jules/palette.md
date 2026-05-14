@@ -56,3 +56,7 @@
 ## 2025-05-15 - Semantic Forms and Submission Feedback
 **Learning:** Converting non-semantic interaction areas (like a collection of divs) into proper semantic HTML elements (like a `<form>`) enables native browser features such as 'required' validation and correct screen reader announcement. Additionally, providing immediate visual feedback (e.g., changing button text to "Redirigiendo...") during async-like operations (like WhatsApp redirection) prevents double submissions and improves user confidence.
 **Action:** Always prefer semantic HTML for interactive components and implement clear "loading" or "in-progress" states for all primary actions.
+
+## 2025-05-25 - Navigation Orientation and Anchor Precision
+**Learning:** In single-page landing pages with fixed headers, ScrollSpy navigation significantly improves user orientation by providing real-time feedback on the active section. Additionally, the CSS `scroll-padding-top` property is essential to prevent fixed headers from obscuring section headings when using anchor navigation.
+**Action:** Implement `IntersectionObserver` based ScrollSpy for navigation menus and always match `scroll-padding-top` to the height of fixed headers in global styles.
