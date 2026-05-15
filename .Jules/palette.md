@@ -56,3 +56,7 @@
 ## 2025-05-15 - Semantic Forms and Submission Feedback
 **Learning:** Converting non-semantic interaction areas (like a collection of divs) into proper semantic HTML elements (like a `<form>`) enables native browser features such as 'required' validation and correct screen reader announcement. Additionally, providing immediate visual feedback (e.g., changing button text to "Redirigiendo...") during async-like operations (like WhatsApp redirection) prevents double submissions and improves user confidence.
 **Action:** Always prefer semantic HTML for interactive components and implement clear "loading" or "in-progress" states for all primary actions.
+
+## 2025-05-25 - Navigation and Footer accessibility enhancements
+**Learning:** For navigation and footer elements on dark backgrounds (like the 'navy-dark' footer), it is essential to use a matching 'ring-offset' (e.g., 'focus-visible:ring-offset-navy-dark') to ensure the focus indicator is clearly visible. Additionally, mobile menus MUST include an 'Escape' key listener to allow keyboard users to dismiss them easily, returning focus to the trigger button.
+**Action:** Always implement 'Escape' key listeners for modal-like overlays (menus, dialogs) and adjust focus ring offsets based on the background color of the container.
