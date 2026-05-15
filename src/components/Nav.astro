@@ -6,7 +6,7 @@ import { CONFIG } from '../data/config';
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
     <!-- Logo -->
-    <a href="#" class="flex items-center group" aria-label="TechHealth Home">
+    <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label="Inicio de TechHealth">
       <img
         src="/logo-name.svg"
         alt="TechHealth Medical Engineering"
@@ -97,6 +97,14 @@ import { CONFIG } from '../data/config';
       link.addEventListener('click', () => {
         if (isOpen) toggleMenu();
       });
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+        toggle?.focus();
+      }
     });
   });
 </script>
