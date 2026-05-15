@@ -9,3 +9,7 @@
 ## 2025-05-14 - [DOM and Payload Optimization]
 **Learning:** Passing large global configuration objects to client-side scripts via 'define:vars' in Astro can significantly bloat the HTML payload. Additionally, redundant DOM elements and duplicate attributes in loops increase DOM complexity.
 **Action:** Always subset data objects before passing them to client-side scripts and audit templates for attribute/element redundancy.
+
+## 2025-05-15 - [SVG Sprite for Payload Reduction]
+**Learning:** High-frequency icons (like the ECG path repeated 12 times) significantly bloat the HTML payload. Using an SVG sprite system with `<symbol>` and `<use>` reduced the `index.html` size by ~7% (3.8KB) and simplified dynamic icon rendering in client-side scripts.
+**Action:** Identify and consolidate repeated SVG paths into a central sprite component to minimize DOM size and network transfer.
