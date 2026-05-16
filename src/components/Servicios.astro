@@ -14,7 +14,19 @@ const getIconPath = (iconName: string) => {
     return `<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M5.25 12h13.5m-13.5 3h13.5m-12 5.25V19.5m10.5 1.5V19.5M10.5 8.25v-1.5m3 1.5v-1.5M8.25 15.75v-1.5m3 1.5v-1.5m3 1.5v-1.5" /><rect x="6" y="6" width="12" height="12" rx="2" stroke-linecap="round" stroke-linejoin="round" />`;
   }
   return '';
+// Helper to return the correct icon ID based on name
+const getIconId = (iconName: string) => {
+  return `#icon-${iconName}`;
 };
+
+// Optimization: Only pass the minimal data needed for the client-side modal
+// to reduce the HTML payload size.
+const modalData = CONFIG.servicios.map(s => ({
+  titulo: s.titulo,
+  descripcion: s.descripcion,
+  items: s.items,
+  icono: s.icono
+}));
 ---
 
 <section id="servicios" class="bg-white section-padding">
@@ -38,12 +50,20 @@ const getIconPath = (iconName: string) => {
       {CONFIG.servicios.map((servicio, index) => (
         <div
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4"
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer"
           data-index={index}
           role="button"
           tabindex="0"
           aria-haspopup="dialog"
           aria-expanded="false"
+          aria-label={`Ver detalles sobre ${servicio.titulo}`}
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 overflow-hidden cursor-pointer"
+          data-index={index}
+          role="button"
+          tabindex="0"
           aria-label={`Ver detalles de ${servicio.titulo}`}
+          aria-haspopup="dialog"
+          aria-expanded="false"
         >
           
           <!-- Animated Top Bar -->
@@ -51,7 +71,10 @@ const getIconPath = (iconName: string) => {
           
           <!-- Icon -->
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
-            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" set:html={getIconPath(servicio.icono)}></svg>
+            <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor"><use href={getIconId(servicio.icono)} /></svg>
+            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <use href={`#icon-${servicio.icono}`} />
+            </svg>
           </div>
 
           <!-- Content -->
@@ -74,9 +97,7 @@ const getIconPath = (iconName: string) => {
           
           <!-- Click Indicator -->
           <div class="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300 text-blue bg-blue-pale p-2 rounded-full">
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-            </svg>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"><use href="#icon-maximize" /></svg>
           </div>
 
         </div>
@@ -99,9 +120,7 @@ const getIconPath = (iconName: string) => {
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <!-- Close Button -->
       <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4" aria-label="Cerrar">
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor"><use href="#icon-close" /></svg>
       </button>
       
       <!-- Dynamic Content -->
@@ -110,7 +129,7 @@ const getIconPath = (iconName: string) => {
   </div>
 </section>
 
-<script define:vars={{ CONFIG }}>
+<script define:vars={{ services: modalData }}>
   document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.service-card');
     const backdrop = document.getElementById('service-modal-backdrop');
@@ -148,14 +167,28 @@ const getIconPath = (iconName: string) => {
       if (!servicio) return;
 
       triggerElement = element;
+    const openModal = (index, trigger) => {
+      const servicio = CONFIG.servicios[index];
+      if (!servicio) return;
+
+      triggerElement = trigger;
+      triggerElement.setAttribute('aria-expanded', 'true');
+    const openModal = (index, element) => {
+      const servicio = services[index];
+      if (!servicio) return;
+
+      triggerElement = element;
+      triggerElement?.setAttribute('aria-expanded', 'true');
       lastFocusedElement = document.activeElement;
       triggerElement.setAttribute('aria-expanded', 'true');
 
       // Populate content with sanitized data
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
+          <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
+            <use href="#icon-${escapeHtml(servicio.icono)}" />
           <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            ${getIconSvg(servicio.icono)}
+            <use href="#icon-${servicio.icono}" />
           </svg>
         </div>
         <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
@@ -180,6 +213,7 @@ const getIconPath = (iconName: string) => {
       isModalOpen = true;
 
       // Focus close button
+      // Focus management: focus the close button
       setTimeout(() => {
         closeBtn?.focus();
       }, 50);
@@ -188,6 +222,8 @@ const getIconPath = (iconName: string) => {
     const closeModal = () => {
       if (!isModalOpen) return;
       
+      triggerElement?.setAttribute('aria-expanded', 'false');
+
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100');
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
@@ -198,6 +234,11 @@ const getIconPath = (iconName: string) => {
       if (triggerElement) {
         triggerElement.setAttribute('aria-expanded', 'false');
         triggerElement.focus();
+      // Restore focus
+      if (triggerElement) {
+        triggerElement.setAttribute('aria-expanded', 'false');
+        triggerElement.focus();
+        triggerElement = null;
       } else if (lastFocusedElement) {
         lastFocusedElement.focus();
       }
@@ -229,6 +270,8 @@ const getIconPath = (iconName: string) => {
     closeBtn.addEventListener('click', closeModal);
     
     // Global key listeners for Modal
+    // Global key listeners
+    // Modal key handlers
     document.addEventListener('keydown', (e) => {
       if (!isModalOpen) return;
 
