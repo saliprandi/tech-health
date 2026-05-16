@@ -70,6 +70,9 @@
 **Learning:** Converting non-semantic interaction areas (like a collection of divs) into proper semantic HTML elements (like a `<form>`) enables native browser features such as 'required' validation and correct screen reader announcement. Additionally, providing immediate visual feedback (e.g., changing button text to "Redirigiendo...") during async-like operations (like WhatsApp redirection) prevents double submissions and improves user confidence.
 **Action:** Always prefer semantic HTML for interactive components and implement clear "loading" or "in-progress" states for all primary actions.
 
+## 2026-05-14 - ScrollSpy and Footer A11y
+**Learning:** Implemented a performant ScrollSpy using IntersectionObserver. Found that icon-only social links in the footer lacked ARIA labels, which is a common but critical accessibility barrier.
+**Action:** Always include 'aria-label' on icon-only links and use 'IntersectionObserver' with appropriate 'rootMargin' to provide visual feedback for current section navigation. Ensure '.nav-link' class is applied to both desktop and mobile menus for consistency.
 ## 2025-05-25 - Enhanced Navigation Accessibility and Orientation
 **Learning:** For single-page applications with sticky headers, `scroll-padding-top` is essential for proper visual orientation when navigating via anchor links. Additionally, providing feedback on the user's current location via ScrollSpy (using `aria-current="location"`) and ensuring consistent `focus-visible` rings across all navigation paths (including social icons) significantly improves the experience for keyboard and screen reader users.
 **Action:** Implement `scroll-padding-top` on the HTML element for sticky headers. Use `IntersectionObserver` for performant ScrollSpy feedback and apply project-standard `focus-visible` rings to all interactive elements.

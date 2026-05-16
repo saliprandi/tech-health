@@ -15,6 +15,7 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
     {hasSocials && (
       <div class="flex items-center gap-4 mb-6">
         {CONFIG.redes.instagram && (
+          <a href={CONFIG.redes.instagram} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en Instagram">
           <a href={CONFIG.redes.instagram} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Instagram">
           <a href={CONFIG.redes.instagram} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-full" aria-label="Seguir en Instagram">
           <a href={CONFIG.redes.instagram} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1" aria-label="Seguir en Instagram">
@@ -52,6 +53,7 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
           </a>
         )}
         {CONFIG.redes.facebook && (
+          <a href={CONFIG.redes.facebook} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en Facebook">
           <a href={CONFIG.redes.facebook} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Facebook">
           <a href={CONFIG.redes.facebook} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-full" aria-label="Seguir en Facebook">
           <a href={CONFIG.redes.facebook} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1" aria-label="Seguir en Facebook">
@@ -77,6 +79,7 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
           </a>
         )}
         {CONFIG.redes.linkedin && (
+          <a href={CONFIG.redes.linkedin} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en LinkedIn">
           <a href={CONFIG.redes.linkedin} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="LinkedIn">
           <a href={CONFIG.redes.linkedin} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-full" aria-label="Seguir en LinkedIn">
           <a href={CONFIG.redes.linkedin} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1" aria-label="Seguir en LinkedIn">

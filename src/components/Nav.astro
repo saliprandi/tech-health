@@ -239,6 +239,10 @@ import { CONFIG } from '../data/config';
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
+          navLinks.forEach(link => {
+            const href = link.getAttribute('href')?.replace('#', '');
+            if (href === id) {
+              link.classList.remove('text-text-soft');
 
           navLinks.forEach(link => {
             link.classList.remove('nav-link-active');
@@ -266,6 +270,7 @@ import { CONFIG } from '../data/config';
               link.setAttribute('aria-current', 'location');
             } else {
               link.classList.remove('text-navy');
+              link.classList.add('text-text-soft');
             const isActive = link.getAttribute('href') === `#${id}`;
             link.classList.toggle('nav-link-active', isActive);
             if (isActive) {
@@ -282,6 +287,10 @@ import { CONFIG } from '../data/config';
           });
         }
       });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    sections.forEach(section => observer.observe(section));
     }, observerOptions);
 
     // Observe all sections that have a corresponding nav-link
