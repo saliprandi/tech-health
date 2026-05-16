@@ -53,6 +53,10 @@
     width: 100%;
   }
 
+  .nav-link {
+    @apply transition-colors;
+  }
+
   .btn-primary {
     @apply inline-flex items-center justify-center font-heading font-bold transition-all duration-300;
     background-color: var(--navy);
