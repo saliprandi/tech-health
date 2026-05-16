@@ -11,9 +11,19 @@
     "preview": "astro preview",
     "astro": "astro"
   },
+  "pnpm": {
+    "overrides": {
+      "devalue": ">=5.8.1"
+    }
+  },
   "dependencies": {
     "@astrojs/tailwind": "^6.0.2",
     "astro": "^6.3.1",
     "tailwindcss": "^3.4.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "devalue": ">=5.8.1"
+    }
   }
 }
