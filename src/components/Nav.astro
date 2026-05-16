@@ -24,6 +24,10 @@ import { CONFIG } from '../data/config';
       <li><a href="#equipos" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors px-1 py-0.5">Equipos</a></li>
       <li><a href="#nosotros" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors px-1 py-0.5">Nosotros</a></li>
       <li><a href="#contacto" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors px-1 py-0.5">Contacto</a></li>
+      <li><a href="#servicios" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Servicios</a></li>
+      <li><a href="#equipos" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Equipos</a></li>
+      <li><a href="#nosotros" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Nosotros</a></li>
+      <li><a href="#contacto" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Contacto</a></li>
     </ul>
 
     <!-- CTA & Mobile Toggle -->
@@ -53,6 +57,10 @@ import { CONFIG } from '../data/config';
     <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Equipos</a>
     <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Nosotros</a>
     <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Contacto</a>
+    <a href="#servicios" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Servicios</a>
+    <a href="#equipos" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Equipos</a>
+    <a href="#nosotros" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Nosotros</a>
+    <a href="#contacto" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Contacto</a>
     <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
       Consultar por WhatsApp
     </a>
@@ -111,6 +119,7 @@ import { CONFIG } from '../data/config';
     });
 
     // Close on Escape
+    // Close on Escape key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && isOpen) {
         toggleMenu();
@@ -128,6 +137,7 @@ import { CONFIG } from '../data/config';
     };
 
     const observer = new IntersectionObserver((entries) => {
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
@@ -154,6 +164,15 @@ import { CONFIG } from '../data/config';
         link.classList.remove('nav-link-active');
         link.removeAttribute('aria-current');
       });
+    });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    // Sections to observe
+    ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
+      const section = document.getElementById(id);
+      if (section) observer.observe(section);
     });
   });
 </script>
