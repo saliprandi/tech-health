@@ -39,6 +39,10 @@
 **Learning:** Mobile menus often lack the `aria-expanded` attribute, which is critical for screen reader users to understand the state of the navigation. Additionally, fixed elements like floating WhatsApp buttons often miss visible focus states, making them difficult to find for keyboard-only users.
 **Action:** Always include `aria-expanded` on toggle buttons and ensure it's updated via script. Apply project-standard `focus-visible` rings to all interactive elements, especially those with fixed positioning or unusual styles.
 
+## 2026-05-25 - Navigation and Footer Accessibility Enhancements
+**Learning:** Icon-only social links in the footer were invisible to screen readers due to missing `aria-label` attributes. Furthermore, focus rings on dark backgrounds require careful consideration of `ring-offset` and color to remain visible.
+**Action:** Always provide descriptive `aria-label` attributes for icon-only links. Use `focus-visible:ring-offset-navy-dark` and `focus-visible:text-white` for elements on dark backgrounds to maintain high contrast for keyboard users.
+
 ## 2025-05-15 - Preventing Layout Shift with Explicit Image Dimensions
 **Learning:** Missing `width` and `height` attributes on key images like the navigation logo can cause Cumulative Layout Shift (CLS) when the image loads, pushing the rest of the page content down.
 **Action:** Always provide explicit `width` and `height` attributes for images, even when using CSS for responsive sizing.
@@ -65,3 +69,10 @@
 ## 2025-05-15 - Semantic Forms and Submission Feedback
 **Learning:** Converting non-semantic interaction areas (like a collection of divs) into proper semantic HTML elements (like a `<form>`) enables native browser features such as 'required' validation and correct screen reader announcement. Additionally, providing immediate visual feedback (e.g., changing button text to "Redirigiendo...") during async-like operations (like WhatsApp redirection) prevents double submissions and improves user confidence.
 **Action:** Always prefer semantic HTML for interactive components and implement clear "loading" or "in-progress" states for all primary actions.
+
+## 2025-05-25 - Enhanced Navigation Accessibility and Orientation
+**Learning:** For single-page applications with sticky headers, `scroll-padding-top` is essential for proper visual orientation when navigating via anchor links. Additionally, providing feedback on the user's current location via ScrollSpy (using `aria-current="location"`) and ensuring consistent `focus-visible` rings across all navigation paths (including social icons) significantly improves the experience for keyboard and screen reader users.
+**Action:** Implement `scroll-padding-top` on the HTML element for sticky headers. Use `IntersectionObserver` for performant ScrollSpy feedback and apply project-standard `focus-visible` rings to all interactive elements.
+## 2025-05-25 - Navigation and Footer accessibility enhancements
+**Learning:** For navigation and footer elements on dark backgrounds (like the 'navy-dark' footer), it is essential to use a matching 'ring-offset' (e.g., 'focus-visible:ring-offset-navy-dark') to ensure the focus indicator is clearly visible. Additionally, mobile menus MUST include an 'Escape' key listener to allow keyboard users to dismiss them easily, returning focus to the trigger button.
+**Action:** Always implement 'Escape' key listeners for modal-like overlays (menus, dialogs) and adjust focus ring offsets based on the background color of the container.
