@@ -1,24 +1,6 @@
 ---
 import { CONFIG } from '../data/config';
 
-// Helper to return the correct SVG path based on icon name
-// These are hardcoded and trusted, so no XSS risk here.
-const getIconPath = (iconName: string) => {
-  if (iconName === 'shield') {
-    return `<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />`;
-  }
-  if (iconName === 'tool') {
-    return `<path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.673 4.673a2.25 2.25 0 01-3.182 0l-1.06-1.06a2.25 2.25 0 010-3.182l4.673-4.673m-1.414 1.414l3.03-2.496c.384-.317.626-.74.766-1.208M17.25 21L15 18.75m-2.25-2.25l-3-3M17.25 8.25V6m0 0V3.75m0 2.25h2.25m-2.25 0H15M6.75 10.5V12.75m0 0v2.25m0-2.25H4.5m2.25 0H9" />`;
-  }
-  if (iconName === 'circuit') {
-    return `<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M5.25 12h13.5m-13.5 3h13.5m-12 5.25V19.5m10.5 1.5V19.5M10.5 8.25v-1.5m3 1.5v-1.5M8.25 15.75v-1.5m3 1.5v-1.5m3 1.5v-1.5" /><rect x="6" y="6" width="12" height="12" rx="2" stroke-linecap="round" stroke-linejoin="round" />`;
-  }
-  return '';
-// Helper to return the correct icon ID based on name
-const getIconId = (iconName: string) => {
-  return `#icon-${iconName}`;
-};
-
 // Optimization: Only pass the minimal data needed for the client-side modal
 // to reduce the HTML payload size.
 const modalData = CONFIG.servicios.map(s => ({
@@ -27,6 +9,11 @@ const modalData = CONFIG.servicios.map(s => ({
   items: s.items,
   icono: s.icono
 }));
+
+// Helper to return the correct icon ID based on name
+const getIconId = (iconName: string) => {
+  return `#icon-${iconName}`;
+};
 ---
 
 <section id="servicios" class="bg-white section-padding">
@@ -49,7 +36,6 @@ const modalData = CONFIG.servicios.map(s => ({
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
         <div
-          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4"
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer"
           data-index={index}
           role="button"
@@ -57,13 +43,6 @@ const modalData = CONFIG.servicios.map(s => ({
           aria-haspopup="dialog"
           aria-expanded="false"
           aria-label={`Ver detalles sobre ${servicio.titulo}`}
-          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 overflow-hidden cursor-pointer"
-          data-index={index}
-          role="button"
-          tabindex="0"
-          aria-label={`Ver detalles de ${servicio.titulo}`}
-          aria-haspopup="dialog"
-          aria-expanded="false"
         >
           
           <!-- Animated Top Bar -->
@@ -71,9 +50,8 @@ const modalData = CONFIG.servicios.map(s => ({
           
           <!-- Icon -->
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
-            <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor"><use href={getIconId(servicio.icono)} /></svg>
             <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <use href={`#icon-${servicio.icono}`} />
+              <use href={getIconId(servicio.icono)} />
             </svg>
           </div>
 
@@ -139,7 +117,6 @@ const modalData = CONFIG.servicios.map(s => ({
     
     let isModalOpen = false;
     let triggerElement = null;
-    let lastFocusedElement = null;
 
     /**
      * Sanitizes a string to prevent XSS vulnerabilities when using innerHTML.
@@ -154,41 +131,18 @@ const modalData = CONFIG.servicios.map(s => ({
         .replace(/'/g, "&#039;");
     };
 
-    // Helper function to get correct SVG path in JS
-    const getIconSvg = (iconName) => {
-      if (iconName === 'shield') return '<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />';
-      if (iconName === 'tool') return '<path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.673 4.673a2.25 2.25 0 01-3.182 0l-1.06-1.06a2.25 2.25 0 010-3.182l4.673-4.673m-1.414 1.414l3.03-2.496c.384-.317.626-.74.766-1.208M17.25 21L15 18.75m-2.25-2.25l-3-3M17.25 8.25V6m0 0V3.75m0 2.25h2.25m-2.25 0H15M6.75 10.5V12.75m0 0v2.25m0-2.25H4.5m2.25 0H9" />';
-      if (iconName === 'circuit') return '<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M5.25 12h13.5m-13.5 3h13.5m-12 5.25V19.5m10.5 1.5V19.5M10.5 8.25v-1.5m3 1.5v-1.5M8.25 15.75v-1.5m3 1.5v-1.5m3 1.5v-1.5" /><rect x="6" y="6" width="12" height="12" rx="2" stroke-linecap="round" stroke-linejoin="round" />';
-      return '';
-    };
-
-    const openModal = (index, element) => {
-      const servicio = CONFIG.servicios[index];
-      if (!servicio) return;
-
-      triggerElement = element;
-    const openModal = (index, trigger) => {
-      const servicio = CONFIG.servicios[index];
-      if (!servicio) return;
-
-      triggerElement = trigger;
-      triggerElement.setAttribute('aria-expanded', 'true');
     const openModal = (index, element) => {
       const servicio = services[index];
       if (!servicio) return;
 
       triggerElement = element;
-      triggerElement?.setAttribute('aria-expanded', 'true');
-      lastFocusedElement = document.activeElement;
       triggerElement.setAttribute('aria-expanded', 'true');
 
       // Populate content with sanitized data
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
-          <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
-            <use href="#icon-${escapeHtml(servicio.icono)}" />
           <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <use href="#icon-${servicio.icono}" />
+            <use href="#icon-${escapeHtml(servicio.icono)}" />
           </svg>
         </div>
         <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
@@ -212,7 +166,6 @@ const modalData = CONFIG.servicios.map(s => ({
       document.body.style.overflow = 'hidden';
       isModalOpen = true;
 
-      // Focus close button
       // Focus management: focus the close button
       setTimeout(() => {
         closeBtn?.focus();
@@ -222,25 +175,17 @@ const modalData = CONFIG.servicios.map(s => ({
     const closeModal = () => {
       if (!isModalOpen) return;
       
-      triggerElement?.setAttribute('aria-expanded', 'false');
-
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100');
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       document.body.style.overflow = '';
       isModalOpen = false;
 
-      // Accessibility: restore focus and ARIA state
-      if (triggerElement) {
-        triggerElement.setAttribute('aria-expanded', 'false');
-        triggerElement.focus();
-      // Restore focus
+      // Restore focus and ARIA state
       if (triggerElement) {
         triggerElement.setAttribute('aria-expanded', 'false');
         triggerElement.focus();
         triggerElement = null;
-      } else if (lastFocusedElement) {
-        lastFocusedElement.focus();
       }
 
       // Clear content after animation
@@ -251,13 +196,9 @@ const modalData = CONFIG.servicios.map(s => ({
 
     cards.forEach(card => {
       const index = card.getAttribute('data-index');
-
-      const handleOpen = () => {
-        openModal(parseInt(index), card);
-      };
+      const handleOpen = () => openModal(parseInt(index), card);
 
       card.addEventListener('click', handleOpen);
-
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -269,19 +210,14 @@ const modalData = CONFIG.servicios.map(s => ({
     backdrop.addEventListener('click', closeModal);
     closeBtn.addEventListener('click', closeModal);
     
-    // Global key listeners for Modal
-    // Global key listeners
-    // Modal key handlers
     document.addEventListener('keydown', (e) => {
       if (!isModalOpen) return;
 
-      // Close on Escape key
       if (e.key === 'Escape') {
         closeModal();
         return;
       }
 
-      // Focus trapping
       if (e.key === 'Tab') {
         const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
         const firstElement = focusableElements[0];
