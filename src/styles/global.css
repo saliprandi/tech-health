@@ -20,11 +20,9 @@
   html {
     font-family: 'Inter', sans-serif;
     scroll-behavior: smooth;
-    scroll-padding-top: 80px;
     scroll-padding-top: 68px;
     color: var(--text);
     background-color: var(--white);
-    scroll-padding-top: 68px;
   }
 
   body {

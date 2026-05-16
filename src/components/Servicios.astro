@@ -1,6 +1,11 @@
 ---
 import { CONFIG } from '../data/config';
 
+// Helper to return the correct icon ID based on name
+const getIconId = (iconName: string) => {
+  return `#icon-${iconName}`;
+};
+
 // Optimization: Only pass the minimal data needed for the client-side modal
 // to reduce the HTML payload size.
 const modalData = CONFIG.servicios.map(s => ({
@@ -36,6 +41,7 @@ const getIconId = (iconName: string) => {
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
         <div
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 overflow-hidden cursor-pointer"
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer"
           data-index={index}
           role="button"
@@ -43,6 +49,9 @@ const getIconId = (iconName: string) => {
           aria-haspopup="dialog"
           aria-expanded="false"
           aria-label={`Ver detalles sobre ${servicio.titulo}`}
+          aria-label={`Ver detalles de ${servicio.titulo}`}
+          aria-haspopup="dialog"
+          aria-expanded="false"
         >
           
           <!-- Animated Top Bar -->
@@ -51,6 +60,8 @@ const getIconId = (iconName: string) => {
           <!-- Icon -->
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
             <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <use href={`#icon-${servicio.icono}`} />
+            <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
               <use href={getIconId(servicio.icono)} />
             </svg>
           </div>
@@ -75,7 +86,9 @@ const getIconId = (iconName: string) => {
           
           <!-- Click Indicator -->
           <div class="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300 text-blue bg-blue-pale p-2 rounded-full">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"><use href="#icon-maximize" /></svg>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2">
+              <use href="#icon-maximize" />
+            </svg>
           </div>
 
         </div>
@@ -98,7 +111,9 @@ const getIconId = (iconName: string) => {
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <!-- Close Button -->
       <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4" aria-label="Cerrar">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor"><use href="#icon-close" /></svg>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor">
+          <use href="#icon-close" />
+        </svg>
       </button>
       
       <!-- Dynamic Content -->
@@ -137,6 +152,7 @@ const getIconId = (iconName: string) => {
 
       triggerElement = element;
       triggerElement.setAttribute('aria-expanded', 'true');
+      lastFocusedElement = document.activeElement;
 
       // Populate content with sanitized data
       modalContent.innerHTML = `
@@ -182,6 +198,8 @@ const getIconId = (iconName: string) => {
       isModalOpen = false;
 
       // Restore focus and ARIA state
+      // Accessibility: restore focus and ARIA state
+      // Restore focus
       if (triggerElement) {
         triggerElement.setAttribute('aria-expanded', 'false');
         triggerElement.focus();
@@ -208,8 +226,9 @@ const getIconId = (iconName: string) => {
     });
 
     backdrop.addEventListener('click', closeModal);
-    closeBtn.addEventListener('click', closeModal);
+    closeBtn?.addEventListener('click', closeModal);
     
+    // Global key listeners
     document.addEventListener('keydown', (e) => {
       if (!isModalOpen) return;
 
