@@ -11,3 +11,8 @@
 **Vulnerability:** XSS in `define:vars` directive (Astro < 6.1.6) and massive code duplication in `Servicios.astro` causing maintenance risks.
 **Learning:** Core framework vulnerabilities can affect even simple static sites. Duplicate DOM IDs and logic make security auditing difficult and can lead to broken focus management or inconsistent sanitization.
 **Prevention:** Keep core dependencies updated (Astro ^6.1.6+). Consolidate component logic and use centralized sanitization helpers for any dynamic DOM injection.
+
+## 2025-05-25 - Proactive Transitive Dependency Management and CSP Hardening
+**Vulnerability:** Transitive dependency vulnerabilities (e.g., GHSA-77vg-94rm-hx3p in 'devalue') and potential for plugin-based or base-hijacking attacks.
+**Learning:** In Astro projects, vulnerabilities often reside deep in the dependency tree (like in 'devalue' which is used by Astro). Using 'pnpm.overrides' is the most effective way to force a secure version without waiting for framework updates. Additionally, a baseline 'default-src self' CSP is often insufficient; explicit 'object-src none' and 'base-uri self' are critical for defense-in-depth.
+**Prevention:** Regularly run 'pnpm audit' and use 'pnpm.overrides' to patch high-severity transitive vulnerabilities immediately. Always include 'object-src none' and 'base-uri self' in the Layout's CSP meta tag.
