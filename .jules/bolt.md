@@ -9,3 +9,7 @@
 ## 2025-05-14 - [DOM and Payload Optimization]
 **Learning:** Passing large global configuration objects to client-side scripts via 'define:vars' in Astro can significantly bloat the HTML payload. Additionally, redundant DOM elements and duplicate attributes in loops increase DOM complexity.
 **Action:** Always subset data objects before passing them to client-side scripts and audit templates for attribute/element redundancy.
+
+## 2026-05-14 - [SVG Spriting and LCP Optimization]
+**Learning:** High-frequency icons (like the ECG path used 12 times) and complex SVG paths (like WhatsApp) can significantly bloat the HTML payload when inlined. Moving them to an SVG Sprite system with `<symbol>` and `<use>` reduced the `index.html` size by ~3KB. Additionally, adding `fetchpriority="high"` and `decoding="async"` to the main logo improved LCP.
+**Action:** Use an SVG sprite system for any icon used more than once, and always optimize the main brand asset for LCP.
