@@ -173,6 +173,42 @@ import { CONFIG } from '../data/config';
 
     let isOpen = false;
 
+    // ScrollSpy implementation
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -70% 0px',
+      threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === `#${id}`) {
+              link.classList.add('text-navy');
+              link.classList.remove('text-text-soft');
+              link.setAttribute('aria-current', 'location');
+            } else {
+              link.classList.remove('text-navy');
+              link.classList.add('text-text-soft');
+              link.removeAttribute('aria-current');
+            }
+          });
+        }
+      });
+    }, observerOptions);
+
+    // Observe all sections that have a nav link
+    navLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        const section = document.querySelector(href);
+        if (section) observer.observe(section);
+      }
+    });
+
     const toggleMenu = () => {
       isOpen = !isOpen;
 
