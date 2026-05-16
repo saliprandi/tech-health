@@ -3,9 +3,8 @@
 <svg viewBox="0 0 478.8587 117.59525" width="478.8587" height="117.59525" version="1.1" id="svg9" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
   <defs id="defs1">
     <style id="style1">
-      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&amp;display=swap');
-      .logo-text-main { font-family: 'Roboto', Helvetica, Arial, sans-serif; font-weight: 700; font-size: 62px; fill: #17568C; }
-      .logo-text-sub { font-family: 'Roboto', Helvetica, Arial, sans-serif; font-weight: 500; font-size: 34px; fill: #5F6162; }
+      .logo-text-main { font-family: sans-serif; font-weight: 700; font-size: 62px; fill: #17568C; }
+      .logo-text-sub { font-family: sans-serif; font-weight: 500; font-size: 34px; fill: #5F6162; }
     </style>
   </defs>
   <g id="g35" transform="translate(10.665993,-8.1738319)">
