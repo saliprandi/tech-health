@@ -146,6 +146,11 @@ const getIconId = (iconName: string) => {
         .replace(/'/g, "&#039;");
     };
 
+    const openModal = (index, trigger) => {
+      const servicio = services[index];
+      if (!servicio) return;
+
+      triggerElement = trigger;
     const openModal = (index, element) => {
       const servicio = services[index];
       if (!servicio) return;
@@ -184,7 +189,7 @@ const getIconId = (iconName: string) => {
 
       // Focus management: focus the close button
       setTimeout(() => {
-        closeBtn?.focus();
+        if (closeBtn) closeBtn.focus();
       }, 50);
     };
 
@@ -225,6 +230,8 @@ const getIconId = (iconName: string) => {
       });
     });
 
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
     backdrop.addEventListener('click', closeModal);
     closeBtn?.addEventListener('click', closeModal);
     
@@ -245,12 +252,12 @@ const getIconId = (iconName: string) => {
         if (e.shiftKey) { // Shift + Tab
           if (document.activeElement === firstElement) {
             e.preventDefault();
-            lastElement.focus();
+            if (lastElement) lastElement.focus();
           }
         } else { // Tab
           if (document.activeElement === lastElement) {
             e.preventDefault();
-            firstElement.focus();
+            if (firstElement) firstElement.focus();
           }
         }
       }

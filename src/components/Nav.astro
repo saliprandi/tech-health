@@ -5,6 +5,8 @@ import { CONFIG } from '../data/config';
 <nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
+    <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE
+         This is the primary branding and navigation element to the home page. -->
     <!-- Logo -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label="Inicio de TechHealth">
       <img
@@ -134,6 +136,8 @@ import { CONFIG } from '../data/config';
     });
 
     // ScrollSpy Implementation
+    const sections = ['servicios', 'equipos', 'nosotros', 'contacto'];
+    const sectionElements = sections.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
     const sections = document.querySelectorAll('section[id]');
 
     const observerOptions = {
@@ -210,6 +214,14 @@ import { CONFIG } from '../data/config';
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
+    sectionElements.forEach(section => observer.observe(section));
+
+    // Reset ScrollSpy when clicking logo/home
+    document.querySelector('a[aria-label="Inicio de TechHealth"]')?.addEventListener('click', () => {
+      navLinks.forEach(link => {
+        link.classList.remove('nav-link-active');
+        link.removeAttribute('aria-current');
+      });
 
     // Sections to observe
     ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
