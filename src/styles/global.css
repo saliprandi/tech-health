@@ -20,9 +20,11 @@
   html {
     font-family: 'Inter', sans-serif;
     scroll-behavior: smooth;
+    scroll-padding-top: 80px;
     scroll-padding-top: 68px;
     color: var(--text);
     background-color: var(--white);
+    scroll-padding-top: 68px;
   }
 
   body {
@@ -53,8 +55,12 @@
     width: 100%;
   }
 
+  .nav-link {
+    @apply transition-colors;
+  }
+
   .btn-primary {
-    @apply inline-flex items-center justify-center font-heading font-bold transition-all duration-300;
+    @apply inline-flex items-center justify-center font-heading font-bold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2;
     background-color: var(--navy);
     color: var(--white);
     border-radius: 8px;
@@ -68,7 +74,7 @@
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center font-heading font-bold transition-all duration-300 bg-transparent;
+    @apply inline-flex items-center justify-center font-heading font-bold transition-all duration-300 bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2;
     color: var(--navy);
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -83,5 +89,16 @@
 
   .nav-link-active {
     @apply text-navy !important;
+    position: relative;
+  }
+
+  .nav-link-active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    @apply bg-blue rounded-full;
   }
 }
