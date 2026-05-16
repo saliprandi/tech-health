@@ -85,3 +85,7 @@
 ## 2025-05-25 - Navigation and Footer accessibility enhancements
 **Learning:** For navigation and footer elements on dark backgrounds (like the 'navy-dark' footer), it is essential to use a matching 'ring-offset' (e.g., 'focus-visible:ring-offset-navy-dark') to ensure the focus indicator is clearly visible. Additionally, mobile menus MUST include an 'Escape' key listener to allow keyboard users to dismiss them easily, returning focus to the trigger button.
 **Action:** Always implement 'Escape' key listeners for modal-like overlays (menus, dialogs) and adjust focus ring offsets based on the background color of the container.
+
+## 2026-05-16 - Contact Form Character Counter and Component Deduplication
+**Learning:** Real-time feedback on input limits, such as a character counter for textareas, reduces user frustration by preventing unexpected truncation during form submission. Additionally, severe code duplication in Astro components can lead to conflicting logic and build failures; comprehensive deduplication is a prerequisite for stable UX enhancements.
+**Action:** Always implement character counters for fields with strict length requirements (like WhatsApp redirection messages) and verify component integrity before adding new interactions.
