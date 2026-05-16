@@ -20,16 +20,13 @@
   html {
     font-family: 'Inter', sans-serif;
     scroll-behavior: smooth;
-    scroll-padding-top: 80px;
     scroll-padding-top: 68px;
     color: var(--text);
     background-color: var(--white);
-    scroll-padding-top: 68px;
   }
 
   body {
     @apply antialiased leading-relaxed;
-    font-family: 'Inter', sans-serif;
     font-size: 16px;
     line-height: 1.7;
     margin: 0;
