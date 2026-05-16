@@ -86,6 +86,9 @@
 **Learning:** For navigation and footer elements on dark backgrounds (like the 'navy-dark' footer), it is essential to use a matching 'ring-offset' (e.g., 'focus-visible:ring-offset-navy-dark') to ensure the focus indicator is clearly visible. Additionally, mobile menus MUST include an 'Escape' key listener to allow keyboard users to dismiss them easily, returning focus to the trigger button.
 **Action:** Always implement 'Escape' key listeners for modal-like overlays (menus, dialogs) and adjust focus ring offsets based on the background color of the container.
 
+## 2026-05-16 - Contact Form Character Counter and Component Deduplication
+**Learning:** Real-time feedback on input limits, such as a character counter for textareas, reduces user frustration by preventing unexpected truncation during form submission. Additionally, severe code duplication in Astro components can lead to conflicting logic and build failures; comprehensive deduplication is a prerequisite for stable UX enhancements.
+**Action:** Always implement character counters for fields with strict length requirements (like WhatsApp redirection messages) and verify component integrity before adding new interactions.
 ## 2025-05-26 - Integrity as a UX Prerequisite
 **Learning:** Component duplication and syntax corruption (common in this repo's merge history) are critical UX blockers. Redundant interactive elements (up to 10 instances of the same nav link) break screen reader flows and keyboard navigation predictability.
 **Action:** Before implementing new UX features, perform a structural audit to ensure 1:1 mapping between DOM elements and intended user actions. Deduplicate script blocks to prevent overlapping event listeners and conflicting state management.
