@@ -13,3 +13,6 @@
 ## 2025-05-15 - [Icon Sprite and SVG Optimization]
 **Learning:** Consolidating repeated icons into an SVG Sprite reduced the uncompressed HTML payload by ~4KB and allowed for cleaner, smaller client-side scripts by removing hardcoded SVG strings. Additionally, removing a redundant @import from the logo SVG prevented an unnecessary network request.
 **Action:** Use <symbol> and <use> for any icons repeated more than twice or shared between server templates and client-side scripts.
+## 2026-05-14 - [SVG Spriting and LCP Optimization]
+**Learning:** High-frequency icons (like the ECG path used 12 times) and complex SVG paths (like WhatsApp) can significantly bloat the HTML payload when inlined. Moving them to an SVG Sprite system with `<symbol>` and `<use>` reduced the `index.html` size by ~3KB. Additionally, adding `fetchpriority="high"` and `decoding="async"` to the main logo improved LCP.
+**Action:** Use an SVG sprite system for any icon used more than once, and always optimize the main brand asset for LCP.
