@@ -16,3 +16,8 @@
 **Vulnerability:** Transitive dependency vulnerabilities (e.g., GHSA-77vg-94rm-hx3p in 'devalue') and potential for plugin-based or base-hijacking attacks.
 **Learning:** In Astro projects, vulnerabilities often reside deep in the dependency tree (like in 'devalue' which is used by Astro). Using 'pnpm.overrides' is the most effective way to force a secure version without waiting for framework updates. Additionally, a baseline 'default-src self' CSP is often insufficient; explicit 'object-src none' and 'base-uri self' are critical for defense-in-depth.
 **Prevention:** Regularly run 'pnpm audit' and use 'pnpm.overrides' to patch high-severity transitive vulnerabilities immediately. Always include 'object-src none' and 'base-uri self' in the Layout's CSP meta tag.
+
+## 2025-05-26 - Content Security Policy and Permissions-Policy Hardening
+**Vulnerability:** Defense-in-depth gaps in security headers (missing 'upgrade-insecure-requests' and overly permissive browser feature access).
+**Learning:** For static Astro sites, meta-tag based security policies are the primary defense layer. Hardening these policies by explicitly disabling unused features (camera, microphone, etc.) and forcing HTTPS upgrades significantly reduces the attack surface for client-side attacks.
+**Prevention:** Always include 'upgrade-insecure-requests' in CSP and implement a restrictive 'Permissions-Policy' by default in 'Layout.astro'.
