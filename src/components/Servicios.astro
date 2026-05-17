@@ -14,11 +14,6 @@ const modalData = CONFIG.servicios.map(s => ({
   items: s.items,
   icono: s.icono
 }));
-
-// Helper to return the correct icon ID based on name
-const getIconId = (iconName: string) => {
-  return `#icon-${iconName}`;
-};
 ---
 
 <section id="servicios" class="bg-white section-padding">
@@ -41,17 +36,13 @@ const getIconId = (iconName: string) => {
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
         <div
-          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 overflow-hidden cursor-pointer"
-          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer"
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer overflow-hidden"
           data-index={index}
           role="button"
           tabindex="0"
           aria-haspopup="dialog"
           aria-expanded="false"
-          aria-label={`Ver detalles sobre ${servicio.titulo}`}
           aria-label={`Ver detalles de ${servicio.titulo}`}
-          aria-haspopup="dialog"
-          aria-expanded="false"
         >
           
           <!-- Animated Top Bar -->
@@ -59,8 +50,6 @@ const getIconId = (iconName: string) => {
           
           <!-- Icon -->
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
-            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <use href={`#icon-${servicio.icono}`} />
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
               <use href={getIconId(servicio.icono)} />
             </svg>
@@ -122,7 +111,7 @@ const getIconId = (iconName: string) => {
   </div>
 </section>
 
-<script define:vars={{ services: modalData }}>
+<script define:vars={{ services: modalData }} is:inline>
   document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.service-card');
     const backdrop = document.getElementById('service-modal-backdrop');
@@ -132,11 +121,12 @@ const getIconId = (iconName: string) => {
     
     let isModalOpen = false;
     let triggerElement = null;
+    let lastFocusedElement = null;
 
     /**
      * Sanitizes a string to prevent XSS vulnerabilities when using innerHTML.
      */
-    const escapeHtml = (unsafe) => {
+    var escapeHtml = function(unsafe) {
       if (typeof unsafe !== 'string') return '';
       return unsafe
         .replace(/&/g, "&amp;")
@@ -146,13 +136,8 @@ const getIconId = (iconName: string) => {
         .replace(/'/g, "&#039;");
     };
 
-    const openModal = (index, trigger) => {
-      const servicio = services[index];
-      if (!servicio) return;
-
-      triggerElement = trigger;
-    const openModal = (index, element) => {
-      const servicio = services[index];
+    var openModal = function(index, element) {
+      var servicio = services[index];
       if (!servicio) return;
 
       triggerElement = element;
@@ -203,13 +188,18 @@ const getIconId = (iconName: string) => {
       isModalOpen = false;
 
       // Restore focus and ARIA state
-      // Accessibility: restore focus and ARIA state
-      // Restore focus
       if (triggerElement) {
         triggerElement.setAttribute('aria-expanded', 'false');
-        triggerElement.focus();
-        triggerElement = null;
       }
+
+      if (lastFocusedElement) {
+        lastFocusedElement.focus();
+      } else if (triggerElement) {
+        triggerElement.focus();
+      }
+
+      triggerElement = null;
+      lastFocusedElement = null;
 
       // Clear content after animation
       setTimeout(() => {
@@ -232,8 +222,6 @@ const getIconId = (iconName: string) => {
 
     if (backdrop) backdrop.addEventListener('click', closeModal);
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
-    backdrop.addEventListener('click', closeModal);
-    closeBtn?.addEventListener('click', closeModal);
     
     // Global key listeners
     document.addEventListener('keydown', (e) => {
