@@ -14,11 +14,6 @@ const modalData = CONFIG.servicios.map(s => ({
   items: s.items,
   icono: s.icono
 }));
-
-// Helper to return the correct icon ID based on name
-const getIconId = (iconName: string) => {
-  return `#icon-${iconName}`;
-};
 ---
 
 <section id="servicios" class="bg-white section-padding">
