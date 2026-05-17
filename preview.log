@@ -2,7 +2,7 @@
 > tech-health@0.0.1 preview /app
 > astro preview
 
- astro  v6.3.1 ready in 34 ms
-┃ Local    http://localhost:4321/
+Port 4321 is in use, trying another one...
+ astro  v6.3.1 ready in 31 ms
+┃ Local    http://localhost:4322/
 ┃ Network  use --host to expose
- ELIFECYCLE  Command failed with exit code 143.
