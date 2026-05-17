@@ -125,6 +125,7 @@ import { CONFIG } from '../data/config';
       });
     });
 
+    // ScrollSpy implementation
     // ScrollSpy Implementation
     // Close on Escape
     // Close on Escape key
@@ -155,6 +156,12 @@ import { CONFIG } from '../data/config';
             const isActive = link.getAttribute('href') === `#${id}`;
             link.classList.toggle('nav-link-active', isActive);
             if (isActive) {
+              link.classList.add('nav-link-active');
+            } else {
+              link.classList.remove('nav-link-active');
+            }
+          });
+        }
               link.setAttribute('aria-current', 'location');
             } else {
               link.removeAttribute('aria-current');
@@ -214,6 +221,17 @@ import { CONFIG } from '../data/config';
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
+    sectionElements.forEach(section => {
+      if (section) observer.observe(section);
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+        toggle?.focus();
+      }
+    });
     sectionElements.forEach(section => observer.observe(section));
 
     // Reset ScrollSpy when clicking logo/home

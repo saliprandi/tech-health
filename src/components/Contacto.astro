@@ -222,6 +222,10 @@ import { CONFIG } from '../data/config';
         
         const encodedMessage = encodeURIComponent(rawMessage);
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+        
+        window.open(url, '_blank');
+
+        // Reset button after a short delay
 
         window.open(url, '_blank');
 
