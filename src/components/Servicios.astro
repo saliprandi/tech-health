@@ -1,11 +1,6 @@
 ---
 import { CONFIG } from '../data/config';
 
-// Helper to return the correct icon ID based on name
-const getIconId = (iconName: string) => {
-  return `#icon-${iconName}`;
-};
-
 // Optimization: Only pass the minimal data needed for the client-side modal
 // to reduce the HTML payload size.
 const modalData = CONFIG.servicios.map(s => ({
@@ -15,10 +10,7 @@ const modalData = CONFIG.servicios.map(s => ({
   icono: s.icono
 }));
 
-// Helper to return the correct icon ID based on name
-const getIconId = (iconName: string) => {
-  return `#icon-${iconName}`;
-};
+const getIconId = (iconName: string) => `#icon-${iconName}`;
 ---
 
 <section id="servicios" class="bg-white section-padding">
@@ -42,16 +34,12 @@ const getIconId = (iconName: string) => {
       {CONFIG.servicios.map((servicio, index) => (
         <div
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 overflow-hidden cursor-pointer"
-          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer"
           data-index={index}
           role="button"
           tabindex="0"
           aria-haspopup="dialog"
           aria-expanded="false"
           aria-label={`Ver detalles sobre ${servicio.titulo}`}
-          aria-label={`Ver detalles de ${servicio.titulo}`}
-          aria-haspopup="dialog"
-          aria-expanded="false"
         >
           
           <!-- Animated Top Bar -->
@@ -59,8 +47,6 @@ const getIconId = (iconName: string) => {
           
           <!-- Icon -->
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
-            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <use href={`#icon-${servicio.icono}`} />
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
               <use href={getIconId(servicio.icono)} />
             </svg>
@@ -122,7 +108,7 @@ const getIconId = (iconName: string) => {
   </div>
 </section>
 
-<script define:vars={{ services: modalData }}>
+<script is:inline define:vars={{ services: modalData }}>
   document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.service-card');
     const backdrop = document.getElementById('service-modal-backdrop');
@@ -133,9 +119,6 @@ const getIconId = (iconName: string) => {
     let isModalOpen = false;
     let triggerElement = null;
 
-    /**
-     * Sanitizes a string to prevent XSS vulnerabilities when using innerHTML.
-     */
     const escapeHtml = (unsafe) => {
       if (typeof unsafe !== 'string') return '';
       return unsafe
@@ -151,15 +134,9 @@ const getIconId = (iconName: string) => {
       if (!servicio) return;
 
       triggerElement = trigger;
-    const openModal = (index, element) => {
-      const servicio = services[index];
-      if (!servicio) return;
-
-      triggerElement = element;
       triggerElement.setAttribute('aria-expanded', 'true');
-      lastFocusedElement = document.activeElement;
 
-      // Populate content with sanitized data
+      // Populate content
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
           <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -187,7 +164,6 @@ const getIconId = (iconName: string) => {
       document.body.style.overflow = 'hidden';
       isModalOpen = true;
 
-      // Focus management: focus the close button
       setTimeout(() => {
         if (closeBtn) closeBtn.focus();
       }, 50);
@@ -202,16 +178,12 @@ const getIconId = (iconName: string) => {
       document.body.style.overflow = '';
       isModalOpen = false;
 
-      // Restore focus and ARIA state
-      // Accessibility: restore focus and ARIA state
-      // Restore focus
       if (triggerElement) {
         triggerElement.setAttribute('aria-expanded', 'false');
         triggerElement.focus();
         triggerElement = null;
       }
 
-      // Clear content after animation
       setTimeout(() => {
         if (!isModalOpen) modalContent.innerHTML = '';
       }, 400);
@@ -230,12 +202,9 @@ const getIconId = (iconName: string) => {
       });
     });
 
-    if (backdrop) backdrop.addEventListener('click', closeModal);
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
-    backdrop.addEventListener('click', closeModal);
+    backdrop?.addEventListener('click', closeModal);
     closeBtn?.addEventListener('click', closeModal);
     
-    // Global key listeners
     document.addEventListener('keydown', (e) => {
       if (!isModalOpen) return;
 
