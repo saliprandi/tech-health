@@ -112,6 +112,10 @@ import { CONFIG } from '../data/config';
     });
 
     // Keyboard handling: Focus trapping & Escape key
+    // ScrollSpy implementation
+    // ScrollSpy Implementation
+    // Close on Escape
+    // Close on Escape key
     document.addEventListener('keydown', (e) => {
       if (!isOpen) return;
 
@@ -155,6 +159,12 @@ import { CONFIG } from '../data/config';
             const isActive = link.getAttribute('href') === '#' + id;
             link.classList.toggle('nav-link-active', isActive);
             if (isActive) {
+              link.classList.add('nav-link-active');
+            } else {
+              link.classList.remove('nav-link-active');
+            }
+          });
+        }
               link.setAttribute('aria-current', 'location');
             } else {
               link.removeAttribute('aria-current');
@@ -169,6 +179,62 @@ import { CONFIG } from '../data/config';
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
+
+    // Keyboard handling: Focus trapping & Escape key
+    document.addEventListener('keydown', (e) => {
+      if (!isOpen) return;
+
+      if (e.key === 'Escape') {
+        toggleMenu();
+        toggle?.focus();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        // Focus trapping logic
+        // First element: toggle button
+        // Last element: whatsappMobileLink
+        if (e.shiftKey) { // Shift + Tab
+          if (document.activeElement === toggle) {
+            e.preventDefault();
+            (whatsappMobileLink as HTMLElement)?.focus();
+          }
+        } else { // Tab
+          if (document.activeElement === whatsappMobileLink) {
+            e.preventDefault();
+            toggle?.focus();
+          }
+        }
+      }
+    });
+    }, observerOptions);
+
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+
+    // Reset ScrollSpy when clicking logo
+    document.querySelector('a[aria-label="Inicio de TechHealth"]')?.addEventListener('click', () => {
+      navLinks.forEach(link => {
+        link.classList.remove('nav-link-active');
+        link.removeAttribute('aria-current');
+      });
+    });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    sectionElements.forEach(section => {
+      if (section) observer.observe(section);
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+        toggle?.focus();
+      }
+    });
+    sectionElements.forEach(section => observer.observe(section));
 
     // Reset ScrollSpy when clicking logo/home
     document.querySelector('a[aria-label="Inicio de TechHealth"]')?.addEventListener('click', () => {

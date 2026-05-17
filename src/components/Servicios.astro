@@ -51,6 +51,9 @@ const modalData = CONFIG.servicios.map(s => ({
           <!-- Icon -->
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
+            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <use href={`#icon-${servicio.icono}`} />
+            <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
               <use href={getIconId(servicio.icono)} />
             </svg>
           </div>
@@ -140,11 +143,21 @@ const modalData = CONFIG.servicios.map(s => ({
       if (!servicio) return;
 
       triggerElement = trigger;
+      const servicio = services[index];
+      if (!servicio) return;
+
+      triggerElement = trigger;
+    const openModal = (index, element) => {
+      const servicio = services[index];
+      if (!servicio) return;
+
+      triggerElement = element;
       triggerElement.setAttribute('aria-expanded', 'true');
 
       // Populate content with sanitized data
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
+          <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
           <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <use href="#icon-${escapeHtml(servicio.icono)}" />
           </svg>
@@ -178,6 +191,7 @@ const modalData = CONFIG.servicios.map(s => ({
 
     const closeModal = () => {
       if (!isModalOpen) return;
+
       
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100');
@@ -216,6 +230,7 @@ const modalData = CONFIG.servicios.map(s => ({
     if (backdrop) backdrop.addEventListener('click', closeModal);
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
     
+    // Modal key handlers
     // Global key listeners
     document.addEventListener('keydown', (e) => {
       if (!isModalOpen) return;
