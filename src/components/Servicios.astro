@@ -126,7 +126,7 @@ const modalData = CONFIG.servicios.map(s => ({
     /**
      * Sanitizes a string to prevent XSS vulnerabilities when using innerHTML.
      */
-    var escapeHtml = function(unsafe) {
+    const escapeHtml = (unsafe) => {
       if (typeof unsafe !== 'string') return '';
       return unsafe
         .replace(/&/g, "&amp;")
@@ -136,8 +136,8 @@ const modalData = CONFIG.servicios.map(s => ({
         .replace(/'/g, "&#039;");
     };
 
-    var openModal = function(index, element) {
-      var servicio = services[index];
+    const openModal = (index, element) => {
+      const servicio = services[index];
       if (!servicio) return;
 
       triggerElement = element;
