@@ -114,6 +114,7 @@ import { CONFIG } from '../data/config';
             <div class="flex flex-col gap-1.5 mb-2">
               <div class="flex justify-between items-center">
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
+                <span id="char-counter" class="font-body text-[10px] text-white/40">0 / 1000</span>
                 <span id="char-counter" class="font-body text-[10px] text-white/40 tracking-tight">0 / 1000</span>
               </div>
               <textarea id="f-desc" name="descripcion" rows="3" maxlength="1000" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full resize-none"></textarea>
@@ -139,6 +140,20 @@ import { CONFIG } from '../data/config';
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('contact-form');
     const btn = document.getElementById('f-submit');
+    const textarea = document.getElementById('f-desc');
+    const counter = document.getElementById('char-counter');
+    
+    // Character counter logic
+    if (textarea && counter) {
+      textarea.addEventListener('input', () => {
+        const len = textarea.value.length;
+        counter.textContent = `${len} / 1000`;
+        if (len >= 900) {
+          counter.classList.add('text-blue-light');
+          counter.classList.remove('text-white/40');
+        } else {
+          counter.classList.remove('text-blue-light');
+          counter.classList.add('text-white/40');
     const descArea = document.getElementById('f-desc');
     const charCounter = document.getElementById('char-counter');
 
@@ -166,6 +181,11 @@ import { CONFIG } from '../data/config';
         btn.disabled = true;
         btn.classList.add('opacity-70', 'cursor-not-allowed');
 
+        const nombre = document.getElementById('f-nombre')?.value.trim() || 'No especificado';
+        const tel = document.getElementById('f-tel')?.value.trim() || 'No especificado';
+        const servicioel = document.getElementById('f-servicio');
+        const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
+        const desc = textarea?.value.trim() || 'Sin detalles adicionales';
         const nombre = document.getElementById('f-nombre').value.trim() || 'No especificado';
         const tel = document.getElementById('f-tel').value.trim() || 'No especificado';
         const servicioel = document.getElementById('f-servicio');
@@ -182,12 +202,10 @@ import { CONFIG } from '../data/config';
 
         // Reset button after a short delay
 
-        window.open(url, '_blank');
-
-        
         // Open WhatsApp
         window.open(url, '_blank');
 
+        // Reset button after a delay
         window.open(url, '_blank');
 
         setTimeout(() => {
