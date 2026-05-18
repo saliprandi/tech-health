@@ -89,13 +89,11 @@ import { CONFIG } from '../data/config';
             <div class="flex flex-col gap-1.5">
               <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Nombre completo</label>
               <input type="text" id="f-nombre" name="nombre" placeholder="Ej: Dr. Juan Pérez" required class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
-              <input type="text" id="f-nombre" required maxlength="100" autocomplete="name" placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full" />
             </div>
 
             <div class="flex flex-col gap-1.5">
               <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Teléfono / WhatsApp</label>
               <input type="tel" id="f-tel" name="telefono" placeholder="Ej: 381 123 4567" required class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
-              <input type="tel" id="f-tel" required maxlength="30" autocomplete="tel" placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full" />
             </div>
 
             <div class="flex flex-col gap-1.5">
@@ -107,12 +105,6 @@ import { CONFIG } from '../data/config';
                   <option value="Reparación / Mantenimiento correctivo" class="bg-navy text-white">Reparación / Mantenimiento correctivo</option>
                   <option value="Revisión de placa electrónica" class="bg-navy text-white">Revisión de placa electrónica</option>
                 </select>
-                <select id="f-servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full appearance-none pr-10">
-                <option value="Consulta general" class="bg-navy text-white">Consulta general</option>
-                <option value="Mantenimiento preventivo" class="bg-navy text-white">Mantenimiento preventivo</option>
-                <option value="Reparación / Mantenimiento correctivo" class="bg-navy text-white">Reparación / Mantenimiento correctivo</option>
-                <option value="Revisión de placa electrónica" class="bg-navy text-white">Revisión de placa electrónica</option>
-              </select>
                 <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
@@ -125,10 +117,6 @@ import { CONFIG } from '../data/config';
             </div>
 
             <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-all shadow-sm mt-2 active:scale-[0.98]">
-              <textarea id="f-desc" rows="3" maxlength="1000" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full resize-none"></textarea>
-            </div>
-
-            <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 shadow-sm mt-2">
               Enviar por WhatsApp
             </button>
             <p class="font-body text-[12px] text-white/40 text-center mt-2">
@@ -153,40 +141,22 @@ import { CONFIG } from '../data/config';
       form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-    if(form && btn) {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
         // Provide visual feedback
         const originalText = btn.innerText;
         btn.innerText = 'Redirigiendo...';
         btn.disabled = true;
 
-        const nombre = document.getElementById('f-nombre')?.value.trim() || 'No especificado';
-        const tel = document.getElementById('f-tel')?.value.trim() || 'No especificado';
-        const servicioel = document.getElementById('f-servicio');
+        const nombre = (document.getElementById('f-nombre') as HTMLInputElement)?.value.trim() || 'No especificado';
+        const tel = (document.getElementById('f-tel') as HTMLInputElement)?.value.trim() || 'No especificado';
+        const servicioel = document.getElementById('f-servicio') as HTMLSelectElement;
         const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
-        const desc = document.getElementById('f-desc')?.value.trim() || 'Sin detalles adicionales';
+        const desc = (document.getElementById('f-desc') as HTMLTextAreaElement)?.value.trim() || 'Sin detalles adicionales';
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
         
         const encodedMessage = encodeURIComponent(rawMessage);
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
         
-        // Provide visual feedback
-        const originalText = btn.innerText;
-        btn.innerText = 'Redirigiendo...';
-        btn.disabled = true;
-        btn.classList.add('opacity-70', 'cursor-not-allowed');
-
-        window.open(url, '_blank');
-
-        // Reset button after a short delay
-        setTimeout(() => {
-          btn.innerText = originalText;
-          btn.disabled = false;
-          btn.classList.remove('opacity-70', 'cursor-not-allowed');
-        // Open WhatsApp
         window.open(url, '_blank');
 
         // Reset button after a delay
