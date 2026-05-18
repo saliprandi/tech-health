@@ -37,6 +37,7 @@ const modalData = CONFIG.servicios.map(s => ({
       {CONFIG.servicios.map((servicio, index) => (
         <div
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer overflow-hidden"
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer"
           data-index={index}
           role="button"
           tabindex="0"
@@ -50,6 +51,9 @@ const modalData = CONFIG.servicios.map(s => ({
           
           <!-- Icon -->
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
+            <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
+            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <use href={`#icon-${servicio.icono}`} />
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
               <use href={getIconId(servicio.icono)} />
             </svg>
@@ -136,17 +140,26 @@ const modalData = CONFIG.servicios.map(s => ({
         .replace(/'/g, "&#039;");
     };
 
+    const openModal = (index, trigger) => {
+      const servicio = services[index];
+      if (!servicio) return;
+
+      triggerElement = trigger;
+      const servicio = services[index];
+      if (!servicio) return;
+
+      triggerElement = trigger;
     const openModal = (index, element) => {
       const servicio = services[index];
       if (!servicio) return;
 
       triggerElement = element;
       triggerElement.setAttribute('aria-expanded', 'true');
-      lastFocusedElement = document.activeElement;
 
       // Populate content with sanitized data
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
+          <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
           <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <use href="#icon-${escapeHtml(servicio.icono)}" />
           </svg>
@@ -180,6 +193,7 @@ const modalData = CONFIG.servicios.map(s => ({
 
     const closeModal = () => {
       if (!isModalOpen) return;
+
       
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100');
@@ -199,12 +213,14 @@ const modalData = CONFIG.servicios.map(s => ({
 
       // Clear content after animation
       setTimeout(() => {
-        if (!isModalOpen) modalContent.innerHTML = '';
+        if (!isModalOpen && modalContent) modalContent.innerHTML = '';
       }, 400);
     };
 
     cards.forEach(card => {
       const index = card.getAttribute('data-index');
+      if (index === null) return;
+
       const handleOpen = () => openModal(parseInt(index), card);
 
       card.addEventListener('click', handleOpen);
@@ -219,6 +235,7 @@ const modalData = CONFIG.servicios.map(s => ({
     if (backdrop) backdrop.addEventListener('click', closeModal);
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
     
+    // Modal key handlers
     // Global key listeners
     document.addEventListener('keydown', (e) => {
       if (!isModalOpen) return;
@@ -230,18 +247,20 @@ const modalData = CONFIG.servicios.map(s => ({
 
       if (e.key === 'Tab') {
         const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusableElements.length === 0) return;
+
         const firstElement = focusableElements[0];
         const lastElement = focusableElements[focusableElements.length - 1];
 
         if (e.shiftKey) { // Shift + Tab
           if (document.activeElement === firstElement) {
             e.preventDefault();
-            if (lastElement) lastElement.focus();
+            lastElement.focus();
           }
         } else { // Tab
           if (document.activeElement === lastElement) {
             e.preventDefault();
-            if (firstElement) firstElement.focus();
+            firstElement.focus();
           }
         }
       }
