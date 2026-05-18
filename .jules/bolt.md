@@ -16,3 +16,6 @@
 ## 2026-05-14 - [SVG Spriting and LCP Optimization]
 **Learning:** High-frequency icons (like the ECG path used 12 times) and complex SVG paths (like WhatsApp) can significantly bloat the HTML payload when inlined. Moving them to an SVG Sprite system with `<symbol>` and `<use>` reduced the `index.html` size by ~3KB. Additionally, adding `fetchpriority="high"` and `decoding="async"` to the main logo improved LCP.
 **Action:** Use an SVG sprite system for any icon used more than once, and always optimize the main brand asset for LCP.
+## 2026-05-17 - [Critical Component Deduplication]
+**Learning:** Massive code duplication in Astro components (Nav, Contacto, Servicios) caused build failures and significantly bloated the HTML payload. Deduplicating these components not only fixed the build but also reduced the final index.html size by ~5KB (~8%).
+**Action:** Always check for redundant HTML and script blocks after complex merges or migrations to ensure payload efficiency and build stability.
