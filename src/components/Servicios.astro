@@ -184,7 +184,7 @@ const modalData = CONFIG.servicios.map(s => ({
 
       // Focus management: focus the close button
       setTimeout(() => {
-        if (closeBtn) closeBtn.focus();
+        closeBtn?.focus();
       }, 50);
     };
 
@@ -198,6 +198,7 @@ const modalData = CONFIG.servicios.map(s => ({
       document.body.style.overflow = '';
       isModalOpen = false;
 
+      // Accessibility: restore focus and ARIA state
       // Restore focus and ARIA state
       if (triggerElement) {
         triggerElement.setAttribute('aria-expanded', 'false');
@@ -254,6 +255,7 @@ const modalData = CONFIG.servicios.map(s => ({
         if (e.shiftKey) { // Shift + Tab
           if (document.activeElement === firstElement) {
             e.preventDefault();
+            lastElement?.focus();
             if (lastElement) (lastElement as HTMLElement).focus();
             (lastElement as HTMLElement)?.focus();
             lastElement.focus();
@@ -261,6 +263,7 @@ const modalData = CONFIG.servicios.map(s => ({
         } else { // Tab
           if (document.activeElement === lastElement) {
             e.preventDefault();
+            firstElement?.focus();
             if (firstElement) (firstElement as HTMLElement).focus();
             (firstElement as HTMLElement)?.focus();
             firstElement.focus();

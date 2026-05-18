@@ -139,6 +139,11 @@ import { CONFIG } from '../data/config';
         return;
       }
 
+      if (e.key === 'Tab') {
+        if (e.shiftKey) { // Shift + Tab
+          if (document.activeElement === toggle) {
+            e.preventDefault();
+            whatsappMobileLink?.focus();
       if (isOpen && e.key === 'Tab') {
         if (e.shiftKey) { // Shift + Tab
           if (document.activeElement === toggle) {
@@ -224,6 +229,9 @@ import { CONFIG } from '../data/config';
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
+    ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
+      const section = document.getElementById(id);
+      if (section) observer.observe(section);
     sectionElements.forEach(section => observer.observe(section));
 
     // Reset ScrollSpy when clicking logo
