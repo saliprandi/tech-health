@@ -21,3 +21,7 @@
 **Vulnerability:** Syntax errors in `package.json` prevented automated security audits (`pnpm audit`) from running, potentially hiding critical vulnerabilities.
 **Learning:** Security tools often fail silently or are skipped when core configuration files are malformed. A broken build/audit pipeline is a security risk as it blindfolds the development team.
 **Prevention:** Ensure `package.json` integrity is part of the CI/CD pipeline. Never ignore audit failures caused by environment or syntax issues.
+## 2025-05-27 - [Manifest Consolidation and Layout Hardening]
+**Vulnerability:** Duplicate 'pnpm.overrides' in 'package.json' led to inconsistent security patching of transitive dependencies like 'yaml'.
+**Learning:** JSON allows duplicate keys but standard parsers (and pnpm) will only honor the last one. This can silently disable security overrides if they are spread across multiple blocks.
+**Prevention:** Always consolidate package manager configurations. Use automated build checks to catch syntax errors and duplication in core manifest files.
