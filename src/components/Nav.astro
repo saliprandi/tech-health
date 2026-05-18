@@ -7,7 +7,6 @@ import { CONFIG } from '../data/config';
     
     <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE
          This is the primary branding and navigation element to the home page. -->
-    <!-- Logo -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label="Inicio de TechHealth">
       <img
         src="/logo-name.svg"
@@ -31,6 +30,7 @@ import { CONFIG } from '../data/config';
     <!-- CTA & Mobile Toggle -->
     <div class="flex items-center gap-4">
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4">
+      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors shadow-sm hover:shadow-md">
         Consultar por WhatsApp
       </a>
 
@@ -51,11 +51,16 @@ import { CONFIG } from '../data/config';
 
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
+    <a href="#servicios" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Servicios</a>
+    <a href="#equipos" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Equipos</a>
+    <a href="#nosotros" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Nosotros</a>
+    <a href="#contacto" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Contacto</a>
     <a href="#servicios" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Servicios</a>
     <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Equipos</a>
     <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Nosotros</a>
     <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Contacto</a>
     <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="whatsapp-mobile-link mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
+    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} id="whatsapp-mobile-link" target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
       Consultar por WhatsApp
     </a>
   </div>
@@ -74,7 +79,7 @@ import { CONFIG } from '../data/config';
     const mobileLinks = document.querySelectorAll('.mobile-link');
     const navLinks = document.querySelectorAll('.nav-link');
     const spans = toggle?.querySelectorAll('span');
-    const whatsappMobileLink = menu?.querySelector('.whatsapp-mobile-link');
+    const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
 
     let isOpen = false;
 
@@ -111,10 +116,61 @@ import { CONFIG } from '../data/config';
       });
     });
 
+    // Keyboard handling: Focus trapping & Escape key
+    // ScrollSpy implementation
     // ScrollSpy Implementation
     const sections = ['servicios', 'equipos', 'nosotros', 'contacto'];
     const sectionElements = sections.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    // Close on Escape
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (!isOpen) return;
 
+      if (e.key === 'Escape') {
+        toggleMenu();
+        toggle?.focus();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        const focusableElements = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean) as HTMLElement[];
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) { // Shift + Tab
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement?.focus();
+          }
+        } else { // Tab
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement?.focus();
+          }
+        }
+      }
+    });
+
+    // Keyboard handling: Focus trapping
+    document.addEventListener('keydown', (e) => {
+      if (!isOpen) return;
+
+      if (e.key === 'Tab') {
+        if (e.shiftKey) { // Shift + Tab
+          if (document.activeElement === toggle) {
+            e.preventDefault();
+            (whatsappMobileLink as HTMLElement)?.focus();
+          }
+        } else { // Tab
+          if (document.activeElement === whatsappMobileLink) {
+            e.preventDefault();
+            toggle?.focus();
+          }
+        }
+      }
+    });
+
+    // ScrollSpy Implementation
     const observerOptions = {
       root: null,
       rootMargin: '-20% 0px -70% 0px',
@@ -126,9 +182,15 @@ import { CONFIG } from '../data/config';
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
           navLinks.forEach(link => {
-            const isActive = link.getAttribute('href') === `#${id}`;
+            const isActive = link.getAttribute('href') === '#' + id;
             link.classList.toggle('nav-link-active', isActive);
             if (isActive) {
+              link.classList.add('nav-link-active');
+            } else {
+              link.classList.remove('nav-link-active');
+            }
+          });
+        }
               link.setAttribute('aria-current', 'location');
             } else {
               link.removeAttribute('aria-current');
@@ -147,6 +209,16 @@ import { CONFIG } from '../data/config';
         link.classList.remove('nav-link-active');
         link.removeAttribute('aria-current');
       });
+    const sectionIds = ['servicios', 'equipos', 'nosotros', 'contacto'];
+    sectionIds.forEach(id => {
+
+    // Sections to observe
+    ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
+      const section = document.getElementById(id);
+      if (section) observer.observe(section);
+    ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
     });
 
     // Keyboard handling: Focus trapping & Escape key
@@ -160,9 +232,6 @@ import { CONFIG } from '../data/config';
       }
 
       if (e.key === 'Tab') {
-        // Focus trapping logic
-        // First element: toggle button
-        // Last element: whatsappMobileLink
         if (e.shiftKey) { // Shift + Tab
           if (document.activeElement === toggle) {
             e.preventDefault();
@@ -175,6 +244,42 @@ import { CONFIG } from '../data/config';
           }
         }
       }
+    });
+    }, observerOptions);
+
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+
+    // Reset ScrollSpy when clicking logo
+    document.querySelector('a[aria-label="Inicio de TechHealth"]')?.addEventListener('click', () => {
+      navLinks.forEach(link => {
+        link.classList.remove('nav-link-active');
+        link.removeAttribute('aria-current');
+      });
+    });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    sectionElements.forEach(section => {
+      if (section) observer.observe(section);
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+        toggle?.focus();
+      }
+    });
+    sectionElements.forEach(section => observer.observe(section));
+
+    // Reset ScrollSpy when clicking logo/home
+    document.querySelector('a[aria-label="Inicio de TechHealth"]')?.addEventListener('click', () => {
+      navLinks.forEach(link => {
+        link.classList.remove('nav-link-active');
+        link.removeAttribute('aria-current');
+      });
     });
   });
 </script>
