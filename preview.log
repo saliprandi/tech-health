@@ -5,4 +5,10 @@
 Port 4321 is in use, trying another one...
  astro  v6.3.1 ready in 31 ms
 ┃ Local    http://localhost:4322/
+ astro  v6.3.1 ready in 32 ms
+ astro  v6.3.1 ready in 21 ms
+ astro  v6.3.1 ready in 29 ms
+ astro  v6.3.1 ready in 31 ms
+ astro  v6.3.1 ready in 20 ms
+┃ Local    http://localhost:4321/
 ┃ Network  use --host to expose
