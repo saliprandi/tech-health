@@ -7,7 +7,6 @@ import { CONFIG } from '../data/config';
     
     <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE
          This is the primary branding and navigation element to the home page. -->
-    <!-- Logo -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label="Inicio de TechHealth">
       <img
         src="/logo-name.svg"
@@ -78,7 +77,6 @@ import { CONFIG } from '../data/config';
 
     let isOpen = false;
 
-    // Mobile Menu Logic
     const toggleMenu = () => {
       isOpen = !isOpen;
       toggle?.setAttribute('aria-expanded', isOpen.toString());
@@ -111,7 +109,6 @@ import { CONFIG } from '../data/config';
       });
     });
 
-    // ScrollSpy Implementation
     const sections = ['servicios', 'equipos', 'nosotros', 'contacto'];
     const sectionElements = sections.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
 
@@ -141,7 +138,6 @@ import { CONFIG } from '../data/config';
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     sectionElements.forEach(section => observer.observe(section));
 
-    // Reset ScrollSpy when clicking logo/home
     document.querySelector('a[aria-label="Inicio de TechHealth"]')?.addEventListener('click', () => {
       navLinks.forEach(link => {
         link.classList.remove('nav-link-active');
@@ -149,7 +145,6 @@ import { CONFIG } from '../data/config';
       });
     });
 
-    // Keyboard handling: Focus trapping & Escape key
     document.addEventListener('keydown', (e) => {
       if (!isOpen) return;
 
@@ -160,12 +155,12 @@ import { CONFIG } from '../data/config';
       }
 
       if (e.key === 'Tab') {
-        if (e.shiftKey) { // Shift + Tab
+        if (e.shiftKey) {
           if (document.activeElement === toggle) {
             e.preventDefault();
-            whatsappMobileLink?.focus();
+            (whatsappMobileLink as HTMLElement)?.focus();
           }
-        } else { // Tab
+        } else {
           if (document.activeElement === whatsappMobileLink) {
             e.preventDefault();
             toggle?.focus();
