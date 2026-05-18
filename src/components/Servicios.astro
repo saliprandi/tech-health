@@ -123,6 +123,27 @@ const modalData = CONFIG.servicios.map(s => ({
   (function() {
     const services = modalData;
     
+    let isModalOpen = false;
+    let triggerElement = null;
+
+    /**
+     * Sanitizes a string to prevent XSS vulnerabilities when using innerHTML.
+     */
+    const escapeHtml = (unsafe) => {
+      if (typeof unsafe !== 'string') return '';
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    };
+
+    const openModal = (index, trigger) => {
+      const servicio = services[index];
+      if (!servicio) return;
+
+      triggerElement = trigger;
     document.addEventListener('DOMContentLoaded', () => {
       const cards = document.querySelectorAll('.service-card');
       const backdrop = document.getElementById('service-modal-backdrop');
@@ -257,6 +278,7 @@ const modalData = CONFIG.servicios.map(s => ({
       document.body.style.overflow = 'hidden';
       isModalOpen = true;
 
+      // Focus close button
       // Focus management: focus the close button
       setTimeout(() => {
         closeBtn?.focus();
@@ -273,6 +295,11 @@ const modalData = CONFIG.servicios.map(s => ({
       document.body.style.overflow = '';
       isModalOpen = false;
 
+      // Restore focus and ARIA state
+      if (triggerElement) {
+        triggerElement.setAttribute('aria-expanded', 'false');
+        triggerElement.focus();
+        triggerElement = null;
       // Accessibility: restore focus and ARIA state
       // Restore focus and ARIA state
       if (triggerElement) {
@@ -294,13 +321,17 @@ const modalData = CONFIG.servicios.map(s => ({
       const index = card.getAttribute('data-index');
       if (index === null) return;
 
+      card.addEventListener('click', () => {
+        openModal(parseInt(index), card);
+      });
+
       const handleOpen = () => openModal(parseInt(index), card);
 
       card.addEventListener('click', handleOpen);
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          handleOpen();
+          openModal(parseInt(index), card);
         }
       });
 
@@ -353,6 +384,7 @@ const modalData = CONFIG.servicios.map(s => ({
         if (e.shiftKey) { // Shift + Tab
           if (document.activeElement === firstElement) {
             e.preventDefault();
+            if (lastElement) lastElement.focus();
             lastElement?.focus();
             if (lastElement) (lastElement as HTMLElement).focus();
             (lastElement as HTMLElement)?.focus();
@@ -361,6 +393,7 @@ const modalData = CONFIG.servicios.map(s => ({
         } else { // Tab
           if (document.activeElement === lastElement) {
             e.preventDefault();
+            if (firstElement) firstElement.focus();
             firstElement?.focus();
             if (firstElement) (firstElement as HTMLElement).focus();
             (firstElement as HTMLElement)?.focus();
