@@ -16,3 +16,8 @@
 **Vulnerability:** Transitive dependency vulnerabilities (e.g., GHSA-77vg-94rm-hx3p in 'devalue') and potential for plugin-based or base-hijacking attacks.
 **Learning:** In Astro projects, vulnerabilities often reside deep in the dependency tree (like in 'devalue' which is used by Astro). Using 'pnpm.overrides' is the most effective way to force a secure version without waiting for framework updates. Additionally, a baseline 'default-src self' CSP is often insufficient; explicit 'object-src none' and 'base-uri self' are critical for defense-in-depth.
 **Prevention:** Regularly run 'pnpm audit' and use 'pnpm.overrides' to patch high-severity transitive vulnerabilities immediately. Always include 'object-src none' and 'base-uri self' in the Layout's CSP meta tag.
+
+## 2025-05-26 - Manifest Integrity and Audit Blocking
+**Vulnerability:** Syntax errors in `package.json` prevented automated security audits (`pnpm audit`) from running, potentially hiding critical vulnerabilities.
+**Learning:** Security tools often fail silently or are skipped when core configuration files are malformed. A broken build/audit pipeline is a security risk as it blindfolds the development team.
+**Prevention:** Ensure `package.json` integrity is part of the CI/CD pipeline. Never ignore audit failures caused by environment or syntax issues.
