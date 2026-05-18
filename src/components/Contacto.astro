@@ -142,10 +142,18 @@ import { CONFIG } from '../data/config';
     const btn = document.getElementById('f-submit');
     const textarea = document.getElementById('f-desc');
     const counter = document.getElementById('char-counter');
-    
-    // Character counter logic
+
     if (textarea && counter) {
       textarea.addEventListener('input', () => {
+        const count = textarea.value.length;
+        counter.innerText = `${count} / 1000`;
+
+        if (count >= 900) {
+          counter.classList.add('text-blue-light');
+          counter.classList.remove('text-white/40');
+        } else {
+          counter.classList.remove('text-blue-light');
+          counter.classList.add('text-white/40');
         const len = textarea.value.length;
         counter.textContent = `${len} / 1000`;
         if (len >= 900) {
@@ -181,6 +189,11 @@ import { CONFIG } from '../data/config';
         btn.disabled = true;
         btn.classList.add('opacity-70', 'cursor-not-allowed');
 
+        const nombre = (document.getElementById('f-nombre') as HTMLInputElement)?.value.trim() || 'No especificado';
+        const tel = (document.getElementById('f-tel') as HTMLInputElement)?.value.trim() || 'No especificado';
+        const servicioEl = document.getElementById('f-servicio') as HTMLSelectElement;
+        const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+        const desc = textarea?.value.trim() || 'Sin detalles adicionales';
         const nombre = document.getElementById('f-nombre')?.value.trim() || 'No especificado';
         const tel = document.getElementById('f-tel')?.value.trim() || 'No especificado';
         const servicioel = document.getElementById('f-servicio');

@@ -1,11 +1,6 @@
 ---
 import { CONFIG } from '../data/config';
 
-// Helper to return the correct icon ID based on name
-const getIconId = (iconName: string) => {
-  return `#icon-${iconName}`;
-};
-
 // Optimization: Only pass the minimal data needed for the client-side modal
 // to reduce the HTML payload size.
 const modalData = CONFIG.servicios.map(s => ({
@@ -56,7 +51,7 @@ const modalData = CONFIG.servicios.map(s => ({
             <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
               <use href={`#icon-${servicio.icono}`} />
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
-              <use href={getIconId(servicio.icono)} />
+              <use href={`#icon-${servicio.icono}`} />
             </svg>
           </div>
 
@@ -258,12 +253,14 @@ const modalData = CONFIG.servicios.map(s => ({
         if (e.shiftKey) { // Shift + Tab
           if (document.activeElement === firstElement) {
             e.preventDefault();
+            if (lastElement) (lastElement as HTMLElement).focus();
             (lastElement as HTMLElement)?.focus();
             lastElement.focus();
           }
         } else { // Tab
           if (document.activeElement === lastElement) {
             e.preventDefault();
+            if (firstElement) (firstElement as HTMLElement).focus();
             (firstElement as HTMLElement)?.focus();
             firstElement.focus();
           }
