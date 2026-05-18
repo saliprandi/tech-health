@@ -7,7 +7,6 @@ import { CONFIG } from '../data/config';
     
     <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE
          This is the primary branding and navigation element to the home page. -->
-    <!-- Logo -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label="Inicio de TechHealth">
       <img
         src="/logo-name.svg"
@@ -30,7 +29,6 @@ import { CONFIG } from '../data/config';
 
     <!-- CTA & Mobile Toggle -->
     <div class="flex items-center gap-4">
-      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4">
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors shadow-sm hover:shadow-md">
         Consultar por WhatsApp
       </a>
@@ -52,6 +50,10 @@ import { CONFIG } from '../data/config';
 
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
+    <a href="#servicios" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Servicios</a>
+    <a href="#equipos" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Equipos</a>
+    <a href="#nosotros" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Nosotros</a>
+    <a href="#contacto" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Contacto</a>
     <a href="#servicios" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Servicios</a>
     <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Equipos</a>
     <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Nosotros</a>
@@ -146,6 +148,25 @@ import { CONFIG } from '../data/config';
       }
     });
 
+    // Keyboard handling: Focus trapping
+    document.addEventListener('keydown', (e) => {
+      if (!isOpen) return;
+
+      if (e.key === 'Tab') {
+        if (e.shiftKey) { // Shift + Tab
+          if (document.activeElement === toggle) {
+            e.preventDefault();
+            (whatsappMobileLink as HTMLElement)?.focus();
+          }
+        } else { // Tab
+          if (document.activeElement === whatsappMobileLink) {
+            e.preventDefault();
+            toggle?.focus();
+          }
+        }
+      }
+    });
+
     // ScrollSpy Implementation
     const observerOptions = {
       root: null,
@@ -177,6 +198,8 @@ import { CONFIG } from '../data/config';
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
+    const sectionIds = ['servicios', 'equipos', 'nosotros', 'contacto'];
+    sectionIds.forEach(id => {
 
     // Sections to observe
     ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {

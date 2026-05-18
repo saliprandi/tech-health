@@ -43,6 +43,7 @@ const modalData = CONFIG.servicios.map(s => ({
           tabindex="0"
           aria-haspopup="dialog"
           aria-expanded="false"
+          aria-label={`Ver detalles de ${servicio.titulo}`}
           aria-label={`Ver detalles sobre ${servicio.titulo}`}
         >
           
@@ -232,6 +233,8 @@ const modalData = CONFIG.servicios.map(s => ({
       });
     });
 
+    backdrop?.addEventListener('click', closeModal);
+    closeBtn?.addEventListener('click', closeModal);
     if (backdrop) backdrop.addEventListener('click', closeModal);
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
     
@@ -255,11 +258,13 @@ const modalData = CONFIG.servicios.map(s => ({
         if (e.shiftKey) { // Shift + Tab
           if (document.activeElement === firstElement) {
             e.preventDefault();
+            (lastElement as HTMLElement)?.focus();
             lastElement.focus();
           }
         } else { // Tab
           if (document.activeElement === lastElement) {
             e.preventDefault();
+            (firstElement as HTMLElement)?.focus();
             firstElement.focus();
           }
         }
