@@ -1,55 +1,44 @@
 ---
-import '../styles/global.css';
-import IconSprite from '../components/IconSprite.astro';
-
-interface Props {
-	title?: string;
-}
-
-const { title = "TechHealth Medical Engineering | Técnicos en Electromedicina – Tucumán" } = Astro.props;
+import { CONFIG } from '../data/config';
 ---
 
-<!doctype html>
-<html lang="es">
-	<head>
-		<meta charset="UTF-8" />
-		<title>{title}</title>
-		<meta name="description" content="Mantenimiento preventivo y correctivo, diagnóstico y reparación de equipos médicos de alta complejidad en San Miguel de Tucumán. TechHealth Medical Engineering." />
-		<meta name="keywords" content="electromedicina tucumán, reparación equipos médicos, mantenimiento equipos hospitalarios, técnico electromedicina tucumán" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="canonical" href="https://techhealth.com.ar" />
-		<meta name="generator" content={Astro.generator} />
-		<meta name="referrer" content="strict-origin-when-cross-origin" />
-		<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-src 'self' https://www.google.com; object-src 'none'; base-uri 'self';" />
-		<meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
-		<meta name="generator" content={Astro.generator} />
-		
-		<!-- Open Graph / Facebook -->
-		<meta property="og:type" content="website" />
-		<meta property="og:url" content="https://saliprandi.github.io/tech-health/" />
-		<meta property="og:title" content="TechHealth Medical Engineering | Cuidamos los equipos que cuidan vidas" />
-		<meta property="og:description" content="Especialistas en mantenimiento y reparación de equipos médicos de alta complejidad en Tucumán. Ingeniería clínica y microelectrónica de precisión." />
-		<meta property="og:image" content="https://saliprandi.github.io/tech-health/og-image.jpg" />
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={`${CONFIG.empresa.nombre} - ${CONFIG.empresa.subtitulo}. Ingeniería en electromedicina en Tucumán.`} />
 
-		<!-- Twitter -->
-		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content="https://saliprandi.github.io/tech-health/" />
-		<meta property="twitter:title" content="TechHealth Medical Engineering" />
-		<meta property="twitter:description" content="Especialistas en mantenimiento y reparación de equipos médicos de alta complejidad en Tucumán." />
-		<meta property="twitter:image" content="https://saliprandi.github.io/tech-health/og-image.jpg" />
-		
-		<!-- Google Fonts: Optimized to load only used weights (Inter 300/400/500, Plus Jakarta Sans 700/800)
-		     to reduce CSS payload and font file requests. -->
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
-	</head>
-	<body>
-		<IconSprite />
-		<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[200] focus:bg-white focus:text-navy focus:px-6 focus:py-3 focus:rounded-lg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue">
-			Saltar al contenido principal
-		</a>
-		<slot />
-	</body>
+    <!-- Security Headers (CSP) -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; upgrade-insecure-requests; block-all-mixed-content; object-src 'none'; base-uri 'self';" />
+
+    <title>{CONFIG.empresa.nombre} | {CONFIG.empresa.subtitulo}</title>
+
+    <!-- Preload critical fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-white text-navy selection:bg-blue/20 selection:text-navy overflow-x-hidden">
+    <slot />
+
+    <!-- SVG Icon System -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol id="icon-ecg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+      </symbol>
+      <symbol id="icon-maximize" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 3 6 6-6 6M9 21l-6-6 6-6" />
+      </symbol>
+      <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6 6 18M6 6l12 12" />
+      </symbol>
+    </svg>
+  </body>
 </html>
+
+<style is:global>
+  @import "../styles/global.css";
+</style>

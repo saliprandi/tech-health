@@ -21,3 +21,8 @@
 **Vulnerability:** Syntax errors in `package.json` prevented automated security audits (`pnpm audit`) from running, potentially hiding critical vulnerabilities.
 **Learning:** Security tools often fail silently or are skipped when core configuration files are malformed. A broken build/audit pipeline is a security risk as it blindfolds the development team.
 **Prevention:** Ensure `package.json` integrity is part of the CI/CD pipeline. Never ignore audit failures caused by environment or syntax issues.
+
+## 2026-05-19 - CSP Hardening and Build Stability
+**Vulnerability:** Missing `upgrade-insecure-requests` directive in CSP and build-blocking syntax errors in core components.
+**Learning:** A broken production build or lack of request upgrades leaves the site vulnerable to man-in-the-middle attacks and prevents security patches from being deployed. Manifest corruption (duplicate keys in package.json) further blindfolds security audits.
+**Prevention:** Always include `upgrade-insecure-requests` in the CSP. Prioritize build stability and manifest integrity as foundational security requirements.
