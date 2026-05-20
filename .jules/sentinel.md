@@ -21,3 +21,8 @@
 **Vulnerability:** Syntax errors in `package.json` prevented automated security audits (`pnpm audit`) from running, potentially hiding critical vulnerabilities.
 **Learning:** Security tools often fail silently or are skipped when core configuration files are malformed. A broken build/audit pipeline is a security risk as it blindfolds the development team.
 **Prevention:** Ensure `package.json` integrity is part of the CI/CD pipeline. Never ignore audit failures caused by environment or syntax issues.
+
+## 2025-05-27 - Hardening CSP and Consolidating Security Overrides
+**Vulnerability:** Duplicate dependency overrides in `package.json` potentially leading to ignored security patches, and weak Content Security Policy (CSP).
+**Learning:** In projects with multiple `pnpm` keys in `package.json`, only one may be honored, causing security overrides (like `devalue` or `yaml`) to be silently skipped. Additionally, a strong CSP requires `form-action 'self'` and `upgrade-insecure-requests` to prevent form hijacking and protocol downgrades.
+**Prevention:** Ensure `package.json` contains only one top-level `pnpm` object. Always include `upgrade-insecure-requests` in the CSP to ensure all resource requests are upgraded to HTTPS.
