@@ -19,3 +19,7 @@
 ## 2026-05-17 - [Critical Component Deduplication]
 **Learning:** Massive code duplication in Astro components (Nav, Contacto, Servicios) caused build failures and significantly bloated the HTML payload. Deduplicating these components not only fixed the build but also reduced the final index.html size by ~5KB (~8%).
 **Action:** Always check for redundant HTML and script blocks after complex merges or migrations to ensure payload efficiency and build stability.
+
+## 2026-05-20 - [Comprehensive Payload Reduction and Build Recovery]
+**Learning:** Severe merge corruption in multiple core Astro components (Nav, Footer, Servicios, Contacto, Equipos) led to redundant template loops and script blocks, causing a build failure (Expected "}" but found ".") and bloating the HTML payload. Deduplicating these components restored build stability and reduced the index.html size by ~16KB (~22%).
+**Action:** After complex merges, always audit core components for redundant code blocks and use 'pnpm astro check' to identify syntax errors early.
