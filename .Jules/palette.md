@@ -96,3 +96,7 @@
 ## 2025-05-26 - Contextual Feedback for Large Text Inputs
 **Learning:** For textareas with significant character limits (e.g., 1000 chars), a real-time counter is essential for user confidence. Providing a visual warning (e.g., color shift to 'text-blue-light') at 90% capacity (900 chars) prevents frustration near the submission limit.
 **Action:** Always implement a '#char-counter' for textareas with limits >= 500 characters, using the project-standard warning threshold logic.
+
+## 2025-05-27 - Accessible Character Counters
+**Learning:** For character counters to be truly accessible, they must be programmatically linked to the input via `aria-describedby` and use `aria-live="polite"` to announce updates to screen reader users without being intrusive.
+**Action:** Always link character counters to their associated inputs using `aria-describedby` and include `aria-live="polite"` on the counter element.
