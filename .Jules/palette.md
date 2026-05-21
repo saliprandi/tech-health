@@ -96,3 +96,7 @@
 ## 2025-05-26 - Contextual Feedback for Large Text Inputs
 **Learning:** For textareas with significant character limits (e.g., 1000 chars), a real-time counter is essential for user confidence. Providing a visual warning (e.g., color shift to 'text-blue-light') at 90% capacity (900 chars) prevents frustration near the submission limit.
 **Action:** Always implement a '#char-counter' for textareas with limits >= 500 characters, using the project-standard warning threshold logic.
+
+## 2025-05-27 - Immediate Feedback for Clipboard Operations
+**Learning:** When providing a "Copy to Clipboard" feature, immediate visual feedback (like changing the button text to "¡Copiado!") is crucial to confirm success, as the clipboard operation itself is invisible. This reduces double-clicks and uncertainty.
+**Action:** Always provide a 2-second visual confirmation state for all clipboard-copy interactions using the project's standard transition patterns.
