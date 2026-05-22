@@ -89,13 +89,11 @@ import { CONFIG } from '../data/config';
             <div class="flex flex-col gap-1.5">
               <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Nombre completo</label>
               <input type="text" id="f-nombre" name="nombre" placeholder="Ej: Dr. Juan Pérez" required maxlength="100" autocomplete="name" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full" />
-              <input type="text" id="f-nombre" name="nombre" required maxlength="100" autocomplete="name" placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full" />
             </div>
 
             <div class="flex flex-col gap-1.5">
               <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Teléfono / WhatsApp</label>
               <input type="tel" id="f-tel" name="telefono" placeholder="Ej: 381 123 4567" required maxlength="30" autocomplete="tel" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full" />
-              <input type="tel" id="f-tel" name="telefono" required maxlength="30" autocomplete="tel" placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full" />
             </div>
 
             <div class="flex flex-col gap-1.5">
@@ -114,13 +112,11 @@ import { CONFIG } from '../data/config';
             </div>
 
             <div class="flex flex-col gap-1.5 mb-2">
-              <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
               <div class="flex justify-between items-center">
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
-                <span id="char-counter" class="font-body text-[10px] text-white/40">0 / 1000</span>
-                <span id="char-counter" class="font-body text-[10px] text-white/40 tracking-tight">0 / 1000</span>
+                <span id="char-counter" class="font-body text-[10px] text-white/40 tracking-tight" aria-live="polite">0 / 1000</span>
               </div>
-              <textarea id="f-desc" name="descripcion" rows="3" maxlength="1000" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full resize-none"></textarea>
+              <textarea id="f-desc" name="descripcion" rows="3" maxlength="1000" aria-describedby="char-counter" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full resize-none"></textarea>
             </div>
 
             <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 shadow-sm mt-2 active:scale-[0.98]">
@@ -139,48 +135,7 @@ import { CONFIG } from '../data/config';
   </div>
 </section>
 
-<script define:vars={{ whatsapp: CONFIG.contacto.whatsapp }}>
-  (function() {
-    const whatsappNumber = whatsapp;
-    
-    document.addEventListener('DOMContentLoaded', () => {
-      const form = document.getElementById('contact-form');
-      const btn = document.getElementById('f-submit');
-
-      if (form && btn) {
-        form.addEventListener('submit', (e) => {
-          e.preventDefault();
-
-          // Provide visual feedback
-          const originalText = btn.innerText;
-          btn.innerText = 'Redirigiendo...';
-          btn.disabled = true;
-          btn.classList.add('opacity-70', 'cursor-not-allowed');
-
-          const nombre = document.getElementById('f-nombre')?.value.trim() || 'No especificado';
-          const tel = document.getElementById('f-tel')?.value.trim() || 'No especificado';
-          const servicioel = document.getElementById('f-servicio');
-          const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
-          const desc = document.getElementById('f-desc')?.value.trim() || 'Sin detalles adicionales';
-
-          const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
-
-          const encodedMessage = encodeURIComponent(rawMessage);
-          const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-
-          window.open(url, '_blank');
-
-          // Reset button after a short delay
-          setTimeout(() => {
-            btn.innerText = originalText;
-            btn.disabled = false;
-            btn.classList.remove('opacity-70', 'cursor-not-allowed');
-          }, 2000);
-        });
-      }
-    });
-  })();
-<script define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
+<script is:inline define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('contact-form');
     const btn = document.getElementById('f-submit');
@@ -189,15 +144,6 @@ import { CONFIG } from '../data/config';
 
     if (textarea && counter) {
       textarea.addEventListener('input', () => {
-        const count = textarea.value.length;
-        counter.innerText = `${count} / 1000`;
-
-        if (count >= 900) {
-          counter.classList.add('text-blue-light');
-          counter.classList.remove('text-white/40');
-        } else {
-          counter.classList.remove('text-blue-light');
-          counter.classList.add('text-white/40');
         const len = textarea.value.length;
         counter.textContent = `${len} / 1000`;
         if (len >= 900) {
@@ -206,21 +152,6 @@ import { CONFIG } from '../data/config';
         } else {
           counter.classList.remove('text-blue-light');
           counter.classList.add('text-white/40');
-    const descArea = document.getElementById('f-desc');
-    const charCounter = document.getElementById('char-counter');
-
-    // Character counter logic
-    if (descArea && charCounter) {
-      descArea.addEventListener('input', () => {
-        const count = descArea.value.length;
-        charCounter.innerText = count + ' / 1000';
-
-        if (count >= 900) {
-          charCounter.classList.add('text-blue-light');
-          charCounter.classList.remove('text-white/40');
-        } else {
-          charCounter.classList.remove('text-blue-light');
-          charCounter.classList.add('text-white/40');
         }
       });
     }
@@ -234,44 +165,17 @@ import { CONFIG } from '../data/config';
         btn.disabled = true;
         btn.classList.add('opacity-70', 'cursor-not-allowed');
 
-        const nombre = (document.getElementById('f-nombre') as HTMLInputElement)?.value.trim() || 'No especificado';
-        const tel = (document.getElementById('f-tel') as HTMLInputElement)?.value.trim() || 'No especificado';
-        const servicioEl = document.getElementById('f-servicio') as HTMLSelectElement;
+        const nombre = (document.getElementById('f-nombre'))?.value.trim() || 'No especificado';
+        const tel = (document.getElementById('f-tel'))?.value.trim() || 'No especificado';
+        const servicioEl = document.getElementById('f-servicio');
         const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
         const desc = textarea?.value.trim() || 'Sin detalles adicionales';
-        const nombre = document.getElementById('f-nombre')?.value.trim() || 'No especificado';
-        const tel = document.getElementById('f-tel')?.value.trim() || 'No especificado';
-        const servicioel = document.getElementById('f-servicio');
-        const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
-        const desc = descArea?.value.trim() || 'Sin detalles adicionales';
-        const desc = (document.getElementById('f-desc') as HTMLTextAreaElement)?.value.trim() || 'Sin detalles adicionales';
-        const desc = textarea?.value.trim() || 'Sin detalles adicionales';
-        const nombre = document.getElementById('f-nombre').value.trim() || 'No especificado';
-        const tel = document.getElementById('f-tel').value.trim() || 'No especificado';
-        const servicioel = document.getElementById('f-servicio');
-        const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
-        const desc = descArea ? descArea.value.trim() : 'Sin detalles adicionales';
 
-        const rawMessage = 'Hola TechHealth! Me comunico desde su web.\n*Nombre:* ' + nombre + '\n*Teléfono:* ' + tel + '\n*Servicio:* ' + servicio + '\n*Detalle:* ' + desc;
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
         
         const encodedMessage = encodeURIComponent(rawMessage);
-        const url = 'https://wa.me/' + whatsappNumber + '?text=' + encodedMessage;
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-        // Open WhatsApp
-        window.open(url, '_blank');
-
-        window.open(url, '_blank');
-
-        
-        window.open(url, '_blank');
-
-        // Reset button after a short delay
-
-        // Open WhatsApp
-        window.open(url, '_blank');
-
-        // Reset button after a delay
         window.open(url, '_blank');
 
         setTimeout(() => {
