@@ -96,3 +96,7 @@
 ## 2025-05-26 - Contextual Feedback for Large Text Inputs
 **Learning:** For textareas with significant character limits (e.g., 1000 chars), a real-time counter is essential for user confidence. Providing a visual warning (e.g., color shift to 'text-blue-light') at 90% capacity (900 chars) prevents frustration near the submission limit.
 **Action:** Always implement a '#char-counter' for textareas with limits >= 500 characters, using the project-standard warning threshold logic.
+
+## 2026-05-23 - [Integrity as a UX Prerequisite and Contextual Feedback]
+**Learning:** Found that severe component duplication and syntax corruption (e.g., nested tags and redeclared variables) were critical UX blockers. Real-time feedback for input limits and "Click to Copy" functionality significantly improve user confidence and convenience in mobile-first redirection flows.
+**Action:** Always perform a structural audit to ensure 1:1 mapping between DOM elements and actions. Implement '#char-counter' with visual warning thresholds for large textareas and provide immediate visual confirmation ('¡Copiado!') for clipboard actions. Avoid TypeScript assertions in Astro client-side scripts to prevent runtime SyntaxErrors.
