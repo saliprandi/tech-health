@@ -96,3 +96,7 @@
 ## 2025-05-26 - Contextual Feedback for Large Text Inputs
 **Learning:** For textareas with significant character limits (e.g., 1000 chars), a real-time counter is essential for user confidence. Providing a visual warning (e.g., color shift to 'text-blue-light') at 90% capacity (900 chars) prevents frustration near the submission limit.
 **Action:** Always implement a '#char-counter' for textareas with limits >= 500 characters, using the project-standard warning threshold logic.
+
+## 2026-05-23 - Visual Feedback and Semantic Accessibility in Equipment Lists
+**Learning:** Large grids of informational items (like the equipment list) benefit significantly from subtle visual feedback such as 'hover:scale-[1.02]' and 'transition-all', which provide "delight" without distracting the user. Furthermore, converting generic 'div' grids to semantic 'ul' and 'li' structures, while using 'aria-hidden="true"' for decorative icons, ensures a superior experience for screen reader users and maintains document structure.
+**Action:** Prefer semantic lists for grids of similar items and always pair visual transitions with proper ARIA attributes to ensure accessibility and polish.
