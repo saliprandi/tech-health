@@ -81,7 +81,7 @@
 **Action:** Always include 'aria-label' on icon-only links and use 'IntersectionObserver' with appropriate 'rootMargin' to provide visual feedback for current section navigation. Ensure '.nav-link' class is applied to both desktop and mobile menus for consistency.
 ## 2025-05-25 - Enhanced Navigation Accessibility and Orientation
 **Learning:** For single-page applications with sticky headers, `scroll-padding-top` is essential for proper visual orientation when navigating via anchor links. Additionally, providing feedback on the user's current location via ScrollSpy (using `aria-current="location"`) and ensuring consistent `focus-visible` rings across all navigation paths (including social icons) significantly improves the experience for keyboard and screen reader users.
-**Action:** Implement `scroll-padding-top` on the HTML element for sticky headers. Use `IntersectionObserver` for performant ScrollSpy feedback and apply project-standard `focus-visible` rings to all interactive elements.
+**Action:** Implement `scroll-padding-top` on the HTML element for sticky headers. Use `IntersectionObserver` for performant ScrollSpy feedback and apply project-standard `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2` rings to all interactive elements.
 ## 2025-05-25 - Navigation and Footer accessibility enhancements
 **Learning:** For navigation and footer elements on dark backgrounds (like the 'navy-dark' footer), it is essential to use a matching 'ring-offset' (e.g., 'focus-visible:ring-offset-navy-dark') to ensure the focus indicator is clearly visible. Additionally, mobile menus MUST include an 'Escape' key listener to allow keyboard users to dismiss them easily, returning focus to the trigger button.
 **Action:** Always implement 'Escape' key listeners for modal-like overlays (menus, dialogs) and adjust focus ring offsets based on the background color of the container.
@@ -96,3 +96,7 @@
 ## 2025-05-26 - Contextual Feedback for Large Text Inputs
 **Learning:** For textareas with significant character limits (e.g., 1000 chars), a real-time counter is essential for user confidence. Providing a visual warning (e.g., color shift to 'text-blue-light') at 90% capacity (900 chars) prevents frustration near the submission limit.
 **Action:** Always implement a '#char-counter' for textareas with limits >= 500 characters, using the project-standard warning threshold logic.
+
+## 2025-05-26 - Accessible Character Counters and Script Scoping
+**Learning:** To make character counters accessible, use 'aria-live="polite"' and 'aria-atomic="true"' on the counter element, and link it to the input via 'aria-describedby'. Additionally, in Astro client-side scripts, ensure all helper functions (like 'escapeHtml') are defined within the same scope where they are called to avoid runtime 'ReferenceError' exceptions.
+**Action:** Implement robust ARIA associations for real-time feedback elements and strictly manage function scoping in Astro component scripts.

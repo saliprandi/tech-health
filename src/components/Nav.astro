@@ -1,16 +1,19 @@
 ---
 import { CONFIG } from '../data/config';
+
+const navItems = [
+  { id: 'servicios', label: 'Servicios' },
+  { id: 'equipos', label: 'Equipos' },
+  { id: 'nosotros', label: 'Nosotros' },
+  { id: 'contacto', label: 'Contacto' }
+];
 ---
 
 <nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
-    <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
     <!-- Logo -->
-    <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE -->
-    <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE
-         This is the primary branding and navigation element to the home page. -->
-    <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label="Inicio de TechHealth">
+    <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
       <img
         src="/logo-name.svg"
         alt={`${CONFIG.empresa.nombre} ${CONFIG.empresa.subtitulo}`}
@@ -22,26 +25,15 @@ import { CONFIG } from '../data/config';
       />
     </a>
 
+    <!-- Desktop Menu -->
     <ul class="hidden md:flex items-center gap-8">
-      {['servicios', 'equipos', 'nosotros', 'contacto'].map(id => (
+      {navItems.map(item => (
         <li>
-          <a href={`#${id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5 capitalize">
-            {id}
+          <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">
+            {item.label}
           </a>
         </li>
       ))}
-      <li><a href="#servicios" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors px-1 py-0.5">Servicios</a></li>
-      <li><a href="#equipos" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors px-1 py-0.5">Equipos</a></li>
-      <li><a href="#nosotros" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors px-1 py-0.5">Nosotros</a></li>
-      <li><a href="#contacto" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors px-1 py-0.5">Contacto</a></li>
-      <li><a href="#servicios" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Servicios</a></li>
-      <li><a href="#equipos" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Equipos</a></li>
-      <li><a href="#nosotros" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Nosotros</a></li>
-      <li><a href="#contacto" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Contacto</a></li>
-      <li><a href="#servicios" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">Servicios</a></li>
-      <li><a href="#equipos" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">Equipos</a></li>
-      <li><a href="#nosotros" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">Nosotros</a></li>
-      <li><a href="#contacto" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">Contacto</a></li>
     </ul>
 
     <div class="flex items-center gap-4">
@@ -49,7 +41,6 @@ import { CONFIG } from '../data/config';
         Consultar por WhatsApp
       </a>
 
-      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-sm transition-shadow z-[101]" aria-label="Menú" aria-expanded="false" aria-controls="mobile-menu">
       <!-- Hamburger Button -->
       <button
         id="menu-toggle"
@@ -65,25 +56,11 @@ import { CONFIG } from '../data/config';
     </div>
   </div>
 
+  <!-- Mobile Menu -->
   <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
-    {['servicios', 'equipos', 'nosotros', 'contacto'].map(id => (
-      <a href={`#${id}`} class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors capitalize">{id}</a>
+    {navItems.map(item => (
+      <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">{item.label}</a>
     ))}
-    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
-    <a href="#servicios" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">Servicios</a>
-    <a href="#equipos" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">Equipos</a>
-    <a href="#nosotros" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">Nosotros</a>
-    <a href="#contacto" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">Contacto</a>
-    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
-    <a href="#servicios" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Servicios</a>
-    <a href="#equipos" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Equipos</a>
-    <a href="#nosotros" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Nosotros</a>
-    <a href="#contacto" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Contacto</a>
-    <a href="#servicios" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Servicios</a>
-    <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Equipos</a>
-    <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Nosotros</a>
-    <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Contacto</a>
-    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="whatsapp-mobile-link mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
     <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} id="whatsapp-mobile-link" target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
       Consultar por WhatsApp
     </a>
@@ -99,56 +76,25 @@ import { CONFIG } from '../data/config';
     const toggle = document.getElementById('menu-toggle');
     const menu = document.getElementById('mobile-menu');
     const navLinks = document.querySelectorAll('.nav-link');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+    const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const spans = toggle?.querySelectorAll('span');
     let isOpen = false;
 
     const toggleMenu = () => {
       isOpen = !isOpen;
-    const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
-
-    let isOpen = false;
-
-    // ScrollSpy Implementation
-    const observerOptions = {
-      root: null,
-      rootMargin: '-20% 0px -70% 0px',
-      threshold: 0
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
-          navLinks.forEach(link => {
-            const href = link.getAttribute('href');
-            if (href === `#${id}`) {
-              link.classList.add('nav-link-active');
-              link.setAttribute('aria-current', 'location');
-            } else {
-              link.classList.remove('nav-link-active');
-              link.removeAttribute('aria-current');
-            }
-          });
-        }
-      });
-    }, observerOptions);
-
-    const sections = document.querySelectorAll('section[id]');
-    sections.forEach(section => observer.observe(section));
-
-    const toggleMenu = () => {
-      isOpen = !isOpen;
-
-    const toggleMenu = () => {
-      isOpen = !isOpen;
       toggle?.setAttribute('aria-expanded', isOpen.toString());
       menu?.setAttribute('aria-hidden', (!isOpen).toString());
-      menu?.classList.toggle('opacity-0', !isOpen);
-      menu?.classList.toggle('pointer-events-none', !isOpen);
-      menu?.classList.toggle('translate-y-[-10px]', !isOpen);
-      menu?.classList.toggle('opacity-100', isOpen);
-      menu?.classList.toggle('pointer-events-auto', isOpen);
-      menu?.classList.toggle('translate-y-0', isOpen);
+
+      if (menu) {
+        menu.classList.toggle('opacity-0', !isOpen);
+        menu.classList.toggle('pointer-events-none', !isOpen);
+        menu.classList.toggle('translate-y-[-10px]', !isOpen);
+        menu.classList.toggle('opacity-100', isOpen);
+        menu.classList.toggle('pointer-events-auto', isOpen);
+        menu.classList.toggle('translate-y-0', isOpen);
+      }
+
       if (spans?.length === 3) {
         spans[0].classList.toggle('rotate-45', isOpen);
         spans[0].classList.toggle('translate-y-[8px]', isOpen);
@@ -156,21 +102,15 @@ import { CONFIG } from '../data/config';
         spans[2].classList.toggle('-rotate-45', isOpen);
         spans[2].classList.toggle('-translate-y-[8px]', isOpen);
       }
+
+      if (isOpen) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
     };
 
     toggle?.addEventListener('click', toggleMenu);
-    document.querySelectorAll('.mobile-link').forEach(link => link.addEventListener('click', () => isOpen && toggleMenu()));
-    document.addEventListener('keydown', (e) => e.key === 'Escape' && isOpen && (toggleMenu() || (toggle as HTMLElement)?.focus()));
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
-          navLinks.forEach(link => {
-            const isActive = link.getAttribute('href') === `#${id}`;
-            link.classList.toggle('nav-link-active', isActive);
-            isActive ? link.setAttribute('aria-current', 'location') : link.removeAttribute('aria-current');
-          });
 
     mobileLinks.forEach(link => {
       link.addEventListener('click', () => {
@@ -178,41 +118,15 @@ import { CONFIG } from '../data/config';
       });
     });
 
-    // Keyboard handling: Focus trapping & Escape key
-    // ScrollSpy implementation
-    // ScrollSpy Implementation
-    const sections = ['servicios', 'equipos', 'nosotros', 'contacto'];
-    const sectionElements = sections.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
-    // Close on Escape
-    // Close on Escape key
+    // Keyboard handling: Escape key and Focus trapping
     document.addEventListener('keydown', (e) => {
       if (!isOpen) return;
 
       if (e.key === 'Escape') {
         toggleMenu();
-        toggle?.focus();
+        (toggle as HTMLElement)?.focus();
         return;
       }
-
-      if (e.key === 'Tab') {
-        if (e.shiftKey) { // Shift + Tab
-          if (document.activeElement === toggle) {
-            e.preventDefault();
-            whatsappMobileLink?.focus();
-      if (isOpen && e.key === 'Tab') {
-        if (e.shiftKey) { // Shift + Tab
-          if (document.activeElement === toggle) {
-            e.preventDefault();
-            (whatsappMobileLink as HTMLElement)?.focus();
-          }
-        } else { // Tab
-          if (document.activeElement === whatsappMobileLink) {
-            e.preventDefault();
-            toggle?.focus();
-          }
-        }
-      }
-    });
 
       if (e.key === 'Tab') {
         const focusableElements = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean) as HTMLElement[];
@@ -233,25 +147,6 @@ import { CONFIG } from '../data/config';
       }
     });
 
-    // Keyboard handling: Focus trapping
-    document.addEventListener('keydown', (e) => {
-      if (!isOpen) return;
-
-      if (e.key === 'Tab') {
-        if (e.shiftKey) { // Shift + Tab
-          if (document.activeElement === toggle) {
-            e.preventDefault();
-            (whatsappMobileLink as HTMLElement)?.focus();
-          }
-        } else { // Tab
-          if (document.activeElement === whatsappMobileLink) {
-            e.preventDefault();
-            toggle?.focus();
-          }
-        }
-      }
-    });
-
     // ScrollSpy Implementation
     const observerOptions = {
       root: null,
@@ -259,21 +154,15 @@ import { CONFIG } from '../data/config';
       threshold: 0
     };
 
-    const observerCallback = (entries) => {
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+    const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
           navLinks.forEach(link => {
-            const isActive = link.getAttribute('href') === '#' + id;
+            const href = link.getAttribute('href');
+            const isActive = href === `#${id}`;
             link.classList.toggle('nav-link-active', isActive);
             if (isActive) {
-              link.classList.add('nav-link-active');
-            } else {
-              link.classList.remove('nav-link-active');
-            }
-          });
-        }
               link.setAttribute('aria-current', 'location');
             } else {
               link.removeAttribute('aria-current');
@@ -281,108 +170,16 @@ import { CONFIG } from '../data/config';
           });
         }
       });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-    ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
-      const section = document.getElementById(id);
-      if (section) observer.observe(section);
-    sectionElements.forEach(section => observer.observe(section));
-
-    // Reset ScrollSpy when clicking logo
-    // Reset ScrollSpy when clicking logo/home
-    document.querySelector('a[aria-label="Inicio de TechHealth"]')?.addEventListener('click', () => {
-      navLinks.forEach(link => {
-        link.classList.remove('nav-link-active');
-        link.removeAttribute('aria-current');
-      });
-    const sectionIds = ['servicios', 'equipos', 'nosotros', 'contacto'];
-    sectionIds.forEach(id => {
-
-    // Sections to observe
-    ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
-      const section = document.getElementById(id);
-      if (section) observer.observe(section);
-    ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    // Keyboard handling: Focus trapping & Escape key
-    document.addEventListener('keydown', (e) => {
-      if (!isOpen) return;
-
-      if (e.key === 'Escape') {
-        toggleMenu();
-        toggle?.focus();
-        return;
-      }
-
-      if (e.key === 'Tab') {
-        if (e.shiftKey) { // Shift + Tab
-          if (document.activeElement === toggle) {
-            e.preventDefault();
-            (whatsappMobileLink as HTMLElement)?.focus();
-          }
-        } else { // Tab
-          if (document.activeElement === whatsappMobileLink) {
-            e.preventDefault();
-            toggle?.focus();
-          }
-        }
-      }
-    });
     }, observerOptions);
-
-    sections.forEach(section => {
-      observer.observe(section);
-    });
-
-    // Reset ScrollSpy when clicking logo
-    document.querySelector('a[aria-label="Inicio de TechHealth"]')?.addEventListener('click', () => {
-      navLinks.forEach(link => {
-        link.classList.remove('nav-link-active');
-        link.removeAttribute('aria-current');
-      });
-    }, { rootMargin: '-20% 0px -70% 0px' });
 
     document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
 
-    menu?.addEventListener('keydown', (e: any) => {
-      if (!isOpen || e.key !== 'Tab') return;
-      const focusable = Array.from(menu.querySelectorAll('a, button'));
-      const first = toggle, last = focusable[focusable.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); (last as HTMLElement).focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
-    });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-    sectionElements.forEach(section => {
-      if (section) observer.observe(section);
-    });
-
-    // Close on Escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen) {
-        toggleMenu();
-        toggle?.focus();
-      }
-    });
-    sectionElements.forEach(section => observer.observe(section));
-
-    // Reset ScrollSpy when clicking logo/home
-    document.querySelector('a[aria-label="Inicio de TechHealth"]')?.addEventListener('click', () => {
+    // Reset ScrollSpy when clicking logo
+    document.querySelector('a[aria-label^="Inicio de"]')?.addEventListener('click', () => {
       navLinks.forEach(link => {
         link.classList.remove('nav-link-active');
         link.removeAttribute('aria-current');
       });
-    });
-
-    // Sections to observe
-    ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
-      const section = document.getElementById(id);
-      if (section) observer.observe(section);
     });
   });
 </script>
