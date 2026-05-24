@@ -19,3 +19,7 @@
 ## 2026-05-17 - [Critical Component Deduplication]
 **Learning:** Massive code duplication in Astro components (Nav, Contacto, Servicios) caused build failures and significantly bloated the HTML payload. Deduplicating these components not only fixed the build but also reduced the final index.html size by ~5KB (~8%).
 **Action:** Always check for redundant HTML and script blocks after complex merges or migrations to ensure payload efficiency and build stability.
+
+## 2026-05-18 - [Surgical Stabilization of Build Blockers]
+**Learning:** Massive literal duplication of script blocks and HTML in Astro components (Nav, Footer, Contacto) can lead to obscure build-time errors like 'Unexpected )' or 'Cannot find name e'. Deduplicating these blocks not only restores build stability but can also reduce the HTML payload by ~25%.
+**Action:** Prioritize surgical deduplication of core components to ensure build integrity before implementing further optimizations.
