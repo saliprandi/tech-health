@@ -21,3 +21,8 @@
 **Vulnerability:** Syntax errors in `package.json` prevented automated security audits (`pnpm audit`) from running, potentially hiding critical vulnerabilities.
 **Learning:** Security tools often fail silently or are skipped when core configuration files are malformed. A broken build/audit pipeline is a security risk as it blindfolds the development team.
 **Prevention:** Ensure `package.json` integrity is part of the CI/CD pipeline. Never ignore audit failures caused by environment or syntax issues.
+
+## 2025-05-27 - CSP Hardening and Manifest Consolidation
+**Vulnerability:** Duplicate manifest keys and non-functional security meta tags.
+**Learning:** `Permissions-Policy` is non-functional in `<meta>` tags and must be set via HTTP headers. Duplicate `pnpm` keys in `package.json` can lead to overrides being ignored.
+**Prevention:** Consolidate all dependency overrides into a single `pnpm` object. Use `upgrade-insecure-requests` in CSP to ensure all content is served over HTTPS.
