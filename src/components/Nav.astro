@@ -16,6 +16,7 @@ const navItems = [
     <!-- Logo -->
     <!-- Logo -->
     <!-- Logo -->
+    <!-- Logo -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
     <!-- Logo -->
     <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE -->
@@ -166,6 +167,18 @@ const navItems = [
       });
     });
 
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+        (toggle as HTMLElement | null)?.focus();
+      }
+    });
+
+    // Mobile menu focus trap
+    document.addEventListener('keydown', (e) => {
+      if (!isOpen) return;
+
     // Keyboard handling
     // Keyboard handling: Escape key & Focus trap
     // Keyboard handling: Focus trapping & Escape key
@@ -263,6 +276,11 @@ const navItems = [
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
+      const section = document.getElementById(id);
+      if (section) observer.observe(section);
+    });
+
+    // Reset ScrollSpy when clicking logo
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });

@@ -53,6 +53,7 @@ const modalData = CONFIG.servicios.map(s => ({
           <!-- Icon -->
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale text-blue flex items-center justify-center mb-6 text-blue">
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
+            <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
             <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
               <use href={getIconId(servicio.icono)} />
@@ -150,6 +151,25 @@ const modalData = CONFIG.servicios.map(s => ({
         triggerElement = element;
         triggerElement.setAttribute('aria-expanded', 'true');
 
+        modalContent.innerHTML = `
+          <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
+            <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
+              <use href="#icon-${escapeHtml(servicio.icono)}" />
+            </svg>
+          </div>
+          <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
+          <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
+
+          <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
+          <ul class="flex flex-col gap-4">
+            ${servicio.items.map(item => `
+              <li class="flex items-start gap-4 font-body text-[15px] text-text-soft">
+                <span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>
+                ${escapeHtml(item)}
+              </li>
+            `).join('')}
+          </ul>
+        `;
         if (modalContent) {
           modalContent.innerHTML = `
             <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
@@ -182,6 +202,7 @@ const modalData = CONFIG.servicios.map(s => ({
         isModalOpen = true;
 
         setTimeout(() => {
+          closeBtn.focus();
           if (closeBtn && 'focus' in closeBtn) closeBtn.focus();
           (closeBtn || modal.querySelector('button'))?.focus();
         }, 50);
