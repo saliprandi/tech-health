@@ -13,6 +13,7 @@ const navItems = [
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
     <!-- Logo -->
+    <!-- Logo -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
     <!-- Logo -->
     <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE -->
@@ -96,6 +97,9 @@ const navItems = [
     const mobileLinks = document.querySelectorAll('.mobile-link');
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const spans = toggle?.querySelectorAll('span');
+
+    let isOpen = false;
+
     let isOpen = false;
 
     const toggleMenu = () => {
@@ -131,6 +135,7 @@ const navItems = [
       });
     });
 
+    // Keyboard handling: Escape key & Focus trap
     // Keyboard handling: Focus trapping & Escape key
     document.addEventListener('keydown', (e) => {
       if (!isOpen) return;
@@ -188,6 +193,7 @@ const navItems = [
       threshold: 0
     };
 
+    const observer = new IntersectionObserver((entries) => {
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -206,6 +212,8 @@ const navItems = [
           });
         }
       });
+    }, observerOptions);
+
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
@@ -287,31 +295,8 @@ const navItems = [
     });
     document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
 
-    menu?.addEventListener('keydown', (e: any) => {
-      if (!isOpen || e.key !== 'Tab') return;
-      const focusable = Array.from(menu.querySelectorAll('a, button'));
-      const first = toggle, last = focusable[focusable.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); (last as HTMLElement).focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
-    });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-    sectionElements.forEach(section => {
-      if (section) observer.observe(section);
-    });
-
-    // Close on Escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen) {
-        toggleMenu();
-        toggle?.focus();
-      }
-    });
-    sectionElements.forEach(section => observer.observe(section));
-
-    // Reset ScrollSpy when clicking logo/home
-    document.querySelector('a[aria-label="Inicio de TechHealth"]')?.addEventListener('click', () => {
+    // Reset ScrollSpy when clicking logo
+    document.querySelector('a[aria-label^="Inicio de"]')?.addEventListener('click', () => {
       navLinks.forEach(link => {
         link.classList.remove('nav-link-active');
         link.removeAttribute('aria-current');

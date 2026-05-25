@@ -43,6 +43,7 @@ const modalData = CONFIG.servicios.map(s => ({
           tabindex="0"
           aria-haspopup="dialog"
           aria-expanded="false"
+          aria-label={`Ver detalles sobre ${servicio.titulo}`}
           aria-label={`Ver detalles de ${servicio.titulo}`}
         >
           
@@ -53,6 +54,7 @@ const modalData = CONFIG.servicios.map(s => ({
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale text-blue flex items-center justify-center mb-6 text-blue">
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
+              <use href={getIconId(servicio.icono)} />
               <use href={`#icon-${servicio.icono}`} />
             </svg>
           </div>
@@ -201,6 +203,9 @@ const modalData = CONFIG.servicios.map(s => ({
 
       cards.forEach(card => {
         const index = card.getAttribute('data-index');
+        if (index === null) return;
+
+        const handleOpen = () => openModal(parseInt(index), card);
         const handleOpen = () => openModal(parseInt(index || '0'), card);
 
         card.addEventListener('click', handleOpen);
@@ -210,6 +215,8 @@ const modalData = CONFIG.servicios.map(s => ({
             handleOpen();
           }
         });
+      });
+
       });
 
     const openModal = (index, trigger) => {
@@ -318,11 +325,14 @@ const modalData = CONFIG.servicios.map(s => ({
       closeBtn?.addEventListener('click', closeModal);
 
       document.addEventListener('keydown', (e) => {
+        if (!isModalOpen) return;
+
         if (!isModalOpen || !modal) return;
         if (e.key === 'Escape') {
           closeModal();
           return;
         }
+
         if (e.key === 'Tab') {
           const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
           if (focusableElements.length === 0) return;
