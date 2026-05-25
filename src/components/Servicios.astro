@@ -2,7 +2,6 @@
 import { CONFIG } from '../data/config';
 
 // Optimization: Only pass the minimal data needed for the client-side modal
-// to reduce the HTML payload size.
 const modalData = CONFIG.servicios.map(s => ({
   titulo: s.titulo,
   descripcion: s.descripcion,
@@ -31,6 +30,7 @@ const modalData = CONFIG.servicios.map(s => ({
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
         <div
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer overflow-hidden"
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 overflow-hidden cursor-pointer"
           data-index={index}
           role="button"
@@ -50,6 +50,7 @@ const modalData = CONFIG.servicios.map(s => ({
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-500 ease-out"></div>
           
           <!-- Icon -->
+          <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale text-blue flex items-center justify-center mb-6 text-blue">
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
               <use href={`#icon-${servicio.icono}`} />
@@ -168,11 +169,12 @@ const modalData = CONFIG.servicios.map(s => ({
 
         backdrop.classList.remove('opacity-0', 'pointer-events-none');
         modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
-        modal.classList.add('scale-100');
+        modal.classList.add('scale-100', 'opacity-100', 'pointer-events-auto');
         document.body.style.overflow = 'hidden';
         isModalOpen = true;
 
         setTimeout(() => {
+          if (closeBtn && 'focus' in closeBtn) closeBtn.focus();
           (closeBtn || modal.querySelector('button'))?.focus();
         }, 50);
       };
@@ -181,14 +183,14 @@ const modalData = CONFIG.servicios.map(s => ({
         if (!isModalOpen || !backdrop || !modal) return;
         
         backdrop.classList.add('opacity-0', 'pointer-events-none');
-        modal.classList.remove('scale-100');
+        modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
         modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
         document.body.style.overflow = '';
         isModalOpen = false;
 
         if (triggerElement) {
           triggerElement.setAttribute('aria-expanded', 'false');
-          triggerElement.focus();
+          if ('focus' in triggerElement) triggerElement.focus();
           triggerElement = null;
         }
 
@@ -208,6 +210,8 @@ const modalData = CONFIG.servicios.map(s => ({
             handleOpen();
           }
         });
+      });
+
     const openModal = (index, trigger) => {
       const servicio = services[index];
       if (!servicio) return;
@@ -326,15 +330,15 @@ const modalData = CONFIG.servicios.map(s => ({
           const firstElement = focusableElements[0];
           const lastElement = focusableElements[focusableElements.length - 1];
 
-          if (e.shiftKey) {
+          if (e.shiftKey) { // Shift + Tab
             if (document.activeElement === firstElement) {
               e.preventDefault();
-              lastElement.focus();
+              if (lastElement && 'focus' in lastElement) lastElement.focus();
             }
-          } else {
+          } else { // Tab
             if (document.activeElement === lastElement) {
               e.preventDefault();
-              firstElement.focus();
+              if (firstElement && 'focus' in firstElement) firstElement.focus();
             }
     backdrop?.addEventListener('click', closeModal);
     closeBtn?.addEventListener('click', closeModal);

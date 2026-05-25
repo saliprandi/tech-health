@@ -2,6 +2,10 @@
 import { CONFIG } from '../data/config';
 
 const year = new Date().getFullYear();
+const hasSocials = !!(CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.redes.linkedin);
+
+type SocialKey = 'instagram' | 'facebook' | 'linkedin';
+const socialKeys: SocialKey[] = ['instagram', 'facebook', 'linkedin'];
 
 type SocialKey = 'instagram' | 'facebook' | 'linkedin';
 const socialLinks: { name: SocialKey; label: string }[] = [
@@ -17,6 +21,7 @@ const hasSocials = socialLinks.some(social => !!CONFIG.redes[social.name]);
   <div class="container-custom flex flex-col items-center">
     
     <div class="mb-8">
+      <!-- Interactive 'Back to top' link -->
       <a href="#hero" class="inline-block group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-shadow" aria-label="Volver al inicio">
         <img
           src="/logo-name.svg"
@@ -40,6 +45,7 @@ const hasSocials = socialLinks.some(social => !!CONFIG.redes[social.name]);
 
     {hasSocials && (
       <div class="flex items-center gap-4 mb-6">
+        {socialKeys.map(social => CONFIG.redes[social] && (
         {['instagram', 'facebook', 'linkedin'].map(social => CONFIG.redes[social as keyof typeof CONFIG.redes] && (
         {socialLinks.map(social => CONFIG.redes[social.name] && (
         {['instagram', 'facebook', 'linkedin'].map(social => CONFIG.redes[social] && (
@@ -71,6 +77,7 @@ const hasSocials = socialLinks.some(social => !!CONFIG.redes[social.name]);
             href={CONFIG.redes[social]}
             target="_blank"
             rel="noopener noreferrer"
+            class="text-white/50 hover:text-white focus-visible:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1"
             class="text-white/50 hover:text-white transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark focus-visible:text-white rounded-full p-1"
             aria-label="Seguir en Facebook"
           >
