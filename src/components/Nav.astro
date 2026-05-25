@@ -15,6 +15,7 @@ const navItems = [
     <!-- Logo -->
     <!-- Logo -->
     <!-- Logo -->
+    <!-- Logo -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
     <!-- Logo -->
     <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE -->
@@ -37,6 +38,7 @@ const navItems = [
     <ul class="hidden md:flex items-center gap-8">
       {navItems.map(item => (
         <li>
+          <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5 capitalize">
           <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">
             {item.label}
           </a>
@@ -45,6 +47,11 @@ const navItems = [
     </ul>
 
     <div class="flex items-center gap-4">
+      <!-- Desktop WhatsApp Link -->
+      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors shadow-sm hover:shadow-md">
+        Consultar por WhatsApp
+      </a>
+
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors shadow-sm hover:shadow-md">
         Consultar por WhatsApp
       </a>
@@ -69,6 +76,9 @@ const navItems = [
   </div>
 
   <!-- Mobile Menu -->
+  <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
+    {navItems.map(item => (
+      <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors capitalize">
   <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-8 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
     <a href="#servicios" class="nav-link mobile-link font-body font-medium text-[18px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Servicios</a>
     <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[18px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Equipos</a>
@@ -101,6 +111,8 @@ const navItems = [
     const spans = toggle?.querySelectorAll('span');
     let isOpen = false;
 
+    let isOpen = false;
+
 
     let isOpen = false;
 
@@ -114,6 +126,14 @@ const navItems = [
       toggle?.setAttribute('aria-expanded', isOpen.toString());
       menu?.setAttribute('aria-hidden', (!isOpen).toString());
 
+      if (menu) {
+        menu.classList.toggle('opacity-0', !isOpen);
+        menu.classList.toggle('pointer-events-none', !isOpen);
+        menu.classList.toggle('translate-y-[-10px]', !isOpen);
+        menu.classList.toggle('opacity-100', isOpen);
+        menu.classList.toggle('pointer-events-auto', isOpen);
+        menu.classList.toggle('translate-y-0', isOpen);
+      }
       if (isOpen) {
         menu?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
         menu?.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
@@ -248,6 +268,8 @@ const navItems = [
     });
 
     // Reset ScrollSpy when clicking logo
+
+    // Reset ScrollSpy when clicking logo
     document.querySelector('a[aria-label^="Inicio de"]')?.addEventListener('click', () => {
     const sections = document.querySelectorAll('section[id]');
     sections.forEach(section => observer.observe(section));
@@ -286,11 +308,17 @@ const navItems = [
         if (e.shiftKey) { // Shift + Tab
           if (document.activeElement === firstElement) {
             e.preventDefault();
+            lastElement?.focus();
             if (lastElement) lastElement.focus();
           }
         } else { // Tab
           if (document.activeElement === lastElement) {
             e.preventDefault();
+            firstElement?.focus();
+          }
+        }
+      }
+    });
             if (firstElement) firstElement.focus();
           }
         }
