@@ -43,23 +43,182 @@ import { CONFIG } from '../data/config';
               </svg>
               <span class="sr-only">Copiar</span>
             </button>
+          <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
+            <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" aria-label="Llamar o enviar mensaje por WhatsApp">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.48-4.18-7.076-7.075l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+              </svg>
+            </a>
+            <div class="flex-grow">
+              <div class="font-heading font-bold text-[16px] text-navy mb-1">WhatsApp / Teléfono</div>
+              <div class="flex items-center gap-3">
+                <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.whatsapp_display}</div>
+                <button
+                  class="copy-btn flex items-center gap-1.5 px-2 py-1 rounded-md bg-blue-pale/50 text-blue font-body text-[11px] font-medium hover:bg-blue hover:text-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue"
+                  data-copy={CONFIG.contacto.whatsapp}
+                  aria-label="Copiar número de WhatsApp"
+                >
+                  <svg class="w-3.5 h-3.5 copy-icon"><use href="#icon-copy" /></svg>
+                  <svg class="w-3.5 h-3.5 check-icon hidden"><use href="#icon-check" /></svg>
+                  <span class="copy-text">Copiar</span>
+                </button>
+          <!-- WhatsApp / Phone -->
+          <div class="relative group">
+            <div class="flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
+              <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" aria-label="Llamar o enviar WhatsApp">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.48-4.18-7.076-7.075l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                </svg>
+              </a>
+              <div class="flex-grow">
+                <div class="font-heading font-bold text-[16px] text-navy mb-1">WhatsApp / Teléfono</div>
+                <div class="font-body text-[14px] text-text-soft flex items-center gap-3">
+                  <span>{CONFIG.contacto.whatsapp_display}</span>
+                  <button
+                    class="copy-btn group/btn flex items-center gap-1.5 text-blue hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded px-1"
+                    data-copy={CONFIG.contacto.whatsapp}
+                    aria-label="Copiar número de WhatsApp"
+                  >
+                    <svg class="w-4 h-4 copy-icon"><use href="#icon-copy" /></svg>
+                    <svg class="w-4 h-4 check-icon hidden text-green-600"><use href="#icon-check" /></svg>
+                    <span class="text-[11px] font-bold uppercase tracking-wider btn-text">Copiar</span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- Location -->
-          <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" aria-label="Ver en Google Maps" class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2">
-            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-focus-visible:scale-110 transition-transform">
+          <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
+            <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" aria-label="Ver ubicación en Google Maps">
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
               </svg>
-            </div>
-            <div>
+            </a>
+            <div class="flex-grow">
               <div class="font-heading font-bold text-[16px] text-navy mb-1">Laboratorio</div>
               <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.direccion}</div>
-              <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.ciudad_completa}</div>
-              <div class="font-body font-medium text-[12px] text-blue mt-1 group-hover:underline">Abrir en Google Maps &rarr;</div>
+              <div class="font-body text-[14px] text-text-soft mb-1">{CONFIG.contacto.ciudad_completa}</div>
+              <div class="flex items-center gap-4 mt-2">
+                <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="font-body font-medium text-[12px] text-blue hover:underline">Abrir Maps &rarr;</a>
+                <button
+                  class="copy-btn flex items-center gap-1.5 px-2 py-1 rounded-md bg-blue-pale/50 text-blue font-body text-[11px] font-medium hover:bg-blue hover:text-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue"
+                  data-copy={`${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}
+                  aria-label="Copiar dirección"
+                >
+                  <svg class="w-3.5 h-3.5 copy-icon"><use href="#icon-copy" /></svg>
+                  <svg class="w-3.5 h-3.5 check-icon hidden"><use href="#icon-check" /></svg>
+                  <span class="copy-text">Copiar</span>
+                </button>
+              </div>
             </div>
-          </a>
+          </div>
+
+          <!-- Email (Conditional) -->
+          {CONFIG.contacto.email && (
+            <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
+              <a href={`mailto:${CONFIG.contacto.email}`} class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" aria-label="Enviar correo electrónico">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                </svg>
+              </a>
+              <div class="flex-grow">
+                <div class="font-heading font-bold text-[16px] text-navy mb-1">Correo Electrónico</div>
+                <div class="flex items-center gap-3">
+                  <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.email}</div>
+                  <button
+                    class="copy-btn flex items-center gap-1.5 px-2 py-1 rounded-md bg-blue-pale/50 text-blue font-body text-[11px] font-medium hover:bg-blue hover:text-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue"
+                    data-copy={CONFIG.contacto.email}
+                    aria-label="Copiar correo electrónico"
+                  >
+                    <svg class="w-3.5 h-3.5 copy-icon"><use href="#icon-copy" /></svg>
+                    <svg class="w-3.5 h-3.5 check-icon hidden"><use href="#icon-check" /></svg>
+                    <span class="copy-text">Copiar</span>
+                  </button>
+                </div>
+              </div>
+          <div class="relative group">
+            <div class="flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
+              <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" aria-label="Ver en Google Maps">
+          <!-- WhatsApp -->
+          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
+            <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="flex items-start gap-4 flex-grow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-lg">
+              <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.48-4.18-7.076-7.075l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                </svg>
+              </div>
+              <div>
+                <div class="font-heading font-bold text-[16px] text-navy mb-1">WhatsApp / Teléfono</div>
+                <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.whatsapp_display}</div>
+              </div>
+            </a>
+            <button class="copy-btn absolute top-4 right-4 p-2 rounded-md bg-blue-pale text-blue hover:bg-blue hover:text-white transition-all opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue" data-copy={CONFIG.contacto.whatsapp_display} aria-label="Copiar teléfono">
+              <svg class="w-4 h-4"><use href="#icon-copy" /></svg>
+            </button>
+          </div>
+
+          <!-- Location -->
+          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
+            <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" aria-label="Ver en Google Maps" class="flex items-start gap-4 flex-grow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-lg">
+              <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>
+              </a>
+              <div class="flex-grow">
+                <div class="font-heading font-bold text-[16px] text-navy mb-1">Laboratorio</div>
+                <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.direccion}</div>
+                <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.ciudad_completa}</div>
+                <div class="flex items-center gap-4 mt-1">
+                  <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="font-body font-medium text-[12px] text-blue hover:underline">Abrir en Google Maps &rarr;</a>
+                  <button
+                    class="copy-btn group/btn flex items-center gap-1.5 text-blue hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded px-1"
+                    data-copy={`${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}
+                    aria-label="Copiar dirección"
+                  >
+                    <svg class="w-3.5 h-3.5 copy-icon"><use href="#icon-copy" /></svg>
+                    <svg class="w-3.5 h-3.5 check-icon hidden text-green-600"><use href="#icon-check" /></svg>
+                    <span class="text-[11px] font-bold uppercase tracking-wider btn-text">Copiar</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+              </div>
+              <div>
+                <div class="font-heading font-bold text-[16px] text-navy mb-1">Laboratorio</div>
+                <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.direccion}</div>
+                <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.ciudad_completa}</div>
+                <div class="font-body font-medium text-[12px] text-blue mt-1 group-hover:underline">Abrir en Google Maps &rarr;</div>
+              </div>
+            </a>
+            <button class="copy-btn absolute top-4 right-4 p-2 rounded-md bg-blue-pale text-blue hover:bg-blue hover:text-white transition-all opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue" data-copy={`${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`} aria-label="Copiar dirección">
+              <svg class="w-4 h-4"><use href="#icon-copy" /></svg>
+            </button>
+          </div>
+
+          <!-- Email -->
+          {CONFIG.contacto.email && (
+            <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
+              <a href={`mailto:${CONFIG.contacto.email}`} class="flex items-start gap-4 flex-grow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-lg">
+                <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="font-heading font-bold text-[16px] text-navy mb-1">Correo Electrónico</div>
+                  <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.email}</div>
+                </div>
+              </a>
+              <button class="copy-btn absolute top-4 right-4 p-2 rounded-md bg-blue-pale text-blue hover:bg-blue hover:text-white transition-all opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue" data-copy={CONFIG.contacto.email} aria-label="Copiar correo electrónico">
+                <svg class="w-4 h-4"><use href="#icon-copy" /></svg>
+              </button>
+            </div>
+          )}
 
           <!-- Email -->
           {CONFIG.contacto.email && (
@@ -102,6 +261,34 @@ import { CONFIG } from '../data/config';
             </div>
           </div>
 
+          <!-- Email (Conditional) -->
+          {CONFIG.contacto.email && (
+            <div class="relative group">
+              <div class="flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
+                <a href={`mailto:${CONFIG.contacto.email}`} class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" aria-label="Enviar correo electrónico">
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                  </svg>
+                </a>
+                <div class="flex-grow">
+                  <div class="font-heading font-bold text-[16px] text-navy mb-1">Correo Electrónico</div>
+                  <div class="font-body text-[14px] text-text-soft flex items-center gap-3">
+                    <span>{CONFIG.contacto.email}</span>
+                    <button
+                      class="copy-btn group/btn flex items-center gap-1.5 text-blue hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded px-1"
+                      data-copy={CONFIG.contacto.email}
+                      aria-label="Copiar correo electrónico"
+                    >
+                      <svg class="w-4 h-4 copy-icon"><use href="#icon-copy" /></svg>
+                      <svg class="w-4 h-4 check-icon hidden text-green-600"><use href="#icon-check" /></svg>
+                      <span class="text-[11px] font-bold uppercase tracking-wider btn-text">Copiar</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
 
@@ -114,11 +301,15 @@ import { CONFIG } from '../data/config';
             
             <div class="flex flex-col gap-1.5">
               <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Nombre completo</label>
+              <input type="text" id="f-nombre" name="nombre" required maxlength="100" autocomplete="name" placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full" />
+              <input type="text" id="f-nombre" name="nombre" placeholder="Ej: Dr. Juan Pérez" required class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
               <input type="text" id="f-nombre" name="nombre" placeholder="Ej: Dr. Juan Pérez" required maxlength="100" autocomplete="name" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full" />
             </div>
 
             <div class="flex flex-col gap-1.5">
               <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Teléfono / WhatsApp</label>
+              <input type="tel" id="f-tel" name="telefono" required maxlength="30" autocomplete="tel" placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full" />
+              <input type="tel" id="f-tel" name="telefono" placeholder="Ej: 381 123 4567" required class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
               <input type="tel" id="f-tel" name="telefono" placeholder="Ej: 381 123 4567" required maxlength="30" autocomplete="tel" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full" />
             </div>
 
@@ -141,6 +332,18 @@ import { CONFIG } from '../data/config';
               <div class="flex justify-between items-center">
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
                 <span id="char-counter" class="font-body text-[10px] text-white/40">0 / 1000</span>
+            <div class="flex flex-col gap-1.5 mb-2">
+              <div class="flex justify-between items-center">
+                <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
+                <span id="char-counter" class="font-body text-[10px] text-white/40 tracking-tight">0 / 1000</span>
+              <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
+              <textarea id="f-desc" name="descripcion" rows="3" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
+            </div>
+
+            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-all shadow-sm mt-2 active:scale-[0.98]">
+              <div class="flex justify-between items-center">
+                <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
+                <span id="char-counter" class="font-body text-[10px] text-white/40 tracking-tight" aria-live="polite">0 / 1000</span>
               </div>
               <textarea id="f-desc" name="descripcion" rows="3" maxlength="1000" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full resize-none"></textarea>
             </div>
@@ -200,7 +403,107 @@ import { CONFIG } from '../data/config';
         }
       });
     });
+    const textarea = document.getElementById('f-desc');
+    const counter = document.getElementById('char-counter');
+    const copyBtns = document.querySelectorAll('.copy-btn');
 
+    // Copy to clipboard logic
+    copyBtns.forEach(button => {
+      button.addEventListener('click', () => {
+        const textToCopy = button.getAttribute('data-copy');
+        if (!textToCopy) return;
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          // Visual feedback
+          const copyIcon = button.querySelector('.copy-icon');
+          const checkIcon = button.querySelector('.check-icon');
+          const copyText = button.querySelector('.copy-text');
+
+          if (copyIcon && checkIcon && copyText) {
+            copyIcon.classList.add('hidden');
+            checkIcon.classList.remove('hidden');
+            copyText.textContent = '¡Copiado!';
+            button.classList.replace('text-blue', 'text-white');
+            button.classList.replace('bg-blue-pale/50', 'bg-green-500');
+
+            setTimeout(() => {
+              copyIcon.classList.remove('hidden');
+              checkIcon.classList.add('hidden');
+              copyText.textContent = 'Copiar';
+              button.classList.replace('text-white', 'text-blue');
+              button.classList.replace('bg-green-500', 'bg-blue-pale/50');
+            }, 2000);
+          }
+        });
+      });
+    });
+    const charCounter = document.getElementById('char-counter');
+
+    // Character counter logic
+    if (textarea && counter) {
+      textarea.addEventListener('input', () => {
+        const len = textarea.value.length;
+        counter.textContent = len + " / 1000";
+
+        if (len >= 900) {
+        const count = textarea.value.length;
+        counter.textContent = `${count} / 1000`;
+
+        if (count >= 900) {
+          counter.classList.add('text-blue-light');
+          counter.classList.remove('text-white/40');
+        } else {
+          counter.classList.remove('text-blue-light');
+          counter.classList.add('text-white/40');
+        }
+      });
+    }
+
+    // Form submission logic
+        }
+      });
+    }
+
+    // Click to Copy Logic
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const textToCopy = button.getAttribute('data-copy');
+        if (!textToCopy) return;
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          const copyIcon = button.querySelector('.copy-icon');
+          const checkIcon = button.querySelector('.check-icon');
+          const btnText = button.querySelector('.btn-text');
+          const originalText = btnText.textContent;
+
+          copyIcon.classList.add('hidden');
+          checkIcon.classList.remove('hidden');
+          btnText.textContent = '¡Copiado!';
+          btnText.classList.add('text-green-600');
+
+          setTimeout(() => {
+            copyIcon.classList.remove('hidden');
+            checkIcon.classList.add('hidden');
+            btnText.textContent = originalText;
+            btnText.classList.remove('text-green-600');
+          }, 2000);
+        });
+      });
+    });
+
+    // Character counter
+    if (textarea && charCounter) {
+      textarea.addEventListener('input', () => {
+        const count = textarea.value.length;
+        charCounter.innerText = `${count} / 1000`;
+<script is:inline define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contact-form');
+    const btn = document.getElementById('f-submit');
+    const descArea = document.getElementById('f-desc');
+    const charCounter = document.getElementById('char-counter');
+
+        // Provide visual feedback
     // Character counter logic
     if (descArea && charCounter) {
       descArea.addEventListener('input', () => {
@@ -218,10 +521,10 @@ import { CONFIG } from '../data/config';
       });
     }
 
+    // Form submission
     if (form && btn) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
-
         const originalText = btn.innerText;
         btn.innerText = 'Redirigiendo...';
         const button = btn;
@@ -240,11 +543,54 @@ import { CONFIG } from '../data/config';
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
         
+        const nombre = (nombreEl && 'value' in nombreEl ? nombreEl.value : '').trim() || 'No especificado';
+        const tel = (telEl && 'value' in telEl ? telEl.value : '').trim() || 'No especificado';
+        
+        const servicioEl = document.getElementById('f-servicio');
+        const servicio = servicioEl && 'options' in servicioEl ? (servicioEl).options[(servicioEl).selectedIndex].value : 'Consulta general';
+        const desc = (textarea && 'value' in textarea ? textarea.value : '').trim() || 'Sin detalles adicionales';
+        const nombre = (document.getElementById('f-nombre')).value.trim() || 'No especificado';
+        const tel = (document.getElementById('f-tel')).value.trim() || 'No especificado';
+        const servicioEl = document.getElementById('f-servicio');
+        const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+        const desc = (textarea).value.trim() || 'Sin detalles adicionales';
+
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
+        
+        const nombreEl = document.getElementById('f-nombre');
+        const telEl = document.getElementById('f-tel');
+
+        const nombre = (nombreEl && 'value' in nombreEl) ? nombreEl.value.trim() : 'No especificado';
+        const tel = (telEl && 'value' in telEl) ? telEl.value.trim() : 'No especificado';
+
+        const servicioEl = document.getElementById('f-servicio');
+        const servicio = servicioEl ? (servicioEl).options[(servicioEl).selectedIndex].value : 'Consulta general';
+        const nombre = (document.getElementById('f-nombre') as HTMLInputElement)?.value.trim() || 'No especificado';
+        const tel = (document.getElementById('f-tel') as HTMLInputElement)?.value.trim() || 'No especificado';
+        const servicioel = document.getElementById('f-servicio') as HTMLSelectElement;
+        const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
+        const desc = (document.getElementById('f-desc') as HTMLTextAreaElement)?.value.trim() || 'Sin detalles adicionales';
+        const servicioEl = document.getElementById('f-servicio') as HTMLSelectElement;
+        const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+        const desc = textarea?.value.trim() || 'Sin detalles adicionales';
+
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
         const encodedMessage = encodeURIComponent(rawMessage);
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
         window.open(url, '_blank');
 
+        const rawMessage = "Hola TechHealth! Me comunico desde su web.\n*Nombre:* " + nombre + "\n*Teléfono:* " + tel + "\n*Servicio:* " + servicio + "\n*Detalle:* " + desc;
+        
+        const encodedMessage = encodeURIComponent(rawMessage);
+        const url = "https://wa.me/" + whatsappNumber + "?text=" + encodedMessage;
+        const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+        
+
+        // Open WhatsApp
+        window.open(url, '_blank');
+
+        // Reset button after a delay
         setTimeout(() => {
           btn.innerText = originalText;
           button.disabled = false;
@@ -252,5 +598,26 @@ import { CONFIG } from '../data/config';
         }, 2000);
       });
     }
+
+    // Click to copy
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const text = button.getAttribute('data-copy');
+        if (!text) return;
+
+        navigator.clipboard.writeText(text).then(() => {
+          const originalHTML = button.innerHTML;
+          button.innerHTML = '<svg class="w-4 h-4"><use href="#icon-check" /></svg><span class="text-[10px] ml-1 font-bold">¡Copiado!</span>';
+          button.classList.remove('bg-blue-pale', 'text-blue');
+          button.classList.add('bg-green-600', 'text-white', 'px-3');
+
+          setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.classList.add('bg-blue-pale', 'text-blue');
+            button.classList.remove('bg-green-600', 'text-white', 'px-3');
+          }, 2000);
+        });
+      });
+    });
   });
 </script>
