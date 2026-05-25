@@ -1,11 +1,6 @@
 ---
 import { CONFIG } from '../data/config';
 
-// Helper to return the correct icon ID based on name
-const getIconId = (iconName: string) => {
-  return `#icon-${iconName}`;
-};
-
 // Optimization: Only pass the minimal data needed for the client-side modal
 // to reduce the HTML payload size.
 const modalData = CONFIG.servicios.map(s => ({
@@ -51,7 +46,7 @@ const modalData = CONFIG.servicios.map(s => ({
           <!-- Icon -->
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
-              <use href={getIconId(servicio.icono)} />
+              <use href={`#icon-${servicio.icono}`} />
             </svg>
           </div>
 
@@ -115,6 +110,19 @@ const modalData = CONFIG.servicios.map(s => ({
   (function() {
     const services = modalData;
     
+    let isModalOpen = false;
+    let triggerElement = null;
+
+    const escapeHtml = (unsafe) => {
+      if (typeof unsafe !== 'string') return '';
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    };
+
     document.addEventListener('DOMContentLoaded', () => {
       const cards = document.querySelectorAll('.service-card');
       const backdrop = document.getElementById('service-modal-backdrop');
@@ -122,25 +130,12 @@ const modalData = CONFIG.servicios.map(s => ({
       const modalContent = document.getElementById('modal-content');
       const closeBtn = document.getElementById('close-modal');
 
-      let isModalOpen = false;
-      let triggerElement = null;
-
-      const escapeHtml = (unsafe) => {
-        if (typeof unsafe !== 'string') return '';
-        return unsafe
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-      };
-
       const openModal = (index, element) => {
         const servicio = services[index];
-        if (!servicio) return;
+        if (!servicio || !modalContent || !backdrop || !modal) return;
 
         triggerElement = element;
-        triggerElement?.setAttribute('aria-expanded', 'true');
+        triggerElement.setAttribute('aria-expanded', 'true');
 
         modalContent.innerHTML = `
           <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
@@ -169,12 +164,13 @@ const modalData = CONFIG.servicios.map(s => ({
         isModalOpen = true;
 
         setTimeout(() => {
-          closeBtn?.focus();
+          const btnToFocus = closeBtn || modal.querySelector('button');
+          if (btnToFocus && 'focus' in btnToFocus) btnToFocus.focus();
         }, 50);
       };
 
       const closeModal = () => {
-        if (!isModalOpen) return;
+        if (!isModalOpen || !backdrop || !modal) return;
         
         backdrop.classList.add('opacity-0', 'pointer-events-none');
         modal.classList.remove('scale-100');
@@ -184,18 +180,18 @@ const modalData = CONFIG.servicios.map(s => ({
 
         if (triggerElement) {
           triggerElement.setAttribute('aria-expanded', 'false');
-          triggerElement.focus();
+          if ('focus' in triggerElement) triggerElement.focus();
           triggerElement = null;
         }
 
         setTimeout(() => {
-          if (!isModalOpen) modalContent.innerHTML = '';
+          if (!isModalOpen && modalContent) modalContent.innerHTML = '';
         }, 400);
       };
 
       cards.forEach(card => {
         const index = card.getAttribute('data-index');
-        const handleOpen = () => openModal(parseInt(index), card);
+        const handleOpen = () => openModal(parseInt(index || '0'), card);
 
         card.addEventListener('click', handleOpen);
         card.addEventListener('keydown', (e) => {
@@ -210,8 +206,7 @@ const modalData = CONFIG.servicios.map(s => ({
       closeBtn?.addEventListener('click', closeModal);
 
       document.addEventListener('keydown', (e) => {
-        if (!isModalOpen) return;
-
+        if (!isModalOpen || !modal) return;
         if (e.key === 'Escape') {
           closeModal();
           return;
@@ -227,12 +222,12 @@ const modalData = CONFIG.servicios.map(s => ({
           if (e.shiftKey) { // Shift + Tab
             if (document.activeElement === firstElement) {
               e.preventDefault();
-              if (lastElement) lastElement.focus();
+              if (lastElement && 'focus' in lastElement) lastElement.focus();
             }
           } else { // Tab
             if (document.activeElement === lastElement) {
               e.preventDefault();
-              if (firstElement) firstElement.focus();
+              if (firstElement && 'focus' in firstElement) firstElement.focus();
             }
           }
         }

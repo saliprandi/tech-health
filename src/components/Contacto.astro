@@ -201,11 +201,11 @@ import { CONFIG } from '../data/config';
         btn.disabled = true;
         btn.classList.add('opacity-70', 'cursor-not-allowed');
 
-        const nombreInput = document.getElementById('f-nombre');
-        const telInput = document.getElementById('f-tel');
+        const nombreEl = document.getElementById('f-nombre');
+        const telEl = document.getElementById('f-tel');
 
-        const nombre = nombreInput?.value?.trim() || 'No especificado';
-        const tel = telInput?.value?.trim() || 'No especificado';
+        const nombre = (nombreEl && 'value' in nombreEl) ? nombreEl.value.trim() : 'No especificado';
+        const tel = (telEl && 'value' in telEl) ? telEl.value.trim() : 'No especificado';
         const servicioEl = document.getElementById('f-servicio');
         const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
         const desc = descArea?.value?.trim() || 'Sin detalles adicionales';
