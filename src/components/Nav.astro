@@ -14,6 +14,7 @@ const navItems = [
     
     <!-- Logo -->
     <!-- Logo -->
+    <!-- Logo -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
     <!-- Logo -->
     <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE -->
@@ -31,6 +32,7 @@ const navItems = [
       />
     </a>
 
+    <!-- Desktop Navigation -->
     <!-- Desktop Menu -->
     <ul class="hidden md:flex items-center gap-8">
       {navItems.map(item => (
@@ -97,6 +99,8 @@ const navItems = [
     const mobileLinks = document.querySelectorAll('.mobile-link');
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const spans = toggle?.querySelectorAll('span');
+    let isOpen = false;
+
 
     let isOpen = false;
 
@@ -110,6 +114,13 @@ const navItems = [
       toggle?.setAttribute('aria-expanded', isOpen.toString());
       menu?.setAttribute('aria-hidden', (!isOpen).toString());
 
+      if (isOpen) {
+        menu?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
+        menu?.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+      } else {
+        menu?.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
+        menu?.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+      }
       menu?.classList.toggle('opacity-0', !isOpen);
       menu?.classList.toggle('pointer-events-none', !isOpen);
       menu?.classList.toggle('translate-y-[-10px]', !isOpen);
@@ -135,23 +146,27 @@ const navItems = [
       });
     });
 
+    // Keyboard handling
     // Keyboard handling: Escape key & Focus trap
     // Keyboard handling: Focus trapping & Escape key
     document.addEventListener('keydown', (e) => {
-      if (!isOpen) return;
-
-      if (e.key === 'Escape') {
+      if (e.key === 'Escape' && isOpen) {
         toggleMenu();
         (toggle as HTMLElement)?.focus();
         return;
       }
 
-      if (e.key === 'Tab') {
-        if (e.shiftKey) { // Shift + Tab
-          if (document.activeElement === toggle) {
-            e.preventDefault();
-            whatsappMobileLink?.focus();
       if (isOpen && e.key === 'Tab') {
+        const focusable = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean);
+        const first = focusable[0] as HTMLElement;
+        const last = focusable[focusable.length - 1] as HTMLElement;
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
         if (e.shiftKey) { // Shift + Tab
           if (document.activeElement === toggle) {
             e.preventDefault();
@@ -199,6 +214,9 @@ const navItems = [
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
           navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === `#${id}`) {
+              link.classList.add('nav-link-active');
             const isActive = link.getAttribute('href') === `#${id}`;
             link.classList.toggle('nav-link-active', isActive);
             if (isActive) {
@@ -207,11 +225,18 @@ const navItems = [
             if (isActive) {
               link.setAttribute('aria-current', 'location');
             } else {
+              link.classList.remove('nav-link-active');
               link.removeAttribute('aria-current');
             }
           });
         }
       });
+    }, observerOptions);
+
+    document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
+
+    // Reset ScrollSpy when clicking logo
+    document.querySelector('a[aria-label^="Inicio"]')?.addEventListener('click', () => {
     }, observerOptions);
 
     };

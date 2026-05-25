@@ -361,35 +361,17 @@ const modalData = CONFIG.servicios.map(s => ({
     document.addEventListener('keydown', (e) => {
       if (!isModalOpen) return;
 
-      if (e.key === 'Escape') {
-        closeModal();
-        return;
-      }
+        if (e.key === 'Tab') {
+          const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
 
-      if (e.key === 'Tab') {
-        const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-        if (focusableElements.length === 0) return;
-
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-
-        if (e.shiftKey) { // Shift + Tab
-          if (document.activeElement === firstElement) {
+          if (e.shiftKey && document.activeElement === first) {
             e.preventDefault();
-            if (lastElement) lastElement.focus();
-            lastElement?.focus();
-            if (lastElement) (lastElement as HTMLElement).focus();
-            (lastElement as HTMLElement)?.focus();
-            lastElement.focus();
-          }
-        } else { // Tab
-          if (document.activeElement === lastElement) {
+            if (last instanceof HTMLElement) last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
             e.preventDefault();
-            if (firstElement) firstElement.focus();
-            firstElement?.focus();
-            if (firstElement) (firstElement as HTMLElement).focus();
-            (firstElement as HTMLElement)?.focus();
-            firstElement.focus();
+            if (first instanceof HTMLElement) first.focus();
           }
         }
       });

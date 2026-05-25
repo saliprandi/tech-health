@@ -55,6 +55,9 @@ const hasSocials = socialLinks.some(social => !!CONFIG.redes[social.name]);
 
     {hasSocials && (
       <div class="flex items-center gap-4 mb-6">
+        {['instagram', 'facebook', 'linkedin'].map(social => (CONFIG.redes as any)[social] && (
+          <a
+            href={(CONFIG.redes as any)[social]}
         {redes.map(([key, url]) => (
           <a
             href={url}
