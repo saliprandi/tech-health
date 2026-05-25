@@ -1,11 +1,6 @@
 ---
 import { CONFIG } from '../data/config';
 
-// Helper to return the correct icon ID based on name
-const getIconId = (iconName: string) => {
-  return `#icon-${iconName}`;
-};
-
 // Optimization: Only pass the minimal data needed for the client-side modal
 // to reduce the HTML payload size.
 const modalData = CONFIG.servicios.map(s => ({
@@ -36,17 +31,19 @@ const modalData = CONFIG.servicios.map(s => ({
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
         <div
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 overflow-hidden cursor-pointer"
+          data-index={index}
+          role="button"
+          tabindex="0"
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4"
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 overflow-hidden cursor-pointer"
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer overflow-hidden"
-          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer"
           data-index={index}
           role="button"
           tabindex="0"
           aria-haspopup="dialog"
           aria-expanded="false"
           aria-label={`Ver detalles de ${servicio.titulo}`}
-          aria-label={`Ver detalles sobre ${servicio.titulo}`}
         >
           
           <!-- Animated Top Bar -->
@@ -54,10 +51,6 @@ const modalData = CONFIG.servicios.map(s => ({
           
           <!-- Icon -->
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
-            <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
-              <use href={getIconId(servicio.icono)} />
-            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <use href={`#icon-${servicio.icono}`} />
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
               <use href={`#icon-${servicio.icono}`} />
             </svg>
@@ -108,7 +101,7 @@ const modalData = CONFIG.servicios.map(s => ({
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <!-- Close Button -->
       <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4" aria-label="Cerrar">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2">
           <use href="#icon-close" />
         </svg>
       </button>
@@ -119,7 +112,7 @@ const modalData = CONFIG.servicios.map(s => ({
   </div>
 </section>
 
-<script define:vars={{ modalData }}>
+<script is:inline define:vars={{ modalData }}>
   (function() {
     const services = modalData;
     
@@ -139,11 +132,6 @@ const modalData = CONFIG.servicios.map(s => ({
         .replace(/'/g, "&#039;");
     };
 
-    const openModal = (index, trigger) => {
-      const servicio = services[index];
-      if (!servicio) return;
-
-      triggerElement = trigger;
     document.addEventListener('DOMContentLoaded', () => {
       const cards = document.querySelectorAll('.service-card');
       const backdrop = document.getElementById('service-modal-backdrop');
@@ -151,25 +139,12 @@ const modalData = CONFIG.servicios.map(s => ({
       const modalContent = document.getElementById('modal-content');
       const closeBtn = document.getElementById('close-modal');
 
-      let isModalOpen = false;
-      let triggerElement = null;
-
-      const escapeHtml = (unsafe) => {
-        if (typeof unsafe !== 'string') return '';
-        return unsafe
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-      };
-
       const openModal = (index, element) => {
         const servicio = services[index];
-        if (!servicio) return;
+        if (!servicio || !modalContent || !backdrop || !modal) return;
 
         triggerElement = element;
-        triggerElement?.setAttribute('aria-expanded', 'true');
+        triggerElement.setAttribute('aria-expanded', 'true');
 
         modalContent.innerHTML = `
           <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
@@ -198,12 +173,12 @@ const modalData = CONFIG.servicios.map(s => ({
         isModalOpen = true;
 
         setTimeout(() => {
-          closeBtn?.focus();
+          (closeBtn || modal.querySelector('button'))?.focus();
         }, 50);
       };
 
       const closeModal = () => {
-        if (!isModalOpen) return;
+        if (!isModalOpen || !backdrop || !modal) return;
         
         backdrop.classList.add('opacity-0', 'pointer-events-none');
         modal.classList.remove('scale-100');
@@ -218,13 +193,13 @@ const modalData = CONFIG.servicios.map(s => ({
         }
 
         setTimeout(() => {
-          if (!isModalOpen) modalContent.innerHTML = '';
+          if (!isModalOpen && modalContent) modalContent.innerHTML = '';
         }, 400);
       };
 
       cards.forEach(card => {
         const index = card.getAttribute('data-index');
-        const handleOpen = () => openModal(parseInt(index), card);
+        const handleOpen = () => openModal(parseInt(index || '0'), card);
 
         card.addEventListener('click', handleOpen);
         card.addEventListener('keydown', (e) => {
@@ -247,6 +222,7 @@ const modalData = CONFIG.servicios.map(s => ({
       if (!servicio) return;
 
       triggerElement = element;
+      lastFocusedElement = document.activeElement;
       triggerElement.setAttribute('aria-expanded', 'true');
 
       // Populate content with sanitized data
@@ -279,7 +255,6 @@ const modalData = CONFIG.servicios.map(s => ({
       isModalOpen = true;
 
       // Focus close button
-      // Focus management: focus the close button
       setTimeout(() => {
         closeBtn?.focus();
       }, 50);
@@ -335,17 +310,19 @@ const modalData = CONFIG.servicios.map(s => ({
         }
       });
 
-      backdrop.addEventListener('click', closeModal);
-      closeBtn.addEventListener('click', closeModal);
+      backdrop?.addEventListener('click', closeModal);
+      closeBtn?.addEventListener('click', closeModal);
 
       document.addEventListener('keydown', (e) => {
-        if (!isModalOpen) return;
+        if (!isModalOpen || !modal) return;
         if (e.key === 'Escape') {
           closeModal();
           return;
         }
         if (e.key === 'Tab') {
           const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+          if (focusableElements.length === 0) return;
+
           const firstElement = focusableElements[0];
           const lastElement = focusableElements[focusableElements.length - 1];
 
@@ -364,6 +341,7 @@ const modalData = CONFIG.servicios.map(s => ({
     if (backdrop) backdrop.addEventListener('click', closeModal);
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
     
+    // Global key listeners for Modal
     // Modal key handlers
     // Global key listeners
     document.addEventListener('keydown', (e) => {
