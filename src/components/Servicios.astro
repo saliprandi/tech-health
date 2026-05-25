@@ -145,6 +145,10 @@ const modalData = CONFIG.servicios.map(s => ({
       const servicio = services[index];
       if (!servicio) return;
 
+      triggerElement = trigger;
+      triggerElement.setAttribute('aria-expanded', 'true');
+
+      // Populate content
       triggerElement = element;
       triggerElement?.setAttribute('aria-expanded', 'true');
     document.addEventListener('DOMContentLoaded', () => {
@@ -182,6 +186,11 @@ const modalData = CONFIG.servicios.map(s => ({
           </ul>
         `;
       }
+
+      // Show modal
+      backdrop?.classList.remove('opacity-0', 'pointer-events-none');
+      modal?.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+      modal?.classList.add('scale-100', 'opacity-100', 'pointer-events-auto');
 
         if (backdrop && modal) {
           backdrop.classList.remove('opacity-0', 'pointer-events-none');
@@ -318,6 +327,7 @@ const modalData = CONFIG.servicios.map(s => ({
       isModalOpen = true;
       setTimeout(() => closeBtn?.focus(), 50);
 
+      // Focus management
       // Focus close button
       setTimeout(() => {
         closeBtn?.focus();
@@ -326,6 +336,9 @@ const modalData = CONFIG.servicios.map(s => ({
 
     const closeModal = () => {
       if (!isModalOpen) return;
+
+      backdrop?.classList.add('opacity-0', 'pointer-events-none');
+      modal?.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
       
       backdrop?.classList.add('opacity-0', 'pointer-events-none');
       modal?.classList.remove('scale-100');
@@ -349,6 +362,7 @@ const modalData = CONFIG.servicios.map(s => ({
       if (indexStr === null) return;
       const index = parseInt(indexStr);
 
+      const handleOpen = () => openModal(parseInt(index), card);
       card.addEventListener('click', () => openModal(index, card));
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -402,6 +416,38 @@ const modalData = CONFIG.servicios.map(s => ({
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
+          handleOpen();
+        }
+      });
+    });
+
+    backdrop?.addEventListener('click', closeModal);
+    closeBtn?.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', (e) => {
+      if (!isModalOpen) return;
+
+      if (e.key === 'Escape') {
+        closeModal();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        const focusableElements = modal?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (!focusableElements || focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
           openModal(parseInt(card.dataset.index), card);
         }
       });

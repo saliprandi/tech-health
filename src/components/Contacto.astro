@@ -339,6 +339,8 @@ import { CONFIG } from '../data/config';
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
               <div class="flex justify-between items-center">
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
+              <div class="flex justify-between items-center">
+                <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
             <div class="flex flex-col gap-1.5">
               <div class="flex justify-between items-center">
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
@@ -375,6 +377,10 @@ import { CONFIG } from '../data/config';
   </div>
 </section>
 
+<script is:inline define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contact-form');
+    const btn = document.getElementById('f-submit');
 <script define:vars={{ whatsapp: CONFIG.contacto.whatsapp }}>
   (function() {
     const whatsappNumber = whatsapp;
@@ -513,6 +519,8 @@ import { CONFIG } from '../data/config';
     if (textarea && counter) {
       textarea.addEventListener('input', () => {
         const len = textarea.value.length;
+        counter.textContent = `${len} / 1000`;
+        if (len >= 900) {
         counter.textContent = len + " / 1000";
 
         if (len >= 900) {
@@ -628,6 +636,7 @@ import { CONFIG } from '../data/config';
         const tel = document.getElementById('f-tel')?.value.trim() || 'No especificado';
         const servicioEl = document.getElementById('f-servicio');
         const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+        const desc = textarea?.value.trim() || 'Sin detalles adicionales';
         const desc = descArea?.value.trim() || 'Sin detalles adicionales';
         const nombreInput = document.getElementById('f-nombre');
         const telInput = document.getElementById('f-tel');

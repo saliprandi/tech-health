@@ -115,6 +115,10 @@ const navItems = [
     const mobileLinks = document.querySelectorAll('.mobile-link');
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const spans = toggle?.querySelectorAll('span');
+    let isOpen = false;
+
+    const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
+    const spans = toggle?.querySelectorAll('span');
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     let isOpen = false;
 
@@ -198,6 +202,7 @@ const navItems = [
       });
     });
 
+    // Keyboard handling: Focus trapping & Escape key
     // Keyboard handling: Escape key & Focus trapping
     // Keyboard handling
     document.addEventListener('keydown', (e) => {
@@ -374,6 +379,11 @@ const navItems = [
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    // Reset ScrollSpy when clicking logo/home
       const section = document.getElementById(id);
       if (section) observer.observe(section);
     });

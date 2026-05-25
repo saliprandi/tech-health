@@ -1,7 +1,10 @@
 
 > tech-health@0.0.1 preview /app
-> astro preview
+> astro preview --port 4322
 
+Port 4322 is in use, trying another one...
+ astro  v6.3.1 ready in 31 ms
+┃ Local    http://localhost:4323/
  astro  v6.3.1 ready in 33 ms
 ┃ Local    http://localhost:4321/
 ┃ Network  use --host to expose
