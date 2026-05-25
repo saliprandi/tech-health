@@ -13,6 +13,7 @@ const navItems = [
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
     <!-- Logo -->
+    <!-- Logo -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label="Inicio de TechHealth">
     <!-- Logo -->
     <!-- Logo -->
@@ -116,6 +117,10 @@ const navItems = [
     let isOpen = false;
 
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
+    const spans = toggle?.querySelectorAll('span');
+    let isOpen = false;
+
+    const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     let isOpen = false;
 
     let isOpen = false;
@@ -164,6 +169,12 @@ const navItems = [
         spans[2].classList.toggle('-rotate-45', isOpen);
         spans[2].classList.toggle('-translate-y-[8px]', isOpen);
       }
+
+      if (isOpen) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
     };
 
     toggle?.addEventListener('click', toggleMenu);
@@ -181,6 +192,7 @@ const navItems = [
       });
     });
 
+    // Keyboard handling
     // Escape key handling
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && isOpen) {
@@ -267,6 +279,9 @@ const navItems = [
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
           navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            const isActive = href === `#${id}`;
+            link.classList.toggle('nav-link-active', isActive);
             const isActive = link.getAttribute('href') === `#${id}`;
             link.classList.toggle('nav-link-active', isActive);
             const href = link.getAttribute('href');
@@ -327,6 +342,9 @@ const navItems = [
     ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
       const section = document.getElementById(id);
       if (section) observer.observe(section);
+    });
+
+    // Reset ScrollSpy when clicking logo
     });
 
     // Reset ScrollSpy when clicking logo

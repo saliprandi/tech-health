@@ -406,6 +406,7 @@ import { CONFIG } from '../data/config';
           `;
           button.classList.add('bg-green-50', 'ring-1', 'ring-green-500/20');
 
+          window.open(url, '_blank', 'noopener,noreferrer');
           const label = button.getAttribute('aria-label');
           button.setAttribute('aria-label', '¡Copiado!');
 
