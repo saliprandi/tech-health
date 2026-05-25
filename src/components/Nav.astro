@@ -12,6 +12,7 @@ const navItems = [
 <nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
+    <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label="Inicio de TechHealth">
     <!-- Logo -->
     <!-- Logo -->
     <!-- Logo -->
@@ -42,6 +43,10 @@ const navItems = [
     <!-- Desktop Navigation -->
     <!-- Desktop Menu -->
     <ul class="hidden md:flex items-center gap-8">
+      <li><a href="#servicios" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors px-1 py-0.5">Servicios</a></li>
+      <li><a href="#equipos" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors px-1 py-0.5">Equipos</a></li>
+      <li><a href="#nosotros" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors px-1 py-0.5">Nosotros</a></li>
+      <li><a href="#contacto" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors px-1 py-0.5">Contacto</a></li>
       {navItems.map(item => (
         <li>
           <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5 capitalize">
@@ -92,6 +97,10 @@ const navItems = [
     <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[18px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Contacto</a>
     <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[15px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
   <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
+    <a href="#servicios" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">Servicios</a>
+    <a href="#equipos" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">Equipos</a>
+    <a href="#nosotros" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">Nosotros</a>
+    <a href="#contacto" class="mobile-link nav-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">Contacto</a>
     {navItems.map(item => (
       <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">
         {item.label}
@@ -104,15 +113,15 @@ const navItems = [
   </div>
 </nav>
 
-<style>
-  .nav-link-active { @apply text-blue !important; }
-</style>
-
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const toggle = document.getElementById('menu-toggle');
     const menu = document.getElementById('mobile-menu');
     const navLinks = document.querySelectorAll('.nav-link');
+    const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
+    const spans = toggle?.querySelectorAll('span');
+    let isOpen = false;
+
     const mobileLinks = document.querySelectorAll('.mobile-link');
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const spans = toggle?.querySelectorAll('span');
@@ -201,7 +210,7 @@ const navItems = [
     const observer = new IntersectionObserver((entries) => {
     if (toggle) toggle.addEventListener('click', toggleMenu);
 
-    mobileLinks.forEach(link => {
+    document.querySelectorAll('.mobile-link').forEach(link => {
       link.addEventListener('click', () => {
         if (isOpen) toggleMenu();
       });
@@ -324,6 +333,13 @@ const navItems = [
           navLinks.forEach(link => {
             const isActive = link.getAttribute('href') === `#${id}`;
             link.classList.toggle('nav-link-active', isActive);
+          });
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
+
             if (isActive) link.setAttribute('aria-current', 'location');
             else link.removeAttribute('aria-current');
           });
@@ -446,6 +462,21 @@ const navItems = [
       if (!isOpen) return;
       if (e.key === 'Escape') {
         toggleMenu();
+        toggle?.focus();
+      }
+      if (e.key === 'Tab') {
+        const focusable = [toggle, ...Array.from(document.querySelectorAll('.mobile-link')), whatsappMobileLink].filter(Boolean) as HTMLElement[];
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    });
         (toggle as HTMLElement)?.focus();
         if (toggle && 'focus' in toggle) (toggle as HTMLElement).focus();
         return;
