@@ -335,6 +335,8 @@ import { CONFIG } from '../data/config';
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
               <div class="flex justify-between items-center">
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
+              <div class="flex justify-between items-center">
+                <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
             <div class="flex flex-col gap-1.5">
               <div class="flex justify-between items-center">
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
@@ -371,6 +373,54 @@ import { CONFIG } from '../data/config';
   </div>
 </section>
 
+<script define:vars={{ whatsapp: CONFIG.contacto.whatsapp }}>
+  (function() {
+    const whatsappNumber = whatsapp;
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('contact-form');
+      const btn = document.getElementById('f-submit');
+      const descArea = document.getElementById('f-desc');
+      const charCounter = document.getElementById('char-counter');
+
+      // Character counter logic
+      if (descArea && charCounter) {
+        descArea.addEventListener('input', () => {
+          const count = descArea.value.length;
+          charCounter.textContent = `${count} / 1000`;
+
+          if (count >= 900) {
+            charCounter.classList.add('text-blue-light');
+            charCounter.classList.remove('text-white/40');
+          } else {
+            charCounter.classList.remove('text-blue-light');
+            charCounter.classList.add('text-white/40');
+          }
+        });
+      }
+
+      if (form && btn) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+
+          // Provide visual feedback
+          const originalText = btn.innerText;
+          btn.innerText = 'Redirigiendo...';
+          btn.disabled = true;
+          btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+          const nombre = document.getElementById('f-nombre')?.value.trim() || 'No especificado';
+          const tel = document.getElementById('f-tel')?.value.trim() || 'No especificado';
+          const servicioel = document.getElementById('f-servicio');
+          const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
+          const desc = descArea?.value.trim() || 'Sin detalles adicionales';
+
+          const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
+
+          const encodedMessage = encodeURIComponent(rawMessage);
+          const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+          window.open(url, '_blank', 'noopener,noreferrer');
 <script define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('contact-form');
@@ -420,6 +470,7 @@ import { CONFIG } from '../data/config';
         }
       });
     });
+  })();
     const textarea = document.getElementById('f-desc');
     const counter = document.getElementById('char-counter');
     const copyBtns = document.querySelectorAll('.copy-btn');
