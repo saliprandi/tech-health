@@ -17,21 +17,24 @@ import { CONFIG } from '../data/config';
     </div>
 
     <!-- Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" role="list">
       {CONFIG.equipos_atendidos.map(equipo => (
+        <li class="group flex items-center gap-4 bg-white/5 border border-white/10 rounded-[12px] p-4 hover:bg-white/10 transition-colors duration-300">
+          <!-- ECG Icon -->
+          <svg class="w-[28px] h-[28px] text-blue-light flex-shrink-0 group-hover:animate-heartbeat" aria-hidden="true">
         <div class="group flex items-center gap-4 bg-white/5 border border-white/10 rounded-[12px] p-4 hover:bg-white/10 transition-colors duration-300">
+          <svg class="w-[28px] h-[28px] text-blue-light flex-shrink-0 group-hover:animate-heartbeat" fill="none" stroke="currentColor" stroke-width="1.5">
+          <svg class="w-[28px] h-[28px] text-blue-light flex-shrink-0 group-hover:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor">
           <!-- ECG Icon -->
           <svg class="w-[28px] h-[28px] text-blue-light flex-shrink-0 group-hover:animate-heartbeat" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <svg class="w-[28px] h-[28px] text-blue-light flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <use href="#icon-ecg" />
           </svg>
-          <!-- Text -->
           <span class="font-body font-medium text-[13px] text-white/85 leading-tight">
             {equipo}
           </span>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
 
   </div>
 </section>
