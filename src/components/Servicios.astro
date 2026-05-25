@@ -29,6 +29,7 @@ const modalData = CONFIG.servicios.map(s => ({
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
         <div
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer"
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer overflow-hidden"
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer"
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer overflow-hidden"
@@ -56,6 +57,7 @@ const modalData = CONFIG.servicios.map(s => ({
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
             <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
+              <use href={getIconId(servicio.icono)} />
             <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
               <use href={getIconId(servicio.icono)} />
@@ -100,6 +102,10 @@ const modalData = CONFIG.servicios.map(s => ({
   </div>
 </section>
 
+<script is:inline define:vars={{ modalData }}>
+  (function() {
+    const services = modalData;
+    
 <script define:vars={{ services: modalData }}>
   document.addEventListener('DOMContentLoaded', () => {
 <script define:vars={{ modalData }}>
@@ -177,6 +183,11 @@ const modalData = CONFIG.servicios.map(s => ({
         `;
       }
 
+        if (backdrop && modal) {
+          backdrop.classList.remove('opacity-0', 'pointer-events-none');
+          modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+          modal.classList.add('scale-100');
+        }
       backdrop?.classList.remove('opacity-0', 'pointer-events-none');
       modal?.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
       modal?.classList.add('scale-100');
@@ -221,6 +232,11 @@ const modalData = CONFIG.servicios.map(s => ({
       const closeModal = () => {
         if (!isModalOpen || !backdrop || !modal) return;
         
+        if (backdrop && modal) {
+          backdrop.classList.add('opacity-0', 'pointer-events-none');
+          modal.classList.remove('scale-100');
+          modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+        }
         backdrop?.classList.add('opacity-0', 'pointer-events-none');
         modal?.classList.remove('scale-100');
         modal?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
@@ -417,6 +433,8 @@ const modalData = CONFIG.servicios.map(s => ({
         }
 
         if (e.key === 'Tab') {
+          const focusableElements = modal?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+          if (!focusableElements || focusableElements.length === 0) return;
           const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
           if (focusableElements.length === 0) return;
 

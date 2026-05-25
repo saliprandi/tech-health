@@ -14,6 +14,7 @@ const navItems = [
     
     <!-- Logo -->
     <!-- Logo -->
+    <!-- Logo -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label="Inicio de TechHealth">
     <!-- Logo -->
     <!-- Logo -->
@@ -112,6 +113,7 @@ const navItems = [
     const menu = document.getElementById('mobile-menu');
     const navLinks = document.querySelectorAll('.nav-link');
     const mobileLinks = document.querySelectorAll('.mobile-link');
+    const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const spans = toggle?.querySelectorAll('span');
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     let isOpen = false;
@@ -196,6 +198,7 @@ const navItems = [
       });
     });
 
+    // Keyboard handling: Escape key & Focus trapping
     // Keyboard handling
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && isOpen) {
@@ -271,6 +274,12 @@ const navItems = [
         } else {
           if (document.activeElement === lastElement) {
             e.preventDefault();
+            firstElement?.focus();
+          }
+        }
+      }
+    });
+
             firstElement.focus();
           }
         }
@@ -367,6 +376,9 @@ const navItems = [
     ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
       const section = document.getElementById(id);
       if (section) observer.observe(section);
+    });
+
+    // Reset ScrollSpy when clicking logo
     });
 
     // Reset ScrollSpy when clicking logo

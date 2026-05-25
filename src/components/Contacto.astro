@@ -337,6 +337,8 @@ import { CONFIG } from '../data/config';
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
               <div class="flex justify-between items-center">
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
+              <div class="flex justify-between items-center">
+                <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
             <div class="flex flex-col gap-1.5">
               <div class="flex justify-between items-center">
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
@@ -354,7 +356,7 @@ import { CONFIG } from '../data/config';
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
                 <span id="char-counter" class="font-body text-[10px] text-white/40 tracking-tight" aria-live="polite">0 / 1000</span>
               </div>
-              <textarea id="f-desc" name="descripcion" rows="3" maxlength="1000" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full resize-none"></textarea>
+              <textarea id="f-desc" name="descripcion" rows="3" maxlength="1000" aria-describedby="char-counter" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full resize-none"></textarea>
             </div>
 
             <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 shadow-sm mt-2 active:scale-[0.98]">
@@ -602,6 +604,11 @@ import { CONFIG } from '../data/config';
         button.disabled = true;
         btn.classList.add('opacity-70', 'cursor-not-allowed');
 
+        const nombre = (document.getElementById('f-nombre')).value.trim() || 'No especificado';
+        const tel = (document.getElementById('f-tel')).value.trim() || 'No especificado';
+        const servicioEl = document.getElementById('f-servicio');
+        const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+        const desc = textarea?.value.trim() || 'Sin detalles adicionales';
         const nombre = (document.getElementById('f-nombre'))?.value.trim() || 'No especificado';
         const tel = (document.getElementById('f-tel'))?.value.trim() || 'No especificado';
         const servicioEl = document.getElementById('f-servicio');
@@ -676,6 +683,7 @@ import { CONFIG } from '../data/config';
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
         const encodedMessage = encodeURIComponent(rawMessage);
+        const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
         const url = 'https://wa.me/' + whatsappNumber + '?text=' + encodedMessage;
 
         // Open WhatsApp
