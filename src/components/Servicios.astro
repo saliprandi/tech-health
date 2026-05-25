@@ -78,7 +78,7 @@ const modalData = CONFIG.servicios.map(s => ({
           </ul>
           
           <div class="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300 text-blue bg-blue-pale p-2 rounded-full">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <use href="#icon-maximize" />
             </svg>
           </div>
@@ -89,6 +89,15 @@ const modalData = CONFIG.servicios.map(s => ({
 
   <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[100] opacity-0 pointer-events-none transition-opacity duration-400"></div>
 
+  <!-- Modal -->
+  <div
+    id="service-modal"
+    class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[101] opacity-0 pointer-events-none transition-all duration-400 scale-95"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+    aria-describedby="modal-description"
+  >
   <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[101] opacity-0 pointer-events-none transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4" aria-label="Cerrar">
@@ -173,7 +182,7 @@ const modalData = CONFIG.servicios.map(s => ({
             </svg>
           </div>
           <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
-          <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
+          <p id="modal-description" class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
 
           <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
           <ul class="flex flex-col gap-4">
@@ -187,6 +196,9 @@ const modalData = CONFIG.servicios.map(s => ({
         `;
       }
 
+        backdrop?.classList.remove('opacity-0', 'pointer-events-none');
+        modal?.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+        modal?.classList.add('scale-100');
       // Show modal
       backdrop?.classList.remove('opacity-0', 'pointer-events-none');
       modal?.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
@@ -241,6 +253,9 @@ const modalData = CONFIG.servicios.map(s => ({
       const closeModal = () => {
         if (!isModalOpen || !backdrop || !modal) return;
         
+        backdrop?.classList.add('opacity-0', 'pointer-events-none');
+        modal?.classList.remove('scale-100');
+        modal?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
         if (backdrop && modal) {
           backdrop.classList.add('opacity-0', 'pointer-events-none');
           modal.classList.remove('scale-100');
@@ -478,6 +493,7 @@ const modalData = CONFIG.servicios.map(s => ({
           return;
         }
 
+        if (e.key === 'Tab' && modal) {
         if (e.key === 'Tab') {
           const focusableElements = modal?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
           if (!focusableElements || focusableElements.length === 0) return;
@@ -490,12 +506,15 @@ const modalData = CONFIG.servicios.map(s => ({
           if (e.shiftKey) { // Shift + Tab
             if (document.activeElement === firstElement) {
               e.preventDefault();
+              (lastElement as HTMLElement).focus();
               (lastElement).focus();
               if (lastElement && 'focus' in lastElement) lastElement.focus();
             }
           } else { // Tab
             if (document.activeElement === lastElement) {
               e.preventDefault();
+              (firstElement as HTMLElement).focus();
+            }
               (firstElement).focus();
             }
               if (firstElement && 'focus' in firstElement) firstElement.focus();

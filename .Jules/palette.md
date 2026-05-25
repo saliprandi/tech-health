@@ -97,6 +97,9 @@
 **Learning:** For textareas with significant character limits (e.g., 1000 chars), a real-time counter is essential for user confidence. Providing a visual warning (e.g., color shift to 'text-blue-light') at 90% capacity (900 chars) prevents frustration near the submission limit.
 **Action:** Always implement a '#char-counter' for textareas with limits >= 500 characters, using the project-standard warning threshold logic.
 
+## 2025-05-26 - Accessible Modal Navigation and Integrity
+**Learning:** Robust modal accessibility requires a three-pronged approach: focus trapping (confining Tab navigation), initial focus management (orienting the user on open), and focus restoration (returning the user to their previous context on close). Furthermore, codebase integrity (eliminating redundant DOM elements from merge corruption) is a non-negotiable prerequisite for predictable keyboard and screen reader experiences.
+**Action:** Implement the comprehensive focus management pattern (Trap, Restore, Orient) for all custom dialogs. Prioritize surgical deduplication of component templates to ensure a 1:1 mapping between interactive elements and user actions.
 ## 2025-05-15 - Multi-Stage Feedback for Click-to-Copy
 **Learning:** For "Click to Copy" interactions, immediate and multi-sensory (visual) feedback is vital. Swapping the icon (copy to check), updating the text (Copy to ¡Copiado!), and briefly shifting the button's background color (e.g., to success green) significantly reduces user uncertainty about whether the action succeeded.
 **Action:** Always implement a 2000ms "success state" for copy buttons with high-contrast color shifts and icon swaps.

@@ -15,6 +15,7 @@ const navItems = [
     <!-- Logo -->
     <!-- Logo -->
     <!-- Logo -->
+    <!-- Logo -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label="Inicio de TechHealth">
     <!-- Logo -->
     <!-- Logo -->
@@ -119,6 +120,10 @@ const navItems = [
 
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const spans = toggle?.querySelectorAll('span');
+    let isOpen = false;
+
+    const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
+    const spans = toggle?.querySelectorAll('span');
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     let isOpen = false;
 
@@ -201,6 +206,18 @@ const navItems = [
         if (isOpen) toggleMenu();
       });
     });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+        (toggle as HTMLElement)?.focus();
+      }
+    });
+
+    // Focus trapping for mobile menu
+    document.addEventListener('keydown', (e) => {
+      if (!isOpen) return;
 
     // Keyboard handling: Focus trapping & Escape key
     // Keyboard handling: Escape key & Focus trapping
@@ -473,7 +490,7 @@ const navItems = [
     });
 
     // Reset ScrollSpy when clicking logo
-    document.querySelector('a[aria-label="Inicio de TechHealth"]')?.addEventListener('click', () => {
+    document.querySelector('a[aria-label^="Inicio de"]')?.addEventListener('click', () => {
       navLinks.forEach(link => {
         link.classList.remove('nav-link-active');
         link.removeAttribute('aria-current');
