@@ -13,6 +13,8 @@ const navItems = [
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
     <!-- Logo -->
+    <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label="Inicio de TechHealth">
+    <!-- Logo -->
     <!-- Logo -->
     <!-- Logo -->
     <!-- Logo -->
@@ -110,6 +112,8 @@ const navItems = [
     const mobileLinks = document.querySelectorAll('.mobile-link');
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const spans = toggle?.querySelectorAll('span');
+    let isOpen = false;
+
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     let isOpen = false;
 
@@ -174,6 +178,7 @@ const navItems = [
       });
     });
 
+    // Keyboard handling
     // Close on Escape key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && isOpen) {
@@ -227,12 +232,12 @@ const navItems = [
         const firstElement = focusableElements[0];
         const lastElement = focusableElements[focusableElements.length - 1];
 
-        if (e.shiftKey) { // Shift + Tab
+        if (e.shiftKey) {
           if (document.activeElement === firstElement) {
             e.preventDefault();
             lastElement?.focus();
           }
-        } else { // Tab
+        } else {
           if (document.activeElement === lastElement) {
             e.preventDefault();
             firstElement?.focus();
@@ -254,6 +259,20 @@ const navItems = [
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
           navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            const isActive = href === `#${id}`;
+            link.classList.toggle('nav-link-active', isActive);
+            if (isActive) link.setAttribute('aria-current', 'location');
+            else link.removeAttribute('aria-current');
+          });
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
+
+    // Reset ScrollSpy when clicking logo
+    document.querySelector('a[aria-label="Inicio de TechHealth"]')?.addEventListener('click', () => {
             const isActive = link.getAttribute('href') === `#${id}`;
             link.classList.toggle('nav-link-active', isActive);
             if (isActive) link.setAttribute('aria-current', 'location');
