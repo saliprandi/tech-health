@@ -2,6 +2,9 @@
 import { CONFIG } from '../data/config';
 
 const year = new Date().getFullYear();
+const hasSocials = Object.values(CONFIG.redes).some(link => link !== "");
+
+type SocialKey = 'instagram' | 'facebook' | 'linkedin';
 const hasSocials = !!(CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.redes.linkedin);
 
 // Using explicit casting for indexing to avoid TS errors in .astro frontmatter
@@ -69,6 +72,16 @@ const hasSocials = socialLinks.some(social => !!CONFIG.redes[social.name]);
 
     {hasSocials && (
       <div class="flex items-center gap-4 mb-6">
+        {(Object.entries(CONFIG.redes) as [SocialKey, string][]).map(([platform, url]) => url && (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white/50 hover:text-white focus-visible:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1"
+            aria-label={`Seguir en ${platform}`}
+          >
+            <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
+              <use href={`#icon-${platform}`} />
         {socialLinks.map(social => {
           const url = CONFIG.redes[social.name as keyof typeof CONFIG.redes];
           if (!url) return null;

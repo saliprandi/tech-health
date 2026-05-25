@@ -331,6 +331,8 @@ import { CONFIG } from '../data/config';
             <div class="flex flex-col gap-1.5 mb-2">
               <div class="flex justify-between items-center">
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
+              <div class="flex justify-between items-center">
+                <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
             <div class="flex flex-col gap-1.5">
               <div class="flex justify-between items-center">
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
@@ -371,6 +373,15 @@ import { CONFIG } from '../data/config';
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('contact-form');
     const btn = document.getElementById('f-submit');
+    const descArea = document.getElementById('f-desc');
+    const charCounter = document.getElementById('char-counter');
+
+    if (descArea && charCounter) {
+      descArea.addEventListener('input', () => {
+        const count = descArea.value.length;
+        charCounter.textContent = `${count} / 1000`;
+        charCounter.classList.toggle('text-blue-light', count >= 900);
+        charCounter.classList.toggle('text-white/40', count < 900);
     const descArea = document.getElementById('f-desc');
     const charCounter = document.getElementById('char-counter');
     const copyBtns = document.querySelectorAll('.copy-btn');
@@ -535,6 +546,11 @@ import { CONFIG } from '../data/config';
         button.disabled = true;
         btn.classList.add('opacity-70', 'cursor-not-allowed');
 
+        const nombre = document.getElementById('f-nombre')?.value.trim() || 'No especificado';
+        const tel = document.getElementById('f-tel')?.value.trim() || 'No especificado';
+        const servicioEl = document.getElementById('f-servicio');
+        const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+        const desc = descArea?.value.trim() || 'Sin detalles adicionales';
         const nombreInput = document.getElementById('f-nombre');
         const telInput = document.getElementById('f-tel');
         const servicioEl = document.getElementById('f-servicio');
@@ -606,8 +622,10 @@ import { CONFIG } from '../data/config';
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
         
 
-        // Open WhatsApp
-        window.open(url, '_blank');
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
+        const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(rawMessage)}`;
+
+        window.open(url, '_blank', 'noopener,noreferrer');
 
         // Reset button after a delay
         setTimeout(() => {

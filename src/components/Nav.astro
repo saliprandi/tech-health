@@ -110,6 +110,9 @@ const navItems = [
     const mobileLinks = document.querySelectorAll('.mobile-link');
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const spans = toggle?.querySelectorAll('span');
+    const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
+    let isOpen = false;
+
     let isOpen = false;
 
     let isOpen = false;
@@ -159,6 +162,10 @@ const navItems = [
     };
 
     toggle?.addEventListener('click', toggleMenu);
+    document.querySelectorAll('.mobile-link').forEach(link => link.addEventListener('click', () => isOpen && toggleMenu()));
+
+    // ScrollSpy
+    const observer = new IntersectionObserver((entries) => {
     if (toggle) toggle.addEventListener('click', toggleMenu);
 
     mobileLinks.forEach(link => {
@@ -247,6 +254,19 @@ const navItems = [
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
           navLinks.forEach(link => {
+            const isActive = link.getAttribute('href') === `#${id}`;
+            link.classList.toggle('nav-link-active', isActive);
+            if (isActive) link.setAttribute('aria-current', 'location');
+            else link.removeAttribute('aria-current');
+          });
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
+
+    // Reset ScrollSpy when clicking logo
+    document.querySelector('a[aria-label^="Inicio"]')?.addEventListener('click', () => {
             const href = link.getAttribute('href');
             if (href === `#${id}`) {
               link.classList.add('nav-link-active');
@@ -307,18 +327,25 @@ const navItems = [
       });
     });
 
-    // Keyboard handling: Focus trapping & Escape key
+    // Keyboard handling
     document.addEventListener('keydown', (e) => {
       if (!isOpen) return;
-
       if (e.key === 'Escape') {
         toggleMenu();
         (toggle as HTMLElement)?.focus();
         if (toggle && 'focus' in toggle) (toggle as HTMLElement).focus();
         return;
       }
-
       if (e.key === 'Tab') {
+        if (e.shiftKey && document.activeElement === toggle) {
+          e.preventDefault();
+          (whatsappMobileLink as HTMLElement)?.focus();
+        } else if (!e.shiftKey && document.activeElement === whatsappMobileLink) {
+          e.preventDefault();
+          (toggle as HTMLElement)?.focus();
+        }
+      }
+    });
         const focusableElements = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean) as HTMLElement[];
         const firstElement = focusableElements[0];
         const lastElement = focusableElements[focusableElements.length - 1];
