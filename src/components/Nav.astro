@@ -94,6 +94,7 @@ const navItems = [
         {item.label}
       </a>
     ))}
+    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
     <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} id="whatsapp-mobile-link" target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
       Consultar por WhatsApp
     </a>
@@ -166,6 +167,8 @@ const navItems = [
     };
 
     toggle?.addEventListener('click', toggleMenu);
+
+    document.querySelectorAll('.mobile-link').forEach(link => {
     document.querySelectorAll('.mobile-link').forEach(link => link.addEventListener('click', () => isOpen && toggleMenu()));
 
     // ScrollSpy
@@ -178,6 +181,11 @@ const navItems = [
       });
     });
 
+    // Escape key handling
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+        (toggle as HTMLElement)?.focus();
     // Keyboard handling
     // Close on Escape key
     document.addEventListener('keydown', (e) => {
@@ -259,6 +267,8 @@ const navItems = [
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
           navLinks.forEach(link => {
+            const isActive = link.getAttribute('href') === `#${id}`;
+            link.classList.toggle('nav-link-active', isActive);
             const href = link.getAttribute('href');
             const isActive = href === `#${id}`;
             link.classList.toggle('nav-link-active', isActive);
@@ -317,6 +327,9 @@ const navItems = [
     ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
       const section = document.getElementById(id);
       if (section) observer.observe(section);
+    });
+
+    // Reset ScrollSpy when clicking logo
     });
 
     // Reset ScrollSpy when clicking logo
