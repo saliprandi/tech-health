@@ -1,7 +1,8 @@
 from playwright.sync_api import sync_playwright
 
 def run_cuj(page):
-    page.goto("http://localhost:4322")
+    # Port audited to match project default (4321)
+    page.goto("http://localhost:4321")
     page.wait_for_timeout(1000)
 
     # 1. Test Navigation ScrollSpy
