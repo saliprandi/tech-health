@@ -26,3 +26,8 @@
 **Vulnerability:** Duplicate manifest keys and non-functional security meta tags.
 **Learning:** `Permissions-Policy` is non-functional in `<meta>` tags and must be set via HTTP headers. Duplicate `pnpm` keys in `package.json` can lead to overrides being ignored.
 **Prevention:** Consolidate all dependency overrides into a single `pnpm` object. Use `upgrade-insecure-requests` in CSP to ensure all content is served over HTTPS.
+
+## 2025-05-28 - CSP Meta Tag Limitations and Structural Integrity
+**Vulnerability:** Structural corruption in components blocked security auditing tools and prevented consistent application of security headers.
+**Learning:** `frame-ancestors` directive is ignored in `<meta http-equiv="Content-Security-Policy">` tags and must be set via HTTP headers. Massive code duplication acts as a "blind spot" for security fixes.
+**Prevention:** Always verify CSP syntax via browser console or verification scripts. Restore structural integrity (deduplication) as a prerequisite for any reliable security hardening.
