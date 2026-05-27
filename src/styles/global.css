@@ -111,4 +111,19 @@
     42% { transform: scale(1.15); }
     70% { transform: scale(1); }
   }
+
+  .animate-cta-pulse {
+    animation: cta-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes cta-pulse {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 4px 25px rgba(37, 211, 102, 0.7);
+    }
+  }
 }
