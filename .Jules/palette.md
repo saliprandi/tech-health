@@ -103,3 +103,7 @@
 ## 2025-05-15 - Multi-Stage Feedback for Click-to-Copy
 **Learning:** For "Click to Copy" interactions, immediate and multi-sensory (visual) feedback is vital. Swapping the icon (copy to check), updating the text (Copy to ¡Copiado!), and briefly shifting the button's background color (e.g., to success green) significantly reduces user uncertainty about whether the action succeeded.
 **Action:** Always implement a 2000ms "success state" for copy buttons with high-contrast color shifts and icon swaps.
+
+## 2025-06-01 - Accessible CTA Pulse Animation
+**Learning:** Adding a subtle pulse animation to primary Floating Action Buttons (FAB) increases visibility without being intrusive. However, for accessibility, it must respect `prefers-reduced-motion` and the button must include a `title` attribute for mouse users and `aria-hidden="true"` on internal icons to prevent redundant screen reader announcements.
+**Action:** Implement `animate-cta-pulse` with a `prefers-reduced-motion` override in `global.css` and audit FABs for proper title/aria-hidden attributes.
