@@ -104,11 +104,38 @@
     animation: heartbeat 1.5s ease-in-out infinite;
   }
 
+  .animate-cta-pulse {
+    animation: cta-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
   @keyframes heartbeat {
     0% { transform: scale(1); }
     14% { transform: scale(1.15); }
     28% { transform: scale(1); }
     42% { transform: scale(1.15); }
     70% { transform: scale(1); }
+  }
+
+  @keyframes cta-pulse {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow: 0 4px 20px rgba(37,211,102,0.5);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 4px 25px rgba(37,211,102,0.7);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-delay: -1ms !important;
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      background-attachment: initial !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0s !important;
+      transition-delay: 0s !important;
+    }
   }
 }
