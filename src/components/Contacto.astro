@@ -414,6 +414,8 @@ import { CONFIG } from '../data/config';
     const form = document.getElementById('contact-form');
     const btn = document.getElementById('f-submit');
     const textarea = document.getElementById('f-desc');
+    const charCounter = document.getElementById('char-counter');
+
     const counter = document.getElementById('char-counter');
     const copyBtns = document.querySelectorAll('.copy-btn');
 
@@ -464,18 +466,22 @@ import { CONFIG } from '../data/config';
           const copyIcon = button.querySelector('.copy-icon');
           const checkIcon = button.querySelector('.check-icon');
           const btnText = button.querySelector('.btn-text');
-          const originalText = btnText.textContent;
+          const originalText = btnText ? btnText.textContent : 'Copiar';
 
-          copyIcon.classList.add('hidden');
-          checkIcon.classList.remove('hidden');
-          btnText.textContent = '¡Copiado!';
-          btnText.classList.add('text-green-600');
+          if (copyIcon) copyIcon.classList.add('hidden');
+          if (checkIcon) checkIcon.classList.remove('hidden');
+          if (btnText) {
+            btnText.textContent = '¡Copiado!';
+            btnText.classList.add('text-green-600');
+          }
 
           setTimeout(() => {
-            copyIcon.classList.remove('hidden');
-            checkIcon.classList.add('hidden');
-            btnText.textContent = originalText;
-            btnText.classList.remove('text-green-600');
+            if (copyIcon) copyIcon.classList.remove('hidden');
+            if (checkIcon) checkIcon.classList.add('hidden');
+            if (btnText) {
+              btnText.textContent = originalText;
+              btnText.classList.remove('text-green-600');
+            }
           }, 2000);
         });
       });
@@ -485,6 +491,7 @@ import { CONFIG } from '../data/config';
     if (textarea && counter) {
       textarea.addEventListener('input', () => {
         const count = textarea.value.length;
+        charCounter.textContent = `${count} / 1000`;
         counter.textContent = `${count} / 1000`;
         charCounter.innerText = `${count} / 1000`;
 
@@ -584,6 +591,14 @@ import { CONFIG } from '../data/config';
         const telEl = document.getElementById('f-tel');
         const servicioEl = document.getElementById('f-servicio');
 
+        const nombre = (nombreEl && 'value' in nombreEl) ? nombreEl.value.trim() : 'No especificado';
+        const tel = (telEl && 'value' in telEl) ? telEl.value.trim() : 'No especificado';
+        const servicio = (servicioEl && 'options' in servicioEl) ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+        const desc = (textarea && 'value' in textarea) ? textarea.value.trim() : 'Sin detalles adicionales';
+
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
+        const encodedMessage = encodeURIComponent(rawMessage);
+        const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
         const nombre = (nombreEl instanceof HTMLInputElement) ? nombreEl.value.trim() : 'No especificado';
         const tel = (telEl instanceof HTMLInputElement) ? telEl.value.trim() : 'No especificado';
         const servicio = (servicioEl instanceof HTMLSelectElement) ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';

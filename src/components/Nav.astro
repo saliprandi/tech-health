@@ -63,6 +63,7 @@ const navItems = [
   <div id="mobile-menu-backdrop" class="fixed inset-0 bg-navy/20 backdrop-blur-sm z-[98] opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
 
   <!-- Mobile Menu -->
+  <div id="mobile-menu" class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white/95 backdrop-blur-md border-b border-border flex flex-col items-center py-10 gap-8 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
   <div id="mobile-menu" class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white/20 backdrop-blur-md border-b border-border flex flex-col items-center py-12 gap-8 shadow-card-hover opacity-0 pointer-events-none translate-x-full transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
     <div class="absolute inset-0 bg-white -z-10"></div>
     {navItems.map(item => (
@@ -73,6 +74,7 @@ const navItems = [
         {item.label}
       </a>
     ))}
+    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} id="whatsapp-mobile-link" target="_blank" rel="noopener noreferrer" class="mt-4 bg-navy text-white font-heading font-bold text-[16px] py-[14px] px-[28px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
     <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} id="whatsapp-mobile-link" target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[16px] py-[14px] px-[28px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
     <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} id="whatsapp-mobile-link" target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
     <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} id="whatsapp-mobile-link" target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[15px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
@@ -166,6 +168,9 @@ const navItems = [
       });
     });
 
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      if (isOpen && menu && !menu.contains(e.target as Node) && !toggle?.contains(e.target as Node)) {
     // Close on outside click
     // Keyboard handling: Escape key & Focus trapping
     // Outside click
@@ -247,6 +252,7 @@ const navItems = [
       threshold: 0
     };
 
+    const observer = new IntersectionObserver((entries) => {
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
     const observerCallback = (entries) => {
       entries.forEach(entry => {
@@ -289,6 +295,11 @@ const navItems = [
           });
         }
       });
+    }, observerOptions);
+
+    document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
+
+    // Reset ScrollSpy when clicking logo
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
