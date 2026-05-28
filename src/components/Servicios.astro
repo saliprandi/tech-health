@@ -41,6 +41,7 @@ const modalData = CONFIG.servicios.map(s => ({
         >
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-500 ease-out"></div>
           
+          <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale text-blue flex items-center justify-center mb-6">
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
@@ -161,6 +162,12 @@ const modalData = CONFIG.servicios.map(s => ({
       // Populate content
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
+          <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <use href="#icon-${escapeHtml(servicio.icono)}" />
+          </svg>
+        </div>
+        <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
+        <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
           <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
             <use href="#icon-${escapeHtml(servicio.icono)}" />
           </svg>
@@ -219,6 +226,7 @@ const modalData = CONFIG.servicios.map(s => ({
       isModalOpen = true;
 
       setTimeout(() => {
+        if (closeBtn instanceof HTMLElement) closeBtn.focus();
         if (closeBtn) closeBtn.focus();
       setTimeout(() => { if (closeBtn) closeBtn.focus(); }, 100);
 
@@ -250,6 +258,10 @@ const modalData = CONFIG.servicios.map(s => ({
 
     const closeModal = () => {
       if (!isModalOpen || !backdrop || !modal) return;
+      
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
@@ -387,6 +399,8 @@ const modalData = CONFIG.servicios.map(s => ({
       });
     });
 
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
     [backdrop, closeBtn].forEach(el => el?.addEventListener('click', closeModal));
 
     document.addEventListener('keydown', (e) => {
@@ -408,6 +422,9 @@ const modalData = CONFIG.servicios.map(s => ({
         const last = focusable[focusable.length - 1];
 
         if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            if (lastElement instanceof HTMLElement) lastElement.focus();
         if (e.shiftKey && document.activeElement === first) {
           e.preventDefault();
     [backdrop, closeBtn].forEach(el => el?.addEventListener('click', closeModal));
@@ -500,6 +517,7 @@ const modalData = CONFIG.servicios.map(s => ({
         } else {
           if (document.activeElement === lastElement) {
             e.preventDefault();
+            if (firstElement instanceof HTMLElement) firstElement.focus();
             firstElement.focus();
           if (document.activeElement === last) {
             e.preventDefault();

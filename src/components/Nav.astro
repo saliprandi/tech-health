@@ -45,6 +45,11 @@ const navItems = [
     </ul>
 
     <div class="flex items-center gap-4">
+      <!-- Desktop WhatsApp Link -->
+      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors shadow-sm hover:shadow-md animate-cta-pulse">
+        Consultar por WhatsApp
+      </a>
+
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors shadow-sm">
         Consultar por WhatsApp
       </a>
@@ -227,6 +232,11 @@ const navItems = [
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && isOpen) {
         toggleMenu();
+        (toggle as HTMLElement)?.focus();
+        return;
+      }
+
+      if (isOpen && e.key === 'Tab') {
         (toggle as HTMLElement | null)?.focus();
       }
 
@@ -310,6 +320,7 @@ const navItems = [
       }
     });
 
+    // ScrollSpy
     // ScrollSpy Implementation
     // ScrollSpy
     // ScrollSpy implementation
@@ -318,6 +329,7 @@ const navItems = [
       threshold: 0
     };
 
+    const observer = new IntersectionObserver((entries) => {
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
     const observerCallback = (entries) => {
       entries.forEach(entry => {
@@ -342,6 +354,7 @@ const navItems = [
     document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
 
     // Reset ScrollSpy when clicking logo
+    document.querySelector('a[aria-label^="Inicio"]')?.addEventListener('click', () => {
     document.querySelector('a[aria-label^="Inicio de"]')?.addEventListener('click', () => {
     };
 

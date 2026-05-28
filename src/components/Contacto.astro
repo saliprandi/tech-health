@@ -12,6 +12,8 @@ import { CONFIG } from '../data/config';
         <p class="font-body font-light text-[16px] text-text-soft mb-10 max-w-[480px]">Contáctenos para programar una visita técnica, presupuestar una reparación o realizar consultas sobre nuestros servicios.</p>
         <div class="flex flex-col gap-6">
           
+          <!-- WhatsApp / Phone -->
+          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
           <!-- WhatsApp -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="flex items-start gap-4 flex-grow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-lg" aria-label="Llamar o enviar WhatsApp">
@@ -43,6 +45,7 @@ import { CONFIG } from '../data/config';
           </div>
 
           <!-- Location -->
+          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
           <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
             <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" aria-label="Ver en Google Maps">
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -71,7 +74,7 @@ import { CONFIG } from '../data/config';
 
           <!-- Email -->
           {CONFIG.contacto.email && (
-            <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
+            <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
               <a href={`mailto:${CONFIG.contacto.email}`} class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" aria-label="Enviar correo electrónico">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
@@ -622,6 +625,29 @@ import { CONFIG } from '../data/config';
     const counter = document.getElementById('char-counter');
     const copyBtns = document.querySelectorAll('.copy-btn');
 
+    // Click to copy
+    copyBtns.forEach(button => {
+      button.addEventListener('click', () => {
+        const text = button.getAttribute('data-copy');
+        if (!text) return;
+
+        navigator.clipboard.writeText(text).then(() => {
+          const copyIcon = button.querySelector('.copy-icon');
+          const checkIcon = button.querySelector('.check-icon');
+          const btnText = button.querySelector('.btn-text');
+          const originalText = btnText ? btnText.textContent : 'Copiar';
+
+          if (copyIcon) copyIcon.classList.add('hidden');
+          if (checkIcon) checkIcon.classList.remove('hidden');
+          if (btnText) {
+            btnText.textContent = '¡Copiado!';
+            btnText.classList.add('text-green-600');
+          }
+
+          setTimeout(() => {
+    const counter = document.getElementById('char-counter');
+    const copyBtns = document.querySelectorAll('.copy-btn');
+
     // Click to Copy Logic
     copyBtns.forEach(button => {
       button.addEventListener('click', async () => {
@@ -757,6 +783,9 @@ import { CONFIG } from '../data/config';
       textarea.addEventListener('input', () => {
         const count = (textarea).value.length;
         const count = textarea.value.length;
+        counter.textContent = `${count} / 1000`;
+        counter.classList.toggle('text-blue-light', count >= 900);
+        counter.classList.toggle('text-white/40', count < 900);
         charCounter.textContent = `${count} / 1000`;
         counter.textContent = `${count} / 1000`;
         charCounter.innerText = `${count} / 1000`;
@@ -849,6 +878,14 @@ import { CONFIG } from '../data/config';
         btn.disabled = true;
         btn.classList.add('opacity-70', 'cursor-not-allowed');
 
+        const nombreEl = document.getElementById('f-nombre');
+        const telEl = document.getElementById('f-tel');
+        const servicioEl = document.getElementById('f-servicio');
+
+        const nombre = (nombreEl instanceof HTMLInputElement) ? nombreEl.value.trim() : 'No especificado';
+        const tel = (telEl instanceof HTMLInputElement) ? telEl.value.trim() : 'No especificado';
+        const servicio = (servicioEl instanceof HTMLSelectElement) ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+        const desc = (textarea instanceof HTMLTextAreaElement) ? textarea.value.trim() : 'Sin detalles adicionales';
         const nombre = document.getElementById('f-nombre').value.trim() || 'No especificado';
         const tel = document.getElementById('f-tel').value.trim() || 'No especificado';
         const servicioEl = document.getElementById('f-servicio');

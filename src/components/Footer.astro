@@ -52,6 +52,7 @@ const socialLinks = [
   { name: 'linkedin', label: 'Seguir en LinkedIn' }
 ] as const;
 
+const hasSocials = socialLinks.some(social => !!CONFIG.redes[social.name as keyof typeof CONFIG.redes]);
 const redes = Object.entries(CONFIG.redes).filter(([_, url]) => url);
 const hasSocials = redes.length > 0;
 const hasSocials = socialLinks.some(social => !!(CONFIG.redes as any)[social.name]);
@@ -116,7 +117,7 @@ const socialLabels: Record<string, string> = {
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              class="text-white/50 hover:text-white focus-visible:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1"
+              class="text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1"
               aria-label={social.label}
             >
               <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
