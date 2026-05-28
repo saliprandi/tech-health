@@ -12,6 +12,7 @@ const navItems = [
 <nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
+    <!-- Brand Logo -->
     <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE -->
     <!-- Logo -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
@@ -30,6 +31,7 @@ const navItems = [
     <ul class="hidden md:flex items-center gap-8">
       {navItems.map(item => (
         <li>
+          <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors px-1 py-0.5">
           <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">
             {item.label}
           </a>
@@ -38,12 +40,15 @@ const navItems = [
     </ul>
 
     <div class="flex items-center gap-4">
+      <!-- Desktop WhatsApp CTA -->
       <!-- Desktop WhatsApp Link -->
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors shadow-sm hover:shadow-md">
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors shadow-sm hover:shadow-md">
         Consultar por WhatsApp
       </a>
 
+      <!-- Mobile Menu Toggle -->
+      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-sm transition-shadow z-[101]" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
       <!-- Hamburger Button -->
       <button
         id="menu-toggle"
@@ -59,6 +64,7 @@ const navItems = [
     </div>
   </div>
 
+  <!-- Mobile Menu Overlay -->
   <!-- Mobile Menu Backdrop -->
   <div id="mobile-menu-backdrop" class="fixed inset-0 bg-navy/20 backdrop-blur-sm z-[98] opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
 
@@ -168,6 +174,7 @@ const navItems = [
       });
     });
 
+    // Keyboard Accessibility
     // Close on click outside
     document.addEventListener('click', (e) => {
       if (isOpen && menu && !menu.contains(e.target as Node) && !toggle?.contains(e.target as Node)) {

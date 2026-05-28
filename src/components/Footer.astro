@@ -4,6 +4,13 @@ import { CONFIG } from '../data/config';
 const year = new Date().getFullYear();
 
 type SocialKey = 'instagram' | 'facebook' | 'linkedin';
+const socialLinks: { name: SocialKey; label: string }[] = [
+  { name: 'instagram', label: 'Seguir en Instagram' },
+  { name: 'facebook', label: 'Seguir en Facebook' },
+  { name: 'linkedin', label: 'Seguir en LinkedIn' }
+];
+
+const hasSocials = socialLinks.some(social => !!CONFIG.redes[social.name]);
 const socialLinks: { name: SocialKey; label: string; icon: string }[] = [
   {
     name: 'instagram',
@@ -96,7 +103,7 @@ const socialLabels: Record<SocialKey, string> = {
           <a
             href={CONFIG.redes[social.name as keyof typeof CONFIG.redes]}
         {socialLinks.map(social => {
-          const url = CONFIG.redes[social.name as keyof typeof CONFIG.redes];
+          const url = CONFIG.redes[social.name];
           if (!url) return null;
 
           return (

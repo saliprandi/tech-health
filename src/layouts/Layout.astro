@@ -21,9 +21,15 @@ const { title = "TechHealth Medical Engineering | Técnicos en Electromedicina �
 		<link rel="canonical" href="https://techhealth.com.ar" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
+
+		<!-- Performance: Preload Critical Assets -->
+		<link rel="preload" href="/logo-name.svg" as="image" type="image/svg+xml" fetchpriority="high" />
+
+		<!-- Security: Consolidated and Hardened CSP -->
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-src 'self' https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;" />
+
 		<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-src 'self' https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;" />
 		<meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
-		<meta name="generator" content={Astro.generator} />
 		
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content="website" />
@@ -39,15 +45,14 @@ const { title = "TechHealth Medical Engineering | Técnicos en Electromedicina �
 		<meta property="twitter:description" content="Especialistas en mantenimiento y reparación de equipos médicos de alta complejidad en Tucumán." />
 		<meta property="twitter:image" content="https://saliprandi.github.io/tech-health/og-image.jpg" />
 		
-		<!-- Google Fonts: Optimized to load only used weights (Inter 300/400/500, Plus Jakarta Sans 700/800)
-		     to reduce CSS payload and font file requests. -->
+		<!-- Google Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
 	</head>
 	<body>
 		<IconSprite />
-		<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[200] focus:bg-white focus:text-navy focus:px-6 focus:py-3 focus:rounded-lg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue">
+		<a href="#hero" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[200] focus:bg-white focus:text-navy focus:px-6 focus:py-3 focus:rounded-lg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue">
 			Saltar al contenido principal
 		</a>
 		<slot />

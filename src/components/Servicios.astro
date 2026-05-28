@@ -83,6 +83,7 @@ const modalData = CONFIG.servicios.map(s => ({
     aria-describedby="modal-content"
   >
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
+      <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4" aria-label="Cerrar modal">
       <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4" aria-label="Cerrar">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2">
           <use href="#icon-close" />
@@ -111,6 +112,9 @@ const modalData = CONFIG.servicios.map(s => ({
     let isModalOpen = false;
     let triggerElement = null;
 
+    /**
+     * Sanitizes a string to prevent XSS vulnerabilities when using innerHTML.
+     */
     const escapeHtml = (unsafe) => {
       if (typeof unsafe !== 'string') return '';
       return unsafe
@@ -123,6 +127,8 @@ const modalData = CONFIG.servicios.map(s => ({
 
     const openModal = (index, element) => {
       const servicio = services[index];
+      if (!servicio || !modalContent || !backdrop || !modal) return;
+
       const s = services[index];
       if (!s || !modalContent || !backdrop || !modal) return;
     const openModal = (index, trigger) => {
@@ -140,8 +146,15 @@ const modalData = CONFIG.servicios.map(s => ({
       triggerElement = element;
       triggerElement.setAttribute('aria-expanded', 'true');
 
+      // Populate content
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
+          <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <use href="#icon-${escapeHtml(servicio.icono)}" />
+          </svg>
+        </div>
+        <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
+        <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
           <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
             <use href="#icon-${escapeHtml(servicio.icono)}" />
           </svg>
@@ -179,10 +192,15 @@ const modalData = CONFIG.servicios.map(s => ({
         </ul>
       `;
 
+      // Show modal
       backdrop.classList.remove('opacity-0', 'pointer-events-none');
       modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
       modal.classList.add('scale-100', 'opacity-100', 'pointer-events-auto');
 
+      document.body.style.overflow = 'hidden';
+      isModalOpen = true;
+
+      // Focus management
       backdrop?.classList.remove('opacity-0', 'pointer-events-none');
       modal?.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
       modal?.classList.add('scale-100', 'opacity-100', 'pointer-events-auto');
@@ -202,6 +220,12 @@ const modalData = CONFIG.servicios.map(s => ({
     };
 
     const closeModal = () => {
+      if (!isModalOpen || !backdrop || !modal) return;
+
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+      
       if (!isModalOpen) return;
       
       if (backdrop && modal) {
@@ -287,6 +311,7 @@ const modalData = CONFIG.servicios.map(s => ({
 
       const handleOpen = () => openModal(parseInt(index), card);
 
+
       card.addEventListener('click', handleOpen);
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -339,9 +364,11 @@ const modalData = CONFIG.servicios.map(s => ({
       });
     });
 
+    [backdrop, closeBtn].forEach(el => el?.addEventListener('click', closeModal));
     if (backdrop) backdrop.addEventListener('click', closeModal);
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
 
+    // Global key listeners for Modal
     document.addEventListener('keydown', (e) => {
       if (!isModalOpen) return;
     if (backdrop) backdrop.addEventListener('click', closeModal);
@@ -352,7 +379,6 @@ const modalData = CONFIG.servicios.map(s => ({
 
       if (e.key === 'Escape') {
         closeModal();
-        return;
       }
 
       if (e.key === 'Tab') {
