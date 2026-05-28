@@ -11,6 +11,10 @@ const navItems = [
 
 <nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
+    <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
+      <img src="/logo-name.svg" alt={`${CONFIG.empresa.nombre} ${CONFIG.empresa.subtitulo}`} width="228" height="56" class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-300" fetchpriority="high" />
+    </a>
+
     
     <!-- Brand Logo -->
     <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE -->
@@ -40,6 +44,10 @@ const navItems = [
     </ul>
 
     <div class="flex items-center gap-4">
+      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors shadow-sm">
+        Consultar por WhatsApp
+      </a>
+      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-sm transition-shadow z-[101]" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
       <!-- Desktop WhatsApp CTA -->
       <!-- Desktop WhatsApp Link -->
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors shadow-sm hover:shadow-md">
@@ -64,6 +72,11 @@ const navItems = [
     </div>
   </div>
 
+  <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-8 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
+    {navItems.map(item => (
+      <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[18px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">{item.label}</a>
+    ))}
+    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[15px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
   <!-- Mobile Menu Overlay -->
   <!-- Mobile Menu Backdrop -->
   <div id="mobile-menu-backdrop" class="fixed inset-0 bg-navy/20 backdrop-blur-sm z-[98] opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
@@ -99,6 +112,11 @@ const navItems = [
     const backdrop = document.getElementById('mobile-menu-backdrop');
     const navLinks = document.querySelectorAll('.nav-link');
     const mobileLinks = document.querySelectorAll('.mobile-link');
+    const spans = toggle?.querySelectorAll('span');
+    let isOpen = false;
+
+    const toggleMenu = (forceState?: boolean) => {
+      isOpen = forceState !== undefined ? forceState : !isOpen;
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const spans = toggle?.querySelectorAll('span');
     let isOpen = false;
@@ -112,7 +130,6 @@ const navItems = [
       toggle?.setAttribute('aria-expanded', isOpen.toString());
       toggle?.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
       menu?.setAttribute('aria-hidden', (!isOpen).toString());
-
       if (menu) {
         menu.classList.toggle('opacity-0', !isOpen);
         menu.classList.toggle('pointer-events-none', !isOpen);
@@ -156,6 +173,15 @@ const navItems = [
           spans[2].style.transform = '';
         }
       }
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    };
+
+    toggle?.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
+    mobileLinks.forEach(link => link.addEventListener('click', () => isOpen && toggleMenu(false)));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isOpen) { toggleMenu(false); (toggle as HTMLElement)?.focus(); } });
+    document.addEventListener('click', (e) => { if (isOpen && menu && !menu.contains(e.target as Node) && !toggle?.contains(e.target as Node)) toggleMenu(false); });
+
+    const observer = new IntersectionObserver((entries) => {
 
       document.body.style.overflow = isOpen ? 'hidden' : '';
     };
@@ -288,6 +314,8 @@ const navItems = [
           });
         }
       });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
@@ -327,6 +355,8 @@ const navItems = [
       if (el) observer.observe(el);
     });
 
+    document.querySelector('a[aria-label^="Inicio"]')?.addEventListener('click', () => {
+      navLinks.forEach(link => { link.classList.remove('nav-link-active'); link.removeAttribute('aria-current'); });
     // Reset ScrollSpy when clicking logo
     document.querySelector('a[aria-label^="Inicio de"]')?.addEventListener('click', () => {
     document.querySelector('a[aria-label^="Inicio"]')?.addEventListener('click', () => {
@@ -339,6 +369,9 @@ const navItems = [
 </script>
 
 <style>
+  .nav-link-active { @apply text-navy !important; position: relative; }
+  .nav-link-active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; @apply bg-blue rounded-full; }
+  @media (max-width: 767px) { .nav-link-active::after { display: none; } }
   .nav-link-active {
     @apply text-blue !important;
     position: relative;
