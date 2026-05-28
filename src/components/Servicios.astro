@@ -203,12 +203,12 @@ const modalData = CONFIG.servicios.map(s => ({
         if (e.shiftKey) { // Shift + Tab
           if (document.activeElement === firstElement) {
             e.preventDefault();
-            lastElement.focus();
+            if (lastElement instanceof HTMLElement) lastElement.focus();
           }
         } else { // Tab
           if (document.activeElement === lastElement) {
             e.preventDefault();
-            firstElement.focus();
+            if (firstElement instanceof HTMLElement) firstElement.focus();
           }
         }
       }
