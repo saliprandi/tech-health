@@ -4,6 +4,35 @@ import { CONFIG } from '../data/config';
 const year = new Date().getFullYear();
 const redes = Object.entries(CONFIG.redes).filter(([_, url]) => url);
 const hasSocials = redes.length > 0;
+
+type SocialKey = 'instagram' | 'facebook' | 'linkedin';
+
+const socialLinks: { id: SocialKey; label: string }[] = [
+  { id: 'instagram', label: 'Seguir en Instagram' },
+  { id: 'facebook', label: 'Seguir en Facebook' },
+  { id: 'linkedin', label: 'Seguir en LinkedIn' }
+];
+
+const activeSocials = socialLinks.filter(social => !!CONFIG.redes[social.id]);
+const hasSocials = activeSocials.length > 0;
+const socialLinks = [
+  { name: 'instagram', label: 'Seguir en Instagram' },
+  { name: 'facebook', label: 'Seguir en Facebook' },
+  { name: 'linkedin', label: 'Seguir en LinkedIn' }
+] as const;
+
+const redes = Object.entries(CONFIG.redes).filter(([_, value]) => value);
+const hasSocials = redes.length > 0;
+const redes = Object.entries(CONFIG.redes).filter(([_, value]) => value);
+const hasSocials = redes.length > 0;
+
+type SocialKey = 'instagram' | 'facebook' | 'linkedin';
+
+const socialLabels: Record<SocialKey, string> = {
+  instagram: 'Seguir en Instagram',
+  facebook: 'Seguir en Facebook',
+  linkedin: 'Seguir en LinkedIn'
+};
 ---
 
 <footer class="bg-navy-dark py-10 px-[5%] text-center border-t border-white/5">
@@ -14,6 +43,19 @@ const hasSocials = redes.length > 0;
            This logo serves as a branding element and an interactive 'Back to top' link. -->
       <a href="#hero" class="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-all" aria-label="Volver al inicio">
         <img src="/logo-name.svg" alt={CONFIG.empresa.nombre} width="180" height="44" class="h-11 w-auto brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity" />
+      <!-- Interactive 'Back to top' link -->
+      <a href="#hero" class="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-all" aria-label="Volver al inicio">
+        <img src="/logo-name.svg" alt={CONFIG.empresa.nombre} width="180" height="44" class="h-11 w-auto brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity" />
+      <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE
+           This logo serves as a branding element and an interactive 'Back to top' link. -->
+      <a href="#hero" class="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-all" aria-label="Volver al inicio">
+        <img
+          src="/logo-name.svg"
+          alt={CONFIG.empresa.nombre}
+          width="180"
+          height="44"
+          class="h-11 w-auto brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity"
+        />
       </a>
     </div>
 
@@ -33,6 +75,32 @@ const hasSocials = redes.length > 0;
           >
             <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
               <use href={`#icon-${platform}`} />
+        {activeSocials.map(social => (
+          <a
+            href={CONFIG.redes[social.id]}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white/50 hover:text-white focus-visible:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1"
+            aria-label={social.label}
+          >
+            <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
+              <use href={`#icon-${social.id}`} />
+        {socialLinks.map(social => CONFIG.redes[social.name as keyof typeof CONFIG.redes] && (
+        {redes.map(([key, url]) => (
+          <a
+            href={CONFIG.redes[social.name as keyof typeof CONFIG.redes]}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white/50 hover:text-white transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark focus-visible:text-white rounded-full p-1"
+            aria-label={social.label}
+          >
+            <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
+              <use href={`#icon-${social.name}`} />
+            class="text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1"
+            aria-label={socialLabels[key as SocialKey] || `Seguir en ${key}`}
+          >
+            <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
+              <use href={`#icon-${key}`} />
             </svg>
           </a>
         ))}
