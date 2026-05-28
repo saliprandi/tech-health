@@ -58,6 +58,9 @@ const navItems = [
     </div>
   </div>
 
+  <!-- Mobile Menu Backdrop -->
+  <div id="mobile-menu-backdrop" class="fixed inset-0 bg-navy/20 backdrop-blur-sm z-[98] opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
+
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white/20 backdrop-blur-md border-b border-border flex flex-col items-center py-12 gap-8 shadow-card-hover opacity-0 pointer-events-none translate-x-full transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
     <div class="absolute inset-0 bg-white -z-10"></div>
@@ -81,6 +84,7 @@ const navItems = [
   document.addEventListener('DOMContentLoaded', () => {
     const toggle = document.getElementById('menu-toggle');
     const menu = document.getElementById('mobile-menu');
+    const backdrop = document.getElementById('mobile-menu-backdrop');
     const navLinks = document.querySelectorAll('.nav-link');
     const mobileLinks = document.querySelectorAll('.mobile-link');
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
@@ -95,6 +99,20 @@ const navItems = [
       isOpen = !isOpen;
       toggle?.setAttribute('aria-expanded', isOpen.toString());
       toggle?.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+
+      if (menu) {
+        menu.classList.toggle('opacity-0', !isOpen);
+        menu.classList.toggle('pointer-events-none', !isOpen);
+        menu.classList.toggle('translate-y-[-10px]', !isOpen);
+        menu.classList.toggle('opacity-100', isOpen);
+        menu.classList.toggle('pointer-events-auto', isOpen);
+        menu.classList.toggle('translate-y-0', isOpen);
+        menu.setAttribute('aria-hidden', (!isOpen).toString());
+      }
+
+      if (backdrop) {
+        backdrop.classList.toggle('opacity-0', !isOpen);
+        backdrop.classList.toggle('pointer-events-none', !isOpen);
       menu?.setAttribute('aria-hidden', (!isOpen).toString());
 
       if (isOpen) {
@@ -129,6 +147,14 @@ const navItems = [
       document.body.style.overflow = isOpen ? 'hidden' : '';
     };
 
+    toggle?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMenu();
+    });
+
+    backdrop?.addEventListener('click', () => {
+      if (isOpen) toggleMenu();
+    });
     toggle?.addEventListener('click', toggleMenu);
 
     mobileLinks.forEach(link => {
@@ -144,6 +170,11 @@ const navItems = [
       }
     });
 
+    // Mobile menu focus trap
+    document.addEventListener('keydown', (e) => {
+      if (!isOpen) return;
+
+      if (e.key === 'Tab') {
     // Keyboard handling
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && isOpen) {
@@ -199,11 +230,11 @@ const navItems = [
     // ScrollSpy
     // ScrollSpy implementation
     const observerOptions = {
-      root: null,
       rootMargin: '-20% 0px -70% 0px',
       threshold: 0
     };
 
+    const observer = new IntersectionObserver((entries) => {
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
     const observerCallback = (entries) => {
       entries.forEach(entry => {

@@ -26,6 +26,8 @@ import { CONFIG } from '../data/config';
           <!-- WhatsApp -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="flex items-start gap-4 flex-grow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-lg">
+              <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="flex items-start gap-4 flex-grow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-lg" aria-label="Llamar o enviar WhatsApp">
               <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -41,6 +43,8 @@ import { CONFIG } from '../data/config';
                 <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.whatsapp_display}</div>
               </div>
             </a>
+            <button class="copy-btn absolute top-4 right-4 p-2 rounded-md bg-blue-pale text-blue hover:bg-blue hover:text-white transition-all opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue" data-copy={CONFIG.contacto.whatsapp_display} aria-label="Copiar teléfono">
+              <svg class="w-4 h-4"><use href="#icon-copy" /></svg>
             <button class="copy-btn absolute top-4 right-4 p-2 rounded-md bg-blue-pale text-blue hover:bg-blue hover:text-white transition-all opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue" data-copy={CONFIG.contacto.whatsapp} aria-label="Copiar teléfono">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2">
                 <use href="#icon-copy" />
@@ -79,6 +83,10 @@ import { CONFIG } from '../data/config';
               </div>
             </a>
             <button class="copy-btn absolute top-4 right-4 p-2 rounded-md bg-blue-pale text-blue hover:bg-blue hover:text-white transition-all opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue" data-copy={`${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`} aria-label="Copiar dirección">
+              <svg class="w-4 h-4"><use href="#icon-copy" /></svg>
+            </button>
+          </div>
+
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2">
                 <use href="#icon-copy" />
               </svg>
@@ -125,6 +133,24 @@ import { CONFIG } from '../data/config';
                 </div>
               </a>
               <button class="copy-btn absolute top-4 right-4 p-2 rounded-md bg-blue-pale text-blue hover:bg-blue hover:text-white transition-all opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue" data-copy={CONFIG.contacto.email} aria-label="Copiar correo electrónico">
+                <svg class="w-4 h-4"><use href="#icon-copy" /></svg>
+              </button>
+            </div>
+          )}
+
+          <!-- Hours -->
+          <div class="flex items-start gap-4 p-4 rounded-[12px] border border-transparent">
+            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <div class="font-heading font-bold text-[16px] text-navy mb-1">Horario de atención</div>
+              <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.horario}</div>
+            </div>
+          </div>
+
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2">
                   <use href="#icon-copy" />
                 </svg>
@@ -255,11 +281,13 @@ import { CONFIG } from '../data/config';
             
             <div class="flex flex-col gap-1.5">
               <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Nombre completo</label>
+              <input type="text" id="f-nombre" name="nombre" placeholder="Ej: Dr. Juan Pérez" required maxlength="100" autocomplete="name" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full" />
               <input type="text" id="f-nombre" name="nombre" required maxlength="100" autocomplete="name" placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full" />
             </div>
 
             <div class="flex flex-col gap-1.5">
               <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Teléfono / WhatsApp</label>
+              <input type="tel" id="f-tel" name="telefono" placeholder="Ej: 381 123 4567" required maxlength="30" autocomplete="tel" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full" />
               <input type="tel" id="f-tel" name="telefono" required maxlength="30" autocomplete="tel" placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full" />
             </div>
 
@@ -428,6 +456,12 @@ import { CONFIG } from '../data/config';
         const tel = (document.getElementById('f-tel')).value.trim() || 'No especificado';
         const servicioEl = document.getElementById('f-servicio');
         const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+        const desc = descArea?.value.trim() || 'Sin detalles adicionales';
+
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
+
+        const encodedMessage = encodeURIComponent(rawMessage);
+        const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
         const desc = textarea?.value.trim() || 'Sin detalles adicionales';
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
