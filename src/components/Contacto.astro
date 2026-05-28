@@ -21,6 +21,7 @@ import { CONFIG } from '../data/config';
           
           <!-- WhatsApp -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
+            <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="flex items-start gap-4 flex-grow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-lg">
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="flex items-start gap-4 flex-grow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-lg" aria-label="Llamar o enviar WhatsApp">
               <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -36,6 +37,13 @@ import { CONFIG } from '../data/config';
                 <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.whatsapp_display}</div>
               </div>
             </a>
+            <button class="copy-btn absolute top-4 right-4 p-2 rounded-md bg-blue-pale text-blue hover:bg-blue hover:text-white transition-all opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue" data-copy={CONFIG.contacto.whatsapp} aria-label="Copiar teléfono">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2">
+                <use href="#icon-copy" />
+              </svg>
+              <svg class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2">
+                <use href="#icon-check" />
+              </svg>
             <button class="copy-btn absolute top-4 right-4 p-2 rounded-md bg-blue-pale text-blue hover:bg-blue hover:text-white transition-all opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue" data-copy={CONFIG.contacto.whatsapp} aria-label="Copiar número de WhatsApp">
               <svg class="w-4 h-4 copy-icon"><use href="#icon-copy" /></svg>
               <svg class="w-4 h-4 check-icon hidden"><use href="#icon-check" /></svg>
@@ -67,6 +75,12 @@ import { CONFIG } from '../data/config';
               </div>
             </a>
             <button class="copy-btn absolute top-4 right-4 p-2 rounded-md bg-blue-pale text-blue hover:bg-blue hover:text-white transition-all opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue" data-copy={`${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`} aria-label="Copiar dirección">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2">
+                <use href="#icon-copy" />
+              </svg>
+              <svg class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2">
+                <use href="#icon-check" />
+              </svg>
               <svg class="w-4 h-4 copy-icon"><use href="#icon-copy" /></svg>
               <svg class="w-4 h-4 check-icon hidden"><use href="#icon-check" /></svg>
             </button>
@@ -75,6 +89,7 @@ import { CONFIG } from '../data/config';
           <!-- Email -->
           {CONFIG.contacto.email && (
             <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
+              <a href={`mailto:${CONFIG.contacto.email}`} class="flex items-start gap-4 flex-grow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-lg">
               <a href={`mailto:${CONFIG.contacto.email}`} class="flex items-start gap-4 flex-grow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-lg" aria-label="Enviar correo electrónico">
                 <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                   <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -87,6 +102,13 @@ import { CONFIG } from '../data/config';
                 </div>
               </a>
               <button class="copy-btn absolute top-4 right-4 p-2 rounded-md bg-blue-pale text-blue hover:bg-blue hover:text-white transition-all opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue" data-copy={CONFIG.contacto.email} aria-label="Copiar correo electrónico">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2">
+                  <use href="#icon-copy" />
+                </svg>
+                <svg class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2">
+                  <use href="#icon-check" />
+                </svg>
+              </button>
                 <svg class="w-4 h-4 copy-icon"><use href="#icon-copy" /></svg>
                 <svg class="w-4 h-4 check-icon hidden"><use href="#icon-check" /></svg>
               </button>
@@ -219,6 +241,21 @@ import { CONFIG } from '../data/config';
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('contact-form');
     const btn = document.getElementById('f-submit');
+    const descArea = document.getElementById('f-desc');
+    const charCounter = document.getElementById('char-counter');
+
+    // Character counter logic
+    if (descArea && charCounter) {
+      descArea.addEventListener('input', () => {
+        const count = descArea.value.length;
+        charCounter.innerText = `${count} / 1000`;
+
+        if (count >= 900) {
+          charCounter.classList.add('text-blue-light');
+          charCounter.classList.remove('text-white/40');
+        } else {
+          charCounter.classList.remove('text-blue-light');
+          charCounter.classList.add('text-white/40');
     const textarea = document.getElementById('f-desc');
     const counter = document.getElementById('char-counter');
     const copyBtns = document.querySelectorAll('.copy-btn');
@@ -279,6 +316,11 @@ import { CONFIG } from '../data/config';
         const tel = (document.getElementById('f-tel')).value.trim() || 'No especificado';
         const servicioEl = document.getElementById('f-servicio');
         const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+        const desc = descArea.value.trim() || 'Sin detalles adicionales';
+
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
+        const encodedMessage = encodeURIComponent(rawMessage);
+        const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
         const desc = textarea?.value.trim() || 'Sin detalles adicionales';
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
@@ -346,6 +388,21 @@ import { CONFIG } from '../data/config';
         });
       }
 
+        navigator.clipboard.writeText(text).then(() => {
+          const icons = button.querySelectorAll('svg');
+          if (icons.length >= 2) {
+            icons[0].classList.add('hidden');
+            icons[1].classList.remove('hidden');
+            button.classList.remove('bg-blue-pale', 'text-blue');
+            button.classList.add('bg-green-600', 'text-white');
+
+            setTimeout(() => {
+              icons[0].classList.remove('hidden');
+              icons[1].classList.add('hidden');
+              button.classList.add('bg-blue-pale', 'text-blue');
+              button.classList.remove('bg-green-600', 'text-white');
+            }, 2000);
+          }
       // Form submission
       if (form && btn) {
         form.addEventListener('submit', (e) => {

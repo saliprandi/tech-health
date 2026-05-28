@@ -1,6 +1,7 @@
 ---
 import { CONFIG } from '../data/config';
 
+// Optimization: Only pass minimal data to client script
 // Optimization: Only pass the minimal data needed for the client-side modal
 const modalData = CONFIG.servicios.map(s => ({
   titulo: s.titulo,
@@ -117,6 +118,7 @@ const modalData = CONFIG.servicios.map(s => ({
       const s = services[index];
       if (!s || !modalContent) return;
       const servicio = services[index];
+      if (!servicio || !modalContent || !backdrop || !modal) return;
       if (!servicio || !modalContent) return;
 
       triggerElement = element;
@@ -125,6 +127,9 @@ const modalData = CONFIG.servicios.map(s => ({
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
           <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
+            <use href="#icon-${escapeHtml(servicio.icono)}" />
+          </svg>
+        </div>
             <use href="#icon-${escapeHtml(s.icono)}" />
           </svg>
         </div>
@@ -147,6 +152,10 @@ const modalData = CONFIG.servicios.map(s => ({
         </ul>
       `;
 
+      backdrop.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+      modal.classList.add('scale-100', 'opacity-100', 'pointer-events-auto');
+
       backdrop?.classList.remove('opacity-0', 'pointer-events-none');
       modal?.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
       modal?.classList.add('scale-100', 'opacity-100', 'pointer-events-auto');
@@ -161,6 +170,16 @@ const modalData = CONFIG.servicios.map(s => ({
       isModalOpen = true;
 
       setTimeout(() => {
+        if (closeBtn) closeBtn.focus();
+      }, 50);
+    };
+
+    const closeModal = () => {
+      if (!isModalOpen || !backdrop || !modal) return;
+      
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
         closeBtn?.focus();
       }, 100);
     };
@@ -192,6 +211,16 @@ const modalData = CONFIG.servicios.map(s => ({
     };
 
     cards.forEach(card => {
+      const index = card.getAttribute('data-index');
+      if (index === null) return;
+
+      const handleOpen = () => openModal(parseInt(index), card);
+
+      card.addEventListener('click', handleOpen);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleOpen();
       const index = parseInt(card.getAttribute('data-index') || '0');
       const indexStr = card.getAttribute('data-index');
       if (indexStr === null) return;
@@ -223,6 +252,8 @@ const modalData = CONFIG.servicios.map(s => ({
       }
 
       if (e.key === 'Tab') {
+        const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusableElements.length === 0) return;
         const focusable = modal?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
         if (!focusable || focusable.length === 0) return;
         const focusable = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
@@ -243,6 +274,9 @@ const modalData = CONFIG.servicios.map(s => ({
             if (last instanceof HTMLElement) last.focus();
           }
         } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
           if (document.activeElement === last) {
             e.preventDefault();
             if (first instanceof HTMLElement) first.focus();

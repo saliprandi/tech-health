@@ -3,6 +3,16 @@ import { CONFIG } from '../data/config';
 
 const year = new Date().getFullYear();
 
+type SocialKey = 'instagram' | 'facebook' | 'linkedin';
+
+const socialLinks: { id: SocialKey; label: string }[] = [
+  { id: 'instagram', label: 'Seguir en Instagram' },
+  { id: 'facebook', label: 'Seguir en Facebook' },
+  { id: 'linkedin', label: 'Seguir en LinkedIn' }
+];
+
+const activeSocials = socialLinks.filter(social => !!CONFIG.redes[social.id]);
+const hasSocials = activeSocials.length > 0;
 const socialLinks = [
   { name: 'instagram', label: 'Seguir en Instagram' },
   { name: 'facebook', label: 'Seguir en Facebook' },
@@ -27,6 +37,10 @@ const socialLabels: Record<SocialKey, string> = {
   <div class="container-custom flex flex-col items-center">
     
     <div class="mb-8">
+      <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE
+           This logo serves as a branding element and an interactive 'Back to top' link. -->
+      <a href="#hero" class="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-all" aria-label="Volver al inicio">
+        <img src="/logo-name.svg" alt={CONFIG.empresa.nombre} width="180" height="44" class="h-11 w-auto brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity" />
       <!-- Interactive 'Back to top' link -->
       <a href="#hero" class="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-all" aria-label="Volver al inicio">
         <img src="/logo-name.svg" alt={CONFIG.empresa.nombre} width="180" height="44" class="h-11 w-auto brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity" />
@@ -49,6 +63,16 @@ const socialLabels: Record<SocialKey, string> = {
 
     {hasSocials && (
       <div class="flex items-center gap-4 mb-6">
+        {activeSocials.map(social => (
+          <a
+            href={CONFIG.redes[social.id]}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white/50 hover:text-white focus-visible:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1"
+            aria-label={social.label}
+          >
+            <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
+              <use href={`#icon-${social.id}`} />
         {socialLinks.map(social => CONFIG.redes[social.name as keyof typeof CONFIG.redes] && (
         {redes.map(([key, url]) => (
           <a
