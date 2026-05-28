@@ -2,6 +2,15 @@
 import { CONFIG } from '../data/config';
 
 const year = new Date().getFullYear();
+
+const socialLinks = [
+  { name: 'instagram', label: 'Seguir en Instagram' },
+  { name: 'facebook', label: 'Seguir en Facebook' },
+  { name: 'linkedin', label: 'Seguir en LinkedIn' }
+] as const;
+
+const redes = Object.entries(CONFIG.redes).filter(([_, value]) => value);
+const hasSocials = redes.length > 0;
 const redes = Object.entries(CONFIG.redes).filter(([_, value]) => value);
 const hasSocials = redes.length > 0;
 
@@ -18,6 +27,9 @@ const socialLabels: Record<SocialKey, string> = {
   <div class="container-custom flex flex-col items-center">
     
     <div class="mb-8">
+      <!-- Interactive 'Back to top' link -->
+      <a href="#hero" class="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-all" aria-label="Volver al inicio">
+        <img src="/logo-name.svg" alt={CONFIG.empresa.nombre} width="180" height="44" class="h-11 w-auto brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity" />
       <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE
            This logo serves as a branding element and an interactive 'Back to top' link. -->
       <a href="#hero" class="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-all" aria-label="Volver al inicio">
@@ -37,11 +49,17 @@ const socialLabels: Record<SocialKey, string> = {
 
     {hasSocials && (
       <div class="flex items-center gap-4 mb-6">
+        {socialLinks.map(social => CONFIG.redes[social.name as keyof typeof CONFIG.redes] && (
         {redes.map(([key, url]) => (
           <a
-            href={url}
+            href={CONFIG.redes[social.name as keyof typeof CONFIG.redes]}
             target="_blank"
             rel="noopener noreferrer"
+            class="text-white/50 hover:text-white transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark focus-visible:text-white rounded-full p-1"
+            aria-label={social.label}
+          >
+            <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
+              <use href={`#icon-${social.name}`} />
             class="text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1"
             aria-label={socialLabels[key as SocialKey] || `Seguir en ${key}`}
           >
