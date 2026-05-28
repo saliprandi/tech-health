@@ -103,3 +103,7 @@
 ## 2025-05-15 - Multi-Stage Feedback for Click-to-Copy
 **Learning:** For "Click to Copy" interactions, immediate and multi-sensory (visual) feedback is vital. Swapping the icon (copy to check), updating the text (Copy to ¡Copiado!), and briefly shifting the button's background color (e.g., to success green) significantly reduces user uncertainty about whether the action succeeded.
 **Action:** Always implement a 2000ms "success state" for copy buttons with high-contrast color shifts and icon swaps.
+
+## 2025-05-26 - Directional Cues and Visual Momentum
+**Learning:** Adding a subtle, animated directional cue (like a sliding chevron) to primary call-to-action buttons significantly improves the "scent of information" and guides the user's eye toward the next step in the journey.
+**Action:** Use Tailwind's 'group' utility and 'group-hover:translate-x-1' on inline SVG icons to provide interactive momentum without cluttering the layout.
