@@ -52,6 +52,8 @@ const socialLinks = [
   { name: 'linkedin', label: 'Seguir en LinkedIn' }
 ] as const;
 
+const redes = Object.entries(CONFIG.redes).filter(([_, url]) => url);
+const hasSocials = redes.length > 0;
 const hasSocials = socialLinks.some(social => !!(CONFIG.redes as any)[social.name]);
 const hasSocials = socialLinks.some(social => !!CONFIG.redes[social.name as keyof typeof CONFIG.redes]);
 const redes = Object.entries(CONFIG.redes).filter(([_, value]) => value);

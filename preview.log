@@ -1,5 +1,10 @@
 
 > tech-health@0.0.1 astro /app
+> astro preview --port 4322 --host
+
+ astro  v6.3.1 ready in 19 ms
+┃ Local    http://localhost:4322/
+┃ Network  http://192.168.0.2:4322/
 > astro preview --port 4322
 
  astro  v6.3.1 ready in 21 ms
