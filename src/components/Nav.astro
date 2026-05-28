@@ -32,6 +32,9 @@ const navItems = [
       />
     </a>
 
+    <ul class="hidden md:flex items-center gap-8">
+      {navItems.map(item => (
+        <li>
     <!-- Desktop Navigation -->
     <ul class="hidden md:flex items-center gap-8">
       {navItems.map(item => (
@@ -79,6 +82,12 @@ const navItems = [
     </div>
   </div>
 
+  <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
+    {navItems.map(item => (
+      <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">
+        {item.label}
+      </a>
+    ))}
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-8 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
   <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-8 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
@@ -287,6 +296,15 @@ const navItems = [
         } else if (!e.shiftKey && document.activeElement === last) {
           e.preventDefault();
           first.focus();
+        }
+      }
+    });
+
+    const observerOptions = {
+      rootMargin: '-20% 0px -70% 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
         }
       }
     });

@@ -4,6 +4,8 @@ import { CONFIG } from '../data/config';
 const year = new Date().getFullYear();
 
 type SocialKey = 'instagram' | 'facebook' | 'linkedin';
+
+type SocialKey = 'instagram' | 'facebook' | 'linkedin';
 const socialLinks: { name: SocialKey; label: string }[] = [
   { name: 'instagram', label: 'Seguir en Instagram' },
   { name: 'facebook', label: 'Seguir en Facebook' },
@@ -44,6 +46,7 @@ const socialLinks: { id: SocialKey; label: string }[] = [
   { id: 'linkedin', label: 'Seguir en LinkedIn' }
 ];
 
+const hasSocials = socialLinks.some(social => !!CONFIG.redes[social.id]);
 const activeSocials = socialLinks.filter(social => !!CONFIG.redes[social.id]);
 const hasSocials = activeSocials.length > 0;
 const socialLinks = [
@@ -98,6 +101,7 @@ const socialLabels: Record<string, string> = {
     </div>
     {hasSocials && (
       <div class="flex items-center gap-4 mb-6">
+        {socialLinks.map(social => CONFIG.redes[social.id] && (
         {socialLinks.map(social => {
           const url = (CONFIG.redes as any)[social.name];
         {redes.map(([key, url]) => (
@@ -148,6 +152,8 @@ const socialLabels: Record<string, string> = {
             class="text-white/50 hover:text-white focus-visible:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1"
             aria-label={social.label}
           >
+            <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
+              <use href={`#icon-${social.id}`} />
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path d={social.icon} />
             <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
