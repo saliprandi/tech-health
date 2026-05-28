@@ -103,3 +103,7 @@
 ## 2025-05-15 - Multi-Stage Feedback for Click-to-Copy
 **Learning:** For "Click to Copy" interactions, immediate and multi-sensory (visual) feedback is vital. Swapping the icon (copy to check), updating the text (Copy to ¡Copiado!), and briefly shifting the button's background color (e.g., to success green) significantly reduces user uncertainty about whether the action succeeded.
 **Action:** Always implement a 2000ms "success state" for copy buttons with high-contrast color shifts and icon swaps.
+
+## 2025-05-28 - Integrity as a UX Prerequisite
+**Learning:** Severe code duplication and structural corruption (common in merge conflicts) can break keyboard navigation and screen reader predictability by creating multiple "ghost" interactive elements. Stabilization is not just a build task; it's an accessibility requirement.
+**Action:** Before implementing UX enhancements, perform a structural audit to ensure 1:1 mapping between DOM elements and user actions. Deduplicate script blocks to prevent conflicting state management for modals and menus.
