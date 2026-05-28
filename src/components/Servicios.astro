@@ -1,6 +1,7 @@
 ---
 import { CONFIG } from '../data/config';
 
+// Optimization: Only pass the minimal data needed for the client-side modal
 // Optimization: Only pass minimal data to client script
 const modalData = CONFIG.servicios.map(s => ({
   titulo: s.titulo,
@@ -40,6 +41,7 @@ const modalData = CONFIG.servicios.map(s => ({
         >
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-500 ease-out"></div>
           
+          <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale text-blue flex items-center justify-center mb-6">
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
             <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -91,6 +93,8 @@ const modalData = CONFIG.servicios.map(s => ({
   </div>
 </section>
 
+<script is:inline define:vars={{ services: modalData }}>
+  (function() {
 <script is:inline define:vars={{ modalData }}>
   (function() {
     const services = modalData;
@@ -113,6 +117,11 @@ const modalData = CONFIG.servicios.map(s => ({
         .replace(/'/g, "&#039;");
     };
 
+    const openModal = (index, trigger) => {
+      const servicio = services[index];
+      if (!servicio || !modalContent || !backdrop || !modal) return;
+
+      triggerElement = trigger;
     const openModal = (index, element) => {
       const s = services[index];
       if (!s || !modalContent) return;
@@ -128,6 +137,7 @@ const modalData = CONFIG.servicios.map(s => ({
           <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
             <use href="#icon-${escapeHtml(servicio.icono)}" />
           </svg>
+        </div>
         </div>
         <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
         <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
@@ -147,6 +157,7 @@ const modalData = CONFIG.servicios.map(s => ({
         <p id="modal-description" class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
 
         <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
+        <ul class="flex flex-col gap-4" role="list">
         <ul class="flex flex-col gap-4">
           ${servicio.items.map(item => `
             <li class="flex items-start gap-4 font-body text-[15px] text-text-soft">
@@ -183,6 +194,10 @@ const modalData = CONFIG.servicios.map(s => ({
 
     const closeModal = () => {
       if (!isModalOpen || !backdrop || !modal) return;
+
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
@@ -226,6 +241,8 @@ const modalData = CONFIG.servicios.map(s => ({
     };
 
     cards.forEach(card => {
+      const index = parseInt(card.getAttribute('data-index') || '0');
+      card.addEventListener('click', () => openModal(index, card));
       const index = card.getAttribute('data-index');
       if (index === null) return;
 
@@ -280,6 +297,11 @@ const modalData = CONFIG.servicios.map(s => ({
       }
 
       if (e.key === 'Tab') {
+        const focusable = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
         const focusable = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
         if (focusable.length === 0) return;
         const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
