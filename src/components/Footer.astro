@@ -58,9 +58,7 @@ const hasSocials = redes.length > 0;
 const redes = Object.entries(CONFIG.redes).filter(([_, value]) => value);
 const hasSocials = redes.length > 0;
 
-type SocialKey = 'instagram' | 'facebook' | 'linkedin';
-
-const socialLabels: Record<SocialKey, string> = {
+const socialLabels: Record<string, string> = {
   instagram: 'Seguir en Instagram',
   facebook: 'Seguir en Facebook',
   linkedin: 'Seguir en LinkedIn'
@@ -99,6 +97,7 @@ const socialLabels: Record<SocialKey, string> = {
 
     {hasSocials && (
       <div class="flex items-center gap-4 mb-6">
+        {redes.map(([key, url]) => (
         {activeSocials.map(social => (
           <a
             href={CONFIG.redes[social.name as keyof typeof CONFIG.redes]}
@@ -125,6 +124,10 @@ const socialLabels: Record<SocialKey, string> = {
             href={url}
             target="_blank"
             rel="noopener noreferrer"
+            class="text-white/50 hover:text-white transition-colors focus-visible:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1"
+            aria-label={socialLabels[key] || `Seguir en ${key}`}
+          >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             class="text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1"
             aria-label={`Seguir en ${platform}`}
           >

@@ -149,6 +149,10 @@ const modalData = CONFIG.servicios.map(s => ({
       // Populate content
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
+          <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
+            <use href="#icon-${escapeHtml(servicio.icono)}" />
+          </svg>
+        </div>
           <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <use href="#icon-${escapeHtml(servicio.icono)}" />
           </svg>
@@ -196,6 +200,12 @@ const modalData = CONFIG.servicios.map(s => ({
       backdrop.classList.remove('opacity-0', 'pointer-events-none');
       modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
       modal.classList.add('scale-100', 'opacity-100', 'pointer-events-auto');
+      document.body.style.overflow = 'hidden';
+      isModalOpen = true;
+
+      setTimeout(() => {
+        if (closeBtn) closeBtn.focus();
+      }, 50);
 
       document.body.style.overflow = 'hidden';
       isModalOpen = true;
@@ -221,6 +231,10 @@ const modalData = CONFIG.servicios.map(s => ({
 
     const closeModal = () => {
       if (!isModalOpen || !backdrop || !modal) return;
+      
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
 
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
@@ -310,6 +324,7 @@ const modalData = CONFIG.servicios.map(s => ({
       if (index === null) return;
 
       const handleOpen = () => openModal(parseInt(index), card);
+
 
 
       card.addEventListener('click', handleOpen);
@@ -415,6 +430,10 @@ const modalData = CONFIG.servicios.map(s => ({
 
         if (e.shiftKey && document.activeElement === first) {
           e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
           if (last instanceof HTMLElement) last.focus();
         } else if (!e.shiftKey && document.activeElement === last) {
           e.preventDefault();

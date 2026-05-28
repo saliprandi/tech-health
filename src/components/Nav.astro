@@ -74,6 +74,9 @@ const navItems = [
     <div class="absolute inset-0 bg-white -z-10"></div>
     {navItems.map(item => (
       <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">
+        {item.label}
+      </a>
+    ))}
   <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-8 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
     {navItems.map(item => (
       <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[18px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">
@@ -174,6 +177,14 @@ const navItems = [
       });
     });
 
+    // Keyboard handling
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+        (toggle as HTMLElement | null)?.focus();
+      }
+
+      if (isOpen && e.key === 'Tab') {
     // Keyboard Accessibility
     // Close on click outside
     document.addEventListener('click', (e) => {
@@ -245,6 +256,7 @@ const navItems = [
       }
     });
 
+    // ScrollSpy
     // ScrollSpy Implementation
             firstElement.focus();
           }
