@@ -19,6 +19,10 @@ import { CONFIG } from '../data/config';
 
         <div class="flex flex-col gap-6">
           
+          <!-- WhatsApp / Phone -->
+          <div class="relative group">
+            <div class="flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
+              <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" aria-label="Llamar o enviar WhatsApp">
           <!-- WhatsApp -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="flex items-start gap-4 flex-grow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-lg">
@@ -86,6 +90,25 @@ import { CONFIG } from '../data/config';
             </button>
           </div>
 
+          <!-- Location -->
+          <div class="relative group">
+            <div class="flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
+              <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" aria-label="Ver ubicación en Google Maps">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>
+              </a>
+              <div class="flex-grow">
+                <div class="font-heading font-bold text-[16px] text-navy mb-1">Laboratorio</div>
+                <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.direccion}</div>
+                <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.ciudad_completa}</div>
+                <div class="flex items-center gap-4 mt-1">
+                  <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="font-body font-medium text-[12px] text-blue hover:underline">Abrir en Google Maps &rarr;</a>
+                  <button
+                    class="copy-btn group/btn flex items-center gap-1.5 text-blue hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded px-1"
+                    data-copy={`${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}
+                    aria-label="Copiar dirección"
           <!-- Email -->
           {CONFIG.contacto.email && (
             <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
@@ -162,6 +185,49 @@ import { CONFIG } from '../data/config';
                 </div>
               </div>
             </div>
+          </div>
+
+          <!-- Email (Conditional) -->
+          {CONFIG.contacto.email && (
+            <div class="relative group">
+              <div class="flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
+                <a href={`mailto:${CONFIG.contacto.email}`} class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" aria-label="Enviar correo electrónico">
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                  </svg>
+                </a>
+                <div class="flex-grow">
+                  <div class="font-heading font-bold text-[16px] text-navy mb-1">Correo Electrónico</div>
+                  <div class="font-body text-[14px] text-text-soft flex items-center gap-3">
+                    <span>{CONFIG.contacto.email}</span>
+                    <button
+                      class="copy-btn group/btn flex items-center gap-1.5 text-blue hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded px-1"
+                      data-copy={CONFIG.contacto.email}
+                      aria-label="Copiar correo electrónico"
+                    >
+                      <svg class="w-4 h-4 copy-icon"><use href="#icon-copy" /></svg>
+                      <svg class="w-4 h-4 check-icon hidden text-green-600"><use href="#icon-check" /></svg>
+                      <span class="text-[11px] font-bold uppercase tracking-wider btn-text">Copiar</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <!-- Hours -->
+          <div class="flex items-start gap-4 p-4 rounded-[12px] border border-transparent">
+            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <div class="font-heading font-bold text-[16px] text-navy mb-1">Horario de atención</div>
+              <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.horario}</div>
+            </div>
+          </div>
+
           )}
 
           <!-- Hours -->
@@ -237,6 +303,52 @@ import { CONFIG } from '../data/config';
   </div>
 </section>
 
+<script define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contact-form');
+    const btn = document.getElementById('f-submit');
+    const textarea = document.getElementById('f-desc');
+    const charCounter = document.getElementById('char-counter');
+
+    // Click to Copy Logic
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const textToCopy = button.getAttribute('data-copy');
+        if (!textToCopy) return;
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          const copyIcon = button.querySelector('.copy-icon');
+          const checkIcon = button.querySelector('.check-icon');
+          const btnText = button.querySelector('.btn-text');
+          const originalText = btnText.textContent;
+
+          copyIcon.classList.add('hidden');
+          checkIcon.classList.remove('hidden');
+          btnText.textContent = '¡Copiado!';
+          btnText.classList.add('text-green-600');
+
+          setTimeout(() => {
+            copyIcon.classList.remove('hidden');
+            checkIcon.classList.add('hidden');
+            btnText.textContent = originalText;
+            btnText.classList.remove('text-green-600');
+          }, 2000);
+        });
+      });
+    });
+
+    // Character counter
+    if (textarea && charCounter) {
+      textarea.addEventListener('input', () => {
+        const count = textarea.value.length;
+        charCounter.innerText = `${count} / 1000`;
+
+        if (count >= 900) {
+          charCounter.classList.add('text-blue-light');
+          charCounter.classList.remove('text-white/40');
+        } else {
+          charCounter.classList.remove('text-blue-light');
+          charCounter.classList.add('text-white/40');
 <script is:inline define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('contact-form');
@@ -316,6 +428,12 @@ import { CONFIG } from '../data/config';
         const tel = (document.getElementById('f-tel')).value.trim() || 'No especificado';
         const servicioEl = document.getElementById('f-servicio');
         const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+        const desc = textarea?.value.trim() || 'Sin detalles adicionales';
+
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
+
+        const encodedMessage = encodeURIComponent(rawMessage);
+        const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
         const desc = descArea.value.trim() || 'Sin detalles adicionales';
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;

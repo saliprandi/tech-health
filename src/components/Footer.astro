@@ -2,6 +2,8 @@
 import { CONFIG } from '../data/config';
 
 const year = new Date().getFullYear();
+const redes = Object.entries(CONFIG.redes).filter(([_, url]) => url);
+const hasSocials = redes.length > 0;
 
 type SocialKey = 'instagram' | 'facebook' | 'linkedin';
 
@@ -63,6 +65,16 @@ const socialLabels: Record<SocialKey, string> = {
 
     {hasSocials && (
       <div class="flex items-center gap-4 mb-6">
+        {redes.map(([platform, url]) => (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1"
+            aria-label={`Seguir en ${platform}`}
+          >
+            <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
+              <use href={`#icon-${platform}`} />
         {activeSocials.map(social => (
           <a
             href={CONFIG.redes[social.id]}

@@ -2,7 +2,6 @@
 import { CONFIG } from '../data/config';
 
 // Optimization: Only pass minimal data to client script
-// Optimization: Only pass the minimal data needed for the client-side modal
 const modalData = CONFIG.servicios.map(s => ({
   titulo: s.titulo,
   descripcion: s.descripcion,
@@ -130,6 +129,9 @@ const modalData = CONFIG.servicios.map(s => ({
             <use href="#icon-${escapeHtml(servicio.icono)}" />
           </svg>
         </div>
+        <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
+        <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
+        </div>
             <use href="#icon-${escapeHtml(s.icono)}" />
           </svg>
         </div>
@@ -171,11 +173,16 @@ const modalData = CONFIG.servicios.map(s => ({
 
       setTimeout(() => {
         if (closeBtn) closeBtn.focus();
+      }, 100);
       }, 50);
     };
 
     const closeModal = () => {
       if (!isModalOpen || !backdrop || !modal) return;
+      
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
@@ -235,8 +242,8 @@ const modalData = CONFIG.servicios.map(s => ({
       });
     });
 
-    backdrop?.addEventListener('click', closeModal);
-    closeBtn?.addEventListener('click', closeModal);
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
 
     document.addEventListener('keydown', (e) => {
       if (!isModalOpen) return;
@@ -254,6 +261,19 @@ const modalData = CONFIG.servicios.map(s => ({
       if (e.key === 'Tab') {
         const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
         if (focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) { // Shift + Tab
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else { // Tab
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
         const focusable = modal?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
         if (!focusable || focusable.length === 0) return;
         const focusable = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
