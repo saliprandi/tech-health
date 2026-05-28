@@ -93,6 +93,8 @@ const modalData = CONFIG.servicios.map(s => ({
   </div>
 </section>
 
+<script is:inline define:vars={{ modalData }}>
+  document.addEventListener('DOMContentLoaded', () => {
 <script is:inline define:vars={{ services: modalData }}>
   (function() {
 <script is:inline define:vars={{ modalData }}>
@@ -117,6 +119,9 @@ const modalData = CONFIG.servicios.map(s => ({
         .replace(/'/g, "&#039;");
     };
 
+    const openModal = (index, element) => {
+      const s = services[index];
+      if (!s || !modalContent || !backdrop || !modal) return;
     const openModal = (index, trigger) => {
       const servicio = services[index];
       if (!servicio || !modalContent || !backdrop || !modal) return;
@@ -187,6 +192,7 @@ const modalData = CONFIG.servicios.map(s => ({
 
       setTimeout(() => {
         if (closeBtn instanceof HTMLElement) closeBtn.focus();
+      }, 100);
         if (closeBtn) closeBtn.focus();
       }, 100);
       }, 50);
@@ -194,6 +200,10 @@ const modalData = CONFIG.servicios.map(s => ({
 
     const closeModal = () => {
       if (!isModalOpen || !backdrop || !modal) return;
+      
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
 
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
@@ -241,6 +251,15 @@ const modalData = CONFIG.servicios.map(s => ({
     };
 
     cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const index = card.getAttribute('data-index');
+        if (index !== null) openModal(parseInt(index), card);
+      });
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const index = card.getAttribute('data-index');
+          if (index !== null) openModal(parseInt(index), card);
       const index = parseInt(card.getAttribute('data-index') || '0');
       card.addEventListener('click', () => openModal(index, card));
       const index = card.getAttribute('data-index');
@@ -297,6 +316,7 @@ const modalData = CONFIG.servicios.map(s => ({
       }
 
       if (e.key === 'Tab') {
+        const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
         const focusable = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
         if (focusable.length === 0) return;
         const first = focusable[0];

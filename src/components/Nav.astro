@@ -12,6 +12,7 @@ const navItems = [
 <nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
+    <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE -->
     <!-- Logo -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
       <img
@@ -99,6 +100,7 @@ const navItems = [
       isOpen = !isOpen;
       toggle?.setAttribute('aria-expanded', isOpen.toString());
       toggle?.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+      menu?.setAttribute('aria-hidden', (!isOpen).toString());
 
       if (menu) {
         menu.classList.toggle('opacity-0', !isOpen);
@@ -164,6 +166,7 @@ const navItems = [
       });
     });
 
+    // Close on outside click
     // Keyboard handling: Escape key & Focus trapping
     // Outside click
     document.addEventListener('click', (e) => {
@@ -172,6 +175,7 @@ const navItems = [
       }
     });
 
+    // Keyboard handling: Escape key & Focus trap
     // Mobile menu focus trap
     document.addEventListener('keydown', (e) => {
       if (!isOpen) return;
@@ -224,6 +228,12 @@ const navItems = [
           if (document.activeElement === lastElement) {
             e.preventDefault();
             firstElement?.focus();
+          }
+        }
+      }
+    });
+
+    // ScrollSpy Implementation
             firstElement.focus();
           }
         }
@@ -237,7 +247,6 @@ const navItems = [
       threshold: 0
     };
 
-    const observer = new IntersectionObserver((entries) => {
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
     const observerCallback = (entries) => {
       entries.forEach(entry => {
@@ -246,6 +255,7 @@ const navItems = [
           navLinks.forEach(link => {
             const href = link.getAttribute('href');
             const isActive = href === `#${id}`;
+            link.classList.toggle('nav-link-active', isActive);
             const isActive = link.getAttribute('href') === `#${id}`;
             link.classList.toggle('nav-link-active', isActive);
             if (isActive) link.setAttribute('aria-current', 'location');
