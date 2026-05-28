@@ -61,10 +61,14 @@ const navItems = [
   <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
     {navItems.map(item => (
       <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">
+  <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-8 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
+    {navItems.map(item => (
+      <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[18px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">
         {item.label}
       </a>
     ))}
     <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} id="whatsapp-mobile-link" target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
+    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} id="whatsapp-mobile-link" target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[15px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
       Consultar por WhatsApp
     </a>
   </div>
@@ -93,6 +97,13 @@ const navItems = [
         menu?.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
         menu?.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
         document.body.style.overflow = '';
+      if (menu) {
+        menu.classList.toggle('opacity-0', !isOpen);
+        menu.classList.toggle('pointer-events-none', !isOpen);
+        menu.classList.toggle('translate-y-[-10px]', !isOpen);
+        menu.classList.toggle('opacity-100', isOpen);
+        menu.classList.toggle('pointer-events-auto', isOpen);
+        menu.classList.toggle('translate-y-0', isOpen);
       }
 
       if (spans?.length === 3) {
@@ -102,6 +113,8 @@ const navItems = [
         spans[2].classList.toggle('-rotate-45', isOpen);
         spans[2].classList.toggle('-translate-y-[8px]', isOpen);
       }
+
+      document.body.style.overflow = isOpen ? 'hidden' : '';
     };
 
     toggle?.addEventListener('click', toggleMenu);
@@ -121,6 +134,15 @@ const navItems = [
 
       if (isOpen && e.key === 'Tab') {
         const focusable = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean);
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+        (toggle as HTMLElement)?.focus();
+      }
+
+      if (isOpen && e.key === 'Tab') {
+        const focusable = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean) as HTMLElement[];
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
 
@@ -130,6 +152,27 @@ const navItems = [
         } else if (!e.shiftKey && document.activeElement === last) {
           e.preventDefault();
           first.focus();
+        }
+      }
+    });
+
+    // ScrollSpy
+      // Focus trapping for mobile menu
+      if (isOpen && e.key === 'Tab') {
+        const focusableElements = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean) as HTMLElement[];
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) { // Shift + Tab
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else { // Tab
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
         }
       }
     });
@@ -158,11 +201,31 @@ const navItems = [
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     navItems.forEach(item => {
       const el = document.getElementById(item.id);
+    }, observerOptions);
+
+    document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
+
+    // Reset ScrollSpy when clicking logo
+    document.querySelector('a[aria-label^="Inicio de"]')?.addEventListener('click', () => {
+            if (isActive) {
+              link.setAttribute('aria-current', 'location');
+            } else {
+              link.removeAttribute('aria-current');
+            }
+          });
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
+      const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
 
     // Reset ScrollSpy when clicking logo
     document.querySelector('a[aria-label^="Inicio de"]')?.addEventListener('click', () => {
+    document.querySelector('a[aria-label^="Inicio"]')?.addEventListener('click', () => {
       navLinks.forEach(link => {
         link.classList.remove('nav-link-active');
         link.removeAttribute('aria-current');

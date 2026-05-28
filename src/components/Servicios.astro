@@ -2,6 +2,7 @@
 import { CONFIG } from '../data/config';
 
 // Optimization: Only pass minimal data to client script
+// Optimization: Only pass the minimal data needed for the client-side modal
 const modalData = CONFIG.servicios.map(s => ({
   titulo: s.titulo,
   descripcion: s.descripcion,
@@ -29,17 +30,20 @@ const modalData = CONFIG.servicios.map(s => ({
       {CONFIG.servicios.map((servicio, index) => (
         <div
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer overflow-hidden"
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 overflow-hidden cursor-pointer"
           data-index={index}
           role="button"
           tabindex="0"
           aria-haspopup="dialog"
           aria-expanded="false"
+          aria-label={`Ver detalles de ${servicio.titulo}`}
           aria-label={`Ver detalles sobre ${servicio.titulo}`}
         >
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-500 ease-out"></div>
           
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
+            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
               <use href={`#icon-${servicio.icono}`} />
             </svg>
           </div>
@@ -47,7 +51,7 @@ const modalData = CONFIG.servicios.map(s => ({
           <h3 class="font-heading font-bold text-[22px] text-navy mb-3">{servicio.titulo}</h3>
           <p class="font-body font-light text-[15px] text-text-soft mb-6 leading-relaxed">{servicio.descripcion}</p>
 
-          <ul class="flex flex-col gap-3">
+          <ul class="flex flex-col gap-3" role="list">
             {servicio.items.map(item => (
               <li class="flex items-start gap-3 font-body text-[14px] text-text-soft">
                 <span class="w-[6px] h-[6px] rounded-full bg-blue-light mt-2 flex-shrink-0"></span>
@@ -75,7 +79,7 @@ const modalData = CONFIG.servicios.map(s => ({
     role="dialog"
     aria-modal="true"
     aria-labelledby="modal-title"
-    aria-describedby="modal-description"
+    aria-describedby="modal-content"
   >
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4" aria-label="Cerrar">
@@ -111,8 +115,11 @@ const modalData = CONFIG.servicios.map(s => ({
     };
 
     const openModal = (index, element) => {
+      const s = services[index];
+      if (!s || !modalContent) return;
       const servicio = services[index];
       if (!servicio || !modalContent || !backdrop || !modal) return;
+      if (!servicio || !modalContent) return;
 
       triggerElement = element;
       triggerElement.setAttribute('aria-expanded', 'true');
@@ -120,6 +127,14 @@ const modalData = CONFIG.servicios.map(s => ({
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
           <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
+            <use href="#icon-${escapeHtml(servicio.icono)}" />
+          </svg>
+        </div>
+            <use href="#icon-${escapeHtml(s.icono)}" />
+          </svg>
+        </div>
+        <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(s.titulo)}</h3>
+        <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(s.descripcion)}</p>
             <use href="#icon-${escapeHtml(servicio.icono)}" />
           </svg>
         </div>
@@ -140,6 +155,17 @@ const modalData = CONFIG.servicios.map(s => ({
       backdrop.classList.remove('opacity-0', 'pointer-events-none');
       modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
       modal.classList.add('scale-100', 'opacity-100', 'pointer-events-auto');
+
+      backdrop?.classList.remove('opacity-0', 'pointer-events-none');
+      modal?.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+      modal?.classList.add('scale-100', 'opacity-100', 'pointer-events-auto');
+
+      if (backdrop && modal) {
+        backdrop.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+        modal.classList.add('scale-100', 'opacity-100', 'pointer-events-auto');
+      }
+
       document.body.style.overflow = 'hidden';
       isModalOpen = true;
 
@@ -154,6 +180,22 @@ const modalData = CONFIG.servicios.map(s => ({
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+        closeBtn?.focus();
+      }, 100);
+    };
+
+    const closeModal = () => {
+      if (!isModalOpen) return;
+      
+      backdrop?.classList.add('opacity-0', 'pointer-events-none');
+      modal?.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
+      modal?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+      if (!isModalOpen || !backdrop || !modal) return;
+
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+      
       document.body.style.overflow = '';
       isModalOpen = false;
 
@@ -179,12 +221,27 @@ const modalData = CONFIG.servicios.map(s => ({
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           handleOpen();
+      const index = parseInt(card.getAttribute('data-index') || '0');
+      const indexStr = card.getAttribute('data-index');
+      if (indexStr === null) return;
+      const index = parseInt(indexStr);
+
+      card.addEventListener('click', () => openModal(index, card));
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openModal(index, card);
         }
       });
     });
 
     backdrop?.addEventListener('click', closeModal);
     closeBtn?.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', (e) => {
+      if (!isModalOpen) return;
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
 
     document.addEventListener('keydown', (e) => {
       if (!isModalOpen || !modal) return;
@@ -197,19 +254,32 @@ const modalData = CONFIG.servicios.map(s => ({
       if (e.key === 'Tab') {
         const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
         if (focusableElements.length === 0) return;
+        const focusable = modal?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (!focusable || focusable.length === 0) return;
+        const focusable = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
+        if (focusable.length === 0) return;
 
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
 
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          if (last instanceof HTMLElement) last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          if (first instanceof HTMLElement) first.focus();
         if (e.shiftKey) {
-          if (document.activeElement === firstElement) {
+          if (document.activeElement === first) {
             e.preventDefault();
-            lastElement.focus();
+            if (last instanceof HTMLElement) last.focus();
           }
         } else {
           if (document.activeElement === lastElement) {
             e.preventDefault();
             firstElement.focus();
+          if (document.activeElement === last) {
+            e.preventDefault();
+            if (first instanceof HTMLElement) first.focus();
           }
         }
       }
