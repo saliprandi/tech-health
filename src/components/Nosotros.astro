@@ -25,7 +25,10 @@ import { CONFIG } from '../data/config';
 
         <!-- Equipo -->
         <h3 class="font-heading font-bold text-[20px] text-navy mb-6">Nuestro Equipo</h3>
-        <div class="flex flex-col gap-4">
+        <ul class="flex flex-col gap-4" role="list">
+          {CONFIG.equipo.map(member => (
+            <li class="group bg-white rounded-[16px] p-5 shadow-sm border border-border flex flex-col sm:flex-row gap-[20px] items-start sm:items-center hover:scale-[1.02] hover:shadow-md transition-all duration-300">
+        <div class="flex flex-col gap-4" role="list">
           {CONFIG.equipo.map(member => (
             <div class="group bg-white rounded-[16px] p-5 shadow-sm border border-border flex flex-col sm:flex-row gap-[20px] items-start sm:items-center hover:scale-[1.02] hover:shadow-md transition-all duration-300">
               <!-- Avatar -->
@@ -41,6 +44,11 @@ import { CONFIG } from '../data/config';
             </div>
           ))}
         </div>
+
+            </li>
+          ))}
+        </ul>
+
       </div>
 
       <!-- Right Column (Value Cards) -->

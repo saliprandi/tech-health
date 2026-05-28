@@ -26,3 +26,8 @@
 **Vulnerability:** Duplicate manifest keys and non-functional security meta tags.
 **Learning:** `Permissions-Policy` is non-functional in `<meta>` tags and must be set via HTTP headers. Duplicate `pnpm` keys in `package.json` can lead to overrides being ignored.
 **Prevention:** Consolidate all dependency overrides into a single `pnpm` object. Use `upgrade-insecure-requests` in CSP to ensure all content is served over HTTPS.
+
+## 2025-05-28 - CSP Consolidation and Reverse Tab-nabbing Protection
+**Vulnerability:** Redundant CSP meta tags and insecure programmatic `window.open` calls.
+**Learning:** Multiple CSP meta tags can cause browser confusion or inconsistent policy enforcement. Programmatic redirects via `window.open` without `noopener,noreferrer` expose users to reverse tab-nabbing, where a destination page can manipulate the original tab's location.
+**Prevention:** Consolidate security policies into a single, comprehensive meta tag. Always include `noopener,noreferrer` in any `window.open` calls to external origins.
