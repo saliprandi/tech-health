@@ -47,6 +47,7 @@ const navItems = [
     </ul>
 
     <div class="flex items-center gap-4">
+      <!-- Desktop WhatsApp Link -->
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors shadow-sm hover:shadow-md animate-cta-pulse">
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors shadow-sm hover:shadow-md">
       <!-- Desktop WhatsApp CTA -->
@@ -85,6 +86,7 @@ const navItems = [
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white border-b border-border flex flex-col items-center py-12 gap-8 shadow-card-hover opacity-0 pointer-events-none translate-x-full transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
   <!-- Mobile Menu -->
+  <div id="mobile-menu" class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white border-b border-border flex flex-col items-center py-12 gap-8 shadow-card-hover opacity-0 pointer-events-none translate-x-full transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
   <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-8 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
   <!-- Mobile Menu Backdrop -->
   <div id="mobile-menu-backdrop" class="fixed inset-0 bg-navy/20 backdrop-blur-sm z-[98] opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
@@ -240,6 +242,8 @@ const navItems = [
     const spans = toggle?.querySelectorAll('span');
     let isOpen = false;
 
+    const toggleMenu = () => {
+      isOpen = !isOpen;
     const toggleMenu = (forceState) => {
       isOpen = forceState !== undefined ? forceState : !isOpen;
       toggle?.setAttribute('aria-expanded', isOpen.toString());
@@ -350,6 +354,23 @@ const navItems = [
       });
     });
 
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (isOpen && menu && !menu.contains(e.target) && e.target !== toggle) {
+        toggleMenu();
+      }
+    });
+
+    // Keyboard handling: Escape key & Focus trap
+    document.addEventListener('keydown', (e) => {
+      if (!isOpen) return;
+
+      if (e.key === 'Escape') {
+        toggleMenu();
+        toggle?.focus();
+      }
+
+      if (e.key === 'Tab') {
     // Close on click outside
     document.addEventListener('click', (e) => {
       if (isOpen && menu && !menu.contains(e.target) && !toggle?.contains(e.target)) {
@@ -444,7 +465,6 @@ const navItems = [
       threshold: 0
     };
 
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
     const observerCallback = (entries) => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
