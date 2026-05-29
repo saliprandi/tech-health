@@ -1,0 +1,12 @@
+
+> tech-health@0.0.1 dev /app
+> astro dev
+
+[vite] connected.
+10:09:25 [types] Generated 1ms
+10:09:25 [vite] Re-optimizing dependencies because vite config has changed
+ astro  v6.3.1 ready in 2247 ms
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+10:09:25 watching for file changes...
+10:09:33 [200] / 59ms

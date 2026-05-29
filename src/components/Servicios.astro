@@ -82,6 +82,7 @@ const modalData = CONFIG.servicios.map(s => ({
     role="dialog"
     aria-modal="true"
     aria-labelledby="modal-title"
+    aria-describedby="modal-description"
   >
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4" aria-label="Cerrar">
@@ -133,6 +134,10 @@ const modalData = CONFIG.servicios.map(s => ({
         </div>
         <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
         <p id="modal-description" class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
+
+        <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
+        <ul class="flex flex-col gap-4" role="list">
+          ${servicio.items.map(item => `
 
         <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
         <ul class="flex flex-col gap-4" role="list">
@@ -250,6 +255,12 @@ const modalData = CONFIG.servicios.map(s => ({
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
 
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          if (last instanceof HTMLElement) last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          if (first instanceof HTMLElement) first.focus();
         if (e.shiftKey) {
           if (document.activeElement === first) {
             e.preventDefault();

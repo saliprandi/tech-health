@@ -73,6 +73,7 @@ const navItems = [
   <div id="mobile-menu-backdrop" class="fixed inset-0 bg-navy/20 backdrop-blur-sm z-[98] opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
 
   <!-- Mobile Menu -->
+  <div id="mobile-menu" class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white/95 backdrop-blur-md border-b border-border flex flex-col items-center py-10 gap-8 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
   <div id="mobile-menu" class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white border-b border-border flex flex-col items-center py-10 gap-8 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
   <div
     id="mobile-menu"
@@ -203,12 +204,17 @@ const navItems = [
   document.addEventListener('DOMContentLoaded', () => {
     const toggle = document.getElementById('menu-toggle');
     const menu = document.getElementById('mobile-menu');
+    const backdrop = document.getElementById('mobile-menu-backdrop');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+    const navLinks = document.querySelectorAll('.nav-link');
     const navLinks = document.querySelectorAll('.nav-link');
     const mobileLinks = document.querySelectorAll('.mobile-link');
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const spans = toggle?.querySelectorAll('span');
     let isOpen = false;
 
+    const toggleMenu = (forceState) => {
+      isOpen = forceState !== undefined ? forceState : !isOpen;
     const toggleMenu = () => {
       isOpen = !isOpen;
     const toggleMenu = (forceState) => {
@@ -216,6 +222,11 @@ const navItems = [
 
       toggle?.setAttribute('aria-expanded', isOpen.toString());
       toggle?.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+
+      if (backdrop) {
+        backdrop.classList.toggle('opacity-0', !isOpen);
+        backdrop.classList.toggle('pointer-events-none', !isOpen);
+      }
 
       if (menu) {
         menu.classList.toggle('opacity-0', !isOpen);
@@ -227,6 +238,12 @@ const navItems = [
         menu.setAttribute('aria-hidden', (!isOpen).toString());
       }
 
+      if (spans?.length === 3) {
+        spans[0].classList.toggle('rotate-45', isOpen);
+        spans[0].classList.toggle('translate-y-[8px]', isOpen);
+        spans[1].classList.toggle('opacity-0', isOpen);
+        spans[2].classList.toggle('-rotate-45', isOpen);
+        spans[2].classList.toggle('-translate-y-[8px]', isOpen);
       if (backdrop) {
         backdrop.classList.toggle('opacity-0', !isOpen);
         backdrop.classList.toggle('pointer-events-none', !isOpen);
@@ -262,6 +279,17 @@ const navItems = [
       });
     });
 
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      if (isOpen && menu && !menu.contains(e.target) && !toggle?.contains(e.target)) {
+        toggleMenu(false);
+      }
+    });
+
+    // Keyboard handling
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu(false);
     // Close on outside click
     document.addEventListener('click', (e) => {
       if (isOpen && menu && !menu.contains(e.target) && e.target !== toggle) {
@@ -296,6 +324,7 @@ const navItems = [
       }
     });
 
+    // ScrollSpy
     // Close on click outside
     document.addEventListener('click', (e) => {
       if (isOpen && menu && !menu.contains(e.target) && !toggle?.contains(e.target)) {
@@ -341,6 +370,8 @@ const navItems = [
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
           navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            const isActive = href === `#${id}`;
             const isActive = link.getAttribute('href') === `#${id}`;
             link.classList.toggle('nav-link-active', isActive);
             if (isActive) {
@@ -351,6 +382,9 @@ const navItems = [
           });
         }
       });
+    }, observerOptions);
+
+    document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
