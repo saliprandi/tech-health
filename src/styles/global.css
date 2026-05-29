@@ -4,16 +4,16 @@
 
 @layer base {
   :root {
-    --navy:       #12336A;   /* color primario dominante */
-    --navy-dark:  #0a2248;   /* hover de navy */
-    --blue:       #2563A8;   /* color secundario, acentos */
-    --blue-light: #4A90D9;   /* acentos suaves, íconos en fondo oscuro */
-    --blue-pale:  #EBF3FC;   /* fondos de íconos, badges */
+    --navy:       #12336A;
+    --navy-dark:  #0a2248;
+    --blue:       #2563A8;
+    --blue-light: #4A90D9;
+    --blue-pale:  #EBF3FC;
     --white:      #ffffff;
-    --off-white:  #F7F9FC;   /* fondo de secciones alternas */
-    --gray:       #8898AA;   /* texto muted */
-    --text:       #1a2332;   /* texto principal */
-    --text-soft:  #4A5568;   /* texto secundario */
+    --off-white:  #F7F9FC;
+    --gray:       #8898AA;
+    --text:       #1a2332;
+    --text-soft:  #4A5568;
     --border:     rgba(18,51,106,0.12);
   }
 
@@ -116,52 +116,6 @@
     70% { transform: scale(1); }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    *, ::before, ::after {
-      animation-delay: -1ms !important;
-      animation-duration: 1ms !important;
-      animation-iteration-count: 1 !important;
-      background-attachment: initial !important;
-      scroll-behavior: auto !important;
-      transition-duration: 0s !important;
-      transition-delay: 0s !important;
-    }
-    .animate-heartbeat, .animate-cta-pulse {
-      animation: none !important;
-  .animate-cta-pulse {
-    animation: cta-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  @keyframes cta-pulse {
-    0%, 100% {
-      transform: scale(1);
-      box-shadow: 0 4px 6px -1px rgba(18, 51, 106, 0.1), 0 2px 4px -1px rgba(18, 51, 106, 0.06);
-    }
-    50% {
-      transform: scale(1.02);
-      box-shadow: 0 10px 15px -3px rgba(18, 51, 106, 0.2), 0 4px 6px -2px rgba(18, 51, 106, 0.1);
-      box-shadow: 0 4px 20px rgba(37,211,102,0.5);
-    }
-    50% {
-      transform: scale(1.05);
-      box-shadow: 0 4px 30px rgba(37,211,102,0.8);
-      box-shadow: 0 8px 30px rgba(37,211,102,0.7);
-  @keyframes cta-pulse {
-    0%, 100% {
-      transform: scale(1);
-      box-shadow: 0 0 0 0 rgba(18, 51, 106, 0.4);
-    }
-    50% {
-      transform: scale(1.05);
-      box-shadow: 0 0 0 10px rgba(18, 51, 106, 0);
-  .animate-cta-pulse {
-    animation: cta-pulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
-  }
-
-  @keyframes cta-pulse {
-    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
-    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
   @keyframes cta-pulse {
     0%, 100% {
       transform: scale(1);
@@ -174,10 +128,17 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .animate-heartbeat,
-    .animate-cta-pulse {
+    *, ::before, ::after {
+      animation-delay: -1ms !important;
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      background-attachment: initial !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0s !important;
+      transition-delay: 0s !important;
+    }
+    .animate-heartbeat, .animate-cta-pulse {
       animation: none !important;
-      transition: none !important;
     }
   }
 }
