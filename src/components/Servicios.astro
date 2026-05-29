@@ -2,6 +2,7 @@
 import { CONFIG } from '../data/config';
 
 // Optimization: Only pass minimal data to client script
+// Optimization: Only pass the minimal data needed for the client-side modal
 const modalData = CONFIG.servicios.map(s => ({
   titulo: s.titulo,
   descripcion: s.descripcion,
@@ -29,6 +30,7 @@ const modalData = CONFIG.servicios.map(s => ({
       {CONFIG.servicios.map((servicio, index) => (
         <div
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer overflow-hidden"
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 overflow-hidden cursor-pointer"
           data-index={index}
           role="button"
           tabindex="0"
@@ -40,6 +42,8 @@ const modalData = CONFIG.servicios.map(s => ({
           
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale text-blue flex items-center justify-center mb-6">
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+          <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
+            <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
               <use href={`#icon-${servicio.icono}`} />
             </svg>
           </div>
@@ -79,6 +83,7 @@ const modalData = CONFIG.servicios.map(s => ({
   >
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4" aria-label="Cerrar">
+      <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4" aria-label="Cerrar modal">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2">
           <use href="#icon-close" />
         </svg>
@@ -91,6 +96,8 @@ const modalData = CONFIG.servicios.map(s => ({
 <script is:inline define:vars={{ modalData }}>
   (function() {
     const services = modalData;
+<script is:inline define:vars={{ services: modalData }}>
+  (function() {
     const cards = document.querySelectorAll('.service-card');
     const backdrop = document.getElementById('service-modal-backdrop');
     const modal = document.getElementById('service-modal');
@@ -108,6 +115,8 @@ const modalData = CONFIG.servicios.map(s => ({
     const openModal = (index, element) => {
       const servicio = services[index];
       if (!servicio || !modalContent || !backdrop || !modal) return;
+      const s = services[index];
+      if (!s || !modalContent || !backdrop || !modal) return;
 
       triggerElement = element;
       triggerElement.setAttribute('aria-expanded', 'true');
@@ -124,6 +133,16 @@ const modalData = CONFIG.servicios.map(s => ({
         <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
         <ul class="flex flex-col gap-4" role="list">
           ${servicio.items.map(item => `
+          <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
+            <use href="#icon-${escapeHtml(s.icono)}" />
+          </svg>
+        </div>
+        <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(s.titulo)}</h3>
+        <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(s.descripcion)}</p>
+
+        <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
+        <ul class="flex flex-col gap-4" role="list">
+          ${s.items.map(item => `
             <li class="flex items-start gap-4 font-body text-[15px] text-text-soft">
               <span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>
               ${escapeHtml(item)}
@@ -140,6 +159,7 @@ const modalData = CONFIG.servicios.map(s => ({
 
       setTimeout(() => {
         if (closeBtn) closeBtn.focus();
+        closeBtn?.focus();
       }, 100);
     };
 
@@ -149,6 +169,11 @@ const modalData = CONFIG.servicios.map(s => ({
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+      if (!isModalOpen) return;
+      
+      backdrop?.classList.add('opacity-0', 'pointer-events-none');
+      modal?.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
+      modal?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       
       document.body.style.overflow = '';
       isModalOpen = false;

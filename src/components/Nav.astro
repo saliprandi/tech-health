@@ -30,6 +30,7 @@ const navItems = [
       {navItems.map(item => (
         <li>
           <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors px-1 py-0.5">
+          <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">
             {item.label}
           </a>
         </li>
@@ -43,6 +44,11 @@ const navItems = [
       </a>
 
       <!-- Mobile Menu Toggle -->
+      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors shadow-sm hover:shadow-md animate-cta-pulse">
+        Consultar por WhatsApp
+      </a>
+
+      <!-- Hamburger Button -->
       <button
         id="menu-toggle"
         class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-sm transition-shadow z-[101]"
@@ -66,6 +72,8 @@ const navItems = [
     class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white border-b border-border flex flex-col items-center py-12 gap-8 shadow-card-hover opacity-0 pointer-events-none translate-x-full transition-all duration-300 ease-in-out md:hidden z-[99]"
     aria-hidden="true"
   >
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white/95 backdrop-blur-md border-b border-border flex flex-col items-center py-12 gap-8 shadow-card-hover translate-x-full opacity-0 pointer-events-none transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
     {navItems.map(item => (
       <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[18px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">
         {item.label}
@@ -205,9 +213,127 @@ const navItems = [
       navLinks.forEach(link => {
         link.classList.remove('nav-link-active');
         link.removeAttribute('aria-current');
+<script is:inline define:vars={{ navItems }}>
+  (function() {
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggle = document.getElementById('menu-toggle');
+      const menu = document.getElementById('mobile-menu');
+      const navLinks = document.querySelectorAll('.nav-link');
+      const mobileLinks = document.querySelectorAll('.mobile-link');
+      const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
+      const spans = toggle?.querySelectorAll('span');
+      let isOpen = false;
+
+      const toggleMenu = (forceState) => {
+        isOpen = forceState !== undefined ? forceState : !isOpen;
+
+        toggle?.setAttribute('aria-expanded', isOpen.toString());
+        toggle?.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+        menu?.setAttribute('aria-hidden', (!isOpen).toString());
+
+        if (menu) {
+          menu.classList.toggle('translate-x-full', !isOpen);
+          menu.classList.toggle('opacity-0', !isOpen);
+          menu.classList.toggle('pointer-events-none', !isOpen);
+          menu.classList.toggle('translate-x-0', isOpen);
+          menu.classList.toggle('opacity-100', isOpen);
+          menu.classList.toggle('pointer-events-auto', isOpen);
+        }
+
+        if (spans?.length === 3) {
+          if (isOpen) {
+            spans[0].style.transform = 'translateY(8px) rotate(45deg)';
+            spans[1].style.opacity = '0';
+            spans[2].style.transform = 'translateY(-8px) rotate(-45deg)';
+          } else {
+            spans[0].style.transform = '';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = '';
+          }
+        }
+
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+      };
+
+      toggle?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleMenu();
+      });
+
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          if (isOpen) toggleMenu(false);
+        });
+      });
+
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        if (isOpen && menu && !menu.contains(e.target) && e.target !== toggle) {
+          toggleMenu(false);
+        }
+      });
+
+      // Keyboard handling
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isOpen) {
+          toggleMenu(false);
+          toggle?.focus();
+        }
+
+        // Mobile menu focus trap
+        if (isOpen && e.key === 'Tab') {
+          const focusable = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean);
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      });
+
+      // ScrollSpy implementation
+      const observerOptions = {
+        rootMargin: '-20% 0px -70% 0px',
+        threshold: 0
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            navLinks.forEach(link => {
+              const href = link.getAttribute('href');
+              const isActive = href === `#${id}`;
+              link.classList.toggle('nav-link-active', isActive);
+              if (isActive) {
+                link.setAttribute('aria-current', 'location');
+              } else {
+                link.removeAttribute('aria-current');
+              }
+            });
+          }
+        });
+      }, observerOptions);
+
+      navItems.forEach(item => {
+        const el = document.getElementById(item.id);
+        if (el) observer.observe(el);
+      });
+
+      // Reset ScrollSpy when clicking logo
+      document.querySelector('a[aria-label^="Inicio"]')?.addEventListener('click', () => {
+        navLinks.forEach(link => {
+          link.classList.remove('nav-link-active');
+          link.removeAttribute('aria-current');
+        });
       });
     });
-  });
+  })();
 </script>
 
 <style>

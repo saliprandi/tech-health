@@ -6,3 +6,7 @@
 ┃ Local    http://localhost:4321/
 ┃ Network  use --host to expose
  ELIFECYCLE  Command failed.
+ astro  v6.3.1 ready in 20 ms
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+ ELIFECYCLE  Command failed with exit code 143.
