@@ -113,6 +113,7 @@ const hasSocials = activeSocials.length > 0;
             aria-label={social.label}
           >
             <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
+              <use href={`#icon-${social.id}`} />
               <use href={`#icon-${social.name}`} />
             </svg>
           </a>

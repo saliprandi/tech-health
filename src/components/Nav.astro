@@ -12,6 +12,14 @@ const navItems = [
 <nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
+    <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
+      <img src="/logo-name.svg" alt={`${CONFIG.empresa.nombre} ${CONFIG.empresa.subtitulo}`} width="228" height="56" class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-300" fetchpriority="high" />
+    </a>
+
+    <ul class="hidden md:flex items-center gap-8">
+      {navItems.map(item => (
+        <li>
+          <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors px-1 py-0.5">
     <!-- Logo -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
       <img
@@ -37,7 +45,6 @@ const navItems = [
     </ul>
 
     <div class="flex items-center gap-4">
-      <!-- Desktop WhatsApp Link -->
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors shadow-sm hover:shadow-md animate-cta-pulse">
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors shadow-sm hover:shadow-md">
       <!-- Desktop WhatsApp CTA -->
@@ -45,6 +52,7 @@ const navItems = [
         Consultar por WhatsApp
       </a>
 
+      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-sm transition-shadow z-[101]" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
       <!-- Mobile Menu Toggle -->
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors shadow-sm hover:shadow-md animate-cta-pulse">
         Consultar por WhatsApp
@@ -65,6 +73,9 @@ const navItems = [
     </div>
   </div>
 
+  <div id="mobile-menu-backdrop" class="fixed inset-0 bg-navy/20 backdrop-blur-sm z-[98] opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
+
+  <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white border-b border-border flex flex-col items-center py-12 gap-8 shadow-card-hover opacity-0 pointer-events-none translate-x-full transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
   <!-- Mobile Menu -->
@@ -83,7 +94,7 @@ const navItems = [
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white/95 backdrop-blur-md border-b border-border flex flex-col items-center py-12 gap-8 shadow-card-hover translate-x-full opacity-0 pointer-events-none transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
     {navItems.map(item => (
-      <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[18px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">
+      <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">
         {item.label}
       </a>
     ))}
@@ -215,6 +226,9 @@ const navItems = [
 
     const toggleMenu = (forceState) => {
       isOpen = forceState !== undefined ? forceState : !isOpen;
+      toggle?.setAttribute('aria-expanded', isOpen.toString());
+      toggle?.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+
     const toggleMenu = () => {
       isOpen = !isOpen;
     const toggleMenu = (forceState) => {
@@ -237,13 +251,38 @@ const navItems = [
         menu.classList.toggle('translate-x-0', isOpen);
         menu.setAttribute('aria-hidden', (!isOpen).toString());
       }
-
+      if (backdrop) {
+        backdrop.classList.toggle('opacity-0', !isOpen);
+        backdrop.classList.toggle('pointer-events-none', !isOpen);
+      }
       if (spans?.length === 3) {
         spans[0].classList.toggle('rotate-45', isOpen);
         spans[0].classList.toggle('translate-y-[8px]', isOpen);
         spans[1].classList.toggle('opacity-0', isOpen);
         spans[2].classList.toggle('-rotate-45', isOpen);
         spans[2].classList.toggle('-translate-y-[8px]', isOpen);
+      }
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    };
+
+    toggle?.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
+    mobileLinks.forEach(link => link.addEventListener('click', () => { if (isOpen) toggleMenu(false); }));
+    backdrop?.addEventListener('click', () => { if (isOpen) toggleMenu(false); });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) { toggleMenu(false); toggle?.focus(); }
+      if (isOpen && e.key === 'Tab') {
+        const focusable = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean);
+        const first = focusable[0], last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (isOpen && menu && !menu.contains(e.target) && !toggle?.contains(e.target)) toggleMenu(false);
+    });
+
       if (backdrop) {
         backdrop.classList.toggle('opacity-0', !isOpen);
         backdrop.classList.toggle('pointer-events-none', !isOpen);
@@ -370,6 +409,18 @@ const navItems = [
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
           navLinks.forEach(link => {
+            const isActive = link.getAttribute('href') === `#${id}`;
+            link.classList.toggle('nav-link-active', isActive);
+            if (isActive) link.setAttribute('aria-current', 'location');
+            else link.removeAttribute('aria-current');
+          });
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
+    document.querySelector('a[aria-label^="Inicio"]')?.addEventListener('click', () => {
+      navLinks.forEach(link => { link.classList.remove('nav-link-active'); link.removeAttribute('aria-current'); });
             const href = link.getAttribute('href');
             const isActive = href === `#${id}`;
             const isActive = link.getAttribute('href') === `#${id}`;
@@ -532,6 +583,9 @@ const navItems = [
 </script>
 
 <style>
+  .nav-link-active { @apply text-blue !important; position: relative; }
+  .nav-link-active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; @apply bg-blue rounded-full; }
+  @media (max-width: 767px) { .nav-link-active::after { display: none; } }
   .nav-link-active {
     @apply text-navy !important;
     position: relative;

@@ -13,8 +13,8 @@ import { CONFIG } from '../data/config';
         <p class="font-body font-light text-[16px] text-text-soft mb-10 max-w-[480px]">Contáctenos para programar una visita técnica, presupuestar una reparación o realizar consultas sobre nuestros servicios.</p>
 
         <div class="flex flex-col gap-6">
-          
           <!-- WhatsApp / Phone -->
+          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
           <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border relative">
           <!-- WhatsApp / Phone -->
           <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
@@ -48,6 +48,7 @@ import { CONFIG } from '../data/config';
           </div>
 
           <!-- Location -->
+          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
           <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
             <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" aria-label="Ver ubicación en Google Maps">
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -228,6 +229,9 @@ import { CONFIG } from '../data/config';
               <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.horario}</div>
             </div>
           </div>
+        </div>
+      </div>
+
 
         </div>
       </div>
