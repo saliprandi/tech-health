@@ -12,7 +12,7 @@ export const CONFIG = {
   contacto: {
     whatsapp: "5493815658239",
     whatsapp_display: "+54 9 3815 65-8239",
-    email: "techhealth@example.com",
+    email: "techhealthmedicalengineering@gmail.com",
     direccion: "Dr. Bernardo de Monteagudo 349, Piso 7B",
     ciudad_completa: "San Miguel de Tucumán, Tucumán",
     maps_url: "https://maps.google.com/?q=Dr.+Bernardo+de+Monteagudo+349,+San+Miguel+de+Tucum%C3%A1n,+Tucum%C3%A1n,+Argentina",
