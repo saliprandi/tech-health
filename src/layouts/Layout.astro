@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import IconSprite from '../components/IconSprite.astro';
+import BackToTop from '../components/BackToTop.astro';
 
 interface Props {
 	title?: string;
@@ -56,5 +57,6 @@ const { title = "TechHealth Medical Engineering | TÃ©cnicos en Electromedicina â
 			Saltar al contenido principal
 		</a>
 		<slot />
+		<BackToTop />
 	</body>
 </html>
