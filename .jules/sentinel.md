@@ -26,3 +26,13 @@
 **Vulnerability:** Duplicate manifest keys and non-functional security meta tags.
 **Learning:** `Permissions-Policy` is non-functional in `<meta>` tags and must be set via HTTP headers. Duplicate `pnpm` keys in `package.json` can lead to overrides being ignored.
 **Prevention:** Consolidate all dependency overrides into a single `pnpm` object. Use `upgrade-insecure-requests` in CSP to ensure all content is served over HTTPS.
+
+## 2025-05-28 - CSP Consolidation and Reverse Tab-nabbing Protection
+**Vulnerability:** Redundant CSP meta tags and insecure programmatic `window.open` calls.
+**Learning:** Multiple CSP meta tags can cause browser confusion or inconsistent policy enforcement. Programmatic redirects via `window.open` without `noopener,noreferrer` expose users to reverse tab-nabbing, where a destination page can manipulate the original tab's location.
+**Prevention:** Consolidate security policies into a single, comprehensive meta tag. Always include `noopener,noreferrer` in any `window.open` calls to external origins.
+
+## 2026-05-29 - Code Corruption as a Security Blocker
+**Vulnerability:** Severe code corruption and duplication across multiple components (Nav, Contacto, Servicios, Footer, Equipos) which blocked automated security audits (pnpm audit) and framework diagnostic tools (astro check).
+**Learning:** Security auditing and automated patching cannot function when the codebase is in a state of syntactic or structural chaos. Deduplication and stabilization are not just "cleanup" tasks but prerequisites for a secure development lifecycle.
+**Prevention:** Enforce strict build and check passing in CI/CD. Treat "broken audits" as a critical security failure. Use surgical refactoring to stabilize corrupted components before applying targeted security fixes.

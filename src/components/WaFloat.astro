@@ -2,6 +2,22 @@
 import { CONFIG } from '../data/config';
 ---
 
-<a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="fixed bottom-[28px] right-[28px] z-[200] w-[58px] h-[58px] bg-[#25D366] rounded-full flex items-center justify-center text-white hover:scale-[1.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-all duration-300" style="box-shadow: 0 4px 20px rgba(37,211,102,0.5);" aria-label="Contactar por WhatsApp">
+<a
+  href={`https://wa.me/${CONFIG.contacto.whatsapp}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="fixed bottom-[28px] right-[28px] z-[200] w-[58px] h-[58px] bg-[#25D366] rounded-full flex items-center justify-center text-white hover:scale-[1.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-all duration-300"
+  class="animate-cta-pulse fixed bottom-[28px] right-[28px] z-[200] w-[58px] h-[58px] bg-[#25D366] rounded-full flex items-center justify-center text-white hover:scale-[1.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-all duration-300"
+  class="fixed bottom-[28px] right-[28px] z-[200] w-[58px] h-[58px] bg-[#25D366] rounded-full flex items-center justify-center text-white hover:scale-[1.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-all duration-300 animate-cta-pulse"
+  style="box-shadow: 0 4px 20px rgba(37,211,102,0.5);"
+  aria-label="Contactar por WhatsApp"
+  title="Contactar por WhatsApp"
+>
   <svg class="w-[30px] h-[30px] fill-current"><use href="#icon-whatsapp" /></svg>
+  <svg class="w-[30px] h-[30px] fill-current" aria-hidden="true">
+    <use href="#icon-whatsapp" />
+  </svg>
+<a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="fixed bottom-[28px] right-[28px] z-[200] w-[58px] h-[58px] bg-[#25D366] rounded-full flex items-center justify-center text-white hover:scale-[1.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-all duration-300 animate-cta-pulse" style="box-shadow: 0 4px 20px rgba(37,211,102,0.5);" aria-label="Contactar por WhatsApp" title="Contactar por WhatsApp">
+<a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="fixed bottom-[28px] right-[28px] z-[200] w-[58px] h-[58px] bg-[#25D366] rounded-full flex items-center justify-center text-white hover:scale-[1.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-all duration-300 animate-cta-pulse" title="Contactar por WhatsApp" aria-label="Contactar por WhatsApp">
+  <svg class="w-[30px] h-[30px] fill-current" aria-hidden="true"><use href="#icon-whatsapp" /></svg>
 </a>
