@@ -3,6 +3,13 @@ import { CONFIG } from '../data/config';
 
 const year = new Date().getFullYear();
 
+const socialLinks = [
+  { id: 'instagram', label: 'Seguir en Instagram' },
+  { id: 'facebook', label: 'Seguir en Facebook' },
+  { id: 'linkedin', label: 'Seguir en LinkedIn' }
+] as const;
+
+const activeSocials = socialLinks.filter(social => !!CONFIG.redes[social.id as keyof typeof CONFIG.redes]);
 type SocialKey = 'instagram' | 'facebook' | 'linkedin';
 
 const socialLabels: Record<SocialKey, string> = {
@@ -53,6 +60,12 @@ const hasSocials = activeSocials.length > 0;
 
     {hasSocials && (
       <div class="flex items-center gap-4 mb-6">
+        {activeSocials.map(social => (
+          <a
+            href={CONFIG.redes[social.id as keyof typeof CONFIG.redes]}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1"
         {redes.map(([platform, url]) => (
           <a
             href={url}
