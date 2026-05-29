@@ -66,6 +66,8 @@ const navItems = [
   </div>
 
   <!-- Mobile Menu -->
+  <div id="mobile-menu" class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white border-b border-border flex flex-col items-center py-12 gap-8 shadow-card-hover opacity-0 pointer-events-none translate-x-full transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
+  <!-- Mobile Menu -->
   <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-8 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
   <!-- Mobile Menu Backdrop -->
   <div id="mobile-menu-backdrop" class="fixed inset-0 bg-navy/20 backdrop-blur-sm z-[98] opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
@@ -260,12 +262,19 @@ const navItems = [
       });
     });
 
+    // Close on outside click
     document.addEventListener('click', (e) => {
       if (isOpen && menu && !menu.contains(e.target) && e.target !== toggle) {
         toggleMenu();
       }
     });
 
+    // Keyboard handling: Escape key & Focus trap
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+        toggle?.focus();
+        return;
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && isOpen) {
         toggleMenu();
@@ -292,7 +301,6 @@ const navItems = [
       if (isOpen && menu && !menu.contains(e.target) && !toggle?.contains(e.target)) {
         toggleMenu(false);
       }
-    });
 
     // Keyboard handling
     document.addEventListener('keydown', (e) => {
@@ -320,6 +328,7 @@ const navItems = [
       }
     });
 
+    // ScrollSpy implementation
     // ScrollSpy Implementation
     const observerOptions = {
       rootMargin: '-20% 0px -70% 0px',
@@ -345,11 +354,13 @@ const navItems = [
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
-    ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
-      const el = document.getElementById(id);
+    navItems.forEach(item => {
+      const el = document.getElementById(item.id);
       if (el) observer.observe(el);
     });
 
+    // Reset ScrollSpy when clicking logo
+    document.querySelector('a[aria-label^="Inicio de"]')?.addEventListener('click', () => {
     document.querySelector('a[aria-label^="Inicio de"]')?.addEventListener('click', () => {
     }, observerOptions);
 
