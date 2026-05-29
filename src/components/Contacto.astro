@@ -15,6 +15,7 @@ import { CONFIG } from '../data/config';
         <div class="flex flex-col gap-6">
           
           <!-- WhatsApp / Phone -->
+          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
           <div class="group flex items-center justify-between p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="flex items-start gap-4 flex-grow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-lg" aria-label="Abrir chat de WhatsApp">
               <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
@@ -333,6 +334,9 @@ import { CONFIG } from '../data/config';
         </div>
       </div>
 
+        </div>
+      </div>
+
       <!-- Right Column: Form -->
       <!-- Right Column (Form) -->
       <div>
@@ -525,6 +529,10 @@ import { CONFIG } from '../data/config';
       const btn = document.getElementById('f-submit');
       const textarea = document.getElementById('f-desc');
       const charCounter = document.getElementById('char-counter');
+
+      // Click to Copy Logic
+      document.querySelectorAll('.copy-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
       const copyBtns = document.querySelectorAll('.copy-btn');
       const nombreInput = document.getElementById('f-nombre');
       const telInput = document.getElementById('f-tel');
@@ -546,6 +554,7 @@ import { CONFIG } from '../data/config';
           const textToCopy = button.getAttribute('data-copy');
           if (!textToCopy) return;
 
+          navigator.clipboard.writeText(textToCopy).then(() => {
           try {
             await navigator.clipboard.writeText(textToCopy);
             isSuccess = true;
@@ -554,6 +563,9 @@ import { CONFIG } from '../data/config';
             const checkIcon = button.querySelector('.check-icon');
             const btnText = button.querySelector('.btn-text');
             const originalText = btnText ? btnText.textContent : 'Copiar';
+
+            if (copyIcon) copyIcon.classList.add('hidden');
+            if (checkIcon) checkIcon.classList.remove('hidden');
             const originalAriaLabel = button.getAttribute('aria-label');
 
             if (copyIcon) copyIcon.classList.add('hidden');
@@ -581,6 +593,15 @@ import { CONFIG } from '../data/config';
             setTimeout(() => {
               if (copyIcon) copyIcon.classList.remove('hidden');
               if (checkIcon) checkIcon.classList.add('hidden');
+              if (btnText) {
+                btnText.textContent = originalText;
+                btnText.classList.remove('text-green-600');
+              }
+            }, 2000);
+          });
+        });
+      });
+
 
             setTimeout(() => {
               copyIcon?.classList.remove('hidden');
@@ -608,6 +629,7 @@ import { CONFIG } from '../data/config';
       if (textarea && charCounter) {
         textarea.addEventListener('input', () => {
           const count = textarea.value.length;
+          charCounter.innerText = `${count} / 1000`;
           charCounter.textContent = `${count} / 1000`;
           charCounter.classList.toggle('text-blue-light', count >= 900);
           charCounter.classList.toggle('text-white/40', count < 900);
@@ -640,6 +662,10 @@ import { CONFIG } from '../data/config';
           const telEl = document.getElementById('f-tel');
           const servicioEl = document.getElementById('f-servicio');
 
+          const nombre = (nombreEl && 'value' in nombreEl) ? nombreEl.value.trim() : 'No especificado';
+          const tel = (telEl && 'value' in telEl) ? telEl.value.trim() : 'No especificado';
+          const servicio = (servicioEl && 'options' in servicioEl) ? (servicioEl).options[(servicioEl).selectedIndex].value : 'Consulta general';
+          const desc = (textarea && 'value' in textarea) ? textarea.value.trim() : 'Sin detalles adicionales';
           const nombre = (nombreEl instanceof HTMLInputElement) ? nombreEl.value.trim() : 'No especificado';
           const tel = (telEl instanceof HTMLInputElement) ? telEl.value.trim() : 'No especificado';
           const servicio = (servicioEl instanceof HTMLSelectElement) ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';

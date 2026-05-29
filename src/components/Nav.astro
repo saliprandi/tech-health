@@ -49,6 +49,10 @@ const navItems = [
     <div class="flex items-center gap-4">
       <!-- Desktop WhatsApp Link -->
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors shadow-sm hover:shadow-md animate-cta-pulse">
+        Consultar por WhatsApp
+      </a>
+
+      <!-- Mobile Menu Toggle -->
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors shadow-sm hover:shadow-md">
       <!-- Desktop WhatsApp CTA -->
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors shadow-sm hover:shadow-md animate-cta-pulse">
@@ -93,6 +97,9 @@ const navItems = [
 
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white/95 backdrop-blur-md border-b border-border flex flex-col items-center py-10 gap-8 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
+    <div class="absolute inset-0 bg-white -z-10"></div>
+    {navItems.map(item => (
+      <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[18px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">
   <div id="mobile-menu" class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white border-b border-border flex flex-col items-center py-10 gap-8 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
   <div
     id="mobile-menu"
@@ -242,6 +249,12 @@ const navItems = [
     const spans = toggle?.querySelectorAll('span');
     let isOpen = false;
 
+    const toggleMenu = (forceState) => {
+      isOpen = typeof forceState === 'boolean' ? forceState : !isOpen;
+
+      toggle?.setAttribute('aria-expanded', isOpen.toString());
+      toggle?.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+
     const toggleMenu = () => {
       isOpen = !isOpen;
     const toggleMenu = (forceState) => {
@@ -344,6 +357,10 @@ const navItems = [
       toggleMenu();
     });
 
+    backdrop?.addEventListener('click', () => toggleMenu(false));
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => toggleMenu(false));
     backdrop?.addEventListener('click', () => {
       if (isOpen) toggleMenu(false);
     });
@@ -356,6 +373,14 @@ const navItems = [
 
     // Close on outside click
     document.addEventListener('click', (e) => {
+      if (isOpen && menu && !menu.contains(e.target) && !toggle?.contains(e.target)) {
+        toggleMenu(false);
+      }
+    });
+
+    // Keyboard handling
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
       if (isOpen && menu && !menu.contains(e.target) && e.target !== toggle) {
         toggleMenu();
       }
@@ -432,6 +457,7 @@ const navItems = [
         toggle?.focus();
       }
 
+      // Focus trapping for mobile menu
       if (isOpen && e.key === 'Tab') {
         const focusableElements = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean);
         const firstElement = focusableElements[0];
@@ -495,6 +521,12 @@ const navItems = [
           });
         }
       });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
+
+    // Reset ScrollSpy when clicking logo
     }, observerOptions);
 
     document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
