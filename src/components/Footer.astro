@@ -5,6 +5,14 @@ const year = new Date().getFullYear();
 
 type SocialKey = 'instagram' | 'facebook' | 'linkedin';
 
+const socialLabels: Record<SocialKey, string> = {
+  instagram: 'Seguir en Instagram',
+  facebook: 'Seguir en Facebook',
+  linkedin: 'Seguir en LinkedIn'
+};
+
+const redes = Object.entries(CONFIG.redes).filter(([_, url]) => url) as [SocialKey, string][];
+const hasSocials = redes.length > 0;
 const socialLinks: { id: SocialKey; label: string }[] = [
   { id: 'instagram', label: 'Seguir en Instagram' },
   { id: 'facebook', label: 'Seguir en Facebook' },
@@ -38,12 +46,23 @@ const hasSocials = activeSocials.length > 0;
         />
       </a>
     </div>
+
     <div class="font-body font-light text-[13px] text-white/50 mb-6">
       {CONFIG.empresa.ciudad}, {CONFIG.empresa.pais} · {CONFIG.contacto.whatsapp_display}
     </div>
 
     {hasSocials && (
       <div class="flex items-center gap-4 mb-6">
+        {redes.map(([platform, url]) => (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white/50 hover:text-white transition-colors focus-visible:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1"
+            aria-label={socialLabels[platform] || `Seguir en ${platform}`}
+          >
+            <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
+              <use href={`#icon-${platform}`} />
         {activeSocials.map(social => (
           <a
             href={CONFIG.redes[social.id]}

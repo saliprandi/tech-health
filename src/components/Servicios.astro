@@ -30,7 +30,6 @@ const modalData = CONFIG.servicios.map(s => ({
       {CONFIG.servicios.map((servicio, index) => (
         <div
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer overflow-hidden"
-          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 overflow-hidden cursor-pointer"
           data-index={index}
           role="button"
           tabindex="0"
@@ -93,6 +92,8 @@ const modalData = CONFIG.servicios.map(s => ({
   </div>
 </section>
 
+<script is:inline define:vars={{ services: modalData }}>
+  (function() {
 <script is:inline define:vars={{ modalData }}>
   (function() {
     const services = modalData;
@@ -129,6 +130,9 @@ const modalData = CONFIG.servicios.map(s => ({
         </div>
         <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
         <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
+        <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
+        <ul class="flex flex-col gap-4" role="list">
+          ${servicio.items.map(item => `
 
         <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
         <ul class="flex flex-col gap-4" role="list">
@@ -159,6 +163,7 @@ const modalData = CONFIG.servicios.map(s => ({
 
       setTimeout(() => {
         if (closeBtn) closeBtn.focus();
+      }, 50);
         closeBtn?.focus();
       }, 100);
     };
@@ -210,9 +215,25 @@ const modalData = CONFIG.servicios.map(s => ({
 
       if (e.key === 'Escape') {
         closeModal();
+        return;
       }
 
       if (e.key === 'Tab') {
+        const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) { // Shift + Tab
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            if (lastElement instanceof HTMLElement) lastElement.focus();
+          }
+        } else { // Tab
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            if (firstElement instanceof HTMLElement) firstElement.focus();
         const focusable = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
         if (focusable.length === 0) return;
         const first = focusable[0];
