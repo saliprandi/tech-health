@@ -1,5 +1,12 @@
 
 > tech-health@0.0.1 astro /app
+> astro preview --port 4322
+
+Port 4322 is in use, trying another one...
+ astro  v6.3.1 ready in 23 ms
+┃ Local    http://localho ELIFECYCLE  Command failed.
+to expose
+ ELIFECYCLE  Command failed.
 > astro preview --port 4321
 
 Port 4321 is in use, trying another one...

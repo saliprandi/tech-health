@@ -12,6 +12,7 @@ const navItems = [
 <nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
+    <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
       <img src="/logo-name.svg" alt={`${CONFIG.empresa.nombre} ${CONFIG.empresa.subtitulo}`} width="228" height="56" class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-300" fetchpriority="high" />
     </a>
@@ -37,6 +38,7 @@ const navItems = [
     <ul class="hidden md:flex items-center gap-8">
       {navItems.map(item => (
         <li>
+          <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5 transition-colors">
           <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">
             {item.label}
           </a>
@@ -73,6 +75,10 @@ const navItems = [
     </div>
   </div>
 
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="fixed top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-8 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
+    {navItems.map(item => (
+      <a href={`#${item.id}`} class="mobile-link nav-link font-body font-medium text-[18px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">
   <div id="mobile-menu-backdrop" class="fixed inset-0 bg-navy/20 backdrop-blur-sm z-[98] opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
 
   <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
@@ -103,6 +109,16 @@ const navItems = [
     </a>
   </div>
 </nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+    const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
+    const spans = toggle?.querySelectorAll('span');
+    let isOpen = false;
 
 <script is:inline define:vars={{ navItems }}>
   (function() {
@@ -251,6 +267,7 @@ const navItems = [
         menu.classList.toggle('translate-x-0', isOpen);
         menu.setAttribute('aria-hidden', (!isOpen).toString());
       }
+
       if (backdrop) {
         backdrop.classList.toggle('opacity-0', !isOpen);
         backdrop.classList.toggle('pointer-events-none', !isOpen);
@@ -265,6 +282,8 @@ const navItems = [
       document.body.style.overflow = isOpen ? 'hidden' : '';
     };
 
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    };
     toggle?.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
     mobileLinks.forEach(link => link.addEventListener('click', () => { if (isOpen) toggleMenu(false); }));
     backdrop?.addEventListener('click', () => { if (isOpen) toggleMenu(false); });
@@ -283,6 +302,19 @@ const navItems = [
       if (isOpen && menu && !menu.contains(e.target) && !toggle?.contains(e.target)) toggleMenu(false);
     });
 
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (isOpen) toggleMenu();
+      });
+    });
+
+    // Keyboard handling
+    document.addEventListener('keydown', (e) => {
+      if (!isOpen) return;
+
+      if (e.key === 'Escape') {
+        toggleMenu();
+        if (toggle instanceof HTMLElement) toggle.focus();
       if (backdrop) {
         backdrop.classList.toggle('opacity-0', !isOpen);
         backdrop.classList.toggle('pointer-events-none', !isOpen);
@@ -348,6 +380,8 @@ const navItems = [
         if (toggle) toggle.focus();
       }
 
+      if (e.key === 'Tab') {
+        const focusableElements = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean) as HTMLElement[];
       if (isOpen && e.key === 'Tab') {
         const focusable = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean);
         const first = focusable[0];
@@ -390,6 +424,13 @@ const navItems = [
         } else {
           if (document.activeElement === lastElement) {
             e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
+    });
+
+    // ScrollSpy
             firstElement?.focus();
           }
         }
@@ -403,6 +444,7 @@ const navItems = [
       threshold: 0
     };
 
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
     const observerCallback = (entries) => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -446,6 +488,9 @@ const navItems = [
 
     // Reset ScrollSpy when clicking logo
     document.querySelector('a[aria-label^="Inicio de"]')?.addEventListener('click', () => {
+      navLinks.forEach(link => {
+        link.classList.remove('nav-link-active');
+        link.removeAttribute('aria-current');
     document.querySelector('a[aria-label^="Inicio de"]')?.addEventListener('click', () => {
     }, observerOptions);
 
