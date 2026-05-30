@@ -38,7 +38,22 @@ def run_cuj(page):
     # Take screenshot of copy success state
     page.screenshot(path="/home/jules/verification/screenshots/copy_success.png")
 
-    # 6. Test Mobile Menu
+    # 6. Test Back to Top Button
+    page.evaluate("window.scrollTo(0, 1000)")
+    page.wait_for_timeout(500)
+    btt_btn = page.locator("#back-to-top")
+    if btt_btn.is_visible():
+        print("Back to top button visible")
+        page.screenshot(path="/home/jules/verification/screenshots/btt_visible.png")
+        btt_btn.click()
+        page.wait_for_timeout(1000)
+        scroll_y = page.evaluate("window.scrollY")
+        print(f"Scroll Y after click: {scroll_y}")
+        page.screenshot(path="/home/jules/verification/screenshots/btt_after_click.png")
+    else:
+        print("Back to top button NOT visible")
+
+    # 7. Test Mobile Menu
     page.set_viewport_size({"width": 375, "height": 667})
     page.wait_for_timeout(500)
 

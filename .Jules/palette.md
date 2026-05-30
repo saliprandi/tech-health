@@ -103,3 +103,11 @@
 ## 2025-05-15 - Multi-Stage Feedback for Click-to-Copy
 **Learning:** For "Click to Copy" interactions, immediate and multi-sensory (visual) feedback is vital. Swapping the icon (copy to check), updating the text (Copy to ¡Copiado!), and briefly shifting the button's background color (e.g., to success green) significantly reduces user uncertainty about whether the action succeeded.
 **Action:** Always implement a 2000ms "success state" for copy buttons with high-contrast color shifts and icon swaps.
+
+## 2025-05-30 - Back to Top UX Pattern
+**Learning:** For long landing pages, a "Back to Top" button provides essential navigation relief. To be accessible, it must:
+1. Use a visibility threshold (e.g., 500px) to avoid cluttering the initial view.
+2. Position itself to avoid overlapping other FABs (like WhatsApp buttons).
+3. Use smooth scrolling for visual context.
+4. Programmatically restore focus to the main content container (e.g., `#main-content`) to reset the Tab order for keyboard users.
+**Action:** Implement the "Visibility + Smooth Scroll + Focus Restoration" triad for all return-to-top interactions.
