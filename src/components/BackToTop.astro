@@ -1,0 +1,56 @@
+---
+/**
+ * BackToTop.astro
+ * Micro-UX pattern: 500px scroll threshold, smooth scroll, and focus restoration to #main-content.
+ * Positioned to avoid overlap with WaFloat.astro.
+ */
+---
+
+<button
+  id="back-to-top"
+  class="fixed bottom-[100px] right-[28px] z-[200] w-[48px] h-[48px] bg-white border border-border rounded-full flex items-center justify-center text-navy shadow-md opacity-0 pointer-events-none translate-y-4 transition-all duration-300 hover:bg-off-white hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
+  aria-label="Volver arriba"
+  title="Volver arriba"
+>
+  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+  </svg>
+</button>
+
+<script>
+  (function() {
+    const btn = document.getElementById('back-to-top');
+    const mainContent = document.getElementById('main-content');
+    const threshold = 500;
+
+    if (!btn) return;
+
+    const handleScroll = () => {
+      const scrolled = window.scrollY > threshold;
+      btn.classList.toggle('opacity-100', scrolled);
+      btn.classList.toggle('pointer-events-auto', scrolled);
+      btn.classList.toggle('translate-y-0', scrolled);
+      btn.classList.toggle('opacity-0', !scrolled);
+      btn.classList.toggle('pointer-events-none', !scrolled);
+      btn.classList.toggle('translate-y-4', !scrolled);
+    };
+
+    const scrollToTop = () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+
+      // Restore focus to main content after scroll
+      if (mainContent instanceof HTMLElement) {
+        // Wait for smooth scroll to finish (typically 300-500ms)
+        setTimeout(() => {
+          mainContent.focus({ preventScroll: true });
+        }, 400);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    btn.addEventListener('click', scrollToTop);
+  })();
+</script>
