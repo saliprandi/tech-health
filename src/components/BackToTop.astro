@@ -1,0 +1,57 @@
+---
+/**
+ * BackToTop.astro
+ * Micro-UX improvement: Floating button that appears after scrolling
+ * and provides smooth return to top with focus restoration.
+ */
+---
+
+<button
+  id="back-to-top"
+  class="fixed bottom-[100px] right-[28px] z-[150] w-[48px] h-[48px] bg-white border border-border text-navy rounded-full flex items-center justify-center shadow-lg opacity-0 pointer-events-none translate-y-4 transition-all duration-300 hover:bg-blue-pale hover:text-blue hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
+  aria-label="Volver arriba"
+  title="Volver arriba"
+>
+  <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+  </svg>
+</button>
+
+<script>
+  (function() {
+    const btn = document.getElementById('back-to-top');
+    const mainContent = document.getElementById('main-content');
+
+    if (!btn) return;
+
+    // Show button after 500px of scrolling
+    const handleScroll = () => {
+      const shouldShow = window.scrollY > 500;
+      if (shouldShow) {
+        btn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+        btn.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+      } else {
+        btn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+        btn.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Smooth scroll to top and restore focus
+    btn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+
+      // Restore focus to main content or top of page for screen readers
+      if (mainContent) {
+        // Wait for smooth scroll to finish or at least start
+        setTimeout(() => {
+          mainContent.focus({ preventScroll: true });
+        }, 100);
+      }
+    });
+  })();
+</script>
