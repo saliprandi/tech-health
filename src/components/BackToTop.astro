@@ -1,0 +1,76 @@
+---
+/**
+ * BackToTop.astro
+ * Micro-UX pattern for quick navigation to the top.
+ * Features:
+ * - IntersectionObserver for scroll threshold (500px).
+ * - Smooth scrolling.
+ * - Focus restoration to #main-content.
+ * - Accessibility: aria-label, role="button", screen reader hidden when not visible.
+ */
+---
+
+<button
+  id="back-to-top"
+  class="fixed bottom-[100px] right-[28px] z-[150] w-12 h-12 bg-navy text-white rounded-full shadow-lg flex items-center justify-center opacity-0 pointer-events-none translate-y-4 transition-all duration-300 hover:bg-navy-dark hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
+  aria-label="Volver al inicio"
+  title="Volver al inicio"
+>
+  <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+  </svg>
+</button>
+
+<script>
+  (function() {
+    const btn = document.getElementById('back-to-top');
+    const mainContent = document.getElementById('main-content');
+    const SCROLL_THRESHOLD = 500;
+
+    if (!btn) return;
+
+    // Use IntersectionObserver with a sentinel to handle visibility
+    // We create a tiny sentinel at the threshold
+    const sentinel = document.createElement('div');
+    sentinel.style.position = 'absolute';
+    sentinel.style.top = `${SCROLL_THRESHOLD}px`;
+    sentinel.style.left = '0';
+    sentinel.style.width = '1px';
+    sentinel.style.height = '1px';
+    sentinel.style.pointerEvents = 'none';
+    sentinel.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(sentinel);
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        // If the sentinel is ABOVE the viewport, we have scrolled past it
+        const isPastThreshold = entry.boundingClientRect.top < 0;
+
+        if (isPastThreshold) {
+          btn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+          btn.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+        } else {
+          btn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+          btn.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+        }
+      });
+    }, { threshold: 0 });
+
+    observer.observe(sentinel);
+
+    // Smooth scroll to top and restore focus
+    btn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+
+      // Restore focus to main content anchor after scroll
+      if (mainContent) {
+        setTimeout(() => {
+          mainContent.focus({ preventScroll: true });
+        }, 100);
+      }
+    });
+  })();
+</script>
