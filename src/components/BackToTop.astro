@@ -1,0 +1,55 @@
+---
+---
+
+<button
+  id="back-to-top"
+  class="fixed bottom-[100px] right-[28px] z-[190] w-12 h-12 bg-white text-navy border border-border rounded-full flex items-center justify-center shadow-md opacity-0 pointer-events-none translate-y-4 transition-all duration-300 hover:bg-blue-pale hover:text-blue hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
+  aria-label="Volver arriba"
+  title="Volver arriba"
+>
+  <svg class="w-5 h-5" fill="none" stroke-width="2" stroke="currentColor">
+    <use href="#icon-arrow-up" />
+  </svg>
+</button>
+
+<script>
+  (function() {
+    const button = document.getElementById('back-to-top');
+    const mainContent = document.getElementById('main-content');
+    const threshold = 500;
+
+    if (!button) return;
+
+    const handleScroll = () => {
+      const scrolled = window.scrollY;
+      if (scrolled > threshold) {
+        button.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+        button.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+      } else {
+        button.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+        button.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+      }
+    };
+
+    const scrollToTop = () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+
+      // Programmatic focus restoration for accessibility
+      if (mainContent) {
+        // Wait for scroll to finish or at least start
+        setTimeout(() => {
+          mainContent.focus({ preventScroll: true });
+        }, 100);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    button.addEventListener('click', scrollToTop);
+
+    // Initial check
+    handleScroll();
+  })();
+</script>
