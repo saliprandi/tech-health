@@ -314,6 +314,10 @@ import { CONFIG } from '../data/config';
     const textarea = document.getElementById('f-desc');
     const counter = document.getElementById('char-counter');
 
+    // Character counter
+    if (textarea && counter) {
+      textarea.addEventListener('input', () => {
+        const count = textarea.value.length;
 <script define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }} is:inline>
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('contact-form');
@@ -371,6 +375,15 @@ import { CONFIG } from '../data/config';
         btn.disabled = true;
         btn.classList.add('opacity-70', 'cursor-not-allowed');
 
+        const nombre = document.getElementById('f-nombre')?.value.trim() || 'No especificado';
+        const tel = document.getElementById('f-tel')?.value.trim() || 'No especificado';
+        const servicioEl = document.getElementById('f-servicio');
+        const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+        const desc = textarea?.value.trim() || 'Sin detalles adicionales';
+
+        const rawMessage = "Hola TechHealth! Me comunico desde su web.\n*Nombre:* " + nombre + "\n*Teléfono:* " + tel + "\n*Servicio:* " + servicio + "\n*Detalle:* " + desc;
+        
+        const encodedMessage = encodeURIComponent(rawMessage);
         const nombre = document.getElementById('f-nombre').value.trim() || 'No especificado';
         const tel = document.getElementById('f-tel').value.trim() || 'No especificado';
         const servicioEl = document.getElementById('f-servicio');

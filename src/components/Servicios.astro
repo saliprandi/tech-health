@@ -167,6 +167,27 @@ const modalData = CONFIG.servicios.map(s => ({
       const servicio = services[index];
       if (!servicio) return;
 
+        if (modalContent) {
+          modalContent.innerHTML = `
+            <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
+              <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
+                <use href="#icon-${escapeHtml(servicio.icono)}" />
+              </svg>
+            </div>
+            <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
+            <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
+
+            <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
+            <ul class="flex flex-col gap-4">
+              ${servicio.items.map(item => `
+                <li class="flex items-start gap-4 font-body text-[15px] text-text-soft">
+                  <span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>
+                  ${escapeHtml(item)}
+                </li>
+              `).join('')}
+            </ul>
+          `;
+        }
       triggerElement = element;
       triggerElement?.setAttribute('aria-expanded', 'true');
 
@@ -192,23 +213,23 @@ const modalData = CONFIG.servicios.map(s => ({
         `;
       }
 
-        backdrop.classList.remove('opacity-0', 'pointer-events-none');
-        modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
-        modal.classList.add('scale-100');
+        backdrop?.classList.remove('opacity-0', 'pointer-events-none');
+        modal?.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+        modal?.classList.add('scale-100');
         document.body.style.overflow = 'hidden';
         isModalOpen = true;
 
         setTimeout(() => {
-          closeBtn?.focus();
+          if (closeBtn) closeBtn.focus();
         }, 50);
       };
 
       const closeModal = () => {
         if (!isModalOpen) return;
         
-        backdrop.classList.add('opacity-0', 'pointer-events-none');
-        modal.classList.remove('scale-100');
-        modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+        backdrop?.classList.add('opacity-0', 'pointer-events-none');
+        modal?.classList.remove('scale-100');
+        modal?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
         document.body.style.overflow = '';
         isModalOpen = false;
 
@@ -410,6 +431,7 @@ const modalData = CONFIG.servicios.map(s => ({
       closeBtn?.addEventListener('click', closeModal);
 
       document.addEventListener('keydown', (e) => {
+        if (!isModalOpen || !modal) return;
         if (!isModalOpen) return;
 
         if (e.key === 'Escape') {
@@ -418,6 +440,16 @@ const modalData = CONFIG.servicios.map(s => ({
         }
 
         if (e.key === 'Tab') {
+          const focusable = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'));
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            if (last) last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            if (first) first.focus();
           const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
           if (focusableElements.length === 0) return;
 

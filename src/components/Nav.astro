@@ -144,6 +144,8 @@ const navItems = [
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const spans = toggle?.querySelectorAll('span');
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
+    let isOpen = false;
+
     const spans = toggle?.querySelectorAll('span');
 
     let isOpen = false;
@@ -161,6 +163,17 @@ const navItems = [
       isOpen = !isOpen;
       toggle?.setAttribute('aria-expanded', isOpen.toString());
       menu?.setAttribute('aria-hidden', (!isOpen).toString());
+
+      const states = {
+        'opacity-0': !isOpen,
+        'pointer-events-none': !isOpen,
+        'translate-y-[-10px]': !isOpen,
+        'opacity-100': isOpen,
+        'pointer-events-auto': isOpen,
+        'translate-y-0': isOpen
+      };
+
+      Object.entries(states).forEach(([cls, cond]) => menu?.classList.toggle(cls, cond));
       menu?.classList.toggle('opacity-100', isOpen);
       menu?.classList.toggle('pointer-events-auto', isOpen);
       menu?.classList.toggle('translate-y-0', isOpen);
@@ -233,6 +246,14 @@ const navItems = [
     };
 
     toggle?.addEventListener('click', toggleMenu);
+
+    document.querySelectorAll('.mobile-link').forEach(link => {
+       link.addEventListener('click', () => {
+         if (isOpen) toggleMenu();
+       });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
     mobileLinks.forEach(link => link.addEventListener('click', () => { if (isOpen) toggleMenu(); }));
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && isOpen) {
@@ -463,6 +484,8 @@ const navItems = [
 
     document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
 
+    document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
+
     document.addEventListener('keydown', (e) => {
       if (!isOpen || e.key !== 'Tab') return;
       const focusable = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean);
@@ -492,17 +515,28 @@ const navItems = [
     const sections = document.querySelectorAll('section[id]');
     sections.forEach(section => observer.observe(section));
 
-    // Keyboard handling: Focus trapping & Escape key
     document.addEventListener('keydown', (e) => {
       if (!isOpen) return;
-
       if (e.key === 'Escape') {
         toggleMenu();
         (toggle as HTMLElement)?.focus();
         return;
       }
-
       if (e.key === 'Tab') {
+        const focusable = [toggle, ...Array.from(menu?.querySelectorAll('a') || []), whatsappMobileLink].filter(Boolean) as HTMLElement[];
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    });
+
+    document.querySelector('a[aria-label^="Inicio"]')?.addEventListener('click', () => {
         const focusableElements = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean) as HTMLElement[];
         const firstElement = focusableElements[0];
         const lastElement = focusableElements[focusableElements.length - 1];
