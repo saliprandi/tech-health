@@ -15,6 +15,8 @@ import { CONFIG } from '../data/config';
         <div class="flex flex-col gap-6">
           
           <!-- WhatsApp -->
+          <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border relative">
+          <!-- WhatsApp / Phone -->
           <div class="group flex items-center justify-between p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border relative">
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="flex items-start gap-4 flex-grow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-lg" aria-label="Abrir chat de WhatsApp">
               <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
@@ -28,12 +30,11 @@ import { CONFIG } from '../data/config';
               </div>
             </a>
             <button
-              class="copy-btn group/btn flex items-center gap-1.5 text-blue hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded px-2 py-1"
+              class="copy-btn group/btn flex items-center gap-1.5 text-blue hover:text-navy transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded px-2 py-1"
               data-copy={CONFIG.contacto.whatsapp}
               aria-label="Copiar número de WhatsApp"
-              title="Copiar al portapapeles"
             >
-              <svg class="w-4 h-4 copy-icon"><use href="#icon-copy" /></svg>
+              <svg class="w-4 h-4 copy-icon transition-transform group-active/btn:scale-90"><use href="#icon-copy" /></svg>
               <svg class="w-4 h-4 check-icon hidden text-green-600"><use href="#icon-check" /></svg>
               <span class="text-[11px] font-bold uppercase tracking-wider btn-text">Copiar</span>
             </button>
@@ -59,7 +60,6 @@ import { CONFIG } from '../data/config';
               class="copy-btn absolute top-4 right-4 p-2 rounded-md bg-blue-pale text-blue hover:bg-blue hover:text-white transition-all opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue"
               data-copy={`${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}
               aria-label="Copiar dirección"
-              title="Copiar al portapapeles"
             >
               <svg class="w-4 h-4 copy-icon"><use href="#icon-copy" /></svg>
               <svg class="w-4 h-4 check-icon hidden text-green-600"><use href="#icon-check" /></svg>
@@ -85,7 +85,6 @@ import { CONFIG } from '../data/config';
                 class="copy-btn absolute top-4 right-4 p-2 rounded-md bg-blue-pale text-blue hover:bg-blue hover:text-white transition-all opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue"
                 data-copy={CONFIG.contacto.email}
                 aria-label="Copiar correo electrónico"
-                title="Copiar al portapapeles"
               >
                 <svg class="w-4 h-4 copy-icon"><use href="#icon-copy" /></svg>
                 <svg class="w-4 h-4 check-icon hidden text-green-600"><use href="#icon-check" /></svg>
@@ -106,10 +105,15 @@ import { CONFIG } from '../data/config';
               <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.horario}</div>
             </div>
           </div>
+
         </div>
       </div>
 
       <!-- Right Column (Form) -->
+        </div>
+      </div>
+
+      <!-- Right Column: Form -->
       <div>
         <div class="bg-navy rounded-card p-8 md:p-11 shadow-hero-card">
           <h3 class="font-heading font-bold text-[24px] text-white mb-6">Envíenos su consulta</h3>
@@ -132,6 +136,7 @@ import { CONFIG } from '../data/config';
                   <option value="Revisión de placa electrónica" class="bg-navy text-white">Revisión de placa electrónica</option>
                 </select>
                 <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
               </div>
@@ -144,11 +149,18 @@ import { CONFIG } from '../data/config';
               </div>
               <textarea id="f-desc" name="descripcion" rows="3" maxlength="1000" aria-describedby="char-counter" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full resize-none"></textarea>
             </div>
+            <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 shadow-sm mt-2 active:scale-[0.98]">
+              Enviar por WhatsApp
+            </button>
 
             <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 shadow-sm mt-2 active:scale-[0.98]">
               Enviar por WhatsApp
             </button>
             <p class="font-body text-[12px] text-white/40 text-center mt-2">Será redirigido a WhatsApp para enviar el mensaje.</p>
+
+            <p class="font-body text-[12px] text-white/40 text-center mt-2">
+              Será redirigido a WhatsApp para enviar el mensaje.
+            </p>
           </form>
         </div>
       </div>
@@ -164,12 +176,22 @@ import { CONFIG } from '../data/config';
       const btn = document.getElementById('f-submit');
       const textarea = document.getElementById('f-desc');
       const charCounter = document.getElementById('char-counter');
+
+      // Click to Copy Logic
+      document.querySelectorAll('.copy-btn').forEach(button => {
       const copyBtns = document.querySelectorAll('.copy-btn');
 
       // Click to Copy Logic
       copyBtns.forEach(button => {
         let isSuccess = false;
+        button.addEventListener('click', async (e) => {
+          e.preventDefault();
+          if (isSuccess) return;
 
+
+      // Click to Copy Logic
+      document.querySelectorAll('.copy-btn').forEach(button => {
+        let isSuccess = false;
         button.addEventListener('click', async (e) => {
           e.preventDefault();
           if (isSuccess) return;
@@ -186,17 +208,111 @@ import { CONFIG } from '../data/config';
             const btnText = button.querySelector('.btn-text');
             const originalAriaLabel = button.getAttribute('aria-label');
 
+
+            const originalText = btnText ? btnText.textContent : 'Copiar';
+            const originalAriaLabel = button.getAttribute('aria-label');
+
+            const originalLabel = button.getAttribute('aria-label');
+            const originalAriaLabel = button.getAttribute('aria-label');
+
+            if (copyIcon && checkIcon) {
+              copyIcon.classList.add('hidden');
+              checkIcon.classList.remove('hidden');
+              button.classList.add('scale-105');
+
+              if (btnText && btnText.textContent !== 'Copiar') {
+                const originalText = btnText.textContent;
+                btnText.textContent = '¡Copiado!';
+                btnText.classList.add('text-green-600');
+
+                setTimeout(() => {
+                  btnText.textContent = originalText;
+                  btnText.classList.remove('text-green-600');
+                }, 2000);
+              }
+
+              button.setAttribute('aria-label', 'Información copiada al portapapeles');
+
+              setTimeout(() => {
+                copyIcon.classList.remove('hidden');
+                checkIcon.classList.add('hidden');
+                button.classList.remove('scale-105');
+                button.setAttribute('aria-label', originalAriaLabel || '');
+                isSuccess = false;
+              }, 2000);
+            }
+            if (copyIcon) copyIcon.classList.add('hidden');
+            if (checkIcon) checkIcon.classList.remove('hidden');
+            button.classList.add('scale-105');
+
+
+            if (copyIcon && checkIcon && btnText) {
+              const originalText = btnText.textContent;
+              const originalLabel = button.getAttribute('aria-label');
+
+              copyIcon.classList.add('hidden');
+              checkIcon.classList.remove('hidden');
+              btnText.textContent = '¡Copiado!';
+              btnText.classList.add('text-green-600');
+              button.setAttribute('aria-label', '¡Información copiada!');
+
+              setTimeout(() => {
+                copyIcon.classList.remove('hidden');
+                checkIcon.classList.add('hidden');
+                btnText.textContent = originalText;
+                btnText.classList.remove('text-green-600');
+                button.setAttribute('aria-label', originalLabel || '');
+                isSuccess = false;
+              }, 2000);
+            }
+            const originalAriaLabel = button.getAttribute('aria-label');
+
             copyIcon?.classList.add('hidden');
             checkIcon?.classList.remove('hidden');
             button.classList.add('scale-105');
 
+            const originalText = btnText ? btnText.textContent : 'Copiar';
+            const originalAriaLabel = button.getAttribute('aria-label');
+
+            if (copyIcon) copyIcon.classList.add('hidden');
+            if (checkIcon) checkIcon.classList.remove('hidden');
             if (btnText) {
+              const originalText = btnText.textContent;
               btnText.textContent = '¡Copiado!';
               btnText.classList.add('text-green-600');
+
+              setTimeout(() => {
+                copyIcon?.classList.remove('hidden');
+                checkIcon?.classList.add('hidden');
+                button.classList.remove('scale-105');
+                btnText.textContent = originalText;
+                btnText.classList.remove('text-green-600');
+                button.setAttribute('aria-label', originalAriaLabel || '');
+                isSuccess = false;
+              }, 2000);
+            } else {
+               setTimeout(() => {
+                copyIcon?.classList.remove('hidden');
+                checkIcon?.classList.add('hidden');
+                button.classList.remove('scale-105');
+                isSuccess = false;
+              }, 2000);
             }
+            button.setAttribute('aria-label', 'Información copiada');
+
+            button.classList.add('scale-105');
             button.setAttribute('aria-label', 'Información copiada al portapapeles');
+            button.setAttribute('aria-label', 'Información copiada');
+            }
+            button.setAttribute('aria-label', 'Información copiada');
 
             setTimeout(() => {
+              copyIcon?.classList.remove('hidden');
+              checkIcon?.classList.add('hidden');
+              button.classList.remove('scale-105');
+              if (copyIcon) copyIcon.classList.remove('hidden');
+              if (checkIcon) checkIcon.classList.add('hidden');
+              button.classList.remove('scale-105');
               copyIcon?.classList.remove('hidden');
               checkIcon?.classList.add('hidden');
               button.classList.remove('scale-105');
@@ -204,6 +320,19 @@ import { CONFIG } from '../data/config';
                 btnText.textContent = 'Copiar';
                 btnText.classList.remove('text-green-600');
               }
+              button.classList.remove('scale-105');
+              button.setAttribute('aria-label', originalLabel || '');
+            button.classList.add('scale-105');
+            button.setAttribute('aria-label', 'Información copiada al portapapeles');
+
+            setTimeout(() => {
+              if (copyIcon) copyIcon.classList.remove('hidden');
+              if (checkIcon) checkIcon.classList.add('hidden');
+              if (btnText) {
+                btnText.textContent = 'Copiar';
+                btnText.classList.remove('text-green-600');
+              }
+              button.classList.remove('scale-105');
               button.setAttribute('aria-label', originalAriaLabel || '');
               isSuccess = false;
             }, 2000);
@@ -217,6 +346,15 @@ import { CONFIG } from '../data/config';
       if (textarea && charCounter) {
         textarea.addEventListener('input', () => {
           const count = textarea.value.length;
+      // Character counter logic
+      if (textarea && charCounter) {
+        textarea.addEventListener('input', () => {
+          const count = textarea.value.length;
+          charCounter.textContent = count + ' / 1000';
+      // Character counter
+      if (textarea instanceof HTMLTextAreaElement && charCounter) {
+        textarea.addEventListener('input', () => {
+          const count = textarea.value.length;
           charCounter.textContent = `${count} / 1000`;
           charCounter.classList.toggle('text-blue-light', count >= 900);
           charCounter.classList.toggle('text-white/40', count < 900);
@@ -224,7 +362,7 @@ import { CONFIG } from '../data/config';
       }
 
       // Form submission
-      if (form && btn) {
+      if (form instanceof HTMLFormElement && btn instanceof HTMLButtonElement) {
         form.addEventListener('submit', (e) => {
           e.preventDefault();
 
@@ -233,17 +371,26 @@ import { CONFIG } from '../data/config';
           btn.disabled = true;
           btn.classList.add('opacity-70', 'cursor-not-allowed');
 
+          const nombre = document.getElementById('f-nombre').value.trim() || 'No especificado';
+          const tel = document.getElementById('f-tel').value.trim() || 'No especificado';
+          const servicioEl = document.getElementById('f-servicio');
+          const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+          const desc = textarea ? textarea.value.trim() : 'Sin detalles adicionales';
           const nombreEl = document.getElementById('f-nombre');
           const telEl = document.getElementById('f-tel');
           const servicioEl = document.getElementById('f-servicio');
 
+          const nombre = nombreEl ? nombreEl.value.trim() : 'No especificado';
+          const tel = telEl ? telEl.value.trim() : 'No especificado';
+          const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+          const desc = textarea ? textarea.value.trim() : 'Sin detalles adicionales';
           const nombre = (nombreEl instanceof HTMLInputElement) ? nombreEl.value.trim() : 'No especificado';
           const tel = (telEl instanceof HTMLInputElement) ? telEl.value.trim() : 'No especificado';
           const servicio = (servicioEl instanceof HTMLSelectElement) ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
           const desc = (textarea instanceof HTMLTextAreaElement) ? textarea.value.trim() : 'Sin detalles adicionales';
 
-          const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
-          const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(rawMessage)}`;
+          const rawMessage = "Hola TechHealth! Me comunico desde su web.\n*Nombre:* " + nombre + "\n*Teléfono:* " + tel + "\n*Servicio:* " + servicio + "\n*Detalle:* " + desc;
+          const url = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(rawMessage);
 
           window.open(url, '_blank', 'noopener,noreferrer');
 
