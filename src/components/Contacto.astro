@@ -14,6 +14,8 @@ import { CONFIG } from '../data/config';
 
         <div class="flex flex-col gap-6">
           
+          <!-- WhatsApp -->
+          <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border relative">
           <!-- WhatsApp / Phone -->
           <div class="group flex items-center justify-between p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border relative">
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="flex items-start gap-4 flex-grow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-lg" aria-label="Abrir chat de WhatsApp">
@@ -106,6 +108,11 @@ import { CONFIG } from '../data/config';
               <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.horario}</div>
             </div>
           </div>
+
+        </div>
+      </div>
+
+      <!-- Right Column (Form) -->
         </div>
       </div>
 
@@ -131,6 +138,7 @@ import { CONFIG } from '../data/config';
                   <option value="Reparación / Mantenimiento correctivo" class="bg-navy text-white">Reparación / Mantenimiento correctivo</option>
                   <option value="Revisión de placa electrónica" class="bg-navy text-white">Revisión de placa electrónica</option>
                 </select>
+                <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                 <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
@@ -147,6 +155,11 @@ import { CONFIG } from '../data/config';
             <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 shadow-sm mt-2 active:scale-[0.98]">
               Enviar por WhatsApp
             </button>
+
+            <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 shadow-sm mt-2 active:scale-[0.98]">
+              Enviar por WhatsApp
+            </button>
+
             <p class="font-body text-[12px] text-white/40 text-center mt-2">
               Será redirigido a WhatsApp para enviar el mensaje.
             </p>
@@ -168,8 +181,19 @@ import { CONFIG } from '../data/config';
 
       // Click to Copy Logic
       document.querySelectorAll('.copy-btn').forEach(button => {
-        let isSuccess = false;
+      const copyBtns = document.querySelectorAll('.copy-btn');
 
+      // Click to Copy Logic
+      copyBtns.forEach(button => {
+        let isSuccess = false;
+        button.addEventListener('click', async (e) => {
+          e.preventDefault();
+          if (isSuccess) return;
+
+
+      // Click to Copy Logic
+      document.querySelectorAll('.copy-btn').forEach(button => {
+        let isSuccess = false;
         button.addEventListener('click', async (e) => {
           e.preventDefault();
           if (isSuccess) return;
@@ -212,6 +236,92 @@ import { CONFIG } from '../data/config';
                 isSuccess = false;
               }, 2000);
             }
+            if (copyIcon) copyIcon.classList.add('hidden');
+            if (checkIcon) checkIcon.classList.remove('hidden');
+            button.classList.add('scale-105');
+
+
+            if (copyIcon && checkIcon && btnText) {
+              const originalText = btnText.textContent;
+              const originalLabel = button.getAttribute('aria-label');
+
+              copyIcon.classList.add('hidden');
+              checkIcon.classList.remove('hidden');
+              btnText.textContent = '¡Copiado!';
+              btnText.classList.add('text-green-600');
+              button.setAttribute('aria-label', '¡Información copiada!');
+
+              setTimeout(() => {
+                copyIcon.classList.remove('hidden');
+                checkIcon.classList.add('hidden');
+                btnText.textContent = originalText;
+                btnText.classList.remove('text-green-600');
+                button.setAttribute('aria-label', originalLabel || '');
+                isSuccess = false;
+              }, 2000);
+            }
+            const originalAriaLabel = button.getAttribute('aria-label');
+
+            copyIcon?.classList.add('hidden');
+            checkIcon?.classList.remove('hidden');
+            button.classList.add('scale-105');
+
+            const originalText = btnText ? btnText.textContent : 'Copiar';
+            const originalAriaLabel = button.getAttribute('aria-label');
+
+            if (copyIcon) copyIcon.classList.add('hidden');
+            if (checkIcon) checkIcon.classList.remove('hidden');
+            if (btnText) {
+              const originalText = btnText.textContent;
+              btnText.textContent = '¡Copiado!';
+              btnText.classList.add('text-green-600');
+
+              setTimeout(() => {
+                copyIcon?.classList.remove('hidden');
+                checkIcon?.classList.add('hidden');
+                button.classList.remove('scale-105');
+                btnText.textContent = originalText;
+                btnText.classList.remove('text-green-600');
+                button.setAttribute('aria-label', originalAriaLabel || '');
+                isSuccess = false;
+              }, 2000);
+            } else {
+               setTimeout(() => {
+                copyIcon?.classList.remove('hidden');
+                checkIcon?.classList.add('hidden');
+                button.classList.remove('scale-105');
+                isSuccess = false;
+              }, 2000);
+            }
+            button.setAttribute('aria-label', 'Información copiada');
+            }
+            button.setAttribute('aria-label', 'Información copiada');
+
+            setTimeout(() => {
+              if (copyIcon) copyIcon.classList.remove('hidden');
+              if (checkIcon) checkIcon.classList.add('hidden');
+              button.classList.remove('scale-105');
+              copyIcon?.classList.remove('hidden');
+              checkIcon?.classList.add('hidden');
+              button.classList.remove('scale-105');
+              if (btnText) {
+                btnText.textContent = 'Copiar';
+                btnText.classList.remove('text-green-600');
+              }
+            button.classList.add('scale-105');
+            button.setAttribute('aria-label', 'Información copiada al portapapeles');
+
+            setTimeout(() => {
+              if (copyIcon) copyIcon.classList.remove('hidden');
+              if (checkIcon) checkIcon.classList.add('hidden');
+              if (btnText) {
+                btnText.textContent = 'Copiar';
+                btnText.classList.remove('text-green-600');
+              }
+              button.classList.remove('scale-105');
+              button.setAttribute('aria-label', originalAriaLabel || '');
+              isSuccess = false;
+            }, 2000);
           } catch (err) {
             console.error('Error al copiar:', err);
           }
@@ -219,7 +329,7 @@ import { CONFIG } from '../data/config';
       });
 
       // Character counter
-      if (textarea && charCounter) {
+      if (textarea instanceof HTMLTextAreaElement && charCounter) {
         textarea.addEventListener('input', () => {
           const count = textarea.value.length;
           charCounter.textContent = `${count} / 1000`;
@@ -229,7 +339,7 @@ import { CONFIG } from '../data/config';
       }
 
       // Form submission
-      if (form && btn) {
+      if (form instanceof HTMLFormElement && btn instanceof HTMLButtonElement) {
         form.addEventListener('submit', (e) => {
           e.preventDefault();
 
@@ -238,6 +348,11 @@ import { CONFIG } from '../data/config';
           btn.disabled = true;
           btn.classList.add('opacity-70', 'cursor-not-allowed');
 
+          const nombre = document.getElementById('f-nombre').value.trim() || 'No especificado';
+          const tel = document.getElementById('f-tel').value.trim() || 'No especificado';
+          const servicioEl = document.getElementById('f-servicio');
+          const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+          const desc = textarea ? textarea.value.trim() : 'Sin detalles adicionales';
           const nombreEl = document.getElementById('f-nombre');
           const telEl = document.getElementById('f-tel');
           const servicioEl = document.getElementById('f-servicio');
