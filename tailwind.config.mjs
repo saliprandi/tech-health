@@ -41,6 +41,16 @@ export default {
       borderRadius: {
         card: '20px',
         small: '12px',
+      },
+      keyframes: {
+        'cta-pulse': {
+          '0%': { transform: 'scale(1)', 'box-shadow': '0 0 0 0 rgba(37, 211, 102, 0.7)' },
+          '70%': { transform: 'scale(1.05)', 'box-shadow': '0 0 0 15px rgba(37, 211, 102, 0)' },
+          '100%': { transform: 'scale(1)', 'box-shadow': '0 0 0 0 rgba(37, 211, 102, 0)' },
+        }
+      },
+      animation: {
+        'cta-pulse': 'cta-pulse 2s infinite cubic-bezier(0.66, 0, 0, 1)',
       }
     },
   },
