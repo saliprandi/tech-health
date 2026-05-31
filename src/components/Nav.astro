@@ -12,6 +12,9 @@ const navItems = [
 <nav id="main-nav" class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
+    <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE
+         This logo serves as a branding element and an interactive 'Back to top' link. -->
+    <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label="Inicio de TechHealth">
     <!-- Logo -->
     <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE
          This is the primary branding and navigation element to the home page. -->
@@ -154,6 +157,7 @@ const navItems = [
       menu?.classList.toggle('opacity-0', !isOpen);
       menu?.classList.toggle('pointer-events-none', !isOpen);
       menu?.classList.toggle('translate-y-[-10px]', !isOpen);
+
       menu?.classList.toggle('opacity-100', isOpen);
       menu?.classList.toggle('pointer-events-auto', isOpen);
       menu?.classList.toggle('translate-y-0', isOpen);
@@ -189,6 +193,14 @@ const navItems = [
         }
       }
 
+      if (isOpen) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
+    };
+
+    toggle?.addEventListener('click', toggleMenu);
       if (!isOpen) (toggle as HTMLElement)?.focus();
     };
 
@@ -214,6 +226,11 @@ const navItems = [
       });
     });
 
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+        toggle?.focus();
     // ScrollSpy Implementation
     // Close on Escape key
     document.addEventListener('keydown', (e) => {
@@ -239,6 +256,10 @@ const navItems = [
         (toggle as HTMLElement)?.focus();
         return;
       }
+
+    // Focus Trap for Mobile Menu
+    document.addEventListener('keydown', (e) => {
+      if (!isOpen) return;
 
     // Focus trapping
     document.addEventListener('keydown', (e) => {
@@ -372,6 +393,7 @@ const navItems = [
       threshold: 0
     };
 
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
     const observer = new IntersectionObserver((entries) => {
     const observerCallback = (entries) => {
       entries.forEach(entry => {
@@ -396,6 +418,16 @@ const navItems = [
           });
         }
       });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
+      const section = document.getElementById(id);
+      if (section) observer.observe(section);
+    });
+
+    // Reset ScrollSpy when clicking logo/home
+    document.querySelector('a[aria-label="Inicio de TechHealth"]')?.addEventListener('click', () => {
     }, observerOptions);
 
     const sections = document.querySelectorAll('section[id]');
