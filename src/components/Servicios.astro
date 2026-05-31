@@ -33,6 +33,7 @@ const modalData = CONFIG.servicios.map(s => ({
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
         <div
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 overflow-hidden"
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer overflow-hidden"
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer overflow-hidden"
           data-index={index}
@@ -112,6 +113,15 @@ const modalData = CONFIG.servicios.map(s => ({
 <script is:inline define:vars={{ modalData }}>
   (function() {
     const services = modalData;
+    let isModalOpen = false;
+    let triggerElement = null;
+
+    const backdrop = document.getElementById('service-modal-backdrop');
+    const modal = document.getElementById('service-modal');
+    const modalContent = document.getElementById('modal-content');
+    const closeBtn = document.getElementById('close-modal');
+    const cards = document.querySelectorAll('.service-card');
+
     
 <script is:inline define:vars={{ services: modalData }}>
   (function() {
@@ -129,6 +139,9 @@ const modalData = CONFIG.servicios.map(s => ({
       return unsafe.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#039;"}[m]));
     };
 
+    const openModal = (index, element) => {
+      const servicio = services[index];
+      if (!servicio) return;
     document.addEventListener('DOMContentLoaded', () => {
       const cards = document.querySelectorAll('.service-card');
       const backdrop = document.getElementById('service-modal-backdrop');
@@ -224,6 +237,8 @@ const modalData = CONFIG.servicios.map(s => ({
 
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
+          <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
+            <use href="#icon-${escapeHtml(servicio.icono)}" />
           <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
           <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
             <use href="#icon-${escapeHtml(s.icono)}" />
@@ -254,6 +269,7 @@ const modalData = CONFIG.servicios.map(s => ({
       document.body.style.overflow = 'hidden';
       isModalOpen = true;
 
+      setTimeout(() => closeBtn?.focus(), 50);
       setTimeout(() => {
         if (closeBtn) closeBtn.focus();
       }, 50);
@@ -305,12 +321,13 @@ const modalData = CONFIG.servicios.map(s => ({
       }
 
       setTimeout(() => {
-        if (!isModalOpen && modalContent) modalContent.innerHTML = '';
+        if (!isModalOpen) modalContent.innerHTML = '';
       }, 400);
     };
 
     cards.forEach(card => {
       const index = card.getAttribute('data-index');
+      card.addEventListener('click', () => openModal(parseInt(index), card));
       const handleOpen = () => openModal(parseInt(index || '0'), card);
       setTimeout(() => { if (!isModalOpen && modalContent) modalContent.innerHTML = ''; }, 400);
     };
@@ -336,6 +353,16 @@ const modalData = CONFIG.servicios.map(s => ({
       });
     });
 
+    backdrop?.addEventListener('click', closeModal);
+    closeBtn?.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', (e) => {
+      if (!isModalOpen) return;
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'Tab') {
+        const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
       backdrop?.addEventListener('click', closeModal);
       closeBtn?.addEventListener('click', closeModal);
 
