@@ -114,6 +114,7 @@ const navItems = [
     <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Equipos</a>
     <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Nosotros</a>
     <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">Contacto</a>
+    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="whatsapp-mobile-link mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
     <a id="whatsapp-mobile-link" href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
     {['servicios', 'equipos', 'nosotros', 'contacto'].map(id => (
       <a href={`#${id}`} class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors capitalize">
@@ -157,6 +158,7 @@ const navItems = [
     let isOpen = false;
 
     const spans = toggle?.querySelectorAll('span');
+    const whatsappMobileLink = menu?.querySelector('.whatsapp-mobile-link') as HTMLElement;
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
 
     let isOpen = false;
@@ -298,15 +300,33 @@ const navItems = [
       });
     });
 
+    // Keyboard handling: Focus trapping & Escape key
     const sections = ['servicios', 'equipos', 'nosotros', 'contacto'];
     const sectionElements = sections.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
     // Keyboard handling: Escape key and Focus Trap
     // Keyboard handling: Focus trapping & Escape key
     // Close on Escape key
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (!isOpen) return;
+
+      if (e.key === 'Escape') {
         toggleMenu();
         toggle?.focus();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        if (e.shiftKey) { // Shift + Tab
+          if (document.activeElement === toggle) {
+            e.preventDefault();
+            whatsappMobileLink?.focus();
+          }
+        } else { // Tab
+          if (document.activeElement === whatsappMobileLink) {
+            e.preventDefault();
+            toggle?.focus();
+          }
+        }
     // ScrollSpy Implementation
     // Close on Escape key
     document.addEventListener('keydown', (e) => {
@@ -516,6 +536,11 @@ const navItems = [
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
+    ['servicios', 'equipos', 'nosotros', 'contacto'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
     sectionElements.forEach(section => observer.observe(section));
 
     document.querySelector('a[aria-label="Inicio de TechHealth"]')?.addEventListener('click', () => {
