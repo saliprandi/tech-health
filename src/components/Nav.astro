@@ -62,6 +62,10 @@ const navItems = [
         Consultar por WhatsApp
       </a>
 
+      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-sm transition-shadow z-[101]" aria-label="Menú" aria-expanded="false" aria-controls="mobile-menu">
+        <span class="block w-6 h-0.5 bg-navy transition-transform duration-300 origin-center"></span>
+        <span class="block w-6 h-0.5 bg-navy transition-opacity duration-300"></span>
+        <span class="block w-6 h-0.5 bg-navy transition-transform duration-300 origin-center"></span>
       <!-- Mobile Menu Toggle -->
       <!-- Hamburger Button -->
       <!-- Mobile Menu Toggle -->
@@ -111,6 +115,8 @@ const navItems = [
     const backdrop = document.getElementById('mobile-menu-backdrop');
     const navLinks = document.querySelectorAll('.nav-link');
     const mobileLinks = document.querySelectorAll('.mobile-link');
+    const spans = toggle?.querySelectorAll('span');
+    const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const spans = toggle?.querySelectorAll('span');
     let isOpen = false;
@@ -160,6 +166,7 @@ const navItems = [
     };
 
     toggle?.addEventListener('click', toggleMenu);
+    mobileLinks.forEach(link => link.addEventListener('click', () => isOpen && toggleMenu()));
     toggle?.addEventListener('click', (e) => {
       e.stopPropagation();
       toggleMenu();
@@ -189,7 +196,7 @@ const navItems = [
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && isOpen) {
         toggleMenu();
-        toggle?.focus();
+        (toggle as HTMLElement)?.focus();
         return;
       }
 
@@ -332,6 +339,15 @@ const navItems = [
 
     const sections = document.querySelectorAll('section[id]');
     sections.forEach(section => observer.observe(section));
+
+    // Reset ScrollSpy when clicking logo
+    document.querySelector('a[aria-label^="Inicio de"]')?.addEventListener('click', () => {
+      navLinks.forEach(link => {
+        link.classList.remove('nav-link-active');
+        link.removeAttribute('aria-current');
+      });
+    });
+  });
 
     // Reset ScrollSpy when clicking logo
     document.querySelector('a[aria-label^="Inicio de"]')?.addEventListener('click', () => {

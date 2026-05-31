@@ -48,6 +48,8 @@ const modalData = CONFIG.servicios.map(s => ({
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-500 ease-out"></div>
           
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
+            <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
+              <use href={getIconId(servicio.icono)} />
             <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale text-blue flex items-center justify-center mb-6">
@@ -108,6 +110,7 @@ const modalData = CONFIG.servicios.map(s => ({
 <script is:inline define:vars={{ modalData }}>
   (function() {
     const services = modalData;
+    
 <script is:inline define:vars={{ services: modalData }}>
   (function() {
     const cards = document.querySelectorAll('.service-card');
@@ -115,6 +118,7 @@ const modalData = CONFIG.servicios.map(s => ({
     const modal = document.getElementById('service-modal');
     const modalContent = document.getElementById('modal-content');
     const closeBtn = document.getElementById('close-modal');
+
     let isModalOpen = false;
     let triggerElement = null;
 
@@ -124,6 +128,37 @@ const modalData = CONFIG.servicios.map(s => ({
     };
 
     const openModal = (index, element) => {
+      const servicio = services[index];
+      if (!servicio) return;
+
+      triggerElement = element;
+      triggerElement?.setAttribute('aria-expanded', 'true');
+
+      if (modalContent) {
+        modalContent.innerHTML = `
+          <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
+            <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
+              <use href="#icon-` + escapeHtml(servicio.icono) + `" />
+            </svg>
+          </div>
+          <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">` + escapeHtml(servicio.titulo) + `</h3>
+          <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">` + escapeHtml(servicio.descripcion) + `</p>
+
+          <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
+          <ul class="flex flex-col gap-4">
+            ` + servicio.items.map(item => `
+              <li class="flex items-start gap-4 font-body text-[15px] text-text-soft">
+                <span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>
+                ` + escapeHtml(item) + `
+              </li>
+            `).join('') + `
+          </ul>
+        `;
+      }
+
+      backdrop?.classList.remove('opacity-0', 'pointer-events-none');
+      modal?.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+      modal?.classList.add('scale-100');
       const s = services[index];
       if (!s || !modalContent || !backdrop || !modal) return;
 
@@ -164,6 +199,14 @@ const modalData = CONFIG.servicios.map(s => ({
 
       setTimeout(() => {
         if (closeBtn) closeBtn.focus();
+      }, 50);
+    };
+
+    const closeModal = () => {
+      if (!isModalOpen) return;
+      
+      backdrop?.classList.add('opacity-0', 'pointer-events-none');
+      modal?.classList.remove('scale-100');
       }, 100);
     };
 
@@ -204,6 +247,14 @@ const modalData = CONFIG.servicios.map(s => ({
         triggerElement = null;
       }
 
+      setTimeout(() => {
+        if (!isModalOpen && modalContent) modalContent.innerHTML = '';
+      }, 400);
+    };
+
+    cards.forEach(card => {
+      const index = card.getAttribute('data-index');
+      const handleOpen = () => openModal(parseInt(index || '0'), card);
       setTimeout(() => { if (!isModalOpen && modalContent) modalContent.innerHTML = ''; }, 400);
     };
 
@@ -228,6 +279,11 @@ const modalData = CONFIG.servicios.map(s => ({
       });
     });
 
+    backdrop?.addEventListener('click', closeModal);
+    closeBtn?.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', (e) => {
+      if (!isModalOpen) return;
     if (backdrop) backdrop.addEventListener('click', closeModal);
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
       card.addEventListener('click', () => openModal(index, card));
@@ -248,6 +304,22 @@ const modalData = CONFIG.servicios.map(s => ({
         closeModal();
         return;
       }
+      if (e.key === 'Tab') {
+        const focusableElements = modal?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (!focusableElements || focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
 
       if (e.key === 'Escape') closeModal();
       if (e.key === 'Tab') {
