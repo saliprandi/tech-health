@@ -151,6 +151,8 @@ const modalData = CONFIG.servicios.map(s => ({
       isModalOpen = true;
 
       setTimeout(() => {
+        if (closeBtn) closeBtn.focus();
+      }, 50);
         closeBtn?.focus();
       setTimeout(() => { if (closeBtn) closeBtn.focus(); }, 100);
     };
@@ -237,6 +239,16 @@ const modalData = CONFIG.servicios.map(s => ({
         if (e.shiftKey && document.activeElement === first) { e.preventDefault(); if (last instanceof HTMLElement) last.focus(); }
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); if (first instanceof HTMLElement) first.focus(); }
 
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            if (last instanceof HTMLElement) last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            if (first instanceof HTMLElement) first.focus();
+          }
         if (e.shiftKey && document.activeElement === first) {
           e.preventDefault();
           last.focus();

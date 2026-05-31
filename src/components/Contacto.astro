@@ -206,6 +206,8 @@ import { CONFIG } from '../data/config';
             const copyIcon = button.querySelector('.copy-icon');
             const checkIcon = button.querySelector('.check-icon');
             const btnText = button.querySelector('.btn-text');
+            const originalAriaLabel = button.getAttribute('aria-label');
+
 
             const originalText = btnText ? btnText.textContent : 'Copiar';
             const originalAriaLabel = button.getAttribute('aria-label');
@@ -305,6 +307,9 @@ import { CONFIG } from '../data/config';
             button.setAttribute('aria-label', 'Información copiada');
 
             setTimeout(() => {
+              copyIcon?.classList.remove('hidden');
+              checkIcon?.classList.add('hidden');
+              button.classList.remove('scale-105');
               if (copyIcon) copyIcon.classList.remove('hidden');
               if (checkIcon) checkIcon.classList.add('hidden');
               button.classList.remove('scale-105');
@@ -337,6 +342,10 @@ import { CONFIG } from '../data/config';
         });
       });
 
+      // Character counter
+      if (textarea && charCounter) {
+        textarea.addEventListener('input', () => {
+          const count = textarea.value.length;
       // Character counter logic
       if (textarea && charCounter) {
         textarea.addEventListener('input', () => {
