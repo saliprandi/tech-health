@@ -189,6 +189,7 @@ const modalData = CONFIG.servicios.map(s => ({
           `;
         }
       triggerElement = element;
+      triggerElement.setAttribute('aria-expanded', 'true');
       triggerElement?.setAttribute('aria-expanded', 'true');
 
       if (modalContent) {
@@ -340,6 +341,7 @@ const modalData = CONFIG.servicios.map(s => ({
       }, 100);
     };
 
+      // Restore focus and ARIA state
     const closeModal = () => {
       if (!isModalOpen) return;
 
