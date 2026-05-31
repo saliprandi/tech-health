@@ -12,6 +12,8 @@ const navItems = [
 <nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
+    <!-- Logo -->
+    <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
     <!-- BRAND LOGO -->
     <a href="#hero" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
       <img src="/logo-name.svg" alt={`${CONFIG.empresa.nombre} ${CONFIG.empresa.subtitulo}`} width="228" height="56" class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-300" fetchpriority="high" decoding="async" />
@@ -40,6 +42,11 @@ const navItems = [
 
     <div class="flex items-center gap-4">
       <!-- Desktop WhatsApp CTA -->
+      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors shadow-sm hover:shadow-md animate-cta-pulse">
+        Consultar por WhatsApp
+      </a>
+
+      <!-- Hamburger Button -->
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors shadow-sm hover:shadow-md animate-cta-pulse">
         Consultar por WhatsApp
       </a>

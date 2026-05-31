@@ -112,7 +112,6 @@ import { CONFIG } from '../data/config';
       </div>
 
       <!-- Right Column: Form -->
-      <!-- Right Column (Form) -->
       <div>
         <div class="bg-navy rounded-card p-8 md:p-11 shadow-hero-card">
           <h3 class="font-heading font-bold text-[24px] text-white mb-6">Envíenos su consulta</h3>
@@ -141,6 +140,7 @@ import { CONFIG } from '../data/config';
               </div>
             </div>
 
+            <div class="flex flex-col gap-1.5 mb-2">
             <div class="flex flex-col gap-1.5">
               <div class="flex justify-between items-center">
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
@@ -152,6 +152,10 @@ import { CONFIG } from '../data/config';
             <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 shadow-sm mt-2 active:scale-[0.98]">
               Enviar por WhatsApp
             </button>
+
+            <p class="font-body text-[12px] text-white/40 text-center mt-2">
+              Será redirigido a WhatsApp para enviar el mensaje.
+            </p>
             <p class="font-body text-[12px] text-white/40 text-center mt-2">Será redirigido a WhatsApp para enviar el mensaje.</p>
           </form>
         </div>
@@ -168,6 +172,10 @@ import { CONFIG } from '../data/config';
       const btn = document.getElementById('f-submit');
       const textarea = document.getElementById('f-desc');
       const charCounter = document.getElementById('char-counter');
+      const copyBtns = document.querySelectorAll('.copy-btn');
+
+      // Click to Copy Logic
+      copyBtns.forEach(button => {
 
       // Click to Copy Logic
       document.querySelectorAll('.copy-btn').forEach(button => {
@@ -186,6 +194,26 @@ import { CONFIG } from '../data/config';
             const copyIcon = button.querySelector('.copy-icon');
             const checkIcon = button.querySelector('.check-icon');
             const btnText = button.querySelector('.btn-text');
+
+            if (copyIcon && checkIcon && btnText) {
+              const originalText = btnText.textContent;
+              const originalLabel = button.getAttribute('aria-label');
+
+              copyIcon.classList.add('hidden');
+              checkIcon.classList.remove('hidden');
+              btnText.textContent = '¡Copiado!';
+              btnText.classList.add('text-green-600');
+              button.setAttribute('aria-label', '¡Información copiada!');
+
+              setTimeout(() => {
+                copyIcon.classList.remove('hidden');
+                checkIcon.classList.add('hidden');
+                btnText.textContent = originalText;
+                btnText.classList.remove('text-green-600');
+                button.setAttribute('aria-label', originalLabel || '');
+                isSuccess = false;
+              }, 2000);
+            }
             const originalAriaLabel = button.getAttribute('aria-label');
 
             copyIcon?.classList.add('hidden');
@@ -232,7 +260,7 @@ import { CONFIG } from '../data/config';
       });
 
       // Character counter
-      if (textarea && charCounter) {
+      if (textarea instanceof HTMLTextAreaElement && charCounter) {
         textarea.addEventListener('input', () => {
           const count = textarea.value.length;
           charCounter.textContent = `${count} / 1000`;
@@ -242,7 +270,7 @@ import { CONFIG } from '../data/config';
       }
 
       // Form submission
-      if (form && btn) {
+      if (form instanceof HTMLFormElement && btn instanceof HTMLButtonElement) {
         form.addEventListener('submit', (e) => {
           e.preventDefault();
 
