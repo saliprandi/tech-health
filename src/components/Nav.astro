@@ -14,6 +14,12 @@ const navItems = [
     
     <!-- Brand Logo -->
     <a href="#hero" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
+    <!-- Logo -->
+    <a href="#hero" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
+    <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
+    <!-- BRAND LOGO -->
+    <a href="#hero" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
+      <img src="/logo-name.svg" alt={`${CONFIG.empresa.nombre} ${CONFIG.empresa.subtitulo}`} width="228" height="56" class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-300" fetchpriority="high" decoding="async" />
       <img
         src="/logo-name.svg"
         alt={`${CONFIG.empresa.nombre} ${CONFIG.empresa.subtitulo}`}
@@ -29,6 +35,8 @@ const navItems = [
     <ul class="hidden md:flex items-center gap-8">
       {navItems.map(item => (
         <li>
+          <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5 transition-colors">
+          <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors px-1 py-0.5">
           <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">
             {item.label}
           </a>
@@ -38,11 +46,20 @@ const navItems = [
 
     <div class="flex items-center gap-4">
       <!-- Desktop WhatsApp CTA -->
+      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors shadow-sm hover:shadow-md animate-cta-pulse">
+        Consultar por WhatsApp
+      </a>
+
+      <!-- Mobile Menu Toggle -->
+      <!-- Hamburger Button -->
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors shadow-sm hover:shadow-md animate-cta-pulse">
         Consultar por WhatsApp
       </a>
 
       <!-- Mobile Menu Toggle -->
+      <!-- Hamburger Button -->
+      <!-- Mobile Menu Toggle -->
+      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-sm transition-shadow z-[101]" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
       <button
         id="menu-toggle"
         class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-sm transition-shadow z-[101]"
@@ -64,6 +81,7 @@ const navItems = [
   <div id="mobile-menu" class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white/95 backdrop-blur-md border-b border-border flex flex-col items-center py-12 gap-8 shadow-card-hover translate-x-full opacity-0 pointer-events-none transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
     {navItems.map(item => (
       <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[18px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">
+      <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[18px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">
         {item.label}
       </a>
     ))}
@@ -99,6 +117,7 @@ const navItems = [
           menu.classList.toggle('translate-x-0', isOpen);
           menu.classList.toggle('opacity-100', isOpen);
           menu.classList.toggle('pointer-events-auto', isOpen);
+          menu.setAttribute('aria-hidden', (!isOpen).toString());
         }
 
         if (backdrop) {
@@ -108,6 +127,13 @@ const navItems = [
 
         if (spans?.length === 3) {
           if (isOpen) {
+            spans[0].classList.add('rotate-45', 'translate-y-[8px]');
+            spans[1].classList.add('opacity-0');
+            spans[2].classList.add('-rotate-45', '-translate-y-[8px]');
+          } else {
+            spans[0].classList.remove('rotate-45', 'translate-y-[8px]');
+            spans[1].classList.remove('opacity-0');
+            spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
             spans[0].style.transform = 'translateY(8px) rotate(45deg)';
             spans[1].style.opacity = '0';
             spans[2].style.transform = 'translateY(-8px) rotate(-45deg)';
@@ -115,6 +141,9 @@ const navItems = [
             spans[0].style.transform = '';
             spans[1].style.opacity = '1';
             spans[2].style.transform = '';
+            spans[0].classList.remove('rotate-45', 'translate-y-[8px]');
+            spans[1].classList.remove('opacity-0');
+            spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
           }
         }
 
@@ -136,21 +165,17 @@ const navItems = [
         });
       });
 
-      // Close on outside click
-      document.addEventListener('click', (e) => {
-        if (isOpen && menu && !menu.contains(e.target) && e.target !== toggle) {
-          toggleMenu(false);
-        }
+      // Keyboard handling
+      backdrop?.addEventListener('click', () => {
+        if (isOpen) toggleMenu(false);
       });
 
-      // Keyboard handling
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && isOpen) {
           toggleMenu(false);
           if (toggle instanceof HTMLElement) toggle.focus();
         }
 
-        // Mobile menu focus trap
         if (isOpen && e.key === 'Tab') {
           const focusable = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean);
           const first = focusable[0];
@@ -180,11 +205,8 @@ const navItems = [
               const href = link.getAttribute('href');
               const isActive = href === `#${id}`;
               link.classList.toggle('nav-link-active', isActive);
-              if (isActive) {
-                link.setAttribute('aria-current', 'location');
-              } else {
-                link.removeAttribute('aria-current');
-              }
+              if (isActive) link.setAttribute('aria-current', 'location');
+              else link.removeAttribute('aria-current');
             });
           }
         });
