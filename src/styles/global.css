@@ -143,7 +143,6 @@
     }
     .animate-heartbeat, .animate-cta-pulse {
       animation: none !important;
-      transition: none !important;
     }
   }
 }
