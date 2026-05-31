@@ -12,6 +12,7 @@ const navItems = [
 <nav id="main-nav" class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
+    <!-- Brand Logo -->
     <!-- BRAND LOGO -->
     <!-- Brand Logo -->
     <a href="#hero" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
@@ -28,6 +29,7 @@ const navItems = [
         height="56"
         class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
         fetchpriority="high"
+        class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
         decoding="async"
       />
     </a>
@@ -47,6 +49,7 @@ const navItems = [
 
     <div class="flex items-center gap-4">
       <!-- Desktop WhatsApp CTA -->
+      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors shadow-sm hover:shadow-md">
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors shadow-sm hover:shadow-md animate-cta-pulse">
         Consultar por WhatsApp
       </a>
@@ -79,6 +82,7 @@ const navItems = [
   <div id="mobile-menu-backdrop" class="fixed inset-0 bg-navy/20 backdrop-blur-sm z-[98] opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
 
   <!-- Mobile Menu -->
+  <div id="mobile-menu" class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white border-b border-border flex flex-col items-center py-12 gap-8 shadow-card-hover opacity-0 pointer-events-none translate-x-full transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
   <div id="mobile-menu" class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white/95 backdrop-blur-md border-b border-border flex flex-col items-center py-12 gap-8 shadow-card-hover translate-x-full opacity-0 pointer-events-none transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
     {navItems.map(item => (
       <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[18px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">
@@ -92,6 +96,88 @@ const navItems = [
   </div>
 </nav>
 
+<script define:vars={{ navItems }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    const backdrop = document.getElementById('mobile-menu-backdrop');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+    const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
+    const spans = toggle?.querySelectorAll('span');
+    let isOpen = false;
+
+    const toggleMenu = () => {
+      isOpen = !isOpen;
+
+      toggle?.setAttribute('aria-expanded', isOpen.toString());
+      toggle?.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+
+      if (menu) {
+        menu.classList.toggle('opacity-0', !isOpen);
+        menu.classList.toggle('pointer-events-none', !isOpen);
+        menu.classList.toggle('translate-x-full', !isOpen);
+        menu.classList.toggle('opacity-100', isOpen);
+        menu.classList.toggle('pointer-events-auto', isOpen);
+        menu.classList.toggle('translate-x-0', isOpen);
+        menu.setAttribute('aria-hidden', (!isOpen).toString());
+      }
+
+      if (backdrop) {
+        backdrop.classList.toggle('opacity-0', !isOpen);
+        backdrop.classList.toggle('pointer-events-none', !isOpen);
+      }
+
+      if (spans?.length === 3) {
+        if (isOpen) {
+          spans[0].style.transform = 'translateY(8px) rotate(45deg)';
+          spans[1].style.opacity = '0';
+          spans[2].style.transform = 'translateY(-8px) rotate(-45deg)';
+        } else {
+          spans[0].style.transform = '';
+          spans[1].style.opacity = '1';
+          spans[2].style.transform = '';
+        }
+      }
+
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    };
+
+    toggle?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMenu();
+    });
+
+    backdrop?.addEventListener('click', () => {
+      if (isOpen) toggleMenu();
+    });
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (isOpen) toggleMenu();
+      });
+    });
+
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      if (isOpen && menu && !menu.contains(e.target) && !toggle?.contains(e.target)) {
+        toggleMenu();
+      }
+    });
+
+    // Keyboard handling
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+        toggle?.focus();
+        return;
+      }
+
+      // Focus trapping for mobile menu
+      if (isOpen && e.key === 'Tab') {
+        const focusableElements = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean);
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
 <script is:inline define:vars={{ navItems }}>
   (function() {
     document.addEventListener('DOMContentLoaded', () => {
@@ -190,6 +276,40 @@ const navItems = [
             if (first instanceof HTMLElement) first.focus();
           }
         }
+      }
+    });
+
+    // ScrollSpy
+    const observerOptions = {
+      rootMargin: '-20% 0px -70% 0px',
+      threshold: 0
+    };
+
+    const observerCallback = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinks.forEach(link => {
+            const isActive = link.getAttribute('href') === `#${id}`;
+            link.classList.toggle('nav-link-active', isActive);
+            if (isActive) {
+              link.setAttribute('aria-current', 'location');
+            } else {
+              link.removeAttribute('aria-current');
+            }
+          });
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
+
+    // Reset ScrollSpy when clicking logo
+    document.querySelector('a[aria-label^="Inicio"]')?.addEventListener('click', () => {
+      navLinks.forEach(link => {
+        link.classList.remove('nav-link-active');
+        link.removeAttribute('aria-current');
       });
 
       // ScrollSpy implementation

@@ -1,6 +1,7 @@
 ---
 import { CONFIG } from '../data/config';
 
+// Optimization: Only pass the minimal data needed for the client-side modal
 // Optimization: Only pass minimal data to client script
 // Optimization: Only pass the minimal data to client script
 // Optimization: Only pass minimal data to client script
@@ -46,6 +47,7 @@ const modalData = CONFIG.servicios.map(s => ({
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-500 ease-out"></div>
           
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
+            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale text-blue flex items-center justify-center mb-6">
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -85,6 +87,10 @@ const modalData = CONFIG.servicios.map(s => ({
     role="dialog"
     aria-modal="true"
     aria-labelledby="modal-title"
+  >
+    <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
+      <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4" aria-label="Cerrar">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2">
     aria-describedby="modal-description"
   >
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
@@ -98,6 +104,9 @@ const modalData = CONFIG.servicios.map(s => ({
   </div>
 </section>
 
+<script is:inline define:vars={{ modalData }}>
+  (function() {
+    const services = modalData;
 <script is:inline define:vars={{ services: modalData }}>
   (function() {
     const cards = document.querySelectorAll('.service-card');
@@ -128,6 +137,7 @@ const modalData = CONFIG.servicios.map(s => ({
           </svg>
         </div>
         <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(s.titulo)}</h3>
+        <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(s.descripcion)}</p>
         <p id="modal-description" class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(s.descripcion)}</p>
           <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor"><use href="#icon-${escapeHtml(s.icono)}" /></svg>
         </div>
@@ -164,6 +174,7 @@ const modalData = CONFIG.servicios.map(s => ({
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+      
       document.body.style.overflow = '';
       isModalOpen = false;
       
@@ -192,6 +203,9 @@ const modalData = CONFIG.servicios.map(s => ({
     };
 
     cards.forEach(card => {
+      const indexStr = card.getAttribute('data-index');
+      if (indexStr === null) return;
+      const index = parseInt(indexStr);
       const index = parseInt(card.getAttribute('data-index') || '0');
       const indexStr = card.getAttribute('data-index');
       if (indexStr === null) return;
@@ -231,6 +245,11 @@ const modalData = CONFIG.servicios.map(s => ({
 
       if (e.key === 'Escape') closeModal();
       if (e.key === 'Tab') {
+        const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusable.length === 0) return;
+        const first = focusable[0], last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
         const focusable = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
         if (focusable.length === 0) return;
         const first = focusable[0] as HTMLElement;
