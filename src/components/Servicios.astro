@@ -1,6 +1,7 @@
 ---
 import { CONFIG } from '../data/config';
 
+// Optimization: Only pass the minimal data to client script
 // Optimization: Only pass minimal data to client script
 // Optimization: Only pass the minimal data needed for the client-side modal
 // Optimization: Only pass minimal data needed for the client-side modal
@@ -82,7 +83,7 @@ const modalData = CONFIG.servicios.map(s => ({
   >
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4" aria-label="Cerrar modal">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <use href="#icon-close" />
         </svg>
       </button>
@@ -189,6 +190,19 @@ const modalData = CONFIG.servicios.map(s => ({
       if (indexStr === null) return;
       const index = parseInt(indexStr);
 
+      const handleOpen = () => openModal(index, card);
+
+      card.addEventListener('click', handleOpen);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleOpen();
+        }
+      });
+    });
+
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
       card.addEventListener('click', () => openModal(index, card));
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {

@@ -108,6 +108,11 @@ import { CONFIG } from '../data/config';
               <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.horario}</div>
             </div>
           </div>
+
+        </div>
+      </div>
+
+      <!-- Right Column (Form) -->
         </div>
       </div>
 
@@ -140,7 +145,6 @@ import { CONFIG } from '../data/config';
               </div>
             </div>
 
-            <div class="flex flex-col gap-1.5 mb-2">
             <div class="flex flex-col gap-1.5">
               <div class="flex justify-between items-center">
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
@@ -148,6 +152,9 @@ import { CONFIG } from '../data/config';
               </div>
               <textarea id="f-desc" name="descripcion" rows="3" maxlength="1000" aria-describedby="char-counter" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full resize-none"></textarea>
             </div>
+            <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 shadow-sm mt-2 active:scale-[0.98]">
+              Enviar por WhatsApp
+            </button>
 
             <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 shadow-sm mt-2 active:scale-[0.98]">
               Enviar por WhatsApp
@@ -176,6 +183,8 @@ import { CONFIG } from '../data/config';
 
       // Click to Copy Logic
       copyBtns.forEach(button => {
+        let isSuccess = false;
+
 
       // Click to Copy Logic
       document.querySelectorAll('.copy-btn').forEach(button => {
@@ -194,6 +203,12 @@ import { CONFIG } from '../data/config';
             const copyIcon = button.querySelector('.copy-icon');
             const checkIcon = button.querySelector('.check-icon');
             const btnText = button.querySelector('.btn-text');
+            const originalAriaLabel = button.getAttribute('aria-label');
+
+            if (copyIcon) copyIcon.classList.add('hidden');
+            if (checkIcon) checkIcon.classList.remove('hidden');
+            button.classList.add('scale-105');
+
 
             if (copyIcon && checkIcon && btnText) {
               const originalText = btnText.textContent;
@@ -232,6 +247,9 @@ import { CONFIG } from '../data/config';
             button.setAttribute('aria-label', 'Información copiada');
 
             setTimeout(() => {
+              if (copyIcon) copyIcon.classList.remove('hidden');
+              if (checkIcon) checkIcon.classList.add('hidden');
+              button.classList.remove('scale-105');
               copyIcon?.classList.remove('hidden');
               checkIcon?.classList.add('hidden');
               button.classList.remove('scale-105');
@@ -246,7 +264,7 @@ import { CONFIG } from '../data/config';
               if (copyIcon) copyIcon.classList.remove('hidden');
               if (checkIcon) checkIcon.classList.add('hidden');
               if (btnText) {
-                btnText.textContent = originalText;
+                btnText.textContent = 'Copiar';
                 btnText.classList.remove('text-green-600');
               }
               button.classList.remove('scale-105');

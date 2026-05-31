@@ -5,6 +5,18 @@ const year = new Date().getFullYear();
 
 type SocialKey = 'instagram' | 'facebook' | 'linkedin';
 
+const socialLabels: Record<SocialKey, string> = {
+  instagram: 'Seguir en Instagram',
+  facebook: 'Seguir en Facebook',
+  linkedin: 'Seguir en LinkedIn'
+};
+
+const activeSocials = (Object.entries(CONFIG.redes).filter(([_, url]) => !!url) as [SocialKey, string][]).map(([platform, url]) => ({
+  id: platform,
+  url,
+  label: socialLabels[platform]
+}));
+
 const socialLinks: { id: SocialKey; label: string }[] = [
   { id: 'instagram', label: 'Seguir en Instagram' },
   { id: 'facebook', label: 'Seguir en Facebook' },
@@ -27,6 +39,7 @@ const hasSocials = activeSocials.length > 0;
 <footer class="bg-navy-dark py-10 px-[5%] text-center border-t border-white/5">
   <div class="container-custom flex flex-col items-center">
     <div class="mb-8">
+      <a href="#hero" class="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-all" aria-label="Volver al inicio">
       <!-- Interactive 'Back to top' link -->
       <a href="#hero" class="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-all" aria-label="Volver al inicio">
       <a href="#hero" class="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-all" aria-label="Volver al inicio">
@@ -49,6 +62,10 @@ const hasSocials = activeSocials.length > 0;
       <div class="flex items-center gap-4 mb-6">
         {activeSocials.map(social => (
           <a
+            href={social.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white/50 hover:text-white focus-visible:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1"
             href={CONFIG.redes[social.id]}
             href={CONFIG.redes[social.id as SocialKey]}
             target="_blank"
