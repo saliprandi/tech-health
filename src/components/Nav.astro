@@ -129,6 +129,11 @@ const navItems = [
   </div>
 </nav>
 
+<style>
+  .nav-link-active { @apply text-blue !important; }
+</style>
+
+<script is:inline>
 <script define:vars={{ navItems }}>
   document.addEventListener('DOMContentLoaded', () => {
     const toggle = document.getElementById('menu-toggle');
@@ -136,6 +141,8 @@ const navItems = [
     const backdrop = document.getElementById('mobile-menu-backdrop');
     const navLinks = document.querySelectorAll('.nav-link');
     const mobileLinks = document.querySelectorAll('.mobile-link');
+    const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
+    const spans = toggle?.querySelectorAll('span');
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const spans = toggle?.querySelectorAll('span');
 
@@ -154,6 +161,12 @@ const navItems = [
       isOpen = !isOpen;
       toggle?.setAttribute('aria-expanded', isOpen.toString());
       menu?.setAttribute('aria-hidden', (!isOpen).toString());
+      menu?.classList.toggle('opacity-100', isOpen);
+      menu?.classList.toggle('pointer-events-auto', isOpen);
+      menu?.classList.toggle('translate-y-0', isOpen);
+      menu?.classList.toggle('opacity-0', !isOpen);
+      menu?.classList.toggle('pointer-events-none', !isOpen);
+      menu?.classList.toggle('translate-y-[-10px]', !isOpen);
 
       const classes = {
         hidden: ['opacity-0', 'pointer-events-none', 'translate-y-[-10px]'],
@@ -220,6 +233,11 @@ const navItems = [
     };
 
     toggle?.addEventListener('click', toggleMenu);
+    mobileLinks.forEach(link => link.addEventListener('click', () => { if (isOpen) toggleMenu(); }));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+        if (toggle) toggle.focus();
       if (!isOpen) (toggle as HTMLElement)?.focus();
     };
 
@@ -278,6 +296,7 @@ const navItems = [
         return;
       }
 
+    const observer = new IntersectionObserver((entries) => {
     // Focus Trap for Mobile Menu
     document.addEventListener('keydown', (e) => {
       if (!isOpen) return;
@@ -440,6 +459,16 @@ const navItems = [
           });
         }
       });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
+
+    document.addEventListener('keydown', (e) => {
+      if (!isOpen || e.key !== 'Tab') return;
+      const focusable = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean);
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }, observerOptions);
 
     document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
