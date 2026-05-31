@@ -12,6 +12,16 @@ const socialLinks: { id: SocialKey; label: string }[] = [
 ];
 
 const activeSocials = socialLinks.filter(social => !!CONFIG.redes[social.id]);
+const socialLinks = [
+  { id: 'instagram', label: 'Seguir en Instagram' },
+  { id: 'facebook', label: 'Seguir en Facebook' },
+  { id: 'linkedin', label: 'Seguir en LinkedIn' }
+] as const;
+
+type SocialKey = typeof socialLinks[number]['id'];
+
+const activeSocials = socialLinks.filter(social => !!CONFIG.redes[social.id as SocialKey]);
+const hasSocials = activeSocials.length > 0;
 ---
 
 <footer class="bg-navy-dark py-10 px-[5%] text-center border-t border-white/5">
@@ -19,6 +29,13 @@ const activeSocials = socialLinks.filter(social => !!CONFIG.redes[social.id]);
     <div class="mb-8">
       <a href="#hero" class="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-all" aria-label="Volver al inicio">
         <img src="/logo-name.svg" alt={CONFIG.empresa.nombre} width="180" height="44" class="h-11 w-auto brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity" />
+        <img
+          src="/logo-name.svg"
+          alt={CONFIG.empresa.nombre}
+          width="180"
+          height="44"
+          class="h-11 w-auto brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity"
+        />
       </a>
     </div>
 
@@ -31,6 +48,7 @@ const activeSocials = socialLinks.filter(social => !!CONFIG.redes[social.id]);
         {activeSocials.map(social => (
           <a
             href={CONFIG.redes[social.id]}
+            href={CONFIG.redes[social.id as SocialKey]}
             target="_blank"
             rel="noopener noreferrer"
             class="text-white/50 hover:text-white transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark focus-visible:text-white rounded-full p-1"

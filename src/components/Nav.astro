@@ -15,6 +15,15 @@ const navItems = [
     <!-- BRAND LOGO -->
     <a href="#hero" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
       <img src="/logo-name.svg" alt={`${CONFIG.empresa.nombre} ${CONFIG.empresa.subtitulo}`} width="228" height="56" class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-300" fetchpriority="high" decoding="async" />
+      <img
+        src="/logo-name.svg"
+        alt={`${CONFIG.empresa.nombre} ${CONFIG.empresa.subtitulo}`}
+        width="228"
+        height="56"
+        class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
+        fetchpriority="high"
+        decoding="async"
+      />
     </a>
 
     <!-- Desktop Navigation -->
@@ -22,6 +31,7 @@ const navItems = [
       {navItems.map(item => (
         <li>
           <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors px-1 py-0.5">
+          <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">
             {item.label}
           </a>
         </li>
@@ -36,6 +46,13 @@ const navItems = [
 
       <!-- Mobile Menu Toggle -->
       <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-sm transition-shadow z-[101]" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+      <button
+        id="menu-toggle"
+        class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-sm transition-shadow z-[101]"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
         <span class="block w-6 h-0.5 bg-navy transition-all duration-300 origin-center"></span>
         <span class="block w-6 h-0.5 bg-navy transition-all duration-300"></span>
         <span class="block w-6 h-0.5 bg-navy transition-all duration-300 origin-center"></span>
