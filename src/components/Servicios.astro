@@ -41,6 +41,7 @@ const modalData = CONFIG.servicios.map(s => ({
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-500 ease-out"></div>
           
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
+            <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor">
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale text-blue flex items-center justify-center mb-6">
             <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
               <use href={`#icon-${servicio.icono}`} />
@@ -163,15 +164,12 @@ const modalData = CONFIG.servicios.map(s => ({
     };
 
     const closeModal = () => {
-      if (!isModalOpen || !backdrop || !modal) return;
-      
-      backdrop.classList.add('opacity-0', 'pointer-events-none');
-      modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
-      modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       if (!isModalOpen) return;
+
       backdrop?.classList.add('opacity-0', 'pointer-events-none');
       modal?.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
       modal?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+      
       document.body.style.overflow = '';
       isModalOpen = false;
 
