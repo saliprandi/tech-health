@@ -1,0 +1,56 @@
+---
+/**
+ * BackToTop.astro
+ * Micro-UX pattern: Smooth scrolling button with threshold visibility and focus restoration.
+ */
+---
+
+<button
+  id="back-to-top"
+  class="fixed bottom-[100px] right-[28px] z-[190] w-[48px] h-[48px] bg-white border border-border rounded-full flex items-center justify-center text-navy shadow-lg hover:bg-off-white hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-all duration-300 opacity-0 pointer-events-none translate-y-4"
+  aria-label="Volver arriba"
+  title="Volver arriba"
+>
+  <svg class="w-5 h-5" aria-hidden="true">
+    <use href="#icon-arrow-up" />
+  </svg>
+</button>
+
+<script>
+  (function() {
+    const btn = document.getElementById('back-to-top');
+    const mainContent = document.getElementById('main-content');
+    const SCROLL_THRESHOLD = 500;
+
+    if (!btn) return;
+
+    // Visibility logic based on scroll position
+    const handleScroll = () => {
+      const isVisible = window.scrollY > SCROLL_THRESHOLD;
+      btn.classList.toggle('opacity-0', !isVisible);
+      btn.classList.toggle('pointer-events-none', !isVisible);
+      btn.classList.toggle('translate-y-4', !isVisible);
+      btn.classList.toggle('opacity-100', isVisible);
+      btn.classList.toggle('pointer-events-auto', isVisible);
+      btn.classList.toggle('translate-y-0', isVisible);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Smooth scroll and focus restoration
+    btn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+
+      // Restore focus to the main content wrapper for accessibility
+      if (mainContent) {
+        // Wait for smooth scroll to finish or at least start before shifting focus
+        setTimeout(() => {
+          mainContent.focus({ preventScroll: true });
+        }, 100);
+      }
+    });
+  })();
+</script>
