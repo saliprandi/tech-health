@@ -74,7 +74,7 @@
 **Learning:** Implementing a "ScrollSpy" pattern using IntersectionObserver significantly improves navigation clarity by providing real-time visual feedback of the user's location. Coupling this with the 'aria-current="location"' attribute ensures that this state is also communicated to assistive technologies. Additionally, standardizing focus-visible rings across all interactive elements (links and buttons) is a high-impact, low-effort accessibility improvement that follows the project's design system.
 **Action:** Always apply 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2' to interactive elements. Use IntersectionObserver for navigation state with a balanced rootMargin (e.g., '-20% 0px -70% 0px') to ensure sections are highlighted when they occupy the primary reading area.
 ## 2025-05-25 - Navigation Orientation and Anchor Precision
-**Learning:** In single-page landing pages with fixed headers, ScrollSpy navigation significantly improves user orientation by providing real-time feedback on the active section. Additionally, the CSS `scroll-padding-top` property is essential to prevent fixed headers from obscuring section headings when using anchor navigation.
+**Learning:** In single-page landing pages with fixed headers, ScrollSpy navigation significantly improves user orientation by providing real-time feedback on the active section. Additionally, the CSS `scroll-padding-top` property is essential to prevent fixed headers from obscuring section targets.
 **Action:** Implement `IntersectionObserver` based ScrollSpy for navigation menus and always match `scroll-padding-top` to the height of fixed headers in global styles.
 ## 2026-05-14 - ScrollSpy and Footer A11y
 **Learning:** Implemented a performant ScrollSpy using IntersectionObserver. Found that icon-only social links in the footer lacked ARIA labels, which is a common but critical accessibility barrier.
@@ -103,3 +103,7 @@
 ## 2025-05-15 - Multi-Stage Feedback for Click-to-Copy
 **Learning:** For "Click to Copy" interactions, immediate and multi-sensory (visual) feedback is vital. Swapping the icon (copy to check), updating the text (Copy to ¡Copiado!), and briefly shifting the button's background color (e.g., to success green) significantly reduces user uncertainty about whether the action succeeded.
 **Action:** Always implement a 2000ms "success state" for copy buttons with high-contrast color shifts and icon swaps.
+
+## 2026-05-31 - Scroll-Based Visibility and Focus Restoration
+**Learning:** For floating 'Back to Top' buttons, a scroll threshold (e.g., 500px) coupled with a smooth transition (opacity + translate) provides a non-intrusive UX. Programmatically restoring focus to a top-level anchor (like `#main-content`) is essential for keyboard and screen reader users to maintain context after the scroll action.
+**Action:** Implement the 500px threshold for Back to Top visibility and always include programmatic focus restoration to the primary content anchor.

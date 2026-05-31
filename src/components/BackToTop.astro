@@ -1,0 +1,51 @@
+---
+---
+
+<button
+  id="back-to-top"
+  class="fixed bottom-[100px] right-[28px] z-[200] w-[48px] h-[48px] bg-white border border-border text-navy rounded-full flex items-center justify-center shadow-lg opacity-0 pointer-events-none translate-y-4 transition-all duration-300 hover:bg-off-white hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
+  aria-label="Volver arriba"
+  title="Volver arriba"
+>
+  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+  </svg>
+</button>
+
+<script>
+  (function() {
+    const btn = document.getElementById('back-to-top');
+    const mainContent = document.getElementById('main-content');
+
+    if (!btn) return;
+
+    // Use IntersectionObserver to toggle visibility based on scroll position
+    // We observe a sentinel or simply check scroll in this case for simplicity
+    // as per project patterns, but let's use a scroll listener for precision
+    // with the 500px threshold.
+
+    const toggleVisible = () => {
+      if (window.scrollY > 500) {
+        btn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+        btn.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+      } else {
+        btn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+        btn.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+      }
+    };
+
+    window.addEventListener('scroll', toggleVisible, { passive: true });
+
+    btn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+
+      // Programmatic focus restoration for accessibility
+      if (mainContent) {
+        mainContent.focus({ preventScroll: true });
+      }
+    });
+  })();
+</script>
