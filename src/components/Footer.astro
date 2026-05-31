@@ -38,6 +38,8 @@ const socialLabels: Record<SocialKey, string> = {
   linkedin: 'Seguir en LinkedIn'
 };
 
+const redes = Object.entries(CONFIG.redes).filter(([_, url]) => url) as [SocialKey, string][];
+const hasSocials = redes.length > 0;
 const socialLinks = Object.entries(CONFIG.redes).filter(([_, url]) => url) as [SocialKey, string][];
 const hasSocials = socialLinks.length > 0;
 const activeSocials = (Object.entries(CONFIG.redes).filter(([_, url]) => !!url) as [SocialKey, string][]).map(([platform, url]) => ({
@@ -69,6 +71,8 @@ const hasSocials = activeSocials.length > 0;
   <div class="container-custom flex flex-col items-center">
     <!-- Brand Logo & Back to top -->
     <div class="mb-8">
+      <!-- Brand Logo & Back to top -->
+      <a href="#hero" class="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-all" aria-label="Volver al inicio">
       <!-- Interactive 'Back to top' link -->
       <a href="#hero" class="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-all" aria-label="Volver al inicio">
       <!-- Interactive 'Back to top' link -->
@@ -95,6 +99,7 @@ const hasSocials = activeSocials.length > 0;
 
     {hasSocials && (
       <div class="flex items-center gap-4 mb-6">
+        {redes.map(([platform, url]) => (
         {activeSocials.map(social => (
           <a
             href={CONFIG.redes[social.name]}

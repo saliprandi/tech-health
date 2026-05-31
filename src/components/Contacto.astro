@@ -126,7 +126,7 @@ import { CONFIG } from '../data/config';
               <div>
                 <div class="font-heading font-bold text-[16px] text-navy mb-1">Laboratorio</div>
                 <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.direccion}</div>
-                <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.ciudad_completa}</div>
+                <div class="font-body text-[14px] text-text-soft mb-1">{CONFIG.contacto.ciudad_completa}</div>
                 <div class="font-body font-medium text-[12px] text-blue mt-1 group-hover:underline">Abrir en Google Maps &rarr;</div>
               </div>
             </a>
@@ -143,6 +143,7 @@ import { CONFIG } from '../data/config';
 
           <!-- Email -->
           {CONFIG.contacto.email && (
+            <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border relative">
             <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
               <a href={`mailto:${CONFIG.contacto.email}`} class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" aria-label="Enviar correo electrónico">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -202,7 +203,6 @@ import { CONFIG } from '../data/config';
           <!-- Hours -->
           <div class="flex items-start gap-4 p-4 rounded-[12px] border border-transparent">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -247,6 +247,7 @@ import { CONFIG } from '../data/config';
                 </svg>
               </div>
             </div>
+
             <div class="flex flex-col gap-1.5">
               <div class="flex justify-between items-center">
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
@@ -254,6 +255,11 @@ import { CONFIG } from '../data/config';
               </div>
               <textarea id="f-desc" name="descripcion" rows="3" maxlength="1000" aria-describedby="char-counter" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full resize-none"></textarea>
             </div>
+
+            <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 shadow-sm mt-2 active:scale-[0.98]">
+              Enviar por WhatsApp
+            </button>
+            <p class="font-body text-[12px] text-white/40 text-center mt-2">Será redirigido a WhatsApp para enviar el mensaje.</p>
             <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 shadow-sm mt-2 active:scale-[0.98]">Enviar por WhatsApp</button>
             <p class="font-body text-[12px] text-white/40 text-center mt-2">Será redirigido a WhatsApp para enviar el mensaje.</p>
             <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 shadow-sm mt-2 active:scale-[0.98]">
@@ -289,7 +295,7 @@ import { CONFIG } from '../data/config';
       document.querySelectorAll('.copy-btn').forEach(button => {
       const copyBtns = document.querySelectorAll('.copy-btn');
 
-      // Click to Copy Logic
+      // Click to Copy Logic with Multi-stage Feedback
       copyBtns.forEach(button => {
         button.addEventListener('click', async () => {
         let isSuccess = false;
@@ -319,6 +325,12 @@ import { CONFIG } from '../data/config';
             const copyIcon = button.querySelector('.copy-icon');
             const checkIcon = button.querySelector('.check-icon');
             const btnText = button.querySelector('.btn-text');
+            const originalText = btnText ? btnText.textContent : '';
+            const originalLabel = button.getAttribute('aria-label');
+
+            copyIcon?.classList.add('hidden');
+            checkIcon?.classList.remove('hidden');
+            button.classList.add('bg-green-50', 'ring-1', 'ring-green-600/20', 'scale-105');
             const originalAriaLabel = button.getAttribute('aria-label');
 
 
@@ -424,6 +436,7 @@ import { CONFIG } from '../data/config';
             setTimeout(() => {
               copyIcon?.classList.remove('hidden');
               checkIcon?.classList.add('hidden');
+              button.classList.remove('bg-green-50', 'ring-1', 'ring-green-600/20', 'scale-105');
               button.classList.remove('scale-105');
               if (copyIcon) copyIcon.classList.remove('hidden');
               if (checkIcon) checkIcon.classList.add('hidden');
@@ -448,6 +461,7 @@ import { CONFIG } from '../data/config';
                 btnText.textContent = 'Copiar';
                 btnText.classList.remove('text-green-600');
               }
+              button.setAttribute('aria-label', originalLabel || '');
               button.classList.remove('scale-105');
               button.setAttribute('aria-label', originalAriaLabel || '');
               isSuccess = false;
@@ -458,6 +472,10 @@ import { CONFIG } from '../data/config';
         });
       });
 
+      // Character counter logic
+      if (textarea && charCounter) {
+        textarea.addEventListener('input', () => {
+          const count = textarea.value.length;
       // Character counter
       if (textarea && charCounter) {
         textarea.addEventListener('input', () => {
