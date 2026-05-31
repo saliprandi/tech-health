@@ -159,6 +159,7 @@ import { CONFIG } from '../data/config';
             <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 shadow-sm mt-2 active:scale-[0.98]">
               Enviar por WhatsApp
             </button>
+            <p class="font-body text-[12px] text-white/40 text-center mt-2">Será redirigido a WhatsApp para enviar el mensaje.</p>
 
             <p class="font-body text-[12px] text-white/40 text-center mt-2">
               Será redirigido a WhatsApp para enviar el mensaje.
@@ -208,6 +209,9 @@ import { CONFIG } from '../data/config';
             const copyIcon = button.querySelector('.copy-icon');
             const checkIcon = button.querySelector('.check-icon');
             const btnText = button.querySelector('.btn-text');
+
+            const originalText = btnText ? btnText.textContent : 'Copiar';
+            const originalLabel = button.getAttribute('aria-label');
             const originalAriaLabel = button.getAttribute('aria-label');
 
             if (copyIcon && checkIcon) {
@@ -293,6 +297,9 @@ import { CONFIG } from '../data/config';
                 isSuccess = false;
               }, 2000);
             }
+
+            button.classList.add('scale-105');
+            button.setAttribute('aria-label', 'Información copiada al portapapeles');
             button.setAttribute('aria-label', 'Información copiada');
             }
             button.setAttribute('aria-label', 'Información copiada');
@@ -308,6 +315,8 @@ import { CONFIG } from '../data/config';
                 btnText.textContent = 'Copiar';
                 btnText.classList.remove('text-green-600');
               }
+              button.classList.remove('scale-105');
+              button.setAttribute('aria-label', originalLabel || '');
             button.classList.add('scale-105');
             button.setAttribute('aria-label', 'Información copiada al portapapeles');
 

@@ -48,6 +48,7 @@ const navItems = [
         Consultar por WhatsApp
       </a>
 
+      <!-- Mobile Menu Toggle -->
       <!-- Hamburger Button -->
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors shadow-sm hover:shadow-md animate-cta-pulse">
         Consultar por WhatsApp
@@ -161,6 +162,7 @@ const navItems = [
         });
       });
 
+      // Keyboard handling
       backdrop?.addEventListener('click', () => {
         if (isOpen) toggleMenu(false);
       });

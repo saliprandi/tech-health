@@ -1,6 +1,8 @@
 ---
 /**
  * BackToTop.astro
+ * Floating button to smoothly scroll back to the top of the page.
+ * Includes scroll-depth visibility logic and accessibility focus management.
  * Floating button that appears after scrolling 500px.
  * Improves accessibility by restoring focus to the main content area.
  */
@@ -8,11 +10,31 @@
 
 <button
   id="back-to-top"
+  class="fixed bottom-[100px] right-[28px] z-[150] w-[48px] h-[48px] bg-white border border-border text-navy rounded-full flex items-center justify-center shadow-lg opacity-0 pointer-events-none translate-y-4 transition-all duration-300 hover:bg-blue-pale hover:text-blue hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
   class="fixed bottom-[100px] right-[28px] z-[190] w-12 h-12 bg-white border border-border rounded-full flex items-center justify-center text-navy shadow-md transition-all duration-300 opacity-0 pointer-events-none hover:bg-blue-pale hover:text-blue hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
   aria-label="Volver arriba"
   title="Volver arriba"
 >
   <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <use href="#icon-chevron-up" />
+  </svg>
+</button>
+
+<script is:inline>
+  (function() {
+    const btn = document.getElementById('back-to-top');
+    const mainContent = document.getElementById('main-content');
+
+    if (!btn) return;
+
+    // Threshold for visibility (500px)
+    const handleScroll = () => {
+      if (window.scrollY > 500) {
+        btn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+        btn.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+      } else {
+        btn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+        btn.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
     <use href="#icon-arrow-up" />
   </svg>
 <button
@@ -77,6 +99,16 @@
         behavior: 'smooth'
       });
 
+      // Accessibility: Restore focus to the main content container or top of page
+      if (mainContent) {
+        mainContent.focus({ preventScroll: true });
+      } else {
+        window.focus();
+      }
+    });
+
+    // Run once on load in case page is already scrolled
+    handleScroll();
       // Restore focus to main content for accessibility
       if (mainContent) {
         mainContent.focus({ preventScroll: true });

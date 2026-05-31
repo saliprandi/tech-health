@@ -3,6 +3,8 @@ import { CONFIG } from '../data/config';
 
 const year = new Date().getFullYear();
 
+type SocialKey = 'instagram' | 'facebook' | 'linkedin';
+
 const socialLinks = [
   { name: 'instagram', label: 'Seguir en Instagram' },
   { name: 'facebook', label: 'Seguir en Facebook' },
@@ -22,6 +24,8 @@ const socialLabels: Record<SocialKey, string> = {
   linkedin: 'Seguir en LinkedIn'
 };
 
+const socialLinks = Object.entries(CONFIG.redes).filter(([_, url]) => url) as [SocialKey, string][];
+const hasSocials = socialLinks.length > 0;
 const activeSocials = (Object.entries(CONFIG.redes).filter(([_, url]) => !!url) as [SocialKey, string][]).map(([platform, url]) => ({
   id: platform,
   url,
@@ -74,6 +78,16 @@ const hasSocials = activeSocials.length > 0;
 
     {activeSocials.length > 0 && (
       <div class="flex items-center gap-4 mb-6">
+        {socialLinks.map(([platform, url]) => (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white/50 hover:text-white transition-colors focus-visible:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1"
+            aria-label={socialLabels[platform] || `Seguir en ${platform}`}
+          >
+            <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
+              <use href={`#icon-${platform}`} />
         {activeSocials.map(social => (
           <a
             href={CONFIG.redes[social.name as keyof typeof CONFIG.redes]}

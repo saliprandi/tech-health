@@ -146,6 +146,8 @@ const modalData = CONFIG.servicios.map(s => ({
       document.body.style.overflow = 'hidden';
       isModalOpen = true;
 
+      setTimeout(() => {
+        closeBtn?.focus();
       setTimeout(() => { if (closeBtn) closeBtn.focus(); }, 100);
     };
 
@@ -169,10 +171,9 @@ const modalData = CONFIG.servicios.map(s => ({
       backdrop?.classList.add('opacity-0', 'pointer-events-none');
       modal?.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
       modal?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
-      
       document.body.style.overflow = '';
       isModalOpen = false;
-
+      
       if (triggerElement) {
         triggerElement.setAttribute('aria-expanded', 'false');
         triggerElement.focus();
@@ -224,6 +225,8 @@ const modalData = CONFIG.servicios.map(s => ({
       if (e.key === 'Tab') {
         const focusable = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
         if (focusable.length === 0) return;
+        const first = focusable[0] as HTMLElement;
+        const last = focusable[focusable.length - 1] as HTMLElement;
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
         if (e.shiftKey && document.activeElement === first) { e.preventDefault(); if (last instanceof HTMLElement) last.focus(); }
@@ -231,9 +234,10 @@ const modalData = CONFIG.servicios.map(s => ({
 
         if (e.shiftKey && document.activeElement === first) {
           e.preventDefault();
-          if (last instanceof HTMLElement) last.focus();
+          last.focus();
         } else if (!e.shiftKey && document.activeElement === last) {
           e.preventDefault();
+          first.focus();
           if (first instanceof HTMLElement) first.focus();
         }
       }
