@@ -184,6 +184,9 @@ import { CONFIG } from '../data/config';
       // Click to Copy Logic
       copyBtns.forEach(button => {
         let isSuccess = false;
+        button.addEventListener('click', async (e) => {
+          e.preventDefault();
+          if (isSuccess) return;
 
 
       // Click to Copy Logic
@@ -241,8 +244,28 @@ import { CONFIG } from '../data/config';
             if (copyIcon) copyIcon.classList.add('hidden');
             if (checkIcon) checkIcon.classList.remove('hidden');
             if (btnText) {
+              const originalText = btnText.textContent;
               btnText.textContent = '¡Copiado!';
               btnText.classList.add('text-green-600');
+
+              setTimeout(() => {
+                copyIcon?.classList.remove('hidden');
+                checkIcon?.classList.add('hidden');
+                button.classList.remove('scale-105');
+                btnText.textContent = originalText;
+                btnText.classList.remove('text-green-600');
+                button.setAttribute('aria-label', originalAriaLabel || '');
+                isSuccess = false;
+              }, 2000);
+            } else {
+               setTimeout(() => {
+                copyIcon?.classList.remove('hidden');
+                checkIcon?.classList.add('hidden');
+                button.classList.remove('scale-105');
+                isSuccess = false;
+              }, 2000);
+            }
+            button.setAttribute('aria-label', 'Información copiada');
             }
             button.setAttribute('aria-label', 'Información copiada');
 

@@ -5,6 +5,13 @@ const year = new Date().getFullYear();
 
 type SocialKey = 'instagram' | 'facebook' | 'linkedin';
 
+const socialLinks: { name: SocialKey; label: string }[] = [
+  { name: 'instagram', label: 'Seguir en Instagram' },
+  { name: 'facebook', label: 'Seguir en Facebook' },
+  { name: 'linkedin', label: 'Seguir en LinkedIn' }
+];
+
+const activeSocials = socialLinks.filter(social => !!CONFIG.redes[social.name as keyof typeof CONFIG.redes]);
 const socialLabels: Record<SocialKey, string> = {
   instagram: 'Seguir en Instagram',
   facebook: 'Seguir en Facebook',
@@ -40,6 +47,7 @@ const hasSocials = activeSocials.length > 0;
   <div class="container-custom flex flex-col items-center">
     <div class="mb-8">
       <a href="#hero" class="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-all" aria-label="Volver al inicio">
+        <img src="/logo-name.svg" alt={CONFIG.empresa.nombre} width="180" height="44" class="h-11 w-auto brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity" />
       <!-- Interactive 'Back to top' link -->
       <a href="#hero" class="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-all" aria-label="Volver al inicio">
       <a href="#hero" class="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-all" aria-label="Volver al inicio">
@@ -62,6 +70,7 @@ const hasSocials = activeSocials.length > 0;
       <div class="flex items-center gap-4 mb-6">
         {activeSocials.map(social => (
           <a
+            href={CONFIG.redes[social.name as keyof typeof CONFIG.redes]}
             href={social.url}
             target="_blank"
             rel="noopener noreferrer"
@@ -74,6 +83,7 @@ const hasSocials = activeSocials.length > 0;
             aria-label={social.label}
           >
             <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
+              <use href={`#icon-${social.name}`} />
               <use href={`#icon-${social.id}`} />
             </svg>
           </a>

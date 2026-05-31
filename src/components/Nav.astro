@@ -33,6 +33,7 @@ const navItems = [
     <ul class="hidden md:flex items-center gap-8">
       {navItems.map(item => (
         <li>
+          <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5 transition-colors">
           <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors px-1 py-0.5">
           <a href={`#${item.id}`} class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">
             {item.label}
@@ -52,6 +53,7 @@ const navItems = [
         Consultar por WhatsApp
       </a>
 
+      <!-- Mobile Menu Toggle -->
       <!-- Hamburger Button -->
       <!-- Mobile Menu Toggle -->
       <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-sm transition-shadow z-[101]" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
@@ -131,9 +133,9 @@ const navItems = [
             spans[1].style.opacity = '0';
             spans[2].style.transform = 'translateY(-8px) rotate(-45deg)';
           } else {
-            spans[0].style.transform = '';
-            spans[1].style.opacity = '1';
-            spans[2].style.transform = '';
+            spans[0].classList.remove('rotate-45', 'translate-y-[8px]');
+            spans[1].classList.remove('opacity-0');
+            spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
           }
         }
 
@@ -230,6 +232,9 @@ const navItems = [
 </script>
 
 <style>
+  .nav-link-active { @apply text-blue !important; position: relative; }
+  .nav-link-active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; @apply bg-blue rounded-full; }
+  @media (max-width: 767px) { .nav-link-active::after { display: none; } }
   .nav-link-active {
     @apply text-blue !important;
     position: relative;
