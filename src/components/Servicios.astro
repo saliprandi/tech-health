@@ -1,6 +1,7 @@
 ---
 import { CONFIG } from '../data/config';
 
+// Optimization: Only pass minimal data to client script
 // Optimization: Only pass the minimal data to client script
 // Optimization: Only pass minimal data to client script
 // Optimization: Only pass the minimal data needed for the client-side modal
@@ -239,6 +240,11 @@ const modalData = CONFIG.servicios.map(s => ({
         if (e.shiftKey && document.activeElement === first) { e.preventDefault(); if (last instanceof HTMLElement) last.focus(); }
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); if (first instanceof HTMLElement) first.focus(); }
 
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          if (last instanceof HTMLElement) last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
         if (e.shiftKey) {
           if (document.activeElement === first) {
             e.preventDefault();
