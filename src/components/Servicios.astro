@@ -111,6 +111,9 @@ const modalData = CONFIG.servicios.map(s => ({
   </div>
 </section>
 
+<script is:inline define:vars={{ modalData }}>
+  (function() {
+    const services = modalData;
 <script define:vars={{ modalData }} is:inline>
   (function() {
     const services = modalData;
@@ -146,6 +149,7 @@ const modalData = CONFIG.servicios.map(s => ({
     const openModal = (index, element) => {
       const servicio = services[index];
       if (!servicio) return;
+
     document.addEventListener('DOMContentLoaded', () => {
       const cards = document.querySelectorAll('.service-card');
       const backdrop = document.getElementById('service-modal-backdrop');
@@ -237,7 +241,7 @@ const modalData = CONFIG.servicios.map(s => ({
       if (!s || !modalContent || !backdrop || !modal) return;
 
       triggerElement = element;
-      triggerElement.setAttribute('aria-expanded', 'true');
+      triggerElement?.setAttribute('aria-expanded', 'true');
 
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
@@ -248,6 +252,8 @@ const modalData = CONFIG.servicios.map(s => ({
             <use href="#icon-${escapeHtml(s.icono)}" />
           </svg>
         </div>
+        <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
+        <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
         <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(s.titulo)}</h3>
         <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(s.descripcion)}</p>
         <p id="modal-description" class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(s.descripcion)}</p>
@@ -297,6 +303,10 @@ const modalData = CONFIG.servicios.map(s => ({
     const closeModal = () => {
       if (!isModalOpen || !backdrop || !modal) return;
       
+      const backdrop = document.getElementById('service-modal-backdrop');
+      const modal = document.getElementById('service-modal');
+      const modalContent = document.getElementById('modal-content');
+
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
@@ -331,6 +341,23 @@ const modalData = CONFIG.servicios.map(s => ({
       }, 400);
     };
 
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.service-card');
+      const backdrop = document.getElementById('service-modal-backdrop');
+      const closeBtn = document.getElementById('close-modal');
+      const modal = document.getElementById('service-modal');
+
+      cards.forEach(card => {
+        const index = card.getAttribute('data-index');
+        const handleOpen = () => openModal(parseInt(index), card);
+
+        card.addEventListener('click', handleOpen);
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleOpen();
+          }
+        });
     cards.forEach(card => {
       const index = card.getAttribute('data-index');
       if (index === null) return;
@@ -394,6 +421,8 @@ const modalData = CONFIG.servicios.map(s => ({
           const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
           if (focusableElements.length === 0) return;
 
+          const firstElement = focusableElements[0];
+          const lastElement = focusableElements[focusableElements.length - 1];
           const firstElement = focusableElements[0] as HTMLElement;
           const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 

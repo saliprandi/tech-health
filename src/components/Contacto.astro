@@ -14,6 +14,11 @@ import { CONFIG } from '../data/config';
 
         <div class="flex flex-col gap-6">
           
+          <!-- WhatsApp -->
+          <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2">
+            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-focus-visible:scale-110 transition-transform">
+              <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor">
+                <use href="#icon-phone" />
           <!-- WhatsApp / Phone -->
           <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" aria-label="Llamar o enviar WhatsApp">
@@ -43,6 +48,10 @@ import { CONFIG } from '../data/config';
           </div>
 
           <!-- Location -->
+          <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" aria-label="Ver en Google Maps" class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2">
+            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-focus-visible:scale-110 transition-transform">
+              <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor">
+                <use href="#icon-map-pin" />
           <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
             <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" aria-label="Ver en Google Maps">
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -91,6 +100,11 @@ import { CONFIG } from '../data/config';
             </button>
           </div>
 
+          <!-- Hours -->
+          <div class="flex items-start gap-4 p-4 rounded-[12px] border border-transparent">
+            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor">
+                <use href="#icon-clock" />
           <!-- Location -->
           <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border relative">
             <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" aria-label="Ver en Google Maps">
@@ -143,6 +157,10 @@ import { CONFIG } from '../data/config';
 
           <!-- Email -->
           {CONFIG.contacto.email && (
+            <a href={`mailto:${CONFIG.contacto.email}`} class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2">
+              <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-focus-visible:scale-110 transition-transform">
+                <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor">
+                  <use href="#icon-mail" />
             <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border relative">
             <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
               <a href={`mailto:${CONFIG.contacto.email}`} class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" aria-label="Enviar correo electrónico">
@@ -285,10 +303,16 @@ import { CONFIG } from '../data/config';
           </form>
         </div>
       </div>
-
     </div>
   </div>
 </section>
+
+<script is:inline define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contact-form');
+    const btn = document.getElementById('f-submit');
+    const textarea = document.getElementById('f-desc');
+    const counter = document.getElementById('char-counter');
 
 <script define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }} is:inline>
   document.addEventListener('DOMContentLoaded', () => {
@@ -346,6 +370,16 @@ import { CONFIG } from '../data/config';
         btn.innerText = 'Redirigiendo...';
         btn.disabled = true;
         btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+        const nombre = document.getElementById('f-nombre').value.trim() || 'No especificado';
+        const tel = document.getElementById('f-tel').value.trim() || 'No especificado';
+        const servicioEl = document.getElementById('f-servicio');
+        const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+        const desc = textarea?.value.trim() || 'Sin detalles adicionales';
+
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
+        const encodedMessage = encodeURIComponent(rawMessage);
+        const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
         const nombre = (document.getElementById('f-nombre')).value.trim() || 'No especificado';
         const tel = (document.getElementById('f-tel')).value.trim() || 'No especificado';

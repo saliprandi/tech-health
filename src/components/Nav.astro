@@ -153,6 +153,17 @@ const navItems = [
       toggle?.setAttribute('aria-expanded', isOpen.toString());
       menu?.setAttribute('aria-hidden', (!isOpen).toString());
 
+      const classes = {
+        hidden: ['opacity-0', 'pointer-events-none', 'translate-y-[-10px]'],
+        visible: ['opacity-100', 'pointer-events-auto', 'translate-y-0']
+      };
+
+      if (isOpen) {
+        menu?.classList.remove(...classes.hidden);
+        menu?.classList.add(...classes.visible);
+      } else {
+        menu?.classList.remove(...classes.visible);
+        menu?.classList.add(...classes.hidden);
       // Animation classes
       menu?.classList.toggle('opacity-0', !isOpen);
       menu?.classList.toggle('pointer-events-none', !isOpen);
@@ -226,6 +237,7 @@ const navItems = [
       });
     });
 
+    // Keyboard handling: Focus trapping & Escape key
     // Close on Escape key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && isOpen) {
@@ -425,6 +437,8 @@ const navItems = [
       const section = document.getElementById(id);
       if (section) observer.observe(section);
     });
+
+    // Reset ScrollSpy when clicking logo
 
     // Reset ScrollSpy when clicking logo/home
     document.querySelector('a[aria-label="Inicio de TechHealth"]')?.addEventListener('click', () => {
