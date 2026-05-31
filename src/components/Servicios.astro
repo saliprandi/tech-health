@@ -1,6 +1,7 @@
 ---
 import { CONFIG } from '../data/config';
 
+// Optimization: Only pass the minimal data needed for the client-side modal
 // Optimization: Only pass minimal data needed for the client-side modal
 const modalData = CONFIG.servicios.map(s => ({
   titulo: s.titulo,
@@ -111,6 +112,12 @@ const modalData = CONFIG.servicios.map(s => ({
 
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
+          <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
+            <use href="#icon-${escapeHtml(s.icono)}" />
+          </svg>
+        </div>
+        <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(s.titulo)}</h3>
+        <p id="modal-description" class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(s.descripcion)}</p>
           <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor"><use href="#icon-${escapeHtml(s.icono)}" /></svg>
         </div>
         <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(s.titulo)}</h3>
@@ -133,6 +140,18 @@ const modalData = CONFIG.servicios.map(s => ({
       document.body.style.overflow = 'hidden';
       isModalOpen = true;
 
+      setTimeout(() => { if (closeBtn) closeBtn.focus(); }, 100);
+    };
+
+    const closeModal = () => {
+      if (!isModalOpen || !backdrop || !modal) return;
+      
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+      document.body.style.overflow = '';
+      isModalOpen = false;
+      
       setTimeout(() => {
         if (closeBtn) closeBtn.focus();
       }, 100);
@@ -152,12 +171,11 @@ const modalData = CONFIG.servicios.map(s => ({
         triggerElement = null;
       }
 
-      setTimeout(() => {
-        if (!isModalOpen && modalContent) modalContent.innerHTML = '';
-      }, 400);
+      setTimeout(() => { if (!isModalOpen && modalContent) modalContent.innerHTML = ''; }, 400);
     };
 
     cards.forEach(card => {
+      const index = parseInt(card.getAttribute('data-index') || '0');
       const indexStr = card.getAttribute('data-index');
       if (indexStr === null) return;
       const index = parseInt(indexStr);
@@ -181,6 +199,8 @@ const modalData = CONFIG.servicios.map(s => ({
         if (focusable.length === 0) return;
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); if (last instanceof HTMLElement) last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); if (first instanceof HTMLElement) first.focus(); }
 
         if (e.shiftKey && document.activeElement === first) {
           e.preventDefault();
