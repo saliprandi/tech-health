@@ -12,6 +12,10 @@ const navItems = [
 <nav id="main-nav" class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
+    <!-- Logo -->
+    <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE
+         This is the primary branding and navigation element to the home page. -->
+    <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
     <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
     <!-- Logo -->
@@ -126,6 +130,7 @@ const navItems = [
     const menu = document.getElementById('mobile-menu');
     const backdrop = document.getElementById('mobile-menu-backdrop');
     const navLinks = document.querySelectorAll('.nav-link');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const spans = toggle?.querySelectorAll('span');
 
@@ -209,6 +214,7 @@ const navItems = [
       });
     });
 
+    // ScrollSpy Implementation
     // Close on Escape key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && isOpen) {
@@ -392,6 +398,37 @@ const navItems = [
       });
     }, observerOptions);
 
+    const sections = document.querySelectorAll('section[id]');
+    sections.forEach(section => observer.observe(section));
+
+    // Keyboard handling: Focus trapping & Escape key
+    document.addEventListener('keydown', (e) => {
+      if (!isOpen) return;
+
+      if (e.key === 'Escape') {
+        toggleMenu();
+        (toggle as HTMLElement)?.focus();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        const focusableElements = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean) as HTMLElement[];
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) { // Shift + Tab
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement?.focus();
+          }
+        } else { // Tab
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement?.focus();
+          }
+        }
+      }
+    });
     document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
 
     // Reset on logo click

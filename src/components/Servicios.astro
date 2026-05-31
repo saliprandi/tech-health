@@ -269,6 +269,7 @@ const modalData = CONFIG.servicios.map(s => ({
       document.body.style.overflow = 'hidden';
       isModalOpen = true;
 
+      // Focus management: focus the close button
       setTimeout(() => closeBtn?.focus(), 50);
       setTimeout(() => {
         if (closeBtn) closeBtn.focus();
@@ -320,6 +321,7 @@ const modalData = CONFIG.servicios.map(s => ({
         triggerElement = null;
       }
 
+      // Clear content after animation
       setTimeout(() => {
         if (!isModalOpen) modalContent.innerHTML = '';
       }, 400);
@@ -332,6 +334,7 @@ const modalData = CONFIG.servicios.map(s => ({
       setTimeout(() => { if (!isModalOpen && modalContent) modalContent.innerHTML = ''; }, 400);
     };
 
+      const handleOpen = () => openModal(parseInt(index), card);
     cards.forEach(card => {
       const index = parseInt(card.getAttribute('data-index') || '0');
       const indexStr = card.getAttribute('data-index');
@@ -353,6 +356,10 @@ const modalData = CONFIG.servicios.map(s => ({
       });
     });
 
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    
+    // Global key listeners
     backdrop?.addEventListener('click', closeModal);
     closeBtn?.addEventListener('click', closeModal);
 
