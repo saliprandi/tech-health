@@ -19,3 +19,11 @@
 ## 2026-05-17 - [Critical Component Deduplication]
 **Learning:** Massive code duplication in Astro components (Nav, Contacto, Servicios) caused build failures and significantly bloated the HTML payload. Deduplicating these components not only fixed the build but also reduced the final index.html size by ~5KB (~8%).
 **Action:** Always check for redundant HTML and script blocks after complex merges or migrations to ensure payload efficiency and build stability.
+
+## 2025-05-28 - [Critical Component Deduplication & LCP]
+**Learning:** Surgical deduplication of core components (Nav, Servicios, Contacto, Equipos) is critical for both build stability and payload efficiency. Redundant HTML and conflicting script blocks caused build failures and increased the uncompressed HTML size by ~8KB. Additionally, preloading the main logo improved LCP.
+**Action:** Always verify build stability with 'pnpm build' after any component refactoring and prioritize preloading for the Largest Contentful Paint asset.
+
+## 2026-05-31 - [Critical Component Deduplication & Payload Optimization]
+**Learning:** Massive code duplication (multiple HTML blocks and script tags) in core Astro components (Nav, Contacto, Servicios, Equipos, Nosotros) not only bloated the HTML payload but also caused critical build failures ("Expected \")\" but found \"}\"") due to syntax errors in corrupted merge artifacts.
+**Action:** Always perform a surgical deduplication of core components after merges or complex tasks to ensure build stability and maintain an optimized payload (~68KB for the main page).
