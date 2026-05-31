@@ -30,12 +30,11 @@ import { CONFIG } from '../data/config';
               </div>
             </a>
             <button
-              class="copy-btn group/btn flex items-center gap-1.5 text-blue hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded px-2 py-1"
+              class="copy-btn group/btn flex items-center gap-1.5 text-blue hover:text-navy transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded px-2 py-1"
               data-copy={CONFIG.contacto.whatsapp}
               aria-label="Copiar número de WhatsApp"
-              title="Copiar al portapapeles"
             >
-              <svg class="w-4 h-4 copy-icon"><use href="#icon-copy" /></svg>
+              <svg class="w-4 h-4 copy-icon transition-transform group-active/btn:scale-90"><use href="#icon-copy" /></svg>
               <svg class="w-4 h-4 check-icon hidden text-green-600"><use href="#icon-check" /></svg>
               <span class="text-[11px] font-bold uppercase tracking-wider btn-text">Copiar</span>
             </button>
@@ -61,7 +60,6 @@ import { CONFIG } from '../data/config';
               class="copy-btn absolute top-4 right-4 p-2 rounded-md bg-blue-pale text-blue hover:bg-blue hover:text-white transition-all opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue"
               data-copy={`${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}
               aria-label="Copiar dirección"
-              title="Copiar al portapapeles"
             >
               <svg class="w-4 h-4 copy-icon"><use href="#icon-copy" /></svg>
               <svg class="w-4 h-4 check-icon hidden text-green-600"><use href="#icon-check" /></svg>
@@ -87,7 +85,6 @@ import { CONFIG } from '../data/config';
                 class="copy-btn absolute top-4 right-4 p-2 rounded-md bg-blue-pale text-blue hover:bg-blue hover:text-white transition-all opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue"
                 data-copy={CONFIG.contacto.email}
                 aria-label="Copiar correo electrónico"
-                title="Copiar al portapapeles"
               >
                 <svg class="w-4 h-4 copy-icon"><use href="#icon-copy" /></svg>
                 <svg class="w-4 h-4 check-icon hidden text-green-600"><use href="#icon-check" /></svg>
@@ -211,6 +208,8 @@ import { CONFIG } from '../data/config';
             const btnText = button.querySelector('.btn-text');
 
             const originalText = btnText ? btnText.textContent : 'Copiar';
+            const originalAriaLabel = button.getAttribute('aria-label');
+
             const originalLabel = button.getAttribute('aria-label');
             const originalAriaLabel = button.getAttribute('aria-label');
 
@@ -297,6 +296,7 @@ import { CONFIG } from '../data/config';
                 isSuccess = false;
               }, 2000);
             }
+            button.setAttribute('aria-label', 'Información copiada');
 
             button.classList.add('scale-105');
             button.setAttribute('aria-label', 'Información copiada al portapapeles');
@@ -337,6 +337,11 @@ import { CONFIG } from '../data/config';
         });
       });
 
+      // Character counter logic
+      if (textarea && charCounter) {
+        textarea.addEventListener('input', () => {
+          const count = textarea.value.length;
+          charCounter.textContent = count + ' / 1000';
       // Character counter
       if (textarea instanceof HTMLTextAreaElement && charCounter) {
         textarea.addEventListener('input', () => {
@@ -366,13 +371,17 @@ import { CONFIG } from '../data/config';
           const telEl = document.getElementById('f-tel');
           const servicioEl = document.getElementById('f-servicio');
 
+          const nombre = nombreEl ? nombreEl.value.trim() : 'No especificado';
+          const tel = telEl ? telEl.value.trim() : 'No especificado';
+          const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+          const desc = textarea ? textarea.value.trim() : 'Sin detalles adicionales';
           const nombre = (nombreEl instanceof HTMLInputElement) ? nombreEl.value.trim() : 'No especificado';
           const tel = (telEl instanceof HTMLInputElement) ? telEl.value.trim() : 'No especificado';
           const servicio = (servicioEl instanceof HTMLSelectElement) ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
           const desc = (textarea instanceof HTMLTextAreaElement) ? textarea.value.trim() : 'Sin detalles adicionales';
 
-          const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
-          const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(rawMessage)}`;
+          const rawMessage = "Hola TechHealth! Me comunico desde su web.\n*Nombre:* " + nombre + "\n*Teléfono:* " + tel + "\n*Servicio:* " + servicio + "\n*Detalle:* " + desc;
+          const url = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(rawMessage);
 
           window.open(url, '_blank', 'noopener,noreferrer');
 

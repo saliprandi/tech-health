@@ -9,6 +9,11 @@ const socialLinks = [
   { name: 'instagram', label: 'Seguir en Instagram' },
   { name: 'facebook', label: 'Seguir en Facebook' },
   { name: 'linkedin', label: 'Seguir en LinkedIn' }
+] as const;
+
+type SocialKey = typeof socialLinks[number]['name'];
+
+const activeSocials = socialLinks.filter(social => !!CONFIG.redes[social.name as SocialKey]);
 type SocialKey = 'instagram' | 'facebook' | 'linkedin';
 
 const socialLinks: { name: SocialKey; label: string }[] = [
@@ -53,6 +58,7 @@ const hasSocials = activeSocials.length > 0;
 
 <footer class="bg-navy-dark py-10 px-[5%] text-center border-t border-white/5">
   <div class="container-custom flex flex-col items-center">
+    <!-- Brand Logo & Back to top -->
     <div class="mb-8">
       <!-- Interactive 'Back to top' link -->
       <a href="#hero" class="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-lg transition-all" aria-label="Volver al inicio">
@@ -78,6 +84,9 @@ const hasSocials = activeSocials.length > 0;
 
     {activeSocials.length > 0 && (
       <div class="flex items-center gap-4 mb-6">
+        {activeSocials.map(social => (
+          <a
+            href={CONFIG.redes[social.name as SocialKey]}
         {socialLinks.map(([platform, url]) => (
           <a
             href={url}
@@ -99,7 +108,7 @@ const hasSocials = activeSocials.length > 0;
             href={CONFIG.redes[social.id as SocialKey]}
             target="_blank"
             rel="noopener noreferrer"
-            class="text-white/50 hover:text-white transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark focus-visible:text-white rounded-full p-1"
+            class="text-white/50 hover:text-white focus-visible:text-white transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1"
             aria-label={social.label}
           >
             <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">

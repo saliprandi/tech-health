@@ -36,6 +36,10 @@ const modalData = CONFIG.servicios.map(s => ({
           tabindex="0"
           aria-haspopup="dialog"
           aria-expanded="false"
+          aria-label={`Ver detalles de ${servicio.titulo}`}
+        >
+          <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-500 ease-out"></div>
+          
           aria-label={`Ver detalles sobre ${servicio.titulo}`}
         >
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-500 ease-out"></div>
@@ -173,6 +177,7 @@ const modalData = CONFIG.servicios.map(s => ({
       modal?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       document.body.style.overflow = '';
       isModalOpen = false;
+
       
       if (triggerElement) {
         triggerElement.setAttribute('aria-expanded', 'false');

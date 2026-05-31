@@ -1,6 +1,8 @@
 ---
 /**
  * BackToTop.astro
+ * Micro-UX pattern: Floating button that appears after scrolling,
+ * with smooth scroll and focus restoration.
  * Floating button to smoothly scroll back to the top of the page.
  * Includes scroll-depth visibility logic and accessibility focus management.
  * Floating button that appears after scrolling 500px.
@@ -10,6 +12,32 @@
 
 <button
   id="back-to-top"
+  class="fixed bottom-[100px] right-[28px] z-[190] w-[48px] h-[48px] bg-white border border-border rounded-full flex items-center justify-center text-navy shadow-lg opacity-0 pointer-events-none translate-y-4 transition-all duration-300 hover:bg-off-white hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
+  aria-label="Volver arriba"
+  title="Volver arriba"
+>
+  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+    <use href="#icon-arrow-up" />
+  </svg>
+</button>
+
+<script>
+  (function() {
+    const btn = document.getElementById('back-to-top');
+    const SCROLL_THRESHOLD = 500;
+
+    if (!btn) return;
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const isVisible = scrollY > SCROLL_THRESHOLD;
+
+      btn.classList.toggle('opacity-0', !isVisible);
+      btn.classList.toggle('pointer-events-none', !isVisible);
+      btn.classList.toggle('translate-y-4', !isVisible);
+      btn.classList.toggle('opacity-100', isVisible);
+      btn.classList.toggle('pointer-events-auto', isVisible);
+      btn.classList.toggle('translate-y-0', isVisible);
   class="fixed bottom-[100px] right-[28px] z-[150] w-[48px] h-[48px] bg-white border border-border text-navy rounded-full flex items-center justify-center shadow-lg opacity-0 pointer-events-none translate-y-4 transition-all duration-300 hover:bg-blue-pale hover:text-blue hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
   class="fixed bottom-[100px] right-[28px] z-[190] w-12 h-12 bg-white border border-border rounded-full flex items-center justify-center text-navy shadow-md transition-all duration-300 opacity-0 pointer-events-none hover:bg-blue-pale hover:text-blue hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
   aria-label="Volver arriba"
@@ -99,6 +127,13 @@
         behavior: 'smooth'
       });
 
+      // Focus restoration to the main content or skip-link target
+      const mainContent = document.getElementById('main-content');
+      if (mainContent) {
+        // Wait for smooth scroll to finish or start before focusing
+        setTimeout(() => {
+          mainContent.focus();
+        }, 100);
       // Accessibility: Restore focus to the main content container or top of page
       if (mainContent) {
         mainContent.focus({ preventScroll: true });

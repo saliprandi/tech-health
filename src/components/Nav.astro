@@ -12,6 +12,8 @@ const navItems = [
 <nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
+    <!-- Brand Logo -->
+    <a href="#hero" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
     <!-- Logo -->
     <a href="#hero" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
@@ -78,6 +80,7 @@ const navItems = [
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="fixed top-[68px] left-0 w-full h-[calc(100vh-68px)] bg-white/95 backdrop-blur-md border-b border-border flex flex-col items-center py-12 gap-8 shadow-card-hover translate-x-full opacity-0 pointer-events-none transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
     {navItems.map(item => (
+      <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[18px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1 py-0.5">
       <a href={`#${item.id}`} class="nav-link mobile-link font-body font-medium text-[18px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors">
         {item.label}
       </a>
@@ -170,7 +173,7 @@ const navItems = [
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && isOpen) {
           toggleMenu(false);
-          toggle?.focus();
+          if (toggle instanceof HTMLElement) toggle.focus();
         }
 
         if (isOpen && e.key === 'Tab') {
@@ -180,10 +183,10 @@ const navItems = [
 
           if (e.shiftKey && document.activeElement === first) {
             e.preventDefault();
-            last.focus();
+            if (last instanceof HTMLElement) last.focus();
           } else if (!e.shiftKey && document.activeElement === last) {
             e.preventDefault();
-            first.focus();
+            if (first instanceof HTMLElement) first.focus();
           }
         }
       });
