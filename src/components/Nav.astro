@@ -14,6 +14,8 @@ const navItems = [
     
     <!-- Logo -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
+    <!-- Logo -->
+    <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
     <!-- Brand Logo -->
     <!-- BRAND LOGO -->
     <!-- Brand Logo -->
@@ -36,6 +38,7 @@ const navItems = [
       />
     </a>
 
+    <!-- Desktop Menu -->
     <!-- Desktop Navigation -->
     <ul class="hidden md:flex items-center gap-8">
       {navItems.map(item => (
@@ -62,6 +65,11 @@ const navItems = [
         Consultar por WhatsApp
       </a>
 
+      <!-- Hamburger Button -->
+      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-sm transition-shadow z-[101]" aria-label="Menú" aria-expanded="false" aria-controls="mobile-menu">
+        <span class="block w-6 h-0.5 bg-navy transition-transform duration-300 origin-center"></span>
+        <span class="block w-6 h-0.5 bg-navy transition-opacity duration-300"></span>
+        <span class="block w-6 h-0.5 bg-navy transition-transform duration-300 origin-center"></span>
       <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-sm transition-shadow z-[101]" aria-label="Menú" aria-expanded="false" aria-controls="mobile-menu">
         <span class="block w-6 h-0.5 bg-navy transition-transform duration-300 origin-center"></span>
         <span class="block w-6 h-0.5 bg-navy transition-opacity duration-300"></span>
@@ -115,6 +123,7 @@ const navItems = [
     const backdrop = document.getElementById('mobile-menu-backdrop');
     const navLinks = document.querySelectorAll('.nav-link');
     const mobileLinks = document.querySelectorAll('.mobile-link');
+    const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const spans = toggle?.querySelectorAll('span');
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
     const whatsappMobileLink = document.getElementById('whatsapp-mobile-link');
@@ -182,6 +191,7 @@ const navItems = [
       });
     });
 
+    // Keyboard handling
     // Keyboard handling: Focus trapping & Escape key
     document.addEventListener('keydown', (e) => {
       if (!isOpen) return;
@@ -189,6 +199,8 @@ const navItems = [
     document.addEventListener('click', (e) => {
       if (isOpen && menu && !menu.contains(e.target) && !toggle?.contains(e.target)) {
         toggleMenu();
+        (toggle as HTMLElement)?.focus();
+        return;
       }
     });
 
@@ -339,6 +351,9 @@ const navItems = [
 
     const sections = document.querySelectorAll('section[id]');
     sections.forEach(section => observer.observe(section));
+
+    // Reset ScrollSpy when clicking logo
+    document.querySelector('a[href="/"]')?.addEventListener('click', () => {
 
     // Reset ScrollSpy when clicking logo
     document.querySelector('a[aria-label^="Inicio de"]')?.addEventListener('click', () => {
