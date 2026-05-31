@@ -25,69 +25,66 @@ import { CONFIG } from '../data/config';
 
         <!-- Equipo -->
         <h3 class="font-heading font-bold text-[20px] text-navy mb-6">Nuestro Equipo</h3>
-        <div class="flex flex-col gap-4">
+        <ul class="flex flex-col gap-4" role="list">
           {CONFIG.equipo.map(member => (
-            <div class="bg-white rounded-[16px] p-5 shadow-sm border border-border flex flex-col sm:flex-row gap-[20px] items-start sm:items-center">
+            <div class="group bg-white rounded-[16px] p-5 shadow-sm border border-border flex flex-col sm:flex-row gap-[20px] items-start sm:items-center hover:scale-[1.02] hover:bg-blue-pale/20 hover:border-blue/20 transition-all duration-300">
+            <div class="group bg-white rounded-[16px] p-5 shadow-sm border border-border flex flex-col sm:flex-row gap-[20px] items-start sm:items-center hover:bg-white hover:shadow-md transition-all duration-300">
               
               <!-- Avatar -->
-              <div class="w-[54px] h-[54px] rounded-full flex items-center justify-center flex-shrink-0" style={`background-color: ${member.color}`}>
+              <div class="w-[54px] h-[54px] rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style={`background-color: ${member.color}`}>
                 <span class="font-heading font-bold text-white text-[20px]">
                   {member.iniciales}
                 </span>
+            <li class="group bg-white rounded-[16px] p-5 shadow-sm border border-border flex flex-col sm:flex-row gap-[20px] items-start sm:items-center hover:scale-[1.02] hover:shadow-md transition-all duration-300">
+              <!-- Avatar -->
+              <div class="w-[54px] h-[54px] rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style={`background-color: ${member.color}`}>
+                <span class="font-heading font-bold text-white text-[20px]">{member.iniciales}</span>
               </div>
-
               <!-- Info -->
               <div>
-                <h4 class="font-heading font-bold text-navy text-[18px] leading-tight">
-                  {member.nombre}
-                </h4>
-                <div class="font-body font-medium text-[12px] text-blue uppercase tracking-wide mb-2 mt-1">
-                  {member.cargo}
-                </div>
-                <p class="font-body font-light text-[13px] text-text-soft leading-relaxed">
-                  {member.descripcion}
-                </p>
+                <h4 class="font-heading font-bold text-navy text-[18px] leading-tight">{member.nombre}</h4>
+                <div class="font-body font-medium text-[12px] text-blue uppercase tracking-wide mb-2 mt-1">{member.cargo}</div>
+                <p class="font-body font-light text-[13px] text-text-soft leading-relaxed">{member.descripcion}</p>
               </div>
-
-            </div>
+            </li>
           ))}
-        </div>
-
+        </ul>
       </div>
 
       <!-- Right Column (Value Cards) -->
       <div class="flex flex-col gap-6 lg:mt-12">
         
         <!-- Value 1 -->
-        <div class="relative bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover transition-shadow duration-300">
+        <div class="relative bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover hover:scale-[1.02] transition-all duration-300">
+        <div class="relative bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover hover:scale-[1.02] hover:bg-blue-pale/20 hover:border-blue/20 transition-all duration-300">
           <div class="absolute top-6 right-8 font-heading font-black text-[42px] leading-none text-navy/[0.08]">01</div>
+        <div class="group relative bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover hover:scale-[1.02] transition-all duration-300">
+          <div class="absolute top-6 right-8 font-heading font-black text-[42px] leading-none text-navy/[0.08] group-hover:text-blue/10 transition-colors">01</div>
           <h4 class="font-heading font-bold text-[20px] text-navy mb-3 pr-12">Precisión técnica</h4>
-          <p class="font-body font-light text-[15px] text-text-soft">
-            Diagnósticos exhaustivos y reparaciones a nivel de componente electrónico. No solo cambiamos placas, identificamos y solucionamos el origen del problema.
-          </p>
+          <p class="font-body font-light text-[15px] text-text-soft">Diagnósticos exhaustivos y reparaciones a nivel de componente electrónico. No solo cambiamos placas, identificamos y solucionamos el origen del problema.</p>
         </div>
 
         <!-- Value 2 -->
-        <div class="relative bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover transition-shadow duration-300">
+        <div class="relative bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover hover:scale-[1.02] transition-all duration-300">
+        <div class="relative bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover hover:scale-[1.02] hover:bg-blue-pale/20 hover:border-blue/20 transition-all duration-300">
           <div class="absolute top-6 right-8 font-heading font-black text-[42px] leading-none text-navy/[0.08]">02</div>
+        <div class="group relative bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover hover:scale-[1.02] transition-all duration-300">
+          <div class="absolute top-6 right-8 font-heading font-black text-[42px] leading-none text-navy/[0.08] group-hover:text-blue/10 transition-colors">02</div>
           <h4 class="font-heading font-bold text-[20px] text-navy mb-3 pr-12">Compromiso con la salud</h4>
-          <p class="font-body font-light text-[15px] text-text-soft">
-            Entendemos que detrás de cada equipo hay una vida humana. Actuamos con sentido de urgencia y bajo los más estrictos estándares de seguridad y calibración.
-          </p>
+          <p class="font-body font-light text-[15px] text-text-soft">Entendemos que detrás de cada equipo hay una vida humana. Actuamos con sentido de urgencia y bajo los más estrictos estándares de seguridad y calibración.</p>
         </div>
 
         <!-- Value 3 -->
-        <div class="relative bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover transition-shadow duration-300">
+        <div class="relative bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover hover:scale-[1.02] transition-all duration-300">
+        <div class="relative bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover hover:scale-[1.02] hover:bg-blue-pale/20 hover:border-blue/20 transition-all duration-300">
           <div class="absolute top-6 right-8 font-heading font-black text-[42px] leading-none text-navy/[0.08]">03</div>
+        <div class="group relative bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover hover:scale-[1.02] transition-all duration-300">
+          <div class="absolute top-6 right-8 font-heading font-black text-[42px] leading-none text-navy/[0.08] group-hover:text-blue/10 transition-colors">03</div>
           <h4 class="font-heading font-bold text-[20px] text-navy mb-3 pr-12">Atención personalizada</h4>
-          <p class="font-body font-light text-[15px] text-text-soft">
-            Trato directo con los técnicos responsables. Informes claros, asesoramiento honesto y soporte continuo para acompañar la gestión tecnológica de su institución.
-          </p>
+          <p class="font-body font-light text-[15px] text-text-soft">Trato directo con los técnicos responsables. Informes claros, asesoramiento honesto y soporte continuo para acompañar la gestión tecnológica de su institución.</p>
         </div>
-
       </div>
 
     </div>
-
   </div>
 </section>
