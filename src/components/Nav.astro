@@ -12,6 +12,8 @@ const navItems = [
 <nav id="main-nav" class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
+    <!-- Logo -->
+    <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
     <!-- IMPORTANT: BRAND LOGO - DO NOT REMOVE
          This logo serves as a branding element and an interactive 'Back to top' link. -->
     <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label="Inicio de TechHealth">
@@ -173,6 +175,12 @@ const navItems = [
       menu?.classList.toggle('pointer-events-auto', isOpen);
       menu?.classList.toggle('translate-y-0', isOpen);
 
+      if (spans?.length === 3) {
+        spans[0].classList.toggle('rotate-45', isOpen);
+        spans[0].classList.toggle('translate-y-[8.5px]', isOpen);
+        spans[1].classList.toggle('opacity-0', isOpen);
+        spans[2].classList.toggle('-rotate-45', isOpen);
+        spans[2].classList.toggle('-translate-y-[8.5px]', isOpen);
       // Hamburger animation
       toggle?.setAttribute('aria-expanded', isOpen.toString());
       toggle?.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
@@ -237,6 +245,7 @@ const navItems = [
       });
     });
 
+    // Keyboard handling: Escape key and Focus Trap
     // Keyboard handling: Focus trapping & Escape key
     // Close on Escape key
     document.addEventListener('keydown', (e) => {
@@ -405,6 +414,7 @@ const navItems = [
       threshold: 0
     };
 
+    const observer = new IntersectionObserver((entries) => {
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
     const observer = new IntersectionObserver((entries) => {
     const observerCallback = (entries) => {
@@ -430,6 +440,12 @@ const navItems = [
           });
         }
       });
+    }, observerOptions);
+
+    document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
+
+    // Reset ScrollSpy when clicking logo
+    document.querySelector('a[aria-label^="Inicio de"]')?.addEventListener('click', () => {
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
