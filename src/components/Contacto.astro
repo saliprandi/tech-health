@@ -14,6 +14,8 @@ import { CONFIG } from '../data/config';
 
         <div class="flex flex-col gap-6">
           
+          <!-- WhatsApp -->
+          <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border relative">
           <!-- WhatsApp / Phone -->
           <div class="group flex items-center justify-between p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border relative">
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="flex items-start gap-4 flex-grow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-lg" aria-label="Abrir chat de WhatsApp">
@@ -72,7 +74,7 @@ import { CONFIG } from '../data/config';
             <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border relative">
               <a href={`mailto:${CONFIG.contacto.email}`} class="flex items-start gap-4 flex-grow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-lg" aria-label="Enviar correo electrónico">
                 <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                   </svg>
                 </div>
@@ -106,6 +108,11 @@ import { CONFIG } from '../data/config';
               <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.horario}</div>
             </div>
           </div>
+
+        </div>
+      </div>
+
+      <!-- Right Column (Form) -->
         </div>
       </div>
 
@@ -131,6 +138,7 @@ import { CONFIG } from '../data/config';
                   <option value="Reparación / Mantenimiento correctivo" class="bg-navy text-white">Reparación / Mantenimiento correctivo</option>
                   <option value="Revisión de placa electrónica" class="bg-navy text-white">Revisión de placa electrónica</option>
                 </select>
+                <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                 <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
@@ -144,10 +152,17 @@ import { CONFIG } from '../data/config';
               </div>
               <textarea id="f-desc" name="descripcion" rows="3" maxlength="1000" aria-describedby="char-counter" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full resize-none"></textarea>
             </div>
+            <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 shadow-sm mt-2 active:scale-[0.98]">
+              Enviar por WhatsApp
+            </button>
 
             <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 shadow-sm mt-2 active:scale-[0.98]">
               Enviar por WhatsApp
             </button>
+
+            <p class="font-body text-[12px] text-white/40 text-center mt-2">
+              Será redirigido a WhatsApp para enviar el mensaje.
+            </p>
             <p class="font-body text-[12px] text-white/40 text-center mt-2">Será redirigido a WhatsApp para enviar el mensaje.</p>
           </form>
         </div>
@@ -172,6 +187,15 @@ import { CONFIG } from '../data/config';
         button.addEventListener('click', async (e) => {
           e.preventDefault();
           if (isSuccess) return;
+
+
+      // Click to Copy Logic
+      document.querySelectorAll('.copy-btn').forEach(button => {
+        let isSuccess = false;
+        button.addEventListener('click', async (e) => {
+          e.preventDefault();
+          if (isSuccess) return;
+
           const textToCopy = button.getAttribute('data-copy');
           if (!textToCopy) return;
 
@@ -184,10 +208,41 @@ import { CONFIG } from '../data/config';
             const btnText = button.querySelector('.btn-text');
             const originalAriaLabel = button.getAttribute('aria-label');
 
+            if (copyIcon) copyIcon.classList.add('hidden');
+            if (checkIcon) checkIcon.classList.remove('hidden');
+            button.classList.add('scale-105');
+
+
+            if (copyIcon && checkIcon && btnText) {
+              const originalText = btnText.textContent;
+              const originalLabel = button.getAttribute('aria-label');
+
+              copyIcon.classList.add('hidden');
+              checkIcon.classList.remove('hidden');
+              btnText.textContent = '¡Copiado!';
+              btnText.classList.add('text-green-600');
+              button.setAttribute('aria-label', '¡Información copiada!');
+
+              setTimeout(() => {
+                copyIcon.classList.remove('hidden');
+                checkIcon.classList.add('hidden');
+                btnText.textContent = originalText;
+                btnText.classList.remove('text-green-600');
+                button.setAttribute('aria-label', originalLabel || '');
+                isSuccess = false;
+              }, 2000);
+            }
+            const originalAriaLabel = button.getAttribute('aria-label');
+
             copyIcon?.classList.add('hidden');
             checkIcon?.classList.remove('hidden');
             button.classList.add('scale-105');
 
+            const originalText = btnText ? btnText.textContent : 'Copiar';
+            const originalAriaLabel = button.getAttribute('aria-label');
+
+            if (copyIcon) copyIcon.classList.add('hidden');
+            if (checkIcon) checkIcon.classList.remove('hidden');
             if (btnText) {
               const originalText = btnText.textContent;
               btnText.textContent = '¡Copiado!';
@@ -211,6 +266,34 @@ import { CONFIG } from '../data/config';
               }, 2000);
             }
             button.setAttribute('aria-label', 'Información copiada');
+            }
+            button.setAttribute('aria-label', 'Información copiada');
+
+            setTimeout(() => {
+              if (copyIcon) copyIcon.classList.remove('hidden');
+              if (checkIcon) checkIcon.classList.add('hidden');
+              button.classList.remove('scale-105');
+              copyIcon?.classList.remove('hidden');
+              checkIcon?.classList.add('hidden');
+              button.classList.remove('scale-105');
+              if (btnText) {
+                btnText.textContent = 'Copiar';
+                btnText.classList.remove('text-green-600');
+              }
+            button.classList.add('scale-105');
+            button.setAttribute('aria-label', 'Información copiada al portapapeles');
+
+            setTimeout(() => {
+              if (copyIcon) copyIcon.classList.remove('hidden');
+              if (checkIcon) checkIcon.classList.add('hidden');
+              if (btnText) {
+                btnText.textContent = 'Copiar';
+                btnText.classList.remove('text-green-600');
+              }
+              button.classList.remove('scale-105');
+              button.setAttribute('aria-label', originalAriaLabel || '');
+              isSuccess = false;
+            }, 2000);
           } catch (err) {
             console.error('Error al copiar:', err);
           }
@@ -218,7 +301,7 @@ import { CONFIG } from '../data/config';
       });
 
       // Character counter
-      if (textarea && charCounter) {
+      if (textarea instanceof HTMLTextAreaElement && charCounter) {
         textarea.addEventListener('input', () => {
           const count = textarea.value.length;
           charCounter.textContent = `${count} / 1000`;
@@ -228,7 +311,7 @@ import { CONFIG } from '../data/config';
       }
 
       // Form submission
-      if (form && btn) {
+      if (form instanceof HTMLFormElement && btn instanceof HTMLButtonElement) {
         form.addEventListener('submit', (e) => {
           e.preventDefault();
 
@@ -237,6 +320,11 @@ import { CONFIG } from '../data/config';
           btn.disabled = true;
           btn.classList.add('opacity-70', 'cursor-not-allowed');
 
+          const nombre = document.getElementById('f-nombre').value.trim() || 'No especificado';
+          const tel = document.getElementById('f-tel').value.trim() || 'No especificado';
+          const servicioEl = document.getElementById('f-servicio');
+          const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+          const desc = textarea ? textarea.value.trim() : 'Sin detalles adicionales';
           const nombreEl = document.getElementById('f-nombre');
           const telEl = document.getElementById('f-tel');
           const servicioEl = document.getElementById('f-servicio');
