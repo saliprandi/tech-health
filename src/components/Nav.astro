@@ -12,6 +12,8 @@ const navItems = [
 <nav id="main-nav" class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
+    <!-- Logo -->
+    <a href="/" class="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 rounded-lg transition-shadow" aria-label={`Inicio de ${CONFIG.empresa.nombre}`}>
     <!-- Brand Logo -->
     <!-- BRAND LOGO -->
     <!-- Brand Logo -->
@@ -78,6 +80,12 @@ const navItems = [
     </div>
   </div>
 
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" aria-hidden="true">
+    {['servicios', 'equipos', 'nosotros', 'contacto'].map(id => (
+      <a href={`#${id}`} class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm transition-colors capitalize">{id}</a>
+    ))}
+    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} id="whatsapp-mobile-link" target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 transition-colors">
   <!-- Mobile Menu Backdrop -->
   <div id="mobile-menu-backdrop" class="fixed inset-0 bg-navy/20 backdrop-blur-sm z-[98] opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
 
@@ -109,6 +117,14 @@ const navItems = [
 
     const toggleMenu = () => {
       isOpen = !isOpen;
+      toggle?.setAttribute('aria-expanded', isOpen.toString());
+      menu?.setAttribute('aria-hidden', (!isOpen).toString());
+      menu?.classList.toggle('opacity-0', !isOpen);
+      menu?.classList.toggle('pointer-events-none', !isOpen);
+      menu?.classList.toggle('translate-y-[-10px]', !isOpen);
+      menu?.classList.toggle('opacity-100', isOpen);
+      menu?.classList.toggle('pointer-events-auto', isOpen);
+      menu?.classList.toggle('translate-y-0', isOpen);
 
       toggle?.setAttribute('aria-expanded', isOpen.toString());
       toggle?.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
@@ -143,6 +159,7 @@ const navItems = [
       document.body.style.overflow = isOpen ? 'hidden' : '';
     };
 
+    toggle?.addEventListener('click', toggleMenu);
     toggle?.addEventListener('click', (e) => {
       e.stopPropagation();
       toggleMenu();
@@ -158,6 +175,9 @@ const navItems = [
       });
     });
 
+    // Keyboard handling: Focus trapping & Escape key
+    document.addEventListener('keydown', (e) => {
+      if (!isOpen) return;
     // Close on click outside
     document.addEventListener('click', (e) => {
       if (isOpen && menu && !menu.contains(e.target) && !toggle?.contains(e.target)) {
@@ -173,6 +193,8 @@ const navItems = [
         return;
       }
 
+      if (e.key === 'Tab') {
+        const focusableElements = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean) as HTMLElement[];
       // Focus trapping for mobile menu
       if (isOpen && e.key === 'Tab') {
         const focusableElements = [toggle, ...Array.from(mobileLinks), whatsappMobileLink].filter(Boolean);
@@ -234,6 +256,7 @@ const navItems = [
           }
         }
 
+    // ScrollSpy Implementation
         document.body.style.overflow = isOpen ? 'hidden' : '';
       };
 
@@ -285,21 +308,39 @@ const navItems = [
       threshold: 0
     };
 
+    const observer = new IntersectionObserver((entries) => {
     const observerCallback = (entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
           navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === `#${id}`) {
+              link.classList.add('nav-link-active');
             const isActive = link.getAttribute('href') === `#${id}`;
             link.classList.toggle('nav-link-active', isActive);
             if (isActive) {
               link.setAttribute('aria-current', 'location');
             } else {
+              link.classList.remove('nav-link-active');
               link.removeAttribute('aria-current');
             }
           });
         }
       });
+    }, observerOptions);
+
+    const sections = document.querySelectorAll('section[id]');
+    sections.forEach(section => observer.observe(section));
+
+    // Reset ScrollSpy when clicking logo
+    document.querySelector('a[aria-label^="Inicio de"]')?.addEventListener('click', () => {
+      navLinks.forEach(link => {
+        link.classList.remove('nav-link-active');
+        link.removeAttribute('aria-current');
+      });
+    });
+  });
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
