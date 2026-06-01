@@ -41,16 +41,6 @@ export default {
       borderRadius: {
         card: '20px',
         small: '12px',
-      },
-      keyframes: {
-        heartbeat: {
-          '0%, 100%': { transform: 'scale(1)' },
-          '10%, 30%': { transform: 'scale(1.15)' },
-          '20%': { transform: 'scale(1.2)' },
-        }
-      },
-      animation: {
-        heartbeat: 'heartbeat 1.2s ease-in-out infinite',
       }
     },
   },

@@ -6,16 +6,16 @@ import { CONFIG } from '../data/config';
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
     <!-- Logo -->
-    <a href="#hero" class="flex items-center group" aria-label="TechHealth Home">
+    <a href="#" class="flex items-center group" aria-label="TechHealth Home">
       <img src="/logo-name.svg" alt="TechHealth Medical Engineering" class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-300" />
     </a>
 
     <!-- Desktop Links -->
     <ul class="hidden md:flex items-center gap-8">
-      <li><a href="#servicios" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Servicios</a></li>
-      <li><a href="#equipos" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Equipos</a></li>
-      <li><a href="#nosotros" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Nosotros</a></li>
-      <li><a href="#contacto" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Contacto</a></li>
+      <li><a href="#servicios" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Servicios</a></li>
+      <li><a href="#equipos" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Equipos</a></li>
+      <li><a href="#nosotros" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Nosotros</a></li>
+      <li><a href="#contacto" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Contacto</a></li>
     </ul>
 
     <!-- CTA & Mobile Toggle -->
@@ -35,21 +35,15 @@ import { CONFIG } from '../data/config';
 
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]">
-    <a href="#servicios" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Servicios</a>
-    <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
-    <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
-    <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Contacto</a>
+    <a href="#servicios" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Servicios</a>
+    <a href="#equipos" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
+    <a href="#nosotros" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
+    <a href="#contacto" class="mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Contacto</a>
     <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]">
       Consultar por WhatsApp
     </a>
   </div>
 </nav>
-
-<style>
-  .nav-link-active {
-    @apply text-blue !important;
-  }
-</style>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -87,35 +81,5 @@ import { CONFIG } from '../data/config';
         if (isOpen) toggleMenu();
       });
     });
-
-    // ScrollSpy Logic
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    const observerOptions = {
-      root: null,
-      rootMargin: '-30% 0px -70% 0px',
-      threshold: 0
-    };
-
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
-          navLinks.forEach(link => {
-            if (link.getAttribute('href') === `#${id}`) {
-              link.classList.add('nav-link-active');
-              link.setAttribute('aria-current', 'location');
-            } else {
-              link.classList.remove('nav-link-active');
-              link.removeAttribute('aria-current');
-            }
-          });
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-    sections.forEach(section => observer.observe(section));
   });
 </script>

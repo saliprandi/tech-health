@@ -149,8 +149,7 @@ import { CONFIG } from '../data/config';
         const encodedMessage = encodeURIComponent(rawMessage);
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
         
-        // Use noopener,noreferrer for security when opening external links
-        window.open(url, '_blank', 'noopener,noreferrer');
+        window.open(url, '_blank');
       });
     }
   });
