@@ -1,3 +1,6 @@
+## 2025-05-22 - Accessibility and Focus Management in Modals
+**Learning:** Adding `invisible` (visibility: hidden) to a modal when closing it at the same time as `opacity-0` cuts off the CSS transition.
+**Action:** Use a `setTimeout` matching the transition duration to apply `invisible` only after the fade-out is complete, ensuring both accessibility (hidden from screen readers) and smooth UX.
 ## 2025-05-15 - [A11y: Focus Management in Astro Modals]
 **Learning:** When using Astro with client-side scripts to manage modals, manual focus management is required for accessibility. Simply showing/hiding with CSS classes leaves focus on the trigger element, which is confusing for screen reader and keyboard users.
 **Action:** Use `lastFocusedElement = document.activeElement` before opening, focus the first interactive element (close button) inside the modal using `setTimeout` to wait for transitions, and restore focus when closing.
