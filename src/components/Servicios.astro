@@ -35,7 +35,13 @@ const getIconPath = (iconName: string) => {
     <!-- Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
-        <div class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer" data-index={index}>
+        <div
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
+          data-index={index}
+          tabindex="0"
+          role="button"
+          aria-label={`Ver más sobre ${servicio.titulo}`}
+        >
           
           <!-- Animated Top Bar -->
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out"></div>
@@ -79,7 +85,7 @@ const getIconPath = (iconName: string) => {
   <!-- Maximize Modal -->
   <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[100] opacity-0 pointer-events-none transition-opacity duration-400"></div>
 
-  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[101] opacity-0 pointer-events-none transition-all duration-400 scale-95">
+  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[101] opacity-0 pointer-events-none transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <!-- Close Button -->
       <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10" aria-label="Cerrar">
@@ -103,6 +109,7 @@ const getIconPath = (iconName: string) => {
     const closeBtn = document.getElementById('close-modal');
     
     let isModalOpen = false;
+    let lastFocusedElement = null;
 
     // Helper function to get correct SVG path in JS
     const getIconSvg = (iconName) => {
@@ -123,7 +130,7 @@ const getIconPath = (iconName: string) => {
             ${getIconSvg(servicio.icono)}
           </svg>
         </div>
-        <h3 class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${servicio.titulo}</h3>
+        <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${servicio.titulo}</h3>
         <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${servicio.descripcion}</p>
         
         <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
@@ -138,11 +145,15 @@ const getIconPath = (iconName: string) => {
       `;
 
       // Show modal
+      lastFocusedElement = document.activeElement;
       backdrop.classList.remove('opacity-0', 'pointer-events-none');
       modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
       modal.classList.add('scale-100');
       document.body.style.overflow = 'hidden'; // Prevent background scrolling
       isModalOpen = true;
+
+      // Focus close button
+      setTimeout(() => closeBtn?.focus(), 100);
     };
 
     const closeModal = () => {
@@ -153,6 +164,9 @@ const getIconPath = (iconName: string) => {
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       document.body.style.overflow = ''; // Restore scrolling
       isModalOpen = false;
+
+      // Restore focus
+      if (lastFocusedElement) lastFocusedElement.focus();
       
       // Clear content after animation
       setTimeout(() => {
@@ -162,9 +176,18 @@ const getIconPath = (iconName: string) => {
 
     // Attach events
     cards.forEach(card => {
-      card.addEventListener('click', () => {
+      const handleOpen = () => {
         const index = card.getAttribute('data-index');
         openModal(parseInt(index));
+      };
+
+      card.addEventListener('click', handleOpen);
+
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleOpen();
+        }
       });
     });
 
@@ -177,4 +200,3 @@ const getIconPath = (iconName: string) => {
     });
   });
 </script>
-
