@@ -14,6 +14,14 @@ const getIconPath = (iconName: string) => {
   }
   return '';
 };
+
+// Optimization: Pass only necessary data to client-side script to reduce HTML payload
+const modalData = CONFIG.servicios.map(servicio => ({
+  titulo: servicio.titulo,
+  descripcion: servicio.descripcion,
+  items: servicio.items,
+  icono: servicio.icono
+}));
 ---
 
 <section id="servicios" class="bg-white section-padding">
@@ -41,6 +49,16 @@ const getIconPath = (iconName: string) => {
           role="button"
           tabindex="0"
           aria-label={`Ver más sobre ${servicio.titulo}`}
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue focus:ring-offset-2"
+          data-index={index}
+          role="button"
+          tabindex="0"
+          aria-label={`Ver detalles del servicio: ${servicio.titulo}`}
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer"
+          data-index={index}
+          role="button"
+          tabindex="0"
+          aria-label={`Ver detalles de ${servicio.titulo}`}
         >
           
           <!-- Animated Top Bar -->
@@ -86,6 +104,14 @@ const getIconPath = (iconName: string) => {
   <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none transition-opacity duration-400"></div>
 
   <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[101] opacity-0 pointer-events-none transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div
+    id="service-modal"
+    class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[101] opacity-0 pointer-events-none transition-all duration-400 scale-95"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+  >
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <!-- Close Button -->
       <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10" aria-label="Cerrar">
@@ -100,7 +126,7 @@ const getIconPath = (iconName: string) => {
   </div>
 </section>
 
-<script define:vars={{ config: CONFIG }}>
+<script define:vars={{ modalData }}>
   document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.service-card');
     const backdrop = document.getElementById('service-modal-backdrop');
@@ -120,7 +146,7 @@ const getIconPath = (iconName: string) => {
     };
 
     const openModal = (index) => {
-      const servicio = config.servicios[index];
+      const servicio = modalData[index];
       if (!servicio) return;
 
       lastFocusedElement = document.activeElement;
@@ -147,6 +173,7 @@ const getIconPath = (iconName: string) => {
       `;
 
       // Show modal
+      lastFocusedElement = document.activeElement;
       backdrop.classList.remove('opacity-0', 'pointer-events-none');
       modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
       modal.classList.add('scale-100');
@@ -155,6 +182,12 @@ const getIconPath = (iconName: string) => {
 
       // Focus close button after a small delay to ensure it's visible
       setTimeout(() => closeBtn?.focus(), 100);
+      // Focus close button
+      setTimeout(() => closeBtn?.focus(), 100);
+      // Focus management: move focus to close button
+      setTimeout(() => {
+        closeBtn?.focus();
+      }, 100);
     };
 
     const closeModal = () => {
@@ -165,11 +198,18 @@ const getIconPath = (iconName: string) => {
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       document.body.style.overflow = ''; // Restore scrolling
       isModalOpen = false;
+
+      // Focus management: return focus to last element
+      if (lastFocusedElement) {
+        lastFocusedElement.focus();
+      }
       
       // Restore focus
       if (lastFocusedElement) {
         lastFocusedElement.focus();
       }
+      // Return focus
+      if (lastFocusedElement) lastFocusedElement.focus();
 
       // Clear content after animation
       setTimeout(() => {
@@ -179,9 +219,18 @@ const getIconPath = (iconName: string) => {
 
     // Attach events
     cards.forEach(card => {
-      card.addEventListener('click', () => {
+      const openAction = () => {
         const index = card.getAttribute('data-index');
         openModal(parseInt(index));
+      };
+
+      card.addEventListener('click', openAction);
+
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openAction();
+        }
       });
 
       card.addEventListener('keydown', (e) => {
@@ -202,4 +251,3 @@ const getIconPath = (iconName: string) => {
     });
   });
 </script>
-
