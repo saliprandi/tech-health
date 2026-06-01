@@ -14,6 +14,14 @@ const getIconPath = (iconName: string) => {
   }
   return '';
 };
+
+// Optimization: Pass only necessary data to client-side script to reduce HTML payload
+const modalData = CONFIG.servicios.map(servicio => ({
+  titulo: servicio.titulo,
+  descripcion: servicio.descripcion,
+  items: servicio.items,
+  icono: servicio.icono
+}));
 ---
 
 <section id="servicios" class="bg-white section-padding">
@@ -94,7 +102,7 @@ const getIconPath = (iconName: string) => {
   </div>
 </section>
 
-<script define:vars={{ config: CONFIG }}>
+<script define:vars={{ modalData }}>
   document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.service-card');
     const backdrop = document.getElementById('service-modal-backdrop');
@@ -113,7 +121,7 @@ const getIconPath = (iconName: string) => {
     };
 
     const openModal = (index) => {
-      const servicio = config.servicios[index];
+      const servicio = modalData[index];
       if (!servicio) return;
 
       // Populate content
