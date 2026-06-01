@@ -1,6 +1,7 @@
 ---
 import { CONFIG } from '../data/config';
 
+// Optimization: Only pass the minimal data needed for the client-side modal
 // Optimization: Only pass minimal data to client script
 // Optimization: Only pass the minimal data needed for the client-side modal
 // Optimization: Only pass minimal data to client script
@@ -33,6 +34,7 @@ const modalData = CONFIG.servicios.map(s => ({
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
         <div
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer"
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 overflow-hidden cursor-pointer"
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 overflow-hidden"
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4 cursor-pointer overflow-hidden"
@@ -154,9 +156,11 @@ const modalData = CONFIG.servicios.map(s => ({
       const cards = document.querySelectorAll('.service-card');
       const backdrop = document.getElementById('service-modal-backdrop');
       const modal = document.getElementById('service-modal');
+      const backdrop = document.getElementById('service-modal-backdrop');
       const modalContent = document.getElementById('modal-content');
       const closeBtn = document.getElementById('close-modal');
 
+      if (!modal || !backdrop || !modalContent) return;
       const openModal = (index, element) => {
         const servicio = services[index];
         if (!servicio) return;
@@ -311,6 +315,13 @@ const modalData = CONFIG.servicios.map(s => ({
     const closeModal = () => {
       if (!isModalOpen) return;
       
+      const modal = document.getElementById('service-modal');
+      const backdrop = document.getElementById('service-modal-backdrop');
+      const modalContent = document.getElementById('modal-content');
+
+      if (!modal || !backdrop) return;
+
+      
       backdrop?.classList.add('opacity-0', 'pointer-events-none');
       modal?.classList.remove('scale-100');
       }, 100);
@@ -358,7 +369,6 @@ const modalData = CONFIG.servicios.map(s => ({
         triggerElement = null;
       }
 
-      // Clear content after animation
       setTimeout(() => {
         if (!isModalOpen) modalContent.innerHTML = '';
       }, 400);
@@ -368,6 +378,18 @@ const modalData = CONFIG.servicios.map(s => ({
       const cards = document.querySelectorAll('.service-card');
       const backdrop = document.getElementById('service-modal-backdrop');
       const closeBtn = document.getElementById('close-modal');
+
+      cards.forEach(card => {
+        const index = card.getAttribute('data-index');
+        const handleOpen = () => openModal(parseInt(index), card);
+
+        card.addEventListener('click', handleOpen);
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleOpen();
+          }
+        });
       const modal = document.getElementById('service-modal');
 
       cards.forEach(card => {
@@ -442,6 +464,9 @@ const modalData = CONFIG.servicios.map(s => ({
         }
 
         if (e.key === 'Tab') {
+          const modal = document.getElementById('service-modal');
+          const focusableElements = modal?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+          if (!focusableElements || focusableElements.length === 0) return;
           const focusable = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'));
           const first = focusable[0];
           const last = focusable[focusable.length - 1];

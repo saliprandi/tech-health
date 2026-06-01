@@ -307,6 +307,7 @@ import { CONFIG } from '../data/config';
   </div>
 </section>
 
+<script define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
 <script is:inline define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('contact-form');
@@ -323,11 +324,13 @@ import { CONFIG } from '../data/config';
     const textarea = document.getElementById('f-desc');
     const counter = document.getElementById('char-counter');
 
+    // Character counter logic
     // Character counter
     if (textarea && counter) {
       textarea.addEventListener('input', () => {
         const len = textarea.value.length;
-        counter.textContent = `${len} / 1000`;
+        counter.textContent = len + " / 1000";
+
         if (len >= 900) {
         const count = textarea.value.length;
 <script define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }} is:inline>
@@ -403,6 +406,13 @@ import { CONFIG } from '../data/config';
         const tel = document.getElementById('f-tel').value.trim() || 'No especificado';
         const servicioEl = document.getElementById('f-servicio');
         const servicio = servicioEl ? servicioEl.options[servicioEl.selectedIndex].value : 'Consulta general';
+        const desc = textarea ? textarea.value.trim() : 'Sin detalles adicionales';
+
+        const rawMessage = "Hola TechHealth! Me comunico desde su web.\n*Nombre:* " + nombre + "\n*Teléfono:* " + tel + "\n*Servicio:* " + servicio + "\n*Detalle:* " + desc;
+        
+        const encodedMessage = encodeURIComponent(rawMessage);
+        const url = "https://wa.me/" + whatsappNumber + "?text=" + encodedMessage;
+
         const desc = textarea?.value.trim() || 'Sin detalles adicionales';
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
