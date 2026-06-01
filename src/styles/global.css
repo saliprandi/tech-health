@@ -24,6 +24,10 @@
     background-color: var(--white);
   }
 
+  :focus-visible {
+    @apply outline-none ring-2 ring-blue-light ring-offset-2;
+  }
+
   body {
     @apply antialiased leading-relaxed;
     font-family: 'Inter', sans-serif;
