@@ -1,3 +1,6 @@
+## 2026-06-01 - Accessible Interactive Cards and Modal Focus Management
+**Learning:** Custom interactive elements (like `div` cards) must be manually enriched with keyboard support and focus management to be truly accessible. Simply adding a click listener is insufficient for screen readers and keyboard users.
+**Action:** Always add `tabindex="0"`, `role="button"`, and keydown listeners to custom interactive containers. Ensure modals implement focus traps or at least focus-restoration logic.
 ## 2025-05-22 - Accessibility and Focus Management in Modals
 **Learning:** Adding `invisible` (visibility: hidden) to a modal when closing it at the same time as `opacity-0` cuts off the CSS transition.
 **Action:** Use a `setTimeout` matching the transition duration to apply `invisible` only after the fade-out is complete, ensuring both accessibility (hidden from screen readers) and smooth UX.

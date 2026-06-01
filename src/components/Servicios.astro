@@ -43,6 +43,11 @@ const modalData = CONFIG.servicios.map(servicio => ({
     <!-- Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
+        <div
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer focus-visible:ring-2 focus-visible:ring-blue focus-visible:outline-none"
+          data-index={index}
+          tabindex="0"
+          role="button"
         <div class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer" data-index={index} role="button" tabindex="0" aria-haspopup="dialog">
         <div
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
@@ -106,6 +111,9 @@ const modalData = CONFIG.servicios.map(servicio => ({
   </div>
 
   <!-- Maximize Modal -->
+  <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none transition-opacity duration-400"></div>
+
+  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[100] opacity-0 pointer-events-none invisible transition-opacity duration-400"></div>
 
   <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[101] opacity-0 pointer-events-none invisible transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -219,6 +227,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
       isModalOpen = true;
 
+      // Focus management
+      lastFocusedElement = document.activeElement;
       // Focus close button
       setTimeout(() => closeBtn.focus(), 100);
       setTimeout(() => closeBtn?.focus(), 100);
@@ -253,6 +263,10 @@ const modalData = CONFIG.servicios.map(servicio => ({
         lastFocusedElement.focus();
       }
       
+      // Restore focus
+      if (lastFocusedElement instanceof HTMLElement) {
+        lastFocusedElement.focus();
+      }
       if (lastFocusedElement) lastFocusedElement.focus();
 
       // Clear content and set invisible after animation
@@ -294,6 +308,14 @@ const modalData = CONFIG.servicios.map(servicio => ({
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           openAction();
+        }
+      });
+
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const index = card.getAttribute('data-index');
+          openModal(parseInt(index));
         }
       });
 
