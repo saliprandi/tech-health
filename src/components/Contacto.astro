@@ -84,16 +84,16 @@ import { CONFIG } from '../data/config';
         <div class="bg-navy rounded-card p-8 md:p-11 shadow-hero-card">
           <h3 class="font-heading font-bold text-[24px] text-white mb-6">Envíenos su consulta</h3>
           
-          <div id="contact-form" class="flex flex-col gap-5">
+          <form id="contact-form" class="flex flex-col gap-5">
             
             <div class="flex flex-col gap-1.5">
               <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Nombre completo</label>
-              <input type="text" id="f-nombre" placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
+              <input type="text" id="f-nombre" required placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
 
             <div class="flex flex-col gap-1.5">
               <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Teléfono / WhatsApp</label>
-              <input type="tel" id="f-tel" placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
+              <input type="tel" id="f-tel" required placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
 
             <div class="flex flex-col gap-1.5">
@@ -116,14 +116,14 @@ import { CONFIG } from '../data/config';
               <textarea id="f-desc" rows="3" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
             </div>
 
-            <button id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors shadow-sm mt-2">
+            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
               Enviar por WhatsApp
             </button>
             <p class="font-body text-[12px] text-white/40 text-center mt-2">
               Será redirigido a WhatsApp para enviar el mensaje.
             </p>
 
-          </div>
+          </form>
         </div>
       </div>
 
@@ -134,23 +134,46 @@ import { CONFIG } from '../data/config';
 
 <script define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
   document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contact-form');
     const btn = document.getElementById('f-submit');
     
-    if(btn) {
-      btn.addEventListener('click', () => {
+    if(form && btn) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
         const nombre = document.getElementById('f-nombre')?.value.trim() || 'No especificado';
         const tel = document.getElementById('f-tel')?.value.trim() || 'No especificado';
         const servicioel = document.getElementById('f-servicio');
         const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
         const desc = document.getElementById('f-desc')?.value.trim() || 'Sin detalles adicionales';
 
+        // Provide immediate visual feedback
+        btn.innerText = 'Redirigiendo...';
+        btn.disabled = true;
+        btn.classList.add('opacity-70', 'cursor-not-allowed');
+
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
         
         const encodedMessage = encodeURIComponent(rawMessage);
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
         
+        // Visual feedback
+        btn.textContent = 'Redirigiendo...';
+        btn.disabled = true;
+
         // Use noopener,noreferrer for security when opening external links
         window.open(url, '_blank', 'noopener,noreferrer');
+
+        // Reset button after a delay in case the user comes back
+        setTimeout(() => {
+          btn.innerText = 'Enviar por WhatsApp';
+          btn.disabled = false;
+          btn.classList.remove('opacity-70', 'cursor-not-allowed');
+        // Reset button state after a delay in case they come back
+        setTimeout(() => {
+          btn.textContent = 'Enviar por WhatsApp';
+          btn.disabled = false;
+        }, 2000);
       });
     }
   });
