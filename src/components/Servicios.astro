@@ -15,7 +15,7 @@ const getIconPath = (iconName: string) => {
   return '';
 };
 
-// Optimization: Pass only necessary data to client-side script to reduce HTML payload
+// Optimization: Pass only necessary data to client-side script
 const modalData = CONFIG.servicios.map(servicio => ({
   titulo: servicio.titulo,
   descripcion: servicio.descripcion,
@@ -44,33 +44,12 @@ const modalData = CONFIG.servicios.map(servicio => ({
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
         <div
-          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer focus-visible:ring-2 focus-visible:ring-blue focus-visible:outline-none"
-          data-index={index}
-          tabindex="0"
-          role="button"
-        <div class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer" data-index={index} role="button" tabindex="0" aria-haspopup="dialog">
-        <div
           class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
           data-index={index}
           tabindex="0"
           role="button"
-          aria-label={`Ver más sobre ${servicio.titulo}`}
-          role="button"
-          tabindex="0"
-          aria-label={`Ver detalles del servicio: ${servicio.titulo}`}
-          aria-label={`Ver más sobre ${servicio.titulo}`}
-          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue focus:ring-offset-2"
-          data-index={index}
-          role="button"
-          tabindex="0"
-          aria-label={`Ver detalles del servicio: ${servicio.titulo}`}
-          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer"
-          data-index={index}
-          role="button"
-          tabindex="0"
           aria-label={`Ver detalles de ${servicio.titulo}`}
         >
-          
           <!-- Animated Top Bar -->
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-500 ease-out"></div>
           
@@ -111,22 +90,11 @@ const modalData = CONFIG.servicios.map(servicio => ({
   </div>
 
   <!-- Maximize Modal -->
-  <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none transition-opacity duration-400"></div>
+  <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none invisible transition-opacity duration-400"></div>
 
-  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-  <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[100] opacity-0 pointer-events-none invisible transition-opacity duration-400"></div>
-
-  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[101] opacity-0 pointer-events-none invisible transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-
-  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[101] opacity-0 pointer-events-none invisible transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-  <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none transition-opacity duration-400"></div>
-
-  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[101] opacity-0 pointer-events-none transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[101] opacity-0 pointer-events-none transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div
     id="service-modal"
-    class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[101] opacity-0 pointer-events-none transition-all duration-400 scale-95"
+    class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none invisible transition-all duration-400 scale-95"
     role="dialog"
     aria-modal="true"
     aria-labelledby="modal-title"
@@ -156,11 +124,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
     let isModalOpen = false;
     let lastFocusedElement = null;
 
-    // Sanitize dynamic content
-    const escapeHtml = (str) => {
-      const div = document.createElement('div');
-      div.textContent = str;
-      return div.innerHTML;
+    // Sanitize dynamic content to prevent XSS
     const escapeHtml = (unsafe) => {
       return unsafe
         .replace(/&/g, "&amp;")
@@ -182,10 +146,9 @@ const modalData = CONFIG.servicios.map(servicio => ({
       const servicio = modalData[index];
       if (!servicio) return;
 
-      // Populate content - Sanitize inputs for security (XSS prevention)
       lastFocusedElement = document.activeElement;
 
-      // Populate content
+      // Populate content - Escape all dynamic data
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
           <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -194,10 +157,6 @@ const modalData = CONFIG.servicios.map(servicio => ({
         </div>
         <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
         <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
-        <h3 class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
-        <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
-        <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${servicio.titulo}</h3>
-        <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${servicio.descripcion}</p>
         
         <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
         <ul class="flex flex-col gap-4">
@@ -213,33 +172,11 @@ const modalData = CONFIG.servicios.map(servicio => ({
       // Show modal
       backdrop.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
       modal.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
-      modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95', 'invisible');
-      lastFocusedElement = document.activeElement;
-      backdrop.classList.remove('opacity-0', 'pointer-events-none');
-      modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
       modal.classList.add('scale-100');
-      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+      document.body.style.overflow = 'hidden';
 
-      // Focus close button
-      setTimeout(() => {
-        closeBtn?.focus();
-      }, 100);
-
+      setTimeout(() => closeBtn?.focus(), 100);
       isModalOpen = true;
-
-      // Focus management
-      lastFocusedElement = document.activeElement;
-      // Focus close button
-      setTimeout(() => closeBtn.focus(), 100);
-      setTimeout(() => closeBtn?.focus(), 100);
-      // Focus close button after a small delay to ensure it's visible
-      setTimeout(() => closeBtn?.focus(), 100);
-      // Focus close button
-      setTimeout(() => closeBtn?.focus(), 100);
-      // Focus management: move focus to close button
-      setTimeout(() => {
-        closeBtn?.focus();
-      }, 100);
     };
 
     const closeModal = () => {
@@ -248,37 +185,11 @@ const modalData = CONFIG.servicios.map(servicio => ({
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100');
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
-      document.body.style.overflow = ''; // Restore scrolling
+      document.body.style.overflow = '';
 
-      if (lastFocusedElement) {
-        lastFocusedElement.focus();
-      }
-
+      if (lastFocusedElement) lastFocusedElement.focus();
       isModalOpen = false;
 
-      // Restore focus
-      if (lastFocusedElement) lastFocusedElement.focus();
-      // Focus management: return focus to last element
-      if (lastFocusedElement) {
-        lastFocusedElement.focus();
-      }
-      
-      // Restore focus
-      if (lastFocusedElement instanceof HTMLElement) {
-        lastFocusedElement.focus();
-      }
-      if (lastFocusedElement) lastFocusedElement.focus();
-
-      // Clear content and set invisible after animation
-      // Clear content and hide after animation
-      // Restore focus
-      if (lastFocusedElement) {
-        lastFocusedElement.focus();
-      }
-      // Return focus
-      if (lastFocusedElement) lastFocusedElement.focus();
-
-      // Clear content after animation
       setTimeout(() => {
         if (!isModalOpen) {
           modalContent.innerHTML = '';
@@ -288,50 +199,17 @@ const modalData = CONFIG.servicios.map(servicio => ({
       }, 400);
     };
 
-    // Attach events
     cards.forEach(card => {
-      const handleOpen = () => {
       const openAction = () => {
         const index = card.getAttribute('data-index');
         openModal(parseInt(index));
       };
 
-      card.addEventListener('click', handleOpen);
-
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          handleOpen();
       card.addEventListener('click', openAction);
-
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           openAction();
-        }
-      });
-
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          const index = card.getAttribute('data-index');
-          openModal(parseInt(index));
-        }
-      });
-
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          const index = card.getAttribute('data-index');
-          openModal(parseInt(index));
-        }
-      });
-
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          const index = card.getAttribute('data-index');
-          openModal(parseInt(index));
         }
       });
     });
@@ -339,7 +217,6 @@ const modalData = CONFIG.servicios.map(servicio => ({
     backdrop.addEventListener('click', closeModal);
     closeBtn.addEventListener('click', closeModal);
     
-    // Close on Escape key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeModal();
     });
