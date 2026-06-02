@@ -30,3 +30,6 @@
 ## 2026-06-02 - State-Aware Navigation Accessibility
 **Learning:** Mobile navigation toggles must provide clear state feedback via ARIA attributes and support universal keyboard dismissibility (Escape key) to ensure a high-quality, inclusive UX.
 **Action:** Always implement `aria-expanded`, dynamic `aria-label` updates, and "Escape" key listeners for mobile navigation menus. Ensure focus is returned to the toggle when closed via keyboard.
+## 2025-06-05 - [Mobile Menu Accessibility]
+**Learning:** Mobile menu toggles should use `aria-expanded` and `aria-controls` to communicate state to screen readers. Dynamically updating the `aria-label` based on state (e.g., "Abrir menú" vs "Cerrar menú") provides clearer context for the current action.
+**Action:** Always implement ARIA state attributes and dynamic labels for mobile navigation toggles to improve the non-visual UX.
