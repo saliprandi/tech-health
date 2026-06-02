@@ -26,3 +26,7 @@
 ## 2025-06-01 - [Interactive Service Cards Accessibility]
 **Learning:** In Astro components, using static `div` elements for interactive features like opening modals creates accessibility barriers for keyboard and screen reader users. Simply adding `role="button"` and `tabindex="0"` is not enough; explicit keyboard listeners for 'Enter' and 'Space' must be added, and focus management (shifting focus to the modal and back) is crucial for a complete UX.
 **Action:** Always ensure that any custom interactive element has appropriate ARIA roles, keyboard support, and focus management from the start.
+
+## 2025-02-15 - [UX: Immediate Feedback on Redirect]
+**Learning:** Providing immediate visual feedback (changing button text to 'Redirigiendo...' and disabling it) during an external redirect (like WhatsApp) confirms the user's action and prevents duplicate submissions, making the interaction feel snappier and more reliable.
+**Action:** Always implement loading/redirecting states for buttons that trigger asynchronous or external navigation.
