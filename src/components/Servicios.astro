@@ -48,6 +48,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
           tabindex="0"
           role="button"
           aria-haspopup="dialog"
+          aria-label={`Ver detalles del servicio: ${servicio.titulo}`}
           aria-label={`Ver detalles de ${servicio.titulo}`}
           aria-haspopup="dialog"
         >
@@ -69,12 +70,17 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
           <!-- List -->
           <ul class="flex flex-col gap-3">
-            {servicio.items.map(item => (
+            {servicio.items.slice(0, 3).map(item => (
               <li class="flex items-start gap-3 font-body text-[14px] text-text-soft">
                 <span class="w-[6px] h-[6px] rounded-full bg-blue-light mt-2 flex-shrink-0"></span>
                 {item}
               </li>
             ))}
+            {servicio.items.length > 3 && (
+              <li class="font-body text-[14px] text-blue font-medium mt-1">
+                Y más...
+              </li>
+            )}
           </ul>
           
           <!-- Click Indicator -->
@@ -90,6 +96,10 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
   <!-- Maximize Modal -->
   <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none invisible transition-opacity duration-400"></div>
+
+  <div
+    id="service-modal"
+    class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none invisible transition-all duration-400 scale-95"
 
   <div
     id="service-modal"
