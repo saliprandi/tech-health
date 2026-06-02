@@ -90,6 +90,8 @@ import { CONFIG } from '../data/config';
               <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
                 Nombre completo <span class="text-blue-light">*</span>
               </label>
+              <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Nombre completo <span class="text-white/30">*</span></label>
+              <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Nombre completo</label>
               <input type="text" id="f-nombre" required placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
 
@@ -97,6 +99,8 @@ import { CONFIG } from '../data/config';
               <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
                 Teléfono / WhatsApp <span class="text-blue-light">*</span>
               </label>
+              <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Teléfono / WhatsApp <span class="text-white/30">*</span></label>
+              <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Teléfono / WhatsApp</label>
               <input type="tel" id="f-tel" required placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
 
@@ -121,6 +125,8 @@ import { CONFIG } from '../data/config';
             </div>
 
             <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-all shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
+            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale disabled:bg-white/50 disabled:text-navy/50 disabled:cursor-not-allowed transition-all shadow-sm mt-2">
+            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
               Enviar por WhatsApp
             </button>
             <p class="font-body text-[12px] text-white/40 text-center mt-2">
@@ -155,11 +161,21 @@ import { CONFIG } from '../data/config';
         const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
         const desc = document.getElementById('f-desc')?.value.trim() || 'Sin detalles adicionales';
 
+        // Provide immediate visual feedback
+        btn.innerText = 'Redirigiendo...';
+        btn.disabled = true;
+        btn.classList.add('opacity-70', 'cursor-not-allowed');
+
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
         
         const encodedMessage = encodeURIComponent(rawMessage);
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
         
+        // Provide immediate feedback
+        // Visual feedback
+        btn.textContent = 'Redirigiendo...';
+        btn.disabled = true;
+
         // Use noopener,noreferrer for security when opening external links
         window.open(url, '_blank', 'noopener,noreferrer');
 
@@ -167,6 +183,20 @@ import { CONFIG } from '../data/config';
         setTimeout(() => {
           btn.disabled = false;
           btn.innerText = 'Enviar por WhatsApp';
+        // Reset button after a delay in case they come back to the tab
+        setTimeout(() => {
+          btn.textContent = 'Enviar por WhatsApp';
+          btn.disabled = false;
+        }, 3000);
+        // Reset button after a delay in case the user comes back
+        setTimeout(() => {
+          btn.innerText = 'Enviar por WhatsApp';
+          btn.disabled = false;
+          btn.classList.remove('opacity-70', 'cursor-not-allowed');
+        // Reset button state after a delay in case they come back
+        setTimeout(() => {
+          btn.textContent = 'Enviar por WhatsApp';
+          btn.disabled = false;
         }, 2000);
       });
     }
