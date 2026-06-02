@@ -26,3 +26,7 @@
 ## 2025-06-01 - [Interactive Service Cards Accessibility]
 **Learning:** In Astro components, using static `div` elements for interactive features like opening modals creates accessibility barriers for keyboard and screen reader users. Simply adding `role="button"` and `tabindex="0"` is not enough; explicit keyboard listeners for 'Enter' and 'Space' must be added, and focus management (shifting focus to the modal and back) is crucial for a complete UX.
 **Action:** Always ensure that any custom interactive element has appropriate ARIA roles, keyboard support, and focus management from the start.
+
+## 2026-06-02 - [UX: Form Validation and Feedback]
+**Learning:** Converting non-semantic interactive sections to formal HTML `<form>` elements provides native validation and better mobile accessibility. Providing immediate visual feedback (e.g., 'Redirigiendo...') during external redirections reduces user uncertainty and prevents duplicate actions.
+**Action:** Always use semantic forms for user inputs and implement clear loading/transition states for async or external actions.
