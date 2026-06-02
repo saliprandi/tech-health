@@ -25,7 +25,14 @@ import { CONFIG } from '../data/config';
       </a>
 
       <!-- Hamburger Button -->
-      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none z-[101]" aria-label="Menú">
+      <button
+        id="menu-toggle"
+        class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none z-[101]"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none z-[101]" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
         <span class="block w-6 h-0.5 bg-navy transition-transform duration-300 origin-center"></span>
         <span class="block w-6 h-0.5 bg-navy transition-opacity duration-300"></span>
         <span class="block w-6 h-0.5 bg-navy transition-transform duration-300 origin-center"></span>
@@ -34,7 +41,7 @@ import { CONFIG } from '../data/config';
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]">
+  <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" role="navigation" aria-label="Menú móvil">
     <a href="#servicios" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Servicios</a>
     <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
     <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
@@ -62,6 +69,10 @@ import { CONFIG } from '../data/config';
 
     const toggleMenu = () => {
       isOpen = !isOpen;
+
+      toggle?.setAttribute('aria-expanded', isOpen.toString());
+      toggle?.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+
       if (isOpen) {
         menu?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
         menu?.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
@@ -86,6 +97,14 @@ import { CONFIG } from '../data/config';
       link.addEventListener('click', () => {
         if (isOpen) toggleMenu();
       });
+    });
+
+    // Handle Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+        toggle?.focus();
+      }
     });
 
     // ScrollSpy Logic
