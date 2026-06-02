@@ -87,6 +87,7 @@ import { CONFIG } from '../data/config';
           <form id="contact-form" class="flex flex-col gap-5">
             
             <div class="flex flex-col gap-1.5">
+              <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Nombre completo <span class="text-blue-light">*</span></label>
               <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
                 Nombre completo <span class="text-blue-light">*</span>
               </label>
@@ -96,6 +97,7 @@ import { CONFIG } from '../data/config';
             </div>
 
             <div class="flex flex-col gap-1.5">
+              <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Teléfono / WhatsApp <span class="text-blue-light">*</span></label>
               <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
                 Teléfono / WhatsApp <span class="text-blue-light">*</span>
               </label>
@@ -124,6 +126,7 @@ import { CONFIG } from '../data/config';
               <textarea id="f-desc" rows="3" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
             </div>
 
+            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors shadow-sm mt-2">
             <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors shadow-sm mt-2 disabled:opacity-50 disabled:cursor-not-allowed">
             <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-all shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
             <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale disabled:bg-white/50 disabled:text-navy/50 disabled:cursor-not-allowed transition-all shadow-sm mt-2">
@@ -152,6 +155,8 @@ import { CONFIG } from '../data/config';
       form.addEventListener('submit', (e) => {
         e.preventDefault();
 
+        const nombre = document.getElementById('f-nombre').value.trim();
+        const tel = document.getElementById('f-tel').value.trim();
         if (!form.checkValidity()) {
           form.reportValidity();
           return;
@@ -184,6 +189,13 @@ import { CONFIG } from '../data/config';
         
         const encodedMessage = encodeURIComponent(rawMessage);
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+        // Visual feedback
+        const originalText = btn.textContent;
+        btn.textContent = 'Redirigiendo...';
+        btn.disabled = true;
+        btn.style.opacity = '0.7';
+        btn.style.cursor = 'not-allowed';
         
         const originalText = btn.textContent;
         btn.textContent = 'Redirigiendo...';
@@ -205,6 +217,12 @@ import { CONFIG } from '../data/config';
         // Use noopener,noreferrer for security when opening external links
         window.open(url, '_blank', 'noopener,noreferrer');
 
+        // Reset button after a short delay
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.disabled = false;
+          btn.style.opacity = '1';
+          btn.style.cursor = 'pointer';
         setTimeout(() => {
           btn.textContent = originalText;
           btn.style.opacity = '1';
