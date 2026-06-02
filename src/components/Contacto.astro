@@ -149,8 +149,20 @@ import { CONFIG } from '../data/config';
         const encodedMessage = encodeURIComponent(rawMessage);
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
         
+        // UX Improvement: Provide immediate feedback and prevent double clicks
+        const originalText = btn.textContent;
+        btn.textContent = 'Redirigiendo...';
+        btn.classList.add('opacity-70', 'cursor-not-allowed');
+        btn.disabled = true;
+
         // Use noopener,noreferrer for security when opening external links
         window.open(url, '_blank', 'noopener,noreferrer');
+
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.classList.remove('opacity-70', 'cursor-not-allowed');
+          btn.disabled = false;
+        }, 2000);
       });
     }
   });
