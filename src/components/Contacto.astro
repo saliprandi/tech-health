@@ -87,11 +87,19 @@ import { CONFIG } from '../data/config';
           <form id="contact-form" class="flex flex-col gap-5">
             
             <div class="flex flex-col gap-1.5">
+              <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
+                Nombre completo <span class="text-blue-light">*</span>
+              </label>
+              <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Nombre completo <span class="text-white/30">*</span></label>
               <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Nombre completo</label>
               <input type="text" id="f-nombre" required placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
 
             <div class="flex flex-col gap-1.5">
+              <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
+                Teléfono / WhatsApp <span class="text-blue-light">*</span>
+              </label>
+              <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Teléfono / WhatsApp <span class="text-white/30">*</span></label>
               <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Teléfono / WhatsApp</label>
               <input type="tel" id="f-tel" required placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
@@ -100,11 +108,11 @@ import { CONFIG } from '../data/config';
               <label for="f-servicio" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Tipo de servicio</label>
               <div class="relative">
                 <select id="f-servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus:border-blue-light transition-colors w-full appearance-none pr-10">
-                <option value="Consulta general" class="bg-navy text-white">Consulta general</option>
-                <option value="Mantenimiento preventivo" class="bg-navy text-white">Mantenimiento preventivo</option>
-                <option value="Reparación / Mantenimiento correctivo" class="bg-navy text-white">Reparación / Mantenimiento correctivo</option>
-                <option value="Revisión de placa electrónica" class="bg-navy text-white">Revisión de placa electrónica</option>
-              </select>
+                  <option value="Consulta general" class="bg-navy text-white">Consulta general</option>
+                  <option value="Mantenimiento preventivo" class="bg-navy text-white">Mantenimiento preventivo</option>
+                  <option value="Reparación / Mantenimiento correctivo" class="bg-navy text-white">Reparación / Mantenimiento correctivo</option>
+                  <option value="Revisión de placa electrónica" class="bg-navy text-white">Revisión de placa electrónica</option>
+                </select>
                 <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
@@ -117,6 +125,9 @@ import { CONFIG } from '../data/config';
             </div>
 
             <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors shadow-sm mt-2 disabled:opacity-50 disabled:cursor-not-allowed">
+            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-all shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
+            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale disabled:bg-white/50 disabled:text-navy/50 disabled:cursor-not-allowed transition-all shadow-sm mt-2">
+            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
               Enviar por WhatsApp
             </button>
             <p class="font-body text-[12px] text-white/40 text-center mt-2">
@@ -145,6 +156,9 @@ import { CONFIG } from '../data/config';
           form.reportValidity();
           return;
         }
+        // Disable button and show feedback
+        btn.disabled = true;
+        btn.innerText = 'Redirigiendo...';
 
         const nombre = document.getElementById('f-nombre')?.value.trim() || 'No especificado';
         const tel = document.getElementById('f-tel')?.value.trim() || 'No especificado';
@@ -161,6 +175,12 @@ import { CONFIG } from '../data/config';
 *Teléfono:* ${tel}
 *Servicio:* ${servicio}
 *Detalle:* ${desc}`;
+        // Provide immediate visual feedback
+        btn.innerText = 'Redirigiendo...';
+        btn.disabled = true;
+        btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
         
         const encodedMessage = encodeURIComponent(rawMessage);
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
@@ -169,6 +189,31 @@ import { CONFIG } from '../data/config';
 
         setTimeout(() => {
           btn.textContent = originalText;
+        // Provide immediate feedback
+        // Visual feedback
+        btn.textContent = 'Redirigiendo...';
+        btn.disabled = true;
+
+        // Use noopener,noreferrer for security when opening external links
+        window.open(url, '_blank', 'noopener,noreferrer');
+
+        // Reset button after a short delay (enough for the tab to open)
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.innerText = 'Enviar por WhatsApp';
+        // Reset button after a delay in case they come back to the tab
+        setTimeout(() => {
+          btn.textContent = 'Enviar por WhatsApp';
+          btn.disabled = false;
+        }, 3000);
+        // Reset button after a delay in case the user comes back
+        setTimeout(() => {
+          btn.innerText = 'Enviar por WhatsApp';
+          btn.disabled = false;
+          btn.classList.remove('opacity-70', 'cursor-not-allowed');
+        // Reset button state after a delay in case they come back
+        setTimeout(() => {
+          btn.textContent = 'Enviar por WhatsApp';
           btn.disabled = false;
         }, 2000);
       });
