@@ -26,3 +26,7 @@
 ## 2025-06-01 - [Interactive Service Cards Accessibility]
 **Learning:** In Astro components, using static `div` elements for interactive features like opening modals creates accessibility barriers for keyboard and screen reader users. Simply adding `role="button"` and `tabindex="0"` is not enough; explicit keyboard listeners for 'Enter' and 'Space' must be added, and focus management (shifting focus to the modal and back) is crucial for a complete UX.
 **Action:** Always ensure that any custom interactive element has appropriate ARIA roles, keyboard support, and focus management from the start.
+
+## 2026-06-02 - State-Aware Navigation Accessibility
+**Learning:** Mobile navigation toggles must provide clear state feedback via ARIA attributes and support universal keyboard dismissibility (Escape key) to ensure a high-quality, inclusive UX.
+**Action:** Always implement `aria-expanded`, dynamic `aria-label` updates, and "Escape" key listeners for mobile navigation menus. Ensure focus is returned to the toggle when closed via keyboard.
