@@ -211,6 +211,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
       modal.classList.add('scale-100');
       document.body.style.overflow = 'hidden';
 
+
       // Focus management
       setTimeout(() => closeBtn?.focus(), 100);
 
@@ -235,6 +236,11 @@ const modalData = CONFIG.servicios.map(servicio => ({
       modal.classList.remove('scale-100');
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       document.body.style.overflow = '';
+
+      if (lastFocusedElement instanceof HTMLElement) {
+        lastFocusedElement.focus();
+      }
+
 
       if (lastFocusedElement instanceof HTMLElement) {
         lastFocusedElement.focus();
@@ -271,14 +277,20 @@ const modalData = CONFIG.servicios.map(servicio => ({
     };
 
     cards.forEach(card => {
+      const handleOpen = () => {
       card.addEventListener('click', () => {
         const index = card.getAttribute('data-index');
         openModal(parseInt(index));
       const openAction = () => {
         const index = card.getAttribute('data-index');
-        openModal(parseInt(index));
+        if (index !== null) openModal(parseInt(index));
       };
 
+      card.addEventListener('click', handleOpen);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleOpen();
       card.addEventListener('click', openAction);
       card.addEventListener('click', () => {
         const index = card.getAttribute('data-index');
