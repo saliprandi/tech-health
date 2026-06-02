@@ -26,3 +26,16 @@
 ## 2025-06-01 - [Interactive Service Cards Accessibility]
 **Learning:** In Astro components, using static `div` elements for interactive features like opening modals creates accessibility barriers for keyboard and screen reader users. Simply adding `role="button"` and `tabindex="0"` is not enough; explicit keyboard listeners for 'Enter' and 'Space' must be added, and focus management (shifting focus to the modal and back) is crucial for a complete UX.
 **Action:** Always ensure that any custom interactive element has appropriate ARIA roles, keyboard support, and focus management from the start.
+
+## 2026-06-02 - [UX: Form Validation and Feedback]
+**Learning:** Converting non-semantic interactive sections to formal HTML `<form>` elements provides native validation and better mobile accessibility. Providing immediate visual feedback (e.g., 'Redirigiendo...') during external redirections reduces user uncertainty and prevents duplicate actions.
+**Action:** Always use semantic forms for user inputs and implement clear loading/transition states for async or external actions.
+## 2025-02-15 - [UX: Immediate Feedback on Redirect]
+**Learning:** Providing immediate visual feedback (changing button text to 'Redirigiendo...' and disabling it) during an external redirect (like WhatsApp) confirms the user's action and prevents duplicate submissions, making the interaction feel snappier and more reliable.
+**Action:** Always implement loading/redirecting states for buttons that trigger asynchronous or external navigation.
+## 2026-06-02 - State-Aware Navigation Accessibility
+**Learning:** Mobile navigation toggles must provide clear state feedback via ARIA attributes and support universal keyboard dismissibility (Escape key) to ensure a high-quality, inclusive UX.
+**Action:** Always implement `aria-expanded`, dynamic `aria-label` updates, and "Escape" key listeners for mobile navigation menus. Ensure focus is returned to the toggle when closed via keyboard.
+## 2025-06-05 - [Mobile Menu Accessibility]
+**Learning:** Mobile menu toggles should use `aria-expanded` and `aria-controls` to communicate state to screen readers. Dynamically updating the `aria-label` based on state (e.g., "Abrir menú" vs "Cerrar menú") provides clearer context for the current action.
+**Action:** Always implement ARIA state attributes and dynamic labels for mobile navigation toggles to improve the non-visual UX.
