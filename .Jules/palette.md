@@ -39,3 +39,7 @@
 ## 2025-06-05 - [Mobile Menu Accessibility]
 **Learning:** Mobile menu toggles should use `aria-expanded` and `aria-controls` to communicate state to screen readers. Dynamically updating the `aria-label` based on state (e.g., "Abrir menú" vs "Cerrar menú") provides clearer context for the current action.
 **Action:** Always implement ARIA state attributes and dynamic labels for mobile navigation toggles to improve the non-visual UX.
+
+## 2026-06-05 - State-Aware Modal and Menu Visibility
+**Learning:** In Astro/Tailwind apps, toggling only 'opacity' and 'pointer-events' for overlays is insufficient for robust UX and testing. Using the 'invisible' (visibility: hidden) class ensures that elements are correctly removed from the accessibility tree and recognized as hidden by automation tools like Playwright.
+**Action:** Always pair 'opacity-0' and 'pointer-events-none' with 'invisible' for modals and mobile menus, using a timeout if necessary to allow transition animations to complete.
