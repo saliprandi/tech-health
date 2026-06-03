@@ -25,13 +25,6 @@ import { CONFIG } from '../data/config';
       </a>
 
       <!-- Hamburger Button -->
-      <button
-        id="menu-toggle"
-        class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none z-[101]"
-        aria-label="Abrir menú"
-        aria-expanded="false"
-        aria-controls="mobile-menu"
-      >
       <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none z-[101]" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
         <span class="block w-6 h-0.5 bg-navy transition-transform duration-300 origin-center"></span>
         <span class="block w-6 h-0.5 bg-navy transition-opacity duration-300"></span>
@@ -101,18 +94,11 @@ import { CONFIG } from '../data/config';
         toggle?.focus();
       }
     });
+
     mobileLinks.forEach(link => {
       link.addEventListener('click', () => {
         if (isOpen) toggleMenu();
       });
-    });
-
-    // Handle Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen) {
-        toggleMenu();
-        toggle?.focus();
-      }
     });
 
     // ScrollSpy Logic
