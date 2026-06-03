@@ -56,7 +56,10 @@ import { CONFIG } from '../data/config';
               </svg>
             </div>
             <div>
-              <div class="font-heading font-bold text-[16px] text-navy mb-1">Horario de atención</div>
+              <div class="flex items-center gap-3 mb-1">
+                <div class="font-heading font-bold text-[16px] text-navy">Horario de atención</div>
+                <div id="status-badge" class="hidden px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"></div>
+              </div>
               <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.horario}</div>
             </div>
           </div>
@@ -87,29 +90,23 @@ import { CONFIG } from '../data/config';
           <form id="contact-form" class="flex flex-col gap-5">
             
             <div class="flex flex-col gap-1.5">
-              <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Nombre completo <span class="text-blue-light">*</span></label>
               <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
                 Nombre completo <span class="text-blue-light">*</span>
               </label>
-              <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Nombre completo <span class="text-white/30">*</span></label>
-              <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Nombre completo</label>
-              <input type="text" id="f-nombre" required placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
+              <input type="text" id="f-nombre" name="nombre" required placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
 
             <div class="flex flex-col gap-1.5">
-              <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Teléfono / WhatsApp <span class="text-blue-light">*</span></label>
               <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
                 Teléfono / WhatsApp <span class="text-blue-light">*</span>
               </label>
-              <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Teléfono / WhatsApp <span class="text-white/30">*</span></label>
-              <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Teléfono / WhatsApp</label>
-              <input type="tel" id="f-tel" required placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
+              <input type="tel" id="f-tel" name="telefono" required placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
 
             <div class="flex flex-col gap-1.5">
               <label for="f-servicio" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Tipo de servicio</label>
               <div class="relative">
-                <select id="f-servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus:border-blue-light transition-colors w-full appearance-none pr-10">
+                <select id="f-servicio" name="servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus:border-blue-light transition-colors w-full appearance-none pr-10">
                   <option value="Consulta general" class="bg-navy text-white">Consulta general</option>
                   <option value="Mantenimiento preventivo" class="bg-navy text-white">Mantenimiento preventivo</option>
                   <option value="Reparación / Mantenimiento correctivo" class="bg-navy text-white">Reparación / Mantenimiento correctivo</option>
@@ -123,14 +120,10 @@ import { CONFIG } from '../data/config';
 
             <div class="flex flex-col gap-1.5 mb-2">
               <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
-              <textarea id="f-desc" rows="3" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
+              <textarea id="f-desc" name="descripcion" rows="3" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
             </div>
 
-            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors shadow-sm mt-2">
-            <button id="f-submit" type="submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors shadow-sm mt-2 disabled:opacity-50 disabled:cursor-not-allowed">
             <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-all shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
-            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale disabled:bg-white/50 disabled:text-navy/50 disabled:cursor-not-allowed transition-all shadow-sm mt-2">
-            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
               Enviar por WhatsApp
             </button>
             <p class="font-body text-[12px] text-white/40 text-center mt-2">
@@ -148,6 +141,27 @@ import { CONFIG } from '../data/config';
 
 <script define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
   document.addEventListener('DOMContentLoaded', () => {
+    // 1. Business Hours Status
+    const statusBadge = document.getElementById('status-badge');
+    if (statusBadge) {
+      const now = new Date();
+      // Tucumán is UTC-3
+      const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
+      const day = tucumanTime.getDay(); // 0 is Sunday, 1-5 is Mon-Fri, 6 is Saturday
+      const hour = tucumanTime.getHours();
+
+      const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
+
+      statusBadge.textContent = isOpen ? 'Abierto ahora' : 'Cerrado';
+      statusBadge.classList.remove('hidden');
+      if (isOpen) {
+        statusBadge.classList.add('bg-green-100', 'text-green-700');
+      } else {
+        statusBadge.classList.add('bg-red-100', 'text-red-700');
+      }
+    }
+
+    // 2. Form Submission
     const form = document.getElementById('contact-form');
     const btn = document.getElementById('f-submit');
     
@@ -155,15 +169,10 @@ import { CONFIG } from '../data/config';
       form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const nombre = document.getElementById('f-nombre').value.trim();
-        const tel = document.getElementById('f-tel').value.trim();
         if (!form.checkValidity()) {
           form.reportValidity();
           return;
         }
-        // Disable button and show feedback
-        btn.disabled = true;
-        btn.innerText = 'Redirigiendo...';
 
         const nombre = document.getElementById('f-nombre')?.value.trim() || 'No especificado';
         const tel = document.getElementById('f-tel')?.value.trim() || 'No especificado';
@@ -175,78 +184,17 @@ import { CONFIG } from '../data/config';
         btn.textContent = 'Redirigiendo...';
         btn.disabled = true;
 
-        const rawMessage = `Hola TechHealth! Me comunico desde su web.
-*Nombre:* ${nombre}
-*Teléfono:* ${tel}
-*Servicio:* ${servicio}
-*Detalle:* ${desc}`;
-        // Provide immediate visual feedback
-        btn.innerText = 'Redirigiendo...';
-        btn.disabled = true;
-        btn.classList.add('opacity-70', 'cursor-not-allowed');
-
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
         
         const encodedMessage = encodeURIComponent(rawMessage);
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-        // Visual feedback
-        const originalText = btn.textContent;
-        btn.textContent = 'Redirigiendo...';
-        btn.disabled = true;
-        btn.style.opacity = '0.7';
-        btn.style.cursor = 'not-allowed';
-        
-        const originalText = btn.textContent;
-        btn.textContent = 'Redirigiendo...';
-        btn.style.opacity = '0.7';
-        btn.style.pointerEvents = 'none';
-        // UX Improvement: Provide immediate feedback and prevent double clicks
-        const originalText = btn.textContent;
-        btn.textContent = 'Redirigiendo...';
-        btn.classList.add('opacity-70', 'cursor-not-allowed');
         window.open(url, '_blank', 'noopener,noreferrer');
 
         setTimeout(() => {
           btn.textContent = originalText;
-        // Provide immediate feedback
-        // Visual feedback
-        btn.textContent = 'Redirigiendo...';
-        btn.disabled = true;
-
-        // Use noopener,noreferrer for security when opening external links
-        window.open(url, '_blank', 'noopener,noreferrer');
-
-        // Reset button after a short delay
-        setTimeout(() => {
-          btn.textContent = originalText;
-          btn.disabled = false;
-          btn.style.opacity = '1';
-          btn.style.cursor = 'pointer';
-        setTimeout(() => {
-          btn.textContent = originalText;
-          btn.style.opacity = '1';
-          btn.style.pointerEvents = 'auto';
-          btn.classList.remove('opacity-70', 'cursor-not-allowed');
-        // Reset button after a short delay (enough for the tab to open)
-        setTimeout(() => {
-          btn.disabled = false;
-          btn.innerText = 'Enviar por WhatsApp';
-        // Reset button after a delay in case they come back to the tab
-        setTimeout(() => {
-          btn.textContent = 'Enviar por WhatsApp';
           btn.disabled = false;
         }, 3000);
-        // Reset button after a delay in case the user comes back
-        setTimeout(() => {
-          btn.innerText = 'Enviar por WhatsApp';
-          btn.disabled = false;
-          btn.classList.remove('opacity-70', 'cursor-not-allowed');
-        // Reset button state after a delay in case they come back
-        setTimeout(() => {
-          btn.textContent = 'Enviar por WhatsApp';
-          btn.disabled = false;
-        }, 2000);
       });
     }
   });

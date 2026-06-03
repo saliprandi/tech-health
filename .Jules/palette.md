@@ -39,3 +39,7 @@
 ## 2025-06-05 - [Mobile Menu Accessibility]
 **Learning:** Mobile menu toggles should use `aria-expanded` and `aria-controls` to communicate state to screen readers. Dynamically updating the `aria-label` based on state (e.g., "Abrir menú" vs "Cerrar menú") provides clearer context for the current action.
 **Action:** Always implement ARIA state attributes and dynamic labels for mobile navigation toggles to improve the non-visual UX.
+
+## 2026-06-03 - [UX: Business Hours Real-time Status]
+**Learning:** Providing a real-time "Open/Closed" badge next to business hours reduces cognitive load for users and creates a more "live" and responsive feeling interface. Using client-side logic with timezone adjustment (UTC-3 for Tucumán) ensures the status is accurate regardless of the user's location.
+**Action:** Always consider adding live status indicators for time-sensitive information, and ensure the original button state is preserved in a variable before triggering async UI updates to avoid ReferenceErrors during restoration.
