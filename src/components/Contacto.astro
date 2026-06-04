@@ -93,14 +93,14 @@ import { CONFIG } from '../data/config';
               <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
                 Nombre completo <span class="text-blue-light">*</span>
               </label>
-              <input type="text" id="f-nombre" name="nombre" required placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
+              <input type="text" id="f-nombre" name="nombre" required maxlength="100" autocomplete="name" placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
 
             <div class="flex flex-col gap-1.5">
               <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
                 Teléfono / WhatsApp <span class="text-blue-light">*</span>
               </label>
-              <input type="tel" id="f-tel" name="telefono" required placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
+              <input type="tel" id="f-tel" name="telefono" required maxlength="30" autocomplete="tel" placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
 
             <div class="flex flex-col gap-1.5">
@@ -119,8 +119,11 @@ import { CONFIG } from '../data/config';
             </div>
 
             <div class="flex flex-col gap-1.5 mb-2">
-              <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
-              <textarea id="f-desc" name="mensaje" rows="3" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
+              <div class="flex items-center justify-between">
+                <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
+                <span id="char-count" class="text-[10px] text-white/40 ml-auto">0 / 500</span>
+              </div>
+              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
             </div>
 
             <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-all shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
@@ -176,6 +179,14 @@ import { CONFIG } from '../data/config';
     // Form Logic
     const form = document.getElementById('contact-form');
     const btn = document.getElementById('f-submit');
+    const descArea = document.getElementById('f-desc');
+    const charCount = document.getElementById('char-count');
+
+    if (descArea && charCount) {
+      descArea.addEventListener('input', () => {
+        charCount.textContent = `${descArea.value.length} / 500`;
+      });
+    }
     
     if (form && btn) {
       form.addEventListener('submit', (e) => {
