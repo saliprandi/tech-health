@@ -56,7 +56,18 @@ import { CONFIG } from '../data/config';
               </svg>
             </div>
             <div>
+              <div class="flex items-center gap-2 mb-1">
+                <div class="font-heading font-bold text-[16px] text-navy">Horario de atención</div>
+                <span id="status-badge" class="hidden font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full"></span>
               <div class="font-heading font-bold text-[16px] text-navy mb-1">Horario de atención</div>
+              <div class="font-body text-[14px] text-text-soft flex items-center gap-3">
+                {CONFIG.contacto.horario}
+                <span id="status-badge" class="hidden px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"></span>
+              </div>
+              <div class="flex items-center gap-3 mb-1">
+                <div class="font-heading font-bold text-[16px] text-navy">Horario de atención</div>
+                <span id="status-badge" class="hidden font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500"></span>
+              </div>
               <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.horario}</div>
             </div>
           </div>
@@ -90,6 +101,7 @@ import { CONFIG } from '../data/config';
               <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
                 Nombre completo <span class="text-blue-light">*</span>
               </label>
+              <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Nombre completo <span class="text-blue-light">*</span></label>
               <input type="text" id="f-nombre" required placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
 
@@ -97,6 +109,7 @@ import { CONFIG } from '../data/config';
               <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
                 Teléfono / WhatsApp <span class="text-blue-light">*</span>
               </label>
+              <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Teléfono / WhatsApp <span class="text-blue-light">*</span></label>
               <input type="tel" id="f-tel" required placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
 
@@ -120,6 +133,7 @@ import { CONFIG } from '../data/config';
               <textarea id="f-desc" rows="3" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
             </div>
 
+            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
             <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-all shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
               Enviar por WhatsApp
             </button>
@@ -138,10 +152,92 @@ import { CONFIG } from '../data/config';
 
 <script define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
   document.addEventListener('DOMContentLoaded', () => {
+    // Business Hours Status Badge Logic
+    const statusBadge = document.getElementById('status-badge');
+    if (statusBadge) {
+      const now = new Date();
+      // Calculate Tucumán time (UTC-3)
+      const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
+      const day = tucumanTime.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+      const hour = tucumanTime.getHours();
+
+      // Business hours: Monday (1) to Friday (5), 09:00 to 18:00
+      const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
+
+      if (isOpen) {
+        statusBadge.innerText = 'Abierto ahora';
+        statusBadge.classList.add('bg-green-100', 'text-green-700');
+      } else {
+        statusBadge.innerText = 'Cerrado';
+        statusBadge.classList.add('bg-amber-100', 'text-amber-700');
+      }
+      statusBadge.classList.remove('hidden');
+    }
+
+    // 1. Business Hours Status
+    const updateStatus = () => {
+      const badge = document.getElementById('status-badge');
+      if (!badge) return;
+
+      const now = new Date();
+      // UTC-3 (Tucumán)
+      const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
+      const day = tucumanTime.getDay(); // 0 is Sunday, 1-5 is Mon-Fri
+      const hour = tucumanTime.getHours();
+
+      const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
+
+      if (isOpen) {
+        badge.innerText = 'Abierto ahora';
+        badge.classList.remove('hidden', 'bg-gray/10', 'text-gray');
+        badge.classList.add('bg-blue-pale', 'text-blue');
+      } else {
+        badge.innerText = 'Cerrado';
+        badge.classList.remove('hidden', 'bg-blue-pale', 'text-blue');
+        badge.classList.add('bg-gray/10', 'text-gray');
+      }
+    };
+
+    updateStatus();
+
+    // 2. Form Handling
+    // --- Business Hours Logic ---
+    const updateStatusBadge = () => {
+      const badge = document.getElementById('status-badge');
+      if (!badge) return;
+
+      // Tucumán is UTC-3
+      const now = new Date();
+      const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
+
+      const day = tucumanTime.getDay(); // 0 (Sun) to 6 (Sat)
+      const hour = tucumanTime.getHours();
+
+      // Mon-Fri (1-5), 9:00 to 18:00
+      const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
+
+      badge.textContent = isOpen ? 'Abierto ahora' : 'Cerrado';
+
+      if (isOpen) {
+        badge.classList.remove('bg-gray-100', 'text-gray-500');
+        badge.classList.add('bg-emerald-100', 'text-emerald-600');
+      } else {
+        badge.classList.remove('bg-emerald-100', 'text-emerald-600');
+        badge.classList.add('bg-gray-100', 'text-gray-500');
+      }
+
+      badge.classList.remove('hidden');
+    };
+
+    updateStatusBadge();
+    // Refresh status every minute
+    setInterval(updateStatusBadge, 60000);
+
+    // --- Form Logic ---
     const form = document.getElementById('contact-form');
     const btn = document.getElementById('f-submit');
     
-    if(form && btn) {
+    if (form && btn) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -159,7 +255,13 @@ import { CONFIG } from '../data/config';
         const originalText = btn.textContent;
         btn.textContent = 'Redirigiendo...';
         btn.disabled = true;
+        btn.classList.add('opacity-70', 'cursor-not-allowed');
 
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.
+*Nombre:* ${nombre}
+*Teléfono:* ${tel}
+*Servicio:* ${servicio}
+*Detalle:* ${desc}`;
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
         const encodedMessage = encodeURIComponent(rawMessage);
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
@@ -169,7 +271,21 @@ import { CONFIG } from '../data/config';
         setTimeout(() => {
           btn.textContent = originalText;
           btn.disabled = false;
+        const originalText = btn.textContent;
+        btn.textContent = 'Redirigiendo...';
+        btn.disabled = true;
+        btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+        window.open(url, '_blank', 'noopener,noreferrer');
+
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.disabled = false;
+          btn.classList.remove('opacity-70', 'cursor-not-allowed');
         }, 2000);
+        }, 2000);
+          btn.classList.remove('opacity-70', 'cursor-not-allowed');
+        }, 3000);
       });
     }
   });
