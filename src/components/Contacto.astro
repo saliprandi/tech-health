@@ -58,7 +58,7 @@ import { CONFIG } from '../data/config';
             <div>
               <div class="flex items-center gap-2 mb-1">
                 <div class="font-heading font-bold text-[16px] text-navy">Horario de atención</div>
-                <span id="status-badge" class="hidden font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500"></span>
+                <span id="status-badge" class="hidden font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500 flex items-center gap-1.5"></span>
               </div>
               <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.horario}</div>
             </div>
@@ -119,11 +119,14 @@ import { CONFIG } from '../data/config';
             </div>
 
             <div class="flex flex-col gap-1.5 mb-2">
-              <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
-              <textarea id="f-desc" name="mensaje" rows="3" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
+              <div class="flex justify-between items-center">
+                <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
+                <span id="char-count" class="font-body text-[10px] text-white/40 uppercase tracking-wider">0 / 500</span>
+              </div>
+              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
             </div>
 
-            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-all shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
+            <button type="submit" id="f-submit" aria-live="polite" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-all shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
               Enviar por WhatsApp
             </button>
             <p class="font-body text-[12px] text-white/40 text-center mt-2">
@@ -156,12 +159,12 @@ import { CONFIG } from '../data/config';
       // Mon-Fri (1-5), 9:00 to 18:00
       const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
 
-      badge.textContent = isOpen ? 'Abierto ahora' : 'Cerrado';
-
       if (isOpen) {
+        badge.innerHTML = `<span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora`;
         badge.classList.remove('bg-gray-100', 'text-gray-500');
         badge.classList.add('bg-emerald-100', 'text-emerald-600');
       } else {
+        badge.textContent = 'Cerrado';
         badge.classList.remove('bg-emerald-100', 'text-emerald-600');
         badge.classList.add('bg-gray-100', 'text-gray-500');
       }
@@ -172,6 +175,16 @@ import { CONFIG } from '../data/config';
     updateStatusBadge();
     // Refresh status every minute
     setInterval(updateStatusBadge, 60000);
+
+    // Character Counter
+    const textarea = document.getElementById('f-desc');
+    const charCount = document.getElementById('char-count');
+    if (textarea && charCount) {
+      textarea.addEventListener('input', () => {
+        const length = textarea.value.length;
+        charCount.textContent = `${length} / 500`;
+      });
+    }
 
     // Form Logic
     const form = document.getElementById('contact-form');
@@ -195,6 +208,7 @@ import { CONFIG } from '../data/config';
         const originalText = btn.textContent;
         btn.textContent = 'Redirigiendo...';
         btn.disabled = true;
+        btn.setAttribute('aria-busy', 'true');
         btn.classList.add('opacity-70', 'cursor-not-allowed');
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
@@ -206,6 +220,7 @@ import { CONFIG } from '../data/config';
         setTimeout(() => {
           btn.textContent = originalText;
           btn.disabled = false;
+          btn.removeAttribute('aria-busy');
           btn.classList.remove('opacity-70', 'cursor-not-allowed');
         }, 2000);
       });

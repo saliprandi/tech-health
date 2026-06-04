@@ -43,3 +43,15 @@
 ## 2026-06-03 - [UX: Real-time Availability Feedback]
 **Learning:** The 'Business Hours Status' badge is a highly effective micro-UX pattern for service-based sites. It provides immediate certainty to the user about laboratory availability without requiring them to parse a schedule. Using a client-side script with UTC offsets ensures accuracy across different user timezones while maintaining Tucumán's local context.
 **Action:** Implement dynamic status badges for any component displaying business hours to reduce user cognitive load and improve engagement.
+
+## 2026-06-03 - [UX: Enhancing Live Status Feedback]
+**Learning:** A static "Open" badge can be made more engaging and informative by adding a pulsing "live" indicator (e.g., using `animate-ping`). This reinforces the real-time nature of the information and draws the user's eye to current availability.
+**Action:** Add pulsing visual indicators to status badges to provide delightful, real-time feedback.
+
+## 2026-06-03 - [UX: Input Management with Character Counters]
+**Learning:** Providing a live character counter for textareas helps users understand input constraints before they attempt to submit, reducing frustration and form validation errors.
+**Action:** Always implement character counters for fields with `maxlength` to improve the form-filling experience.
+
+## 2026-06-03 - [UX: Fixed Header Scroll Padding]
+**Learning:** Fixed headers often obscure section titles when navigating via anchor links. Using `scroll-padding-top` on the `html` element is a clean, CSS-only solution that ensures the target content is perfectly positioned below the header.
+**Action:** Set `scroll-padding-top` equal to the fixed header height in global styles for all projects with sticky/fixed navigation.
