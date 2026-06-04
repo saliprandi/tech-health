@@ -37,7 +37,7 @@ import { CONFIG } from '../data/config';
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 0 1115 0z" />
               </svg>
             </div>
             <div>
@@ -56,16 +56,6 @@ import { CONFIG } from '../data/config';
               </svg>
             </div>
             <div>
-              <div class="font-heading font-bold text-[16px] text-navy mb-1 flex items-center gap-3">
-                Horario de atención
-                <span id="status-badge" class="hidden px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider font-bold"></span>
-              <div class="flex items-center gap-3 mb-1">
-                <div class="font-heading font-bold text-[16px] text-navy">Horario de atención</div>
-                <div id="business-status" style="display: none;" class="items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
-                  <span class="w-1.5 h-1.5 rounded-full animate-pulse"></span>
-                  <span id="status-text"></span>
-                </div>
-                <div id="status-badge" class="hidden px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"></div>
               <div class="flex items-center gap-2 mb-1">
                 <div class="font-heading font-bold text-[16px] text-navy">Horario de atención</div>
                 <span id="status-badge" class="hidden font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500"></span>
@@ -104,7 +94,6 @@ import { CONFIG } from '../data/config';
                 Nombre completo <span class="text-blue-light">*</span>
               </label>
               <input type="text" id="f-nombre" name="nombre" required placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
-              <input type="text" id="f-nombre" required placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
 
             <div class="flex flex-col gap-1.5">
@@ -112,7 +101,6 @@ import { CONFIG } from '../data/config';
                 Teléfono / WhatsApp <span class="text-blue-light">*</span>
               </label>
               <input type="tel" id="f-tel" name="telefono" required placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
-              <input type="tel" id="f-tel" required placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
 
             <div class="flex flex-col gap-1.5">
@@ -135,7 +123,6 @@ import { CONFIG } from '../data/config';
               <textarea id="f-desc" name="mensaje" rows="3" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
             </div>
 
-            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
             <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-all shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
               Enviar por WhatsApp
             </button>
@@ -154,90 +141,11 @@ import { CONFIG } from '../data/config';
 
 <script define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
   document.addEventListener('DOMContentLoaded', () => {
-    // Business Hours Status Logic
-    const updateBusinessStatus = () => {
-      const statusContainer = document.getElementById('business-status');
-      const statusText = document.getElementById('status-text');
-      const dot = statusContainer?.querySelector('span');
-
-      if (!statusContainer || !statusText || !dot) return;
-
-      // Get Tucumán Time (UTC-3)
-      const now = new Date();
-      const tucumanTime = new Intl.DateTimeFormat('en-US', {
-        timeZone: 'America/Argentina/Buenos_Aires',
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: false,
-        weekday: 'short'
-      }).formatToParts(now);
-
-      const parts = {};
-      tucumanTime.forEach(({type, value}) => parts[type] = value);
-
-      // parts.weekday will be 'Mon', 'Tue', etc.
-      const day = parts.weekday;
-      const hour = parseInt(parts.hour);
-
-      const openDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
-      const isOpen = openDays.includes(day) && hour >= 9 && hour < 18;
-
-      statusContainer.style.display = 'flex';
-
-      if (isOpen) {
-        statusText.innerText = 'Abierto ahora';
-        statusContainer.classList.add('bg-green-100', 'text-green-700');
-        dot.classList.add('bg-green-600');
-      } else {
-        statusText.innerText = 'Cerrado';
-        statusContainer.classList.add('bg-slate-100', 'text-slate-600');
-        dot.classList.add('bg-slate-500');
-      }
-    };
-
-    updateBusinessStatus();
-
-    // Business Hours Status Badge
-    const statusBadge = document.getElementById('status-badge');
-    if (statusBadge) {
-      const now = new Date();
-      // Tucumán is UTC-3
-      const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
-      const day = tucumanTime.getDay(); // 0 is Sunday, 1-5 is Mon-Fri, 6 is Saturday
-      const hour = tucumanTime.getHours();
-
-      const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
-
-      statusBadge.textContent = isOpen ? 'Abierto ahora' : 'Cerrado';
-      const badgeClasses = isOpen
-        ? ['bg-green-100', 'text-green-700']
-        : ['bg-red-100', 'text-red-700'];
-      statusBadge.classList.add(...badgeClasses, 'px-2', 'py-0.5', 'rounded-full', 'text-[10px]', 'font-bold', 'uppercase', 'tracking-wider');
-      statusBadge.classList.remove('hidden');
-    }
-
     // Business Hours Status Badge Logic
     const updateStatusBadge = () => {
       const badge = document.getElementById('status-badge');
       if (!badge) return;
 
-      const now = new Date();
-      // Tucumán is UTC-3
-      const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
-
-      const day = tucumanTime.getDay(); // 0 is Sunday, 1 is Monday, etc.
-      const hour = tucumanTime.getHours();
-
-      const isWorkDay = day >= 1 && day <= 5;
-      const isWorkHour = hour >= 9 && hour < 18;
-
-      if (isWorkDay && isWorkHour) {
-        badge.innerText = 'Abierto ahora';
-        badge.className = 'px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider font-bold bg-green-500/20 text-green-600';
-      } else {
-        badge.innerText = 'Cerrado';
-        badge.className = 'px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider font-bold bg-red-500/20 text-red-600';
-      }
       // Tucumán is UTC-3
       const now = new Date();
       const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
@@ -262,8 +170,6 @@ import { CONFIG } from '../data/config';
     };
 
     updateStatusBadge();
-
-    // Contact Form Redirection Logic
     // Refresh status every minute
     setInterval(updateStatusBadge, 60000);
 
@@ -280,11 +186,11 @@ import { CONFIG } from '../data/config';
           return;
         }
 
-        const nombre = document.getElementById('f-nombre').value.trim();
-        const tel = document.getElementById('f-tel').value.trim();
+        const nombre = document.getElementById('f-nombre')?.value.trim() || 'No especificado';
+        const tel = document.getElementById('f-tel')?.value.trim() || 'No especificado';
         const servicioel = document.getElementById('f-servicio');
         const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
-        const desc = document.getElementById('f-desc').value.trim() || 'Sin detalles adicionales';
+        const desc = document.getElementById('f-desc')?.value.trim() || 'Sin detalles adicionales';
 
         const originalText = btn.textContent;
         btn.textContent = 'Redirigiendo...';
@@ -295,33 +201,12 @@ import { CONFIG } from '../data/config';
         const encodedMessage = encodeURIComponent(rawMessage);
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-        // Visual feedback
-        const originalText = btn.textContent;
-        btn.textContent = 'Redirigiendo...';
-        btn.disabled = true;
-        
-        window.open(url, '_blank', 'noopener,noreferrer');
-
-        setTimeout(() => {
-          btn.textContent = originalText;
-          btn.disabled = false;
-        }, 3000);
-        // UX Improvement: Provide immediate feedback and prevent double clicks
-        const originalText = btn.textContent;
-        btn.textContent = 'Redirigiendo...';
-        btn.disabled = true;
-        btn.classList.add('opacity-70', 'cursor-not-allowed');
-
-        window.open(url, '_blank', 'noopener,noreferrer');
-
-        // Reset button after a delay in case they come back to the tab
         window.open(url, '_blank', 'noopener,noreferrer');
 
         setTimeout(() => {
           btn.textContent = originalText;
           btn.disabled = false;
           btn.classList.remove('opacity-70', 'cursor-not-allowed');
-        }, 3000);
         }, 2000);
       });
     }
