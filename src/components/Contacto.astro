@@ -295,6 +295,11 @@ import { CONFIG } from '../data/config';
         const encodedMessage = encodeURIComponent(rawMessage);
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
+        // Visual feedback
+        const originalText = btn.textContent;
+        btn.textContent = 'Redirigiendo...';
+        btn.disabled = true;
+        
         window.open(url, '_blank', 'noopener,noreferrer');
 
         setTimeout(() => {
