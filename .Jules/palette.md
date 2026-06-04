@@ -43,3 +43,7 @@
 ## 2026-06-03 - [UX: Real-time Availability Feedback]
 **Learning:** The 'Business Hours Status' badge is a highly effective micro-UX pattern for service-based sites. It provides immediate certainty to the user about laboratory availability without requiring them to parse a schedule. Using a client-side script with UTC offsets ensures accuracy across different user timezones while maintaining Tucumán's local context.
 **Action:** Implement dynamic status badges for any component displaying business hours to reduce user cognitive load and improve engagement.
+
+## 2026-06-04 - [UX: Live Character Counter Accessibility]
+**Learning:** Adding a live character counter to textareas improves input management, but it must be accessible. Using `aria-describedby` on the textarea and `aria-live="polite"` on the counter ensures screen reader users are kept informed of their remaining capacity.
+**Action:** Always pair visual counters with ARIA attributes to maintain a high level of accessibility while providing delightful feedback.

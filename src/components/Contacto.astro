@@ -92,6 +92,7 @@ import { CONFIG } from '../data/config';
               <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
                 Nombre completo <span class="text-blue-light">*</span>
               </label>
+              <input type="text" id="f-nombre" name="nombre" required autocomplete="name" placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
               <input type="text" id="f-nombre" name="nombre" required maxlength="100" autocomplete="name" placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
 
@@ -99,6 +100,7 @@ import { CONFIG } from '../data/config';
               <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
                 Teléfono / WhatsApp <span class="text-blue-light">*</span>
               </label>
+              <input type="tel" id="f-tel" name="telefono" required autocomplete="tel" placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
               <input type="tel" id="f-tel" name="telefono" required maxlength="30" autocomplete="tel" placeholder="Ej: 381 123 4567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
             </div>
 
@@ -118,6 +120,11 @@ import { CONFIG } from '../data/config';
             </div>
 
             <div class="flex flex-col gap-1.5 mb-2">
+              <div class="flex justify-between items-end">
+                <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
+                <span id="char-count" class="font-body text-[10px] text-white/40 uppercase tracking-wider mb-0.5" aria-live="polite">0 / 500</span>
+              </div>
+              <textarea id="f-desc" name="mensaje" aria-describedby="char-count" rows="3" maxlength="500" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
               <div class="flex justify-between items-center">
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
                 <div id="char-counter" class="font-body text-[10px] text-white/40 tabular-nums">0 / 500</div>
@@ -187,6 +194,21 @@ import { CONFIG } from '../data/config';
     const form = document.getElementById('contact-form');
     const btn = document.getElementById('f-submit');
     const textarea = document.getElementById('f-desc');
+    const charCount = document.getElementById('char-count');
+
+    if (textarea && charCount) {
+      textarea.addEventListener('input', () => {
+        const length = textarea.value.length;
+        charCount.textContent = `${length} / 500`;
+
+        if (length >= 450) {
+          charCount.classList.add('text-blue-light');
+          charCount.classList.remove('text-white/40');
+        } else {
+          charCount.classList.remove('text-blue-light');
+          charCount.classList.add('text-white/40');
+        }
+      });
     const charCounter = document.getElementById('char-counter');
 
     if (textarea && charCounter) {
