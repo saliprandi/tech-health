@@ -112,6 +112,14 @@ import { CONFIG } from '../data/config';
       });
     });
 
+    // Handle Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+        if (toggle) toggle.focus();
+      }
+    });
+
     // ScrollSpy Logic
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');

@@ -97,6 +97,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
   <!-- Maximize Modal -->
   <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none transition-opacity duration-400 invisible"></div>
 
+  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none transition-all duration-400 scale-95 invisible" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none invisible transition-opacity duration-400"></div>
 
   <div
@@ -132,6 +133,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
     let isModalOpen = false;
     let lastFocusedElement = null;
 
+    // Sanitize dynamic content to prevent XSS
     // Sanitize dynamic content
     const escapeHtml = (unsafe) => {
       return unsafe
