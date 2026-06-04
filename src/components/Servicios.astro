@@ -50,6 +50,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
           role="button"
           aria-haspopup="dialog"
           aria-label={`Ver detalles del servicio: ${servicio.titulo}`}
+          aria-label={`Ver detalles de ${servicio.titulo}`}
         >
           <!-- Animated Top Bar -->
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus:scale-x-100 transition-transform duration-500 ease-out"></div>
@@ -103,6 +104,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
     aria-modal="true"
     aria-labelledby="modal-title"
   >
+  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none invisible transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <!-- Close Button -->
       <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:ring-2 focus-visible:ring-blue" aria-label="Cerrar modal">
@@ -191,6 +193,9 @@ const modalData = CONFIG.servicios.map(servicio => ({
       document.body.style.overflow = '';
 
       if (lastFocusedElement) lastFocusedElement.focus();
+      if (lastFocusedElement instanceof HTMLElement) {
+        lastFocusedElement.focus();
+      }
       isModalOpen = false;
 
       // Clear content and set invisible after animation

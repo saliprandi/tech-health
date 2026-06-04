@@ -88,6 +88,7 @@ import { CONFIG } from '../data/config';
           spans[1].classList.remove('opacity-0');
           spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
         }
+        // Add invisible after transition
         setTimeout(() => {
           if (!isOpen) menu?.classList.add('invisible');
         }, 300);
