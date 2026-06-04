@@ -25,6 +25,7 @@ import { CONFIG } from '../data/config';
       </a>
 
       <!-- Hamburger Button -->
+      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none z-[101]" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
       <button
         id="menu-toggle"
         class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none z-[101]"
@@ -40,7 +41,7 @@ import { CONFIG } from '../data/config';
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99]" role="navigation" aria-label="Menú móvil">
+  <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99] invisible" role="navigation" aria-label="Menú móvil">
     <a href="#servicios" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Servicios</a>
     <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
     <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
@@ -73,7 +74,7 @@ import { CONFIG } from '../data/config';
       toggle?.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
 
       if (isOpen) {
-        menu?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
+        menu?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]', 'invisible');
         menu?.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
         if (spans) {
           spans[0].classList.add('rotate-45', 'translate-y-[8px]');
@@ -88,10 +89,22 @@ import { CONFIG } from '../data/config';
           spans[1].classList.remove('opacity-0');
           spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
         }
+        // Add invisible after transition
+        setTimeout(() => {
+          if (!isOpen) menu?.classList.add('invisible');
+        }, 300);
       }
     };
 
     toggle?.addEventListener('click', toggleMenu);
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+        toggle?.focus();
+      }
+    });
 
     mobileLinks.forEach(link => {
       link.addEventListener('click', () => {
@@ -103,7 +116,7 @@ import { CONFIG } from '../data/config';
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && isOpen) {
         toggleMenu();
-        toggle?.focus();
+        if (toggle) toggle.focus();
       }
     });
 
