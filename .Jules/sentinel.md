@@ -8,6 +8,11 @@
 **Learning:** Security fixes must be verified for syntactic correctness and completeness; a partially implemented or corrupted fix (e.g., duplicated functions or unclosed tags) can bypass intended protections and break builds. CSP should include directives to prevent `<object>`/`<embed>` injection and base-tag hijacking.
 **Prevention:** Always run `pnpm build` and `pnpm astro check` after security changes. Consolidate security utilities (like `escapeHtml`) and ensure they are applied consistently across all dynamic injection points. Use `object-src 'none'` and `base-uri 'self'` in CSP by default.
 
+## 2025-06-03 - [Environment Integrity and Tab-Nabbing Prevention]
+**Vulnerability:** Broken lockfile due to duplicated keys and missing `noopener,noreferrer` on external WhatsApp links.
+**Learning:** Environment integrity (lockfiles) is the foundation of security tooling; if it's broken, `pnpm audit` cannot run, leaving the project blind to dependency vulnerabilities. External redirects without proper `rel` attributes allow potential reverse tab-nabbing. Massive code duplication/corruption can mask security vulnerabilities and break static analysis.
+**Prevention:** Maintain a clean `package.json` to prevent lockfile corruption. Always apply `rel="noopener noreferrer"` to all `target="_blank"` links. Regularly run `pnpm astro check` to identify and resolve component duplication or syntax errors.
+
 # Sentinel Journal - TechHealth
 
 ## 2025-05-13 - Security Enhancement: Content Security Policy and Referrer Policy
