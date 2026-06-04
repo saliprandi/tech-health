@@ -1,18 +1,9 @@
 ---
 import { CONFIG } from '../data/config';
 
-// Helper to return the correct SVG path based on icon name
-const getIconPath = (iconName: string) => {
-  if (iconName === 'shield') {
-    return `<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />`;
-  }
-  if (iconName === 'tool') {
-    return `<path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.673 4.673a2.25 2.25 0 01-3.182 0l-1.06-1.06a2.25 2.25 0 010-3.182l4.673-4.673m-1.414 1.414l3.03-2.496c.384-.317.626-.74.766-1.208M17.25 21L15 18.75m-2.25-2.25l-3-3M17.25 8.25V6m0 0V3.75m0 2.25h2.25m-2.25 0H15M6.75 10.5V12.75m0 0v2.25m0-2.25H4.5m2.25 0H9" />`;
-  }
-  if (iconName === 'circuit') {
-    return `<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M5.25 12h13.5m-13.5 3h13.5m-12 5.25V19.5m10.5 1.5V19.5M10.5 8.25v-1.5m3 1.5v-1.5M8.25 15.75v-1.5m3 1.5v-1.5m3 1.5v-1.5" /><rect x="6" y="6" width="12" height="12" rx="2" stroke-linecap="round" stroke-linejoin="round" />`;
-  }
-  return '';
+// Helper to return the correct SVG tag based on icon name
+const getIconSvg = (iconName: string) => {
+  return `<use href="#icon-${iconName}" />`;
 };
 
 // Optimization: Pass only necessary data to client-side script
@@ -44,20 +35,19 @@ const modalData = CONFIG.servicios.map(servicio => ({
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
         <div
-          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
+          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-within:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
           data-index={index}
           tabindex="0"
           role="button"
           aria-haspopup="dialog"
           aria-label={`Ver detalles del servicio: ${servicio.titulo}`}
-          aria-label={`Ver detalles de ${servicio.titulo}`}
         >
           <!-- Animated Top Bar -->
-          <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus:scale-x-100 transition-transform duration-500 ease-out"></div>
+          <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-500 ease-out"></div>
           
           <!-- Icon -->
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue group-hover:scale-110 transition-transform">
-            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" set:html={getIconPath(servicio.icono)}></svg>
+            <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor" set:html={getIconSvg(servicio.icono)}></svg>
           </div>
 
           <!-- Content -->
@@ -84,9 +74,9 @@ const modalData = CONFIG.servicios.map(servicio => ({
           </ul>
           
           <!-- Click Indicator -->
-          <div class="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue bg-blue-pale p-2 rounded-full">
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+          <div class="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300 text-blue bg-blue-pale p-2 rounded-full">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor">
+              <use href="#icon-expand" />
             </svg>
           </div>
         </div>
@@ -97,28 +87,12 @@ const modalData = CONFIG.servicios.map(servicio => ({
   <!-- Maximize Modal -->
   <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none invisible transition-opacity duration-400"></div>
 
-  <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none invisible transition-all duration-400"></div>
-
-  <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none invisible transition-opacity duration-400"></div>
-
-  <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none transition-opacity duration-400 invisible"></div>
-
-  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none transition-all duration-400 scale-95 invisible" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-  <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none invisible transition-opacity duration-400"></div>
-
-  <div
-    id="service-modal"
-    class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none invisible transition-all duration-400 scale-95"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="modal-title"
-  >
   <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none invisible transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <!-- Close Button -->
       <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:ring-2 focus-visible:ring-blue" aria-label="Cerrar modal">
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        <svg class="w-5 h-5" fill="none" stroke="currentColor">
+          <use href="#icon-close" />
         </svg>
       </button>
       
@@ -150,10 +124,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
     };
 
     const getIconSvg = (iconName) => {
-      if (iconName === 'shield') return '<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />';
-      if (iconName === 'tool') return '<path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.673 4.673a2.25 2.25 0 01-3.182 0l-1.06-1.06a2.25 2.25 0 010-3.182l4.673-4.673m-1.414 1.414l3.03-2.496c.384-.317.626-.74.766-1.208M17.25 21L15 18.75m-2.25-2.25l-3-3M17.25 8.25V6m0 0V3.75m0 2.25h2.25m-2.25 0H15M6.75 10.5V12.75m0 0v2.25m0-2.25H4.5m2.25 0H9" />';
-      if (iconName === 'circuit') return '<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M5.25 12h13.5m-13.5 3h13.5m-12 5.25V19.5m10.5 1.5V19.5M10.5 8.25v-1.5m3 1.5v-1.5M8.25 15.75v-1.5m3 1.5v-1.5m3 1.5v-1.5" /><rect x="6" y="6" width="12" height="12" rx="2" stroke-linecap="round" stroke-linejoin="round" />';
-      return '';
+      return `<use href="#icon-${iconName}" />`;
     };
 
     const openModal = (index) => {
@@ -165,7 +136,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
       // Populate content
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
-          <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor">
             ${getIconSvg(servicio.icono)}
           </svg>
         </div>
@@ -188,12 +159,6 @@ const modalData = CONFIG.servicios.map(servicio => ({
       modal.classList.add('scale-100');
       document.body.style.overflow = 'hidden';
 
-      setTimeout(() => closeBtn.focus(), 100);
-      backdrop?.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
-      modal?.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
-      modal?.classList.add('scale-100');
-      document.body.style.overflow = 'hidden';
-
       // Focus management
       setTimeout(() => closeBtn?.focus(), 100);
       isModalOpen = true;
@@ -207,13 +172,6 @@ const modalData = CONFIG.servicios.map(servicio => ({
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       document.body.style.overflow = '';
 
-      if (lastFocusedElement) lastFocusedElement.focus();
-      backdrop?.classList.add('opacity-0', 'pointer-events-none');
-      modal?.classList.remove('scale-100');
-      modal?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
-      document.body.style.overflow = '';
-
-      if (lastFocusedElement) lastFocusedElement.focus();
       if (lastFocusedElement instanceof HTMLElement) {
         lastFocusedElement.focus();
       }
@@ -231,17 +189,11 @@ const modalData = CONFIG.servicios.map(servicio => ({
     };
 
     cards.forEach(card => {
-      const handleOpen = () => {
       const openAction = () => {
         const index = card.getAttribute('data-index');
         if (index !== null) openModal(parseInt(index));
       };
 
-      card.addEventListener('click', handleOpen);
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          handleOpen();
       card.addEventListener('click', openAction);
 
       card.addEventListener('keydown', (e) => {
