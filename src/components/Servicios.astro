@@ -95,6 +95,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
   </div>
 
   <!-- Maximize Modal -->
+  <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none transition-opacity duration-400 invisible"></div>
+
   <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none invisible transition-opacity duration-400"></div>
 
   <div
@@ -196,6 +198,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
       if (lastFocusedElement instanceof HTMLElement) {
         lastFocusedElement.focus();
       }
+
       isModalOpen = false;
 
       // Clear content and set invisible after animation
@@ -209,11 +212,17 @@ const modalData = CONFIG.servicios.map(servicio => ({
     };
 
     cards.forEach(card => {
+      const handleOpen = () => {
       const openAction = () => {
         const index = card.getAttribute('data-index');
         if (index !== null) openModal(parseInt(index));
       };
 
+      card.addEventListener('click', handleOpen);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleOpen();
       card.addEventListener('click', openAction);
 
       card.addEventListener('keydown', (e) => {

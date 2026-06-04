@@ -56,6 +56,9 @@ import { CONFIG } from '../data/config';
               </svg>
             </div>
             <div>
+              <div class="flex items-center gap-2 mb-1">
+                <div class="font-heading font-bold text-[16px] text-navy">Horario de atención</div>
+                <span id="status-badge" class="hidden font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full"></span>
               <div class="font-heading font-bold text-[16px] text-navy mb-1">Horario de atención</div>
               <div class="font-body text-[14px] text-text-soft flex items-center gap-3">
                 {CONFIG.contacto.horario}
@@ -130,6 +133,7 @@ import { CONFIG } from '../data/config';
               <textarea id="f-desc" rows="3" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
             </div>
 
+            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
             <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-all shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
               Enviar por WhatsApp
             </button>
@@ -148,6 +152,28 @@ import { CONFIG } from '../data/config';
 
 <script define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
   document.addEventListener('DOMContentLoaded', () => {
+    // Business Hours Status Badge Logic
+    const statusBadge = document.getElementById('status-badge');
+    if (statusBadge) {
+      const now = new Date();
+      // Calculate Tucumán time (UTC-3)
+      const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
+      const day = tucumanTime.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+      const hour = tucumanTime.getHours();
+
+      // Business hours: Monday (1) to Friday (5), 09:00 to 18:00
+      const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
+
+      if (isOpen) {
+        statusBadge.innerText = 'Abierto ahora';
+        statusBadge.classList.add('bg-green-100', 'text-green-700');
+      } else {
+        statusBadge.innerText = 'Cerrado';
+        statusBadge.classList.add('bg-amber-100', 'text-amber-700');
+      }
+      statusBadge.classList.remove('hidden');
+    }
+
     // 1. Business Hours Status
     const updateStatus = () => {
       const badge = document.getElementById('status-badge');
@@ -211,7 +237,7 @@ import { CONFIG } from '../data/config';
     const form = document.getElementById('contact-form');
     const btn = document.getElementById('f-submit');
     
-    if(form && btn) {
+    if (form && btn) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -226,13 +252,17 @@ import { CONFIG } from '../data/config';
         const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
         const desc = document.getElementById('f-desc')?.value.trim() || 'Sin detalles adicionales';
 
+        const originalText = btn.textContent;
+        btn.textContent = 'Redirigiendo...';
+        btn.disabled = true;
+        btn.classList.add('opacity-70', 'cursor-not-allowed');
+
         const rawMessage = `Hola TechHealth! Me comunico desde su web.
 *Nombre:* ${nombre}
 *Teléfono:* ${tel}
 *Servicio:* ${servicio}
 *Detalle:* ${desc}`;
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
-        
         const encodedMessage = encodeURIComponent(rawMessage);
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
@@ -246,6 +276,8 @@ import { CONFIG } from '../data/config';
         setTimeout(() => {
           btn.textContent = originalText;
           btn.disabled = false;
+          btn.classList.remove('opacity-70', 'cursor-not-allowed');
+        }, 2000);
         }, 2000);
           btn.classList.remove('opacity-70', 'cursor-not-allowed');
         }, 3000);
