@@ -55,3 +55,16 @@
 ## 2026-06-03 - [UX: Fixed Header Scroll Padding]
 **Learning:** Fixed headers often obscure section titles when navigating via anchor links. Using `scroll-padding-top` on the `html` element is a clean, CSS-only solution that ensures the target content is perfectly positioned below the header.
 **Action:** Set `scroll-padding-top` equal to the fixed header height in global styles for all projects with sticky/fixed navigation.
+## 2026-06-05 - [A11y: Link Context and aria-label]
+**Learning:** Using `aria-label` on a link that contains both static information (like an address) and an action (like "Open in Maps") will override the internal text entirely. To ensure linear screen reader users don't lose context, the `aria-label` must include both the information and the intended action.
+**Action:** When using `aria-label` to clarify link actions, always concatenate relevant internal text content to maintain context for assistive technologies.
+
+## 2026-06-05 - [UX: Character Counter Verbosity]
+**Learning:** Adding `aria-live="polite"` to a live character counter can cause screen readers to announce the count on every keystroke, which is often perceived as "noisy" or distracting.
+**Action:** For standard textareas, prefer a visual-only character counter unless a specific accessibility requirement for real-time count announcements exists, or implement logic to announce only at specific intervals (e.g., every 50 characters) or when approaching the limit.
+## 2025-06-06 - [UX: Live Character Counters]
+**Learning:** Adding a real-time character counter to textareas with strict length limits (like 500 characters) provides critical feedback that prevents user frustration during form submission. Using `aria-describedby` links the counter to the input for screen readers, while avoiding `aria-live="polite"` on the counter itself prevents excessive verbosity during every keystroke.
+**Action:** Always implement character counters for limited inputs, ensuring clear visual state changes (e.g., color shifts) as the limit approaches, and maintain accessibility via semantic ARIA associations.
+## 2026-06-04 - [UX: Live Character Counter Accessibility]
+**Learning:** Adding a live character counter to textareas improves input management, but it must be accessible. Using `aria-describedby` on the textarea and `aria-live="polite"` on the counter ensures screen reader users are kept informed of their remaining capacity.
+**Action:** Always pair visual counters with ARIA attributes to maintain a high level of accessibility while providing delightful feedback.
