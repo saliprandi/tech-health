@@ -62,6 +62,10 @@ import { CONFIG } from '../data/config';
                   <span class="w-1.5 h-1.5 rounded-full animate-pulse"></span>
                   <span id="status-text"></span>
                 </div>
+                <div id="status-badge" class="hidden px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"></div>
+              <div class="flex items-center gap-2 mb-1">
+                <div class="font-heading font-bold text-[16px] text-navy">Horario de atención</div>
+                <span id="status-badge" class="hidden font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500"></span>
               </div>
               <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.horario}</div>
             </div>
@@ -126,6 +130,7 @@ import { CONFIG } from '../data/config';
               <textarea id="f-desc" rows="3" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
             </div>
 
+            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-colors shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
             <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-all shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
               Enviar por WhatsApp
             </button>
@@ -187,12 +192,69 @@ import { CONFIG } from '../data/config';
 
     updateBusinessStatus();
 
+    // Business Hours Status Badge
+    const statusBadge = document.getElementById('status-badge');
+    if (statusBadge) {
+      const now = new Date();
+      // Tucumán is UTC-3
+      const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
+      const day = tucumanTime.getDay(); // 0 is Sunday, 1-5 is Mon-Fri, 6 is Saturday
+      const hour = tucumanTime.getHours();
+
+      const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
+
+      statusBadge.textContent = isOpen ? 'Abierto ahora' : 'Cerrado';
+      const badgeClasses = isOpen
+        ? ['bg-green-100', 'text-green-700']
+        : ['bg-red-100', 'text-red-700'];
+      statusBadge.classList.add(...badgeClasses, 'px-2', 'py-0.5', 'rounded-full', 'text-[10px]', 'font-bold', 'uppercase', 'tracking-wider');
+      statusBadge.classList.remove('hidden');
+    }
+
+    // Business Hours Status Badge Logic
+    const updateStatusBadge = () => {
+      const badge = document.getElementById('status-badge');
+      if (!badge) return;
+
+      // Tucumán is UTC-3
+      const now = new Date();
+      const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
+
+      const day = tucumanTime.getDay(); // 0 (Sun) to 6 (Sat)
+      const hour = tucumanTime.getHours();
+
+      // Mon-Fri (1-5), 9:00 to 18:00
+      const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
+
+      badge.textContent = isOpen ? 'Abierto ahora' : 'Cerrado';
+
+      if (isOpen) {
+        badge.classList.remove('bg-gray-100', 'text-gray-500');
+        badge.classList.add('bg-emerald-100', 'text-emerald-600');
+      } else {
+        badge.classList.remove('bg-emerald-100', 'text-emerald-600');
+        badge.classList.add('bg-gray-100', 'text-gray-500');
+      }
+
+      badge.classList.remove('hidden');
+    };
+
+    updateStatusBadge();
+    // Refresh status every minute
+    setInterval(updateStatusBadge, 60000);
+
+    // Form Logic
     const form = document.getElementById('contact-form');
     const btn = document.getElementById('f-submit');
     
-    if(form && btn) {
+    if (form && btn) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
 
         const nombre = document.getElementById('f-nombre').value.trim();
         const tel = document.getElementById('f-tel').value.trim();
@@ -200,8 +262,12 @@ import { CONFIG } from '../data/config';
         const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
         const desc = document.getElementById('f-desc').value.trim() || 'Sin detalles adicionales';
 
+        const originalText = btn.textContent;
+        btn.textContent = 'Redirigiendo...';
+        btn.disabled = true;
+        btn.classList.add('opacity-70', 'cursor-not-allowed');
+
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
-        
         const encodedMessage = encodeURIComponent(rawMessage);
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
@@ -214,11 +280,14 @@ import { CONFIG } from '../data/config';
         window.open(url, '_blank', 'noopener,noreferrer');
 
         // Reset button after a delay in case they come back to the tab
+        window.open(url, '_blank', 'noopener,noreferrer');
+
         setTimeout(() => {
           btn.textContent = originalText;
           btn.disabled = false;
           btn.classList.remove('opacity-70', 'cursor-not-allowed');
         }, 3000);
+        }, 2000);
       });
     }
   });

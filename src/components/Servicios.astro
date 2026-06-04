@@ -50,6 +50,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
           role="button"
           aria-haspopup="dialog"
           aria-label={`Ver detalles del servicio: ${servicio.titulo}`}
+          aria-label={`Ver detalles de ${servicio.titulo}`}
         >
           <!-- Animated Top Bar -->
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus:scale-x-100 transition-transform duration-500 ease-out"></div>
@@ -96,6 +97,20 @@ const modalData = CONFIG.servicios.map(servicio => ({
   <!-- Maximize Modal -->
   <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none invisible transition-all duration-400"></div>
 
+  <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none invisible transition-opacity duration-400"></div>
+
+  <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none transition-opacity duration-400 invisible"></div>
+
+  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none transition-all duration-400 scale-95 invisible" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none invisible transition-opacity duration-400"></div>
+
+  <div
+    id="service-modal"
+    class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none invisible transition-all duration-400 scale-95"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+  >
   <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none invisible transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <!-- Close Button -->
@@ -144,6 +159,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
       lastFocusedElement = document.activeElement;
 
+      // Populate content
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
           <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -164,11 +180,18 @@ const modalData = CONFIG.servicios.map(servicio => ({
         </ul>
       `;
 
+      backdrop.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
+      modal.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
+      modal.classList.add('scale-100');
+      document.body.style.overflow = 'hidden';
+
+      setTimeout(() => closeBtn.focus(), 100);
       backdrop?.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
       modal?.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
       modal?.classList.add('scale-100');
       document.body.style.overflow = 'hidden';
 
+      // Focus management
       setTimeout(() => closeBtn?.focus(), 100);
       isModalOpen = true;
     };
@@ -176,33 +199,49 @@ const modalData = CONFIG.servicios.map(servicio => ({
     const closeModal = () => {
       if (!isModalOpen) return;
       
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('scale-100');
+      modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+      document.body.style.overflow = '';
+
+      if (lastFocusedElement) lastFocusedElement.focus();
       backdrop?.classList.add('opacity-0', 'pointer-events-none');
       modal?.classList.remove('scale-100');
       modal?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       document.body.style.overflow = '';
 
+      if (lastFocusedElement) lastFocusedElement.focus();
       if (lastFocusedElement instanceof HTMLElement) {
         lastFocusedElement.focus();
       }
 
       isModalOpen = false;
 
+      // Clear content and set invisible after animation
       setTimeout(() => {
         if (!isModalOpen) {
           modalContent.innerHTML = '';
-          backdrop?.classList.add('invisible');
-          modal?.classList.add('invisible');
+          backdrop.classList.add('invisible');
+          modal.classList.add('invisible');
         }
       }, 400);
     };
 
     cards.forEach(card => {
+      const handleOpen = () => {
       const openAction = () => {
         const index = card.getAttribute('data-index');
         if (index !== null) openModal(parseInt(index));
       };
 
       card.addEventListener('click', openAction);
+      card.addEventListener('click', handleOpen);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleOpen();
+      card.addEventListener('click', openAction);
+
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -211,8 +250,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
       });
     });
 
-    backdrop?.addEventListener('click', closeModal);
-    closeBtn?.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', closeModal);
+    closeBtn.addEventListener('click', closeModal);
     
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeModal();
