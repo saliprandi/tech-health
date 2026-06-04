@@ -51,9 +51,3 @@
 ## 2026-06-05 - [UX: Character Counter Verbosity]
 **Learning:** Adding `aria-live="polite"` to a live character counter can cause screen readers to announce the count on every keystroke, which is often perceived as "noisy" or distracting.
 **Action:** For standard textareas, prefer a visual-only character counter unless a specific accessibility requirement for real-time count announcements exists, or implement logic to announce only at specific intervals (e.g., every 50 characters) or when approaching the limit.
-## 2025-06-06 - [UX: Live Character Counters]
-**Learning:** Adding a real-time character counter to textareas with strict length limits (like 500 characters) provides critical feedback that prevents user frustration during form submission. Using `aria-describedby` links the counter to the input for screen readers, while avoiding `aria-live="polite"` on the counter itself prevents excessive verbosity during every keystroke.
-**Action:** Always implement character counters for limited inputs, ensuring clear visual state changes (e.g., color shifts) as the limit approaches, and maintain accessibility via semantic ARIA associations.
-## 2026-06-04 - [UX: Live Character Counter Accessibility]
-**Learning:** Adding a live character counter to textareas improves input management, but it must be accessible. Using `aria-describedby` on the textarea and `aria-live="polite"` on the counter ensures screen reader users are kept informed of their remaining capacity.
-**Action:** Always pair visual counters with ARIA attributes to maintain a high level of accessibility while providing delightful feedback.

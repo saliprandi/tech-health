@@ -1,0 +1,28 @@
+        }
+
+        const nombre = document.getElementById('f-nombre')?.value.trim() || 'No especificado';
+        const tel = document.getElementById('f-tel')?.value.trim() || 'No especificado';
+        const servicioel = document.getElementById('f-servicio');
+        const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
+        const desc = document.getElementById('f-desc')?.value.trim() || 'Sin detalles adicionales';
+
+        const originalText = btn.textContent;
+        btn.textContent = 'Redirigiendo...';
+        btn.disabled = true;
+        btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
+        const encodedMessage = encodeURIComponent(rawMessage);
+        const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+        window.open(url, '_blank', 'noopener,noreferrer');
+
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.disabled = false;
+          btn.classList.remove('opacity-70', 'cursor-not-allowed');
+        }, 2000);
+      });
+    }
+  });
+</script>

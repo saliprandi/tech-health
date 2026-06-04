@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import Icons from '../components/Icons.astro';
 
 interface Props {
 	title?: string;
@@ -17,7 +16,7 @@ const { title = "TechHealth Medical Engineering | Técnicos en Electromedicina �
 		<meta name="description" content="Mantenimiento preventivo y correctivo, diagnóstico y reparación de equipos médicos de alta complejidad en San Miguel de Tucumán. TechHealth Medical Engineering." />
 		<meta name="keywords" content="electromedicina tucumán, reparación equipos médicos, mantenimiento equipos hospitalarios, técnico electromedicina tucumán" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self' https://wa.me; media-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests;" />
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-src 'self' https://www.google.com; media-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests;" />
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
 		<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -38,16 +37,12 @@ const { title = "TechHealth Medical Engineering | Técnicos en Electromedicina �
 		<meta property="twitter:description" content="Especialistas en mantenimiento y reparación de equipos médicos de alta complejidad en Tucumán." />
 		<meta property="twitter:image" content="https://saliprandi.github.io/tech-health/og-image.jpg" />
 		
-		<!-- Network Optimization -->
-		<link rel="preconnect" href="https://wa.me" />
-
 		<!-- Google Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 	</head>
 	<body>
-		<Icons />
 		<slot />
 	</body>
 </html>

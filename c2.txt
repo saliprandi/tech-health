@@ -1,0 +1,50 @@
+          <!-- Hours -->
+          <div class="flex items-start gap-4 p-4 rounded-[12px] border border-transparent">
+            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <div class="font-heading font-bold text-[16px] text-navy">Horario de atención</div>
+                <span id="status-badge" class="hidden font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500" aria-live="polite"></span>
+              </div>
+              <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.horario}</div>
+            </div>
+          </div>
+
+          <!-- Email (Conditional) -->
+          {CONFIG.contacto.email && (
+            <a href={`mailto:${CONFIG.contacto.email}`} class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
+              <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                </svg>
+              </div>
+              <div>
+                <div class="font-heading font-bold text-[16px] text-navy mb-1">Correo Electrónico</div>
+                <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.email}</div>
+              </div>
+            </a>
+          )}
+
+        </div>
+      </div>
+
+      <!-- Right Column (Form) -->
+      <div>
+        <div class="bg-navy rounded-card p-8 md:p-11 shadow-hero-card">
+          <h3 class="font-heading font-bold text-[24px] text-white mb-6">Envíenos su consulta</h3>
+
+          <form id="contact-form" class="flex flex-col gap-5">
+
+            <div class="flex flex-col gap-1.5">
+              <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
+                Nombre completo <span class="text-blue-light">*</span>
+              </label>
+              <input type="text" id="f-nombre" name="nombre" required placeholder="Ej: Dr. Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full" />
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label for="f-tel" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">

@@ -1,0 +1,50 @@
+
+      // Tucumán is UTC-3
+      const now = new Date();
+      const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
+
+      const day = tucumanTime.getDay(); // 0 (Sun) to 6 (Sat)
+      const hour = tucumanTime.getHours();
+
+      // Mon-Fri (1-5), 9:00 to 18:00
+      const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
+
+      badge.textContent = isOpen ? 'Abierto ahora' : 'Cerrado';
+
+      if (isOpen) {
+        badge.classList.remove('bg-gray-100', 'text-gray-500');
+        badge.classList.add('bg-emerald-100', 'text-emerald-600');
+      } else {
+        badge.classList.remove('bg-emerald-100', 'text-emerald-600');
+        badge.classList.add('bg-gray-100', 'text-gray-500');
+      }
+
+      badge.classList.remove('hidden');
+    };
+
+    updateStatusBadge();
+    // Refresh status every minute
+    setInterval(updateStatusBadge, 60000);
+
+    // Character Counter Logic
+    const textarea = document.getElementById('f-desc');
+    const counter = document.getElementById('char-counter');
+
+    if (textarea && counter) {
+      textarea.addEventListener('input', () => {
+        const length = textarea.value.length;
+        counter.textContent = length + ' / 500';
+      });
+    }
+
+    // Form Logic
+    const form = document.getElementById('contact-form');
+    const btn = document.getElementById('f-submit');
+
+    if (form && btn) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
