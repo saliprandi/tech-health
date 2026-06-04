@@ -49,7 +49,6 @@ const modalData = CONFIG.servicios.map(servicio => ({
           tabindex="0"
           role="button"
           aria-haspopup="dialog"
-          aria-label={`Ver detalles del servicio: ${servicio.titulo}`}
           aria-label={`Ver detalles de ${servicio.titulo}`}
         >
           <!-- Animated Top Bar -->
@@ -95,6 +94,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
   </div>
 
   <!-- Maximize Modal -->
+  <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none invisible transition-opacity duration-400"></div>
+
   <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none transition-opacity duration-400 invisible"></div>
 
   <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none transition-all duration-400 scale-95 invisible" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -133,8 +134,6 @@ const modalData = CONFIG.servicios.map(servicio => ({
     let isModalOpen = false;
     let lastFocusedElement = null;
 
-    // Sanitize dynamic content to prevent XSS
-    // Sanitize dynamic content
     const escapeHtml = (unsafe) => {
       return unsafe
         .replace(/&/g, "&amp;")
@@ -178,6 +177,12 @@ const modalData = CONFIG.servicios.map(servicio => ({
         </ul>
       `;
 
+      backdrop.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
+      modal.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
+      modal.classList.add('scale-100');
+      document.body.style.overflow = 'hidden';
+
+      setTimeout(() => closeBtn.focus(), 100);
       backdrop?.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
       modal?.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
       modal?.classList.add('scale-100');
@@ -191,6 +196,12 @@ const modalData = CONFIG.servicios.map(servicio => ({
     const closeModal = () => {
       if (!isModalOpen) return;
       
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('scale-100');
+      modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+      document.body.style.overflow = '';
+
+      if (lastFocusedElement) lastFocusedElement.focus();
       backdrop?.classList.add('opacity-0', 'pointer-events-none');
       modal?.classList.remove('scale-100');
       modal?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
@@ -207,8 +218,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
       setTimeout(() => {
         if (!isModalOpen) {
           modalContent.innerHTML = '';
-          backdrop?.classList.add('invisible');
-          modal?.classList.add('invisible');
+          backdrop.classList.add('invisible');
+          modal.classList.add('invisible');
         }
       }, 400);
     };
@@ -235,8 +246,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
       });
     });
 
-    backdrop?.addEventListener('click', closeModal);
-    closeBtn?.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', closeModal);
+    closeBtn.addEventListener('click', closeModal);
     
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeModal();
