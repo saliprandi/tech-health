@@ -118,6 +118,11 @@ import { CONFIG } from '../data/config';
             </div>
 
             <div class="flex flex-col gap-1.5 mb-2">
+              <div class="flex justify-between items-center">
+                <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
+                <div id="char-counter" class="font-body text-[10px] text-white/40 tabular-nums">0 / 500</div>
+              </div>
+              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" aria-describedby="char-counter" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
               <div class="flex items-center justify-between">
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
                 <span id="char-count" class="text-[10px] text-white/40 ml-auto">0 / 500</span>
@@ -181,6 +186,20 @@ import { CONFIG } from '../data/config';
     // Form Logic
     const form = document.getElementById('contact-form');
     const btn = document.getElementById('f-submit');
+    const textarea = document.getElementById('f-desc');
+    const charCounter = document.getElementById('char-counter');
+
+    if (textarea && charCounter) {
+      const updateCounter = () => {
+        const length = textarea.value.length;
+        charCounter.textContent = `${length} / 500`;
+
+        if (length >= 500) {
+          charCounter.classList.add('text-blue-light');
+          charCounter.classList.remove('text-white/40');
+        } else {
+          charCounter.classList.remove('text-blue-light');
+          charCounter.classList.add('text-white/40');
     const descArea = document.getElementById('f-desc');
     const charCount = document.getElementById('char-count');
 
@@ -203,6 +222,7 @@ import { CONFIG } from '../data/config';
       };
 
       textarea.addEventListener('input', updateCounter);
+      // Initialize on load to handle pre-filled content
       // Initialize
       updateCounter();
     }
