@@ -122,6 +122,9 @@ import { CONFIG } from '../data/config';
             <div class="flex flex-col gap-1.5 mb-2">
               <div class="flex justify-between items-end">
                 <label for="f-desc" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Detalle del equipo / Falla (Opcional)</label>
+                <span id="char-count-msg" class="font-body text-[10px] text-white/40 mb-0.5">0 / 500</span>
+              </div>
+              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" aria-describedby="char-count-msg" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
                 <span id="char-count" class="font-body text-[10px] text-white/40 uppercase tracking-wider mb-0.5" aria-live="polite">0 / 500</span>
               </div>
               <textarea id="f-desc" name="mensaje" aria-describedby="char-count" rows="3" maxlength="500" placeholder="Describa el equipo y el problema de manera breve..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white placeholder-white/30 focus:outline-none focus:border-blue-light transition-colors w-full resize-none"></textarea>
@@ -156,7 +159,7 @@ import { CONFIG } from '../data/config';
   </div>
 </section>
 
-<script define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
+<script is:inline define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
   document.addEventListener('DOMContentLoaded', () => {
     // Business Hours Status Badge Logic
     const updateStatusBadge = () => {
@@ -193,6 +196,22 @@ import { CONFIG } from '../data/config';
     // Form Logic
     const form = document.getElementById('contact-form');
     const btn = document.getElementById('f-submit');
+    const descArea = document.getElementById('f-desc');
+    const charCount = document.getElementById('char-count-msg');
+
+    if (descArea && charCount) {
+      descArea.addEventListener('input', () => {
+        const length = descArea.value.length;
+        charCount.textContent = `${length} / 500`;
+
+        if (length >= 450) {
+          charCount.classList.remove('text-white/40');
+          charCount.classList.add('text-blue-light');
+        } else {
+          charCount.classList.add('text-white/40');
+          charCount.classList.remove('text-blue-light');
+        }
+      });
     const textarea = document.getElementById('f-desc');
     const charCount = document.getElementById('char-count');
 
