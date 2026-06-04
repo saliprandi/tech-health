@@ -49,6 +49,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
           tabindex="0"
           role="button"
           aria-haspopup="dialog"
+          aria-label={`Ver detalles del servicio: ${servicio.titulo}`}
           aria-label={`Ver detalles de ${servicio.titulo}`}
         >
           <!-- Animated Top Bar -->
@@ -96,6 +97,13 @@ const modalData = CONFIG.servicios.map(servicio => ({
   <!-- Maximize Modal -->
   <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none invisible transition-opacity duration-400"></div>
 
+  <div
+    id="service-modal"
+    class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none invisible transition-all duration-400 scale-95"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+  >
   <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none invisible transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <!-- Close Button -->
@@ -122,6 +130,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
     let isModalOpen = false;
     let lastFocusedElement = null;
 
+    // Sanitize dynamic content
     const escapeHtml = (unsafe) => {
       return unsafe
         .replace(/&/g, "&amp;")
@@ -144,6 +153,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
       lastFocusedElement = document.activeElement;
 
+      // Populate content
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
           <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -169,6 +179,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
       modal?.classList.add('scale-100');
       document.body.style.overflow = 'hidden';
 
+      // Focus management
       setTimeout(() => closeBtn?.focus(), 100);
       isModalOpen = true;
     };
@@ -181,11 +192,13 @@ const modalData = CONFIG.servicios.map(servicio => ({
       modal?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       document.body.style.overflow = '';
 
+      if (lastFocusedElement) lastFocusedElement.focus();
       if (lastFocusedElement instanceof HTMLElement) {
         lastFocusedElement.focus();
       }
       isModalOpen = false;
 
+      // Clear content and set invisible after animation
       setTimeout(() => {
         if (!isModalOpen) {
           modalContent.innerHTML = '';
