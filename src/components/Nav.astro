@@ -32,7 +32,6 @@ import { CONFIG } from '../data/config';
         aria-expanded="false"
         aria-controls="mobile-menu"
       >
-      <button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none z-[101]" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
         <span class="block w-6 h-0.5 bg-navy transition-transform duration-300 origin-center"></span>
         <span class="block w-6 h-0.5 bg-navy transition-opacity duration-300"></span>
         <span class="block w-6 h-0.5 bg-navy transition-transform duration-300 origin-center"></span>
@@ -74,7 +73,7 @@ import { CONFIG } from '../data/config';
       toggle?.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
 
       if (isOpen) {
-        menu?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
+        menu?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]', 'invisible');
         menu?.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
         if (spans) {
           spans[0].classList.add('rotate-45', 'translate-y-[8px]');
@@ -89,18 +88,15 @@ import { CONFIG } from '../data/config';
           spans[1].classList.remove('opacity-0');
           spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
         }
+        // Add invisible after transition
+        setTimeout(() => {
+          if (!isOpen) menu?.classList.add('invisible');
+        }, 300);
       }
     };
 
     toggle?.addEventListener('click', toggleMenu);
 
-    // Close on Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen) {
-        toggleMenu();
-        toggle?.focus();
-      }
-    });
     mobileLinks.forEach(link => {
       link.addEventListener('click', () => {
         if (isOpen) toggleMenu();
