@@ -49,6 +49,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
           tabindex="0"
           role="button"
           aria-haspopup="dialog"
+          aria-label={`Ver detalles del servicio: ${servicio.titulo}`}
           aria-label={`Ver detalles de ${servicio.titulo}`}
         >
           <!-- Animated Top Bar -->
@@ -94,6 +95,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
   </div>
 
   <!-- Maximize Modal -->
+  <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none invisible transition-all duration-400"></div>
+
   <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none invisible transition-opacity duration-400"></div>
 
   <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none transition-opacity duration-400 invisible"></div>
@@ -231,6 +234,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
         if (index !== null) openModal(parseInt(index));
       };
 
+      card.addEventListener('click', openAction);
       card.addEventListener('click', handleOpen);
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {

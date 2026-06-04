@@ -1,13 +1,10 @@
-## 2026-06-01 - Accessible Interactive Cards and Modal Focus Management
-**Learning:** Custom interactive elements (like `div` cards) must be manually enriched with keyboard support and focus management to be truly accessible. Simply adding a click listener is insufficient for screen readers and keyboard users.
-**Action:** Always add `tabindex="0"`, `role="button"`, and keydown listeners to custom interactive containers. Ensure modals implement focus traps or at least focus-restoration logic.
-## 2025-05-22 - Accessibility and Focus Management in Modals
-**Learning:** Adding `invisible` (visibility: hidden) to a modal when closing it at the same time as `opacity-0` cuts off the CSS transition.
-**Action:** Use a `setTimeout` matching the transition duration to apply `invisible` only after the fade-out is complete, ensuring both accessibility (hidden from screen readers) and smooth UX.
-## 2025-05-15 - [A11y: Focus Management in Astro Modals]
-**Learning:** When using Astro with client-side scripts to manage modals, manual focus management is required for accessibility. Simply showing/hiding with CSS classes leaves focus on the trigger element, which is confusing for screen reader and keyboard users.
-**Action:** Use `lastFocusedElement = document.activeElement` before opening, focus the first interactive element (close button) inside the modal using `setTimeout` to wait for transitions, and restore focus when closing.
+## 2025-05-15 - Intl.DateTimeFormat 'numeric' constraint
+**Learning:** Using `weekday: 'numeric'` in `Intl.DateTimeFormat` is not supported in many environments and causes a `RangeError`.
+**Action:** Use `weekday: 'short'` or `'long'` and compare string values (e.g., 'Mon', 'Tue') for cross-browser reliability in client-side scripts.
 
+## 2025-05-15 - Micro-UX feedback and Script isolation
+**Learning:** Providing immediate button feedback (e.g., "Redirigiendo...") improves UX but errors in pre-execution logic (like date parsing) can block subsequent event listeners.
+**Action:** Wrap independent logic in try-catch or ensure early initialization is robust to prevent breaking core features like form submissions.
 ## 2025-05-15 - [UX: Interaction Feedback with Animations]
 **Learning:** Adding subtle animations (like 'heartbeat' for medical icons) on group-hover provides delightful feedback that reinforces the brand identity (medical engineering) without being intrusive.
 **Action:** Define custom keyframes in `tailwind.config.mjs` and use `group-hover` on parent containers to trigger animations on child SVG icons.

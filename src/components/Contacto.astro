@@ -58,6 +58,10 @@ import { CONFIG } from '../data/config';
             <div>
               <div class="flex items-center gap-3 mb-1">
                 <div class="font-heading font-bold text-[16px] text-navy">Horario de atención</div>
+                <div id="business-status" style="display: none;" class="items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                  <span class="w-1.5 h-1.5 rounded-full animate-pulse"></span>
+                  <span id="status-text"></span>
+                </div>
                 <div id="status-badge" class="hidden px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"></div>
               <div class="flex items-center gap-2 mb-1">
                 <div class="font-heading font-bold text-[16px] text-navy">Horario de atención</div>
@@ -145,6 +149,49 @@ import { CONFIG } from '../data/config';
 
 <script define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
   document.addEventListener('DOMContentLoaded', () => {
+    // Business Hours Status Logic
+    const updateBusinessStatus = () => {
+      const statusContainer = document.getElementById('business-status');
+      const statusText = document.getElementById('status-text');
+      const dot = statusContainer?.querySelector('span');
+
+      if (!statusContainer || !statusText || !dot) return;
+
+      // Get Tucumán Time (UTC-3)
+      const now = new Date();
+      const tucumanTime = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/Argentina/Buenos_Aires',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: false,
+        weekday: 'short'
+      }).formatToParts(now);
+
+      const parts = {};
+      tucumanTime.forEach(({type, value}) => parts[type] = value);
+
+      // parts.weekday will be 'Mon', 'Tue', etc.
+      const day = parts.weekday;
+      const hour = parseInt(parts.hour);
+
+      const openDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+      const isOpen = openDays.includes(day) && hour >= 9 && hour < 18;
+
+      statusContainer.style.display = 'flex';
+
+      if (isOpen) {
+        statusText.innerText = 'Abierto ahora';
+        statusContainer.classList.add('bg-green-100', 'text-green-700');
+        dot.classList.add('bg-green-600');
+      } else {
+        statusText.innerText = 'Cerrado';
+        statusContainer.classList.add('bg-slate-100', 'text-slate-600');
+        dot.classList.add('bg-slate-500');
+      }
+    };
+
+    updateBusinessStatus();
+
     // Business Hours Status Badge
     const statusBadge = document.getElementById('status-badge');
     if (statusBadge) {
@@ -224,12 +271,22 @@ import { CONFIG } from '../data/config';
         const encodedMessage = encodeURIComponent(rawMessage);
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
+        // UX Improvement: Provide immediate feedback and prevent double clicks
+        const originalText = btn.textContent;
+        btn.textContent = 'Redirigiendo...';
+        btn.disabled = true;
+        btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+        window.open(url, '_blank', 'noopener,noreferrer');
+
+        // Reset button after a delay in case they come back to the tab
         window.open(url, '_blank', 'noopener,noreferrer');
 
         setTimeout(() => {
           btn.textContent = originalText;
           btn.disabled = false;
           btn.classList.remove('opacity-70', 'cursor-not-allowed');
+        }, 3000);
         }, 2000);
       });
     }
