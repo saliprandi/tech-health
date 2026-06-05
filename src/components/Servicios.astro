@@ -102,7 +102,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
   </div>
 </section>
 
-<script define:vars={{ modalData }}>
+<script define:vars={{ modalData, whatsappNumber: CONFIG.contacto.whatsapp }}>
   document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.service-card');
     const backdrop = document.getElementById('service-modal-backdrop');
@@ -152,6 +152,16 @@ const modalData = CONFIG.servicios.map(servicio => ({
             </li>
           `).join('')}
         </ul>
+
+        <a
+          href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola! Me interesa el servicio de: ' + servicio.titulo)}"
+          target="_blank"
+          rel="noopener noreferrer"
+          id="modal-cta"
+          class="inline-flex items-center justify-center w-full mt-10 bg-navy text-white font-heading font-bold py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all duration-300 shadow-sm"
+        >
+          Consultar por este servicio
+        </a>
       `;
 
       backdrop.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
@@ -209,6 +219,29 @@ const modalData = CONFIG.servicios.map(servicio => ({
     
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeModal();
+
+      if (e.key === 'Tab' && isModalOpen) {
+        const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        // Filter out decorative SVG/USE tags that might be picked up in some environments
+        const interactiveElements = Array.from(focusableElements).filter(el =>
+          el.tagName.toLowerCase() !== 'svg' && el.tagName.toLowerCase() !== 'use'
+        );
+
+        const firstElement = interactiveElements[0];
+        const lastElement = interactiveElements[interactiveElements.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            if (lastElement instanceof HTMLElement) lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            if (firstElement instanceof HTMLElement) firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
     });
   });
 </script>
