@@ -65,3 +65,11 @@
 ## 2025-06-07 - [A11y: Contrast for Small Decorative Text]
 **Learning:** Small, uppercase text in badges requires higher contrast than standard body text to remain readable. While `emerald-600` or `700` might look "on-brand", `emerald-800` (or higher) is often necessary to meet WCAG AA standards (4.5:1) for text below 14pt.
 **Action:** Prioritize legibility over brand-softness by using darker color variants for status badges and indicators.
+
+## 2025-02-15 - [Accessible & Conversion-Focused Modals]
+**Learning:** A modal without a clear CTA is a dead end for conversion. Combining a context-aware WhatsApp button with robust focus management (trap and restoration) creates a seamless experience for both standard and keyboard users.
+**Action:** When implementing modals, always ensure there is a clear next step for the user and that focus is managed to prevent users from getting lost in the background.
+
+## 2025-02-15 - [Color Contrast for Secondary Status Badges]
+**Learning:** `text-gray-500` on `bg-gray-100` often fails WCAG AA contrast requirements. Using `text-gray-800` provides a much safer contrast ratio while maintaining the "neutral/secondary" visual intent.
+**Action:** Use a contrast checker or standard high-contrast neutral pairs (like 800 on 100) for status indicators.

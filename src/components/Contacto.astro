@@ -156,12 +156,12 @@ import { CONFIG } from '../data/config';
 
       if (isOpen) {
         badge.innerHTML = '<span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora';
-        badge.classList.remove('bg-gray-100', 'text-gray-500');
+        badge.classList.remove('bg-gray-100', 'text-gray-500', 'text-gray-800');
         badge.classList.add('bg-emerald-100', 'text-emerald-800');
       } else {
         badge.textContent = 'Cerrado';
         badge.classList.remove('bg-emerald-100', 'text-emerald-800');
-        badge.classList.add('bg-gray-100', 'text-gray-500');
+        badge.classList.add('bg-gray-100', 'text-gray-800');
       }
 
       badge.classList.remove('hidden');
