@@ -57,7 +57,7 @@ import { CONFIG } from '../data/config';
             <div>
               <div class="flex items-center gap-2 mb-1">
                 <div class="font-heading font-bold text-[16px] text-navy">Horario de atención</div>
-                <span id="status-badge" class="hidden font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500" aria-live="polite"></span>
+                <span id="status-badge" class="hidden inline-flex items-center gap-1.5 font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500" aria-live="polite"></span>
               </div>
               <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.horario}</div>
             </div>
@@ -154,13 +154,13 @@ import { CONFIG } from '../data/config';
 
       const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
 
-      badge.textContent = isOpen ? 'Abierto ahora' : 'Cerrado';
-
       if (isOpen) {
+        badge.innerHTML = '<span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora';
         badge.classList.remove('bg-gray-100', 'text-gray-500');
-        badge.classList.add('bg-emerald-100', 'text-emerald-600');
+        badge.classList.add('bg-emerald-100', 'text-emerald-800');
       } else {
-        badge.classList.remove('bg-emerald-100', 'text-emerald-600');
+        badge.textContent = 'Cerrado';
+        badge.classList.remove('bg-emerald-100', 'text-emerald-800');
         badge.classList.add('bg-gray-100', 'text-gray-500');
       }
 
