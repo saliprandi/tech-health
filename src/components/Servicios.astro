@@ -102,7 +102,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
   </div>
 </section>
 
-<script define:vars={{ modalData }}>
+<script define:vars={{ modalData, whatsappNumber: CONFIG.contacto.whatsapp }}>
   document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.service-card');
     const backdrop = document.getElementById('service-modal-backdrop');
@@ -112,6 +112,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
     
     let isModalOpen = false;
     let lastFocusedElement = null;
+    let focusableElements = [];
 
     // Sanitize dynamic content
     const escapeHtml = (unsafe) => {
@@ -133,6 +134,9 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
       lastFocusedElement = document.activeElement;
 
+      const encodedService = encodeURIComponent(servicio.titulo);
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola! Me interesa el servicio de: ')}${encodedService}`;
+
       // Populate content
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
@@ -144,7 +148,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
         <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
         
         <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
-        <ul class="flex flex-col gap-4">
+        <ul class="flex flex-col gap-4 mb-10">
           ${servicio.items.map(item => `
             <li class="flex items-start gap-4 font-body text-[15px] text-text-soft">
               <span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>
@@ -152,6 +156,16 @@ const modalData = CONFIG.servicios.map(servicio => ({
             </li>
           `).join('')}
         </ul>
+
+        <div class="flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-border">
+          <a id="modal-cta" href="${whatsappUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary w-full sm:w-auto gap-2">
+            <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
+            Consultar por este servicio
+          </a>
+          <button id="modal-close-secondary" class="font-heading font-bold text-navy hover:text-blue transition-colors py-2 px-4">
+            Cerrar
+          </button>
+        </div>
       `;
 
       backdrop.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
@@ -160,23 +174,28 @@ const modalData = CONFIG.servicios.map(servicio => ({
       document.body.style.overflow = 'hidden';
 
       // Focus management
+      const secondaryClose = document.getElementById('modal-close-secondary');
+      secondaryClose?.addEventListener('click', closeModal);
+
+      focusableElements = Array.from(modal.querySelectorAll('button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+        .filter(el => el.tagName !== 'svg' && el.tagName !== 'use');
+
       setTimeout(() => closeBtn?.focus(), 100);
       isModalOpen = true;
     };
 
     const closeModal = () => {
       if (!isModalOpen) return;
+      isModalOpen = false;
       
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100');
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       document.body.style.overflow = '';
 
-      if (lastFocusedElement instanceof HTMLElement) {
+      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
         lastFocusedElement.focus();
       }
-
-      isModalOpen = false;
 
       // Clear content and set invisible after animation
       setTimeout(() => {
@@ -208,7 +227,22 @@ const modalData = CONFIG.servicios.map(servicio => ({
     closeBtn.addEventListener('click', closeModal);
     
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
+      if (e.key === 'Escape' && isModalOpen) {
+        closeModal();
+      }
+
+      if (e.key === 'Tab' && isModalOpen) {
+        const first = focusableElements[0];
+        const last = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     });
   });
 </script>

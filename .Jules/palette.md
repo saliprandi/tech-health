@@ -65,3 +65,7 @@
 ## 2025-06-07 - [A11y: Contrast for Small Decorative Text]
 **Learning:** Small, uppercase text in badges requires higher contrast than standard body text to remain readable. While `emerald-600` or `700` might look "on-brand", `emerald-800` (or higher) is often necessary to meet WCAG AA standards (4.5:1) for text below 14pt.
 **Action:** Prioritize legibility over brand-softness by using darker color variants for status badges and indicators.
+
+## 2026-06-05 - [UX: Context-Aware Modal CTA and Focus Management]
+**Learning:** Adding a context-aware WhatsApp CTA inside service modals significantly improves conversion by reducing friction. However, implementing a focus trap requires careful state management; resetting the 'isModalOpen' flag immediately upon closure is critical to prevent keyboard users from getting trapped in hidden elements.
+**Action:** Always pair custom modal implementations with a robust focus trap (filtering non-interactive SVG/use tags) and ensure the open state is correctly synchronized with all closure triggers (Escape, backdrop, close buttons).
