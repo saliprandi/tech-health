@@ -57,3 +57,11 @@
 ## 2026-06-04 - [UX: Live Character Counter Accessibility]
 **Learning:** Adding a live character counter to textareas improves input management, but it must be accessible. Using `aria-describedby` on the textarea and `aria-live="polite"` on the counter ensures screen reader users are kept informed of their remaining capacity.
 **Action:** Always pair visual counters with ARIA attributes to maintain a high level of accessibility while providing delightful feedback.
+
+## 2025-06-07 - [UX: Fixed Header Anchor Link Compatibility]
+**Learning:** Fixed headers often overlap target content when navigating via anchor links. Using `scroll-padding-top` on the `html` element is a clean, CSS-only solution that preserves the visual hierarchy and ensures headings are fully visible after navigation.
+**Action:** Always implement `scroll-padding-top` equal to the fixed header height in the global stylesheet.
+
+## 2025-06-07 - [A11y: Contrast for Small Decorative Text]
+**Learning:** Small, uppercase text in badges requires higher contrast than standard body text to remain readable. While `emerald-600` or `700` might look "on-brand", `emerald-800` (or higher) is often necessary to meet WCAG AA standards (4.5:1) for text below 14pt.
+**Action:** Prioritize legibility over brand-softness by using darker color variants for status badges and indicators.
