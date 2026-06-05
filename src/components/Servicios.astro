@@ -102,7 +102,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
   </div>
 </section>
 
-<script define:vars={{ modalData }}>
+<script define:vars={{ modalData, whatsappNumber: CONFIG.contacto.whatsapp }}>
   document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.service-card');
     const backdrop = document.getElementById('service-modal-backdrop');
@@ -144,7 +144,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
         <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
         
         <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
-        <ul class="flex flex-col gap-4">
+        <ul class="flex flex-col gap-4 mb-10">
           ${servicio.items.map(item => `
             <li class="flex items-start gap-4 font-body text-[15px] text-text-soft">
               <span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>
@@ -152,6 +152,15 @@ const modalData = CONFIG.servicios.map(servicio => ({
             </li>
           `).join('')}
         </ul>
+
+        <div class="pt-6 border-t border-border">
+          <button id="modal-cta" data-servicio="${escapeHtml(servicio.titulo)}" class="w-full bg-navy text-white font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-navy-dark transition-all shadow-sm flex items-center justify-center gap-2">
+            <svg class="w-5 h-5 fill-current">
+              <use href="#icon-whatsapp" />
+            </svg>
+            Consultar por este servicio
+          </button>
+        </div>
       `;
 
       backdrop.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
@@ -206,9 +215,61 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
     backdrop.addEventListener('click', closeModal);
     closeBtn.addEventListener('click', closeModal);
+
+    // Modal CTA Click delegation
+    modalContent.addEventListener('click', (e) => {
+      const target = e.target.closest('#modal-cta');
+      if (target) {
+        const servicio = target.getAttribute('data-servicio');
+        const originalText = target.innerHTML;
+
+        target.textContent = 'Redirigiendo...';
+        target.disabled = true;
+        target.classList.add('opacity-70', 'cursor-not-allowed');
+
+        const message = encodeURIComponent(`Hola TechHealth! Me interesa consultar por el servicio de: ${servicio}`);
+        const url = `https://wa.me/${whatsappNumber}?text=${message}`;
+
+        window.open(url, '_blank', 'noopener,noreferrer');
+
+        setTimeout(() => {
+          target.innerHTML = originalText;
+          target.disabled = false;
+          target.classList.remove('opacity-70', 'cursor-not-allowed');
+        }, 2000);
+      }
+    });
     
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
+      if (!isModalOpen) return;
+
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+
+      // Focus Trap
+      if (e.key === 'Tab') {
+        const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        // Filter out non-interactive tags like <svg> or <use> that might be caught in some browsers
+        const filteredElements = Array.from(focusableElements).filter(el => el.tagName !== 'svg' && el.tagName !== 'use');
+
+        if (filteredElements.length === 0) return;
+
+        const firstElement = filteredElements[0];
+        const lastElement = filteredElements[filteredElements.length - 1];
+
+        if (e.shiftKey) { // Shift + Tab
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else { // Tab
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
     });
   });
 </script>
