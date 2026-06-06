@@ -66,6 +66,29 @@
 **Learning:** Small, uppercase text in badges requires higher contrast than standard body text to remain readable. While `emerald-600` or `700` might look "on-brand", `emerald-800` (or higher) is often necessary to meet WCAG AA standards (4.5:1) for text below 14pt.
 **Action:** Prioritize legibility over brand-softness by using darker color variants for status badges and indicators.
 
+## 2025-06-08 - [UX: Context-Aware CTAs in Modals]
+**Learning:** Adding a context-aware CTA (e.g., WhatsApp link with pre-filled message) inside a service detail modal significantly reduces friction for users, moving them from "informed" to "inquiring" in a single step.
+**Action:** Always provide an actionable next step within modals that present detailed service information.
+
+## 2025-06-08 - [A11y: Robust Focus Trap for Modals]
+**Learning:** A complete focus trap must account for both 'Tab' and 'Shift+Tab' navigation and filter out non-interactive elements like SVGs or symbols that might be captured by broad queries in some browsers. Storing focusable elements in a persistent array on open improves performance and reliability.
+**Action:** Implement focus traps using a filtered array of interactable elements and manage the loop manually in the 'keydown' listener.
+
+## 2025-06-08 - [A11y: Focus Restoration in Modals]
+**Learning:** Restoring focus to the triggering element (e.g., the service card) upon modal closure is essential for preserving the user's navigational context, especially in long-scrolling lists.
+**Action:** Store  before opening a modal and call  on it during the closure sequence.
+
+## 2025-06-08 - [UX: Context-Aware CTAs in Modals]
+**Learning:** Adding a context-aware CTA (e.g., WhatsApp link with pre-filled message) inside a service detail modal significantly reduces friction for users, moving them from "informed" to "inquiring" in a single step.
+**Action:** Always provide an actionable next step within modals that present detailed service information.
+
+## 2025-06-08 - [A11y: Robust Focus Trap for Modals]
+**Learning:** A complete focus trap must account for both 'Tab' and 'Shift+Tab' navigation and filter out non-interactive elements like SVGs or symbols that might be captured by broad queries in some browsers. Storing focusable elements in a persistent array on open improves performance and reliability.
+**Action:** Implement focus traps using a filtered array of interactable elements and manage the loop manually in the 'keydown' listener.
+
+## 2025-06-08 - [A11y: Focus Restoration in Modals]
+**Learning:** Restoring focus to the triggering element (e.g., the service card) upon modal closure is essential for preserving the user's navigational context, especially in long-scrolling lists.
+**Action:** Store `document.activeElement` before opening a modal and call `.focus()` on it during the closure sequence.
 ## 2025-06-08 - [UX: Contextual Conversion in Modals]
 **Learning:** Adding a context-aware CTA (like a pre-filled WhatsApp link) inside a service modal significantly reduces friction for the user to take the next step.
 **Action:** Always include a clear primary action button in informational modals that relates directly to the content shown.
