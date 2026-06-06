@@ -102,7 +102,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
   </div>
 </section>
 
-<script define:vars={{ modalData }}>
+<script define:vars={{ modalData, whatsappNumber: CONFIG.contacto.whatsapp }}>
   document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.service-card');
     const backdrop = document.getElementById('service-modal-backdrop');
@@ -112,9 +112,11 @@ const modalData = CONFIG.servicios.map(servicio => ({
     
     let isModalOpen = false;
     let lastFocusedElement = null;
+    let focusableElements = [];
 
     // Sanitize dynamic content
     const escapeHtml = (unsafe) => {
+      if (typeof unsafe !== 'string') return '';
       return unsafe
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
@@ -124,14 +126,18 @@ const modalData = CONFIG.servicios.map(servicio => ({
     };
 
     const getIconSvg = (iconName) => {
-      return `<use href="#icon-${iconName}" />`;
+      return `<use href="#icon-${escapeHtml(iconName)}" />`;
     };
 
     const openModal = (index) => {
       const servicio = modalData[index];
       if (!servicio) return;
 
+      isModalOpen = true;
       lastFocusedElement = document.activeElement;
+
+      const encodedTitle = encodeURIComponent(servicio.titulo);
+      const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola! Me interesa el servicio de: ')}${encodedTitle}`;
 
       // Populate content
       modalContent.innerHTML = `
@@ -144,7 +150,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
         <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
         
         <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
-        <ul class="flex flex-col gap-4">
+        <ul class="flex flex-col gap-4 mb-10">
           ${servicio.items.map(item => `
             <li class="flex items-start gap-4 font-body text-[15px] text-text-soft">
               <span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>
@@ -152,6 +158,18 @@ const modalData = CONFIG.servicios.map(servicio => ({
             </li>
           `).join('')}
         </ul>
+
+        <div class="flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-border">
+          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-sm" id="modal-cta">
+            <svg class="w-5 h-5 fill-current">
+              <use href="#icon-whatsapp" />
+            </svg>
+            Consultar por este servicio
+          </a>
+          <button type="button" class="close-trigger-secondary w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors">
+            Cerrar
+          </button>
+        </div>
       `;
 
       backdrop.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
@@ -160,23 +178,29 @@ const modalData = CONFIG.servicios.map(servicio => ({
       document.body.style.overflow = 'hidden';
 
       // Focus management
-      setTimeout(() => closeBtn?.focus(), 100);
-      isModalOpen = true;
+      focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+        .filter(el => el.tagName !== 'SVG' && el.tagName !== 'USE');
+
+      setTimeout(() => {
+        const firstFocusable = modal.querySelector('#modal-cta') || closeBtn;
+        if (firstFocusable && typeof firstFocusable.focus === 'function') {
+          firstFocusable.focus();
+        }
+      }, 100);
     };
 
     const closeModal = () => {
       if (!isModalOpen) return;
+      isModalOpen = false;
       
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100');
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       document.body.style.overflow = '';
 
-      if (lastFocusedElement instanceof HTMLElement) {
+      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
         lastFocusedElement.focus();
       }
-
-      isModalOpen = false;
 
       // Clear content and set invisible after animation
       setTimeout(() => {
@@ -187,6 +211,14 @@ const modalData = CONFIG.servicios.map(servicio => ({
         }
       }, 400);
     };
+
+    // Use event delegation for secondary close button
+    modalContent.addEventListener('click', (e) => {
+      const target = e.target;
+      if (target && typeof target.closest === 'function' && target.closest('.close-trigger-secondary')) {
+        closeModal();
+      }
+    });
 
     cards.forEach(card => {
       const openAction = () => {
@@ -208,7 +240,22 @@ const modalData = CONFIG.servicios.map(servicio => ({
     closeBtn.addEventListener('click', closeModal);
     
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
+      if (e.key === 'Escape' && isModalOpen) {
+        closeModal();
+      }
+
+      if (e.key === 'Tab' && isModalOpen) {
+        const first = focusableElements[0];
+        const last = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          if (last && typeof last.focus === 'function') last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          if (first && typeof first.focus === 'function') first.focus();
+        }
+      }
     });
   });
 </script>
