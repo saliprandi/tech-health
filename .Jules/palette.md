@@ -66,6 +66,9 @@
 **Learning:** Small, uppercase text in badges requires higher contrast than standard body text to remain readable. While `emerald-600` or `700` might look "on-brand", `emerald-800` (or higher) is often necessary to meet WCAG AA standards (4.5:1) for text below 14pt.
 **Action:** Prioritize legibility over brand-softness by using darker color variants for status badges and indicators.
 
+## 2026-06-05 - [UX: Modal Focus Traps]
+**Learning:** For keyboard and screen reader users, a modal is not fully accessible without a focus trap. Without it, focus can escape the modal and interact with the background content, causing confusion and potential broken states.
+**Action:** Always implement a focus trap in modals that intercept 'Tab' and 'Shift+Tab' keys to cycle focus within the modal's interactive elements. Ensure scripts using 'define:vars' avoid TypeScript-specific syntax like type assertions.
 ## 2025-06-08 - [UX: Context-Aware CTAs in Modals]
 **Learning:** Adding a context-aware CTA (e.g., WhatsApp link with pre-filled message) inside a service detail modal significantly reduces friction for users, moving them from "informed" to "inquiring" in a single step.
 **Action:** Always provide an actionable next step within modals that present detailed service information.
