@@ -65,3 +65,11 @@
 ## 2025-06-07 - [A11y: Contrast for Small Decorative Text]
 **Learning:** Small, uppercase text in badges requires higher contrast than standard body text to remain readable. While `emerald-600` or `700` might look "on-brand", `emerald-800` (or higher) is often necessary to meet WCAG AA standards (4.5:1) for text below 14pt.
 **Action:** Prioritize legibility over brand-softness by using darker color variants for status badges and indicators.
+
+## 2025-06-08 - [UX: Contextual Conversion in Modals]
+**Learning:** Adding a context-aware CTA (like a pre-filled WhatsApp link) inside a service modal significantly reduces friction for the user to take the next step.
+**Action:** Always include a clear primary action button in informational modals that relates directly to the content shown.
+
+## 2025-06-08 - [A11y: Robust Focus Traps in Inline Scripts]
+**Learning:** When using `define:vars` or `is:inline` in Astro, TypeScript type assertions are not allowed. Focus traps must be implemented using defensive checks (e.g., `typeof el.focus === 'function'`) to ensure accessibility without causing build errors.
+**Action:** Implement focus traps for all modal interactions, using standard JS property checks to maintain compatibility with inline script processing.
