@@ -161,7 +161,7 @@ import { CONFIG } from '../data/config';
       } else {
         badge.textContent = 'Cerrado';
         badge.classList.remove('bg-emerald-100', 'text-emerald-800');
-        badge.classList.add('bg-gray-100', 'text-gray-500');
+        badge.classList.add('bg-gray-100', 'text-gray-800');
       }
 
       badge.classList.remove('hidden');
@@ -179,7 +179,7 @@ import { CONFIG } from '../data/config';
         const length = textarea.value.length;
         counter.textContent = length + ' / 500';
 
-        if (length >= 500) {
+        if (length >= 450) {
           counter.classList.add('text-blue-light');
           counter.classList.remove('text-white/40');
         } else {

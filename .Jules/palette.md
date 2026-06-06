@@ -69,3 +69,33 @@
 ## 2026-06-05 - [UX: Modal Focus Traps]
 **Learning:** For keyboard and screen reader users, a modal is not fully accessible without a focus trap. Without it, focus can escape the modal and interact with the background content, causing confusion and potential broken states.
 **Action:** Always implement a focus trap in modals that intercept 'Tab' and 'Shift+Tab' keys to cycle focus within the modal's interactive elements. Ensure scripts using 'define:vars' avoid TypeScript-specific syntax like type assertions.
+## 2025-06-08 - [UX: Context-Aware CTAs in Modals]
+**Learning:** Adding a context-aware CTA (e.g., WhatsApp link with pre-filled message) inside a service detail modal significantly reduces friction for users, moving them from "informed" to "inquiring" in a single step.
+**Action:** Always provide an actionable next step within modals that present detailed service information.
+
+## 2025-06-08 - [A11y: Robust Focus Trap for Modals]
+**Learning:** A complete focus trap must account for both 'Tab' and 'Shift+Tab' navigation and filter out non-interactive elements like SVGs or symbols that might be captured by broad queries in some browsers. Storing focusable elements in a persistent array on open improves performance and reliability.
+**Action:** Implement focus traps using a filtered array of interactable elements and manage the loop manually in the 'keydown' listener.
+
+## 2025-06-08 - [A11y: Focus Restoration in Modals]
+**Learning:** Restoring focus to the triggering element (e.g., the service card) upon modal closure is essential for preserving the user's navigational context, especially in long-scrolling lists.
+**Action:** Store  before opening a modal and call  on it during the closure sequence.
+
+## 2025-06-08 - [UX: Context-Aware CTAs in Modals]
+**Learning:** Adding a context-aware CTA (e.g., WhatsApp link with pre-filled message) inside a service detail modal significantly reduces friction for users, moving them from "informed" to "inquiring" in a single step.
+**Action:** Always provide an actionable next step within modals that present detailed service information.
+
+## 2025-06-08 - [A11y: Robust Focus Trap for Modals]
+**Learning:** A complete focus trap must account for both 'Tab' and 'Shift+Tab' navigation and filter out non-interactive elements like SVGs or symbols that might be captured by broad queries in some browsers. Storing focusable elements in a persistent array on open improves performance and reliability.
+**Action:** Implement focus traps using a filtered array of interactable elements and manage the loop manually in the 'keydown' listener.
+
+## 2025-06-08 - [A11y: Focus Restoration in Modals]
+**Learning:** Restoring focus to the triggering element (e.g., the service card) upon modal closure is essential for preserving the user's navigational context, especially in long-scrolling lists.
+**Action:** Store `document.activeElement` before opening a modal and call `.focus()` on it during the closure sequence.
+## 2025-06-08 - [UX: Contextual Conversion in Modals]
+**Learning:** Adding a context-aware CTA (like a pre-filled WhatsApp link) inside a service modal significantly reduces friction for the user to take the next step.
+**Action:** Always include a clear primary action button in informational modals that relates directly to the content shown.
+
+## 2025-06-08 - [A11y: Robust Focus Traps in Inline Scripts]
+**Learning:** When using `define:vars` or `is:inline` in Astro, TypeScript type assertions are not allowed. Focus traps must be implemented using defensive checks (e.g., `typeof el.focus === 'function'`) to ensure accessibility without causing build errors.
+**Action:** Implement focus traps for all modal interactions, using standard JS property checks to maintain compatibility with inline script processing.
