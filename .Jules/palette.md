@@ -65,3 +65,11 @@
 ## 2025-06-07 - [A11y: Contrast for Small Decorative Text]
 **Learning:** Small, uppercase text in badges requires higher contrast than standard body text to remain readable. While `emerald-600` or `700` might look "on-brand", `emerald-800` (or higher) is often necessary to meet WCAG AA standards (4.5:1) for text below 14pt.
 **Action:** Prioritize legibility over brand-softness by using darker color variants for status badges and indicators.
+
+## 2026-06-06 - [UX: Context-Aware Modal CTA]
+**Learning:** Transforming static informational modals into interactive conversion points by adding context-aware CTAs (like service-specific WhatsApp links) significantly improves the user journey and utility.
+**Action:** Always include a relevant primary action (CTA) and a clear secondary exit point (Close button) within modals to guide user interaction.
+
+## 2026-06-06 - [A11y: Robust Focus Traps in Astro]
+**Learning:** For accessible modals, a focus trap must correctly identify and filter focusable elements. In HTML, `tagName` is returned in uppercase (e.g., 'SVG'), so filters must use uppercase or `.toUpperCase()` for reliability.
+**Action:** Use uppercase tag names (`SVG`, `USE`) when filtering elements in focus trap logic to ensure cross-browser consistency in the DOM.
