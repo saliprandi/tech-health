@@ -125,7 +125,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
     };
 
     const getIconSvg = (iconName) => {
-      return `<use href="#icon-${iconName}" />`;
+      return `<use href="#icon-${escapeHtml(iconName)}" />`;
     };
 
     const openModal = (index) => {
