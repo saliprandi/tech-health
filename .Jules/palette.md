@@ -89,3 +89,10 @@
 ## 2025-06-08 - [A11y: Focus Restoration in Modals]
 **Learning:** Restoring focus to the triggering element (e.g., the service card) upon modal closure is essential for preserving the user's navigational context, especially in long-scrolling lists.
 **Action:** Store `document.activeElement` before opening a modal and call `.focus()` on it during the closure sequence.
+## 2025-06-08 - [UX: Contextual Conversion in Modals]
+**Learning:** Adding a context-aware CTA (like a pre-filled WhatsApp link) inside a service modal significantly reduces friction for the user to take the next step.
+**Action:** Always include a clear primary action button in informational modals that relates directly to the content shown.
+
+## 2025-06-08 - [A11y: Robust Focus Traps in Inline Scripts]
+**Learning:** When using `define:vars` or `is:inline` in Astro, TypeScript type assertions are not allowed. Focus traps must be implemented using defensive checks (e.g., `typeof el.focus === 'function'`) to ensure accessibility without causing build errors.
+**Action:** Implement focus traps for all modal interactions, using standard JS property checks to maintain compatibility with inline script processing.
