@@ -1,3 +1,4 @@
-## 2025-06-01 - Avoid committing lockfiles and runtime logs
-**Learning:** In this sandbox environment, running `pnpm install` or `pnpm add` generates/updates `pnpm-lock.yaml`. Committing a large lockfile or runtime logs like `preview.log` is flagged as poor practice and violates project cleanliness. Also, adding dependencies without explicit instruction is a boundary violation.
-**Action:** Always verify git status or manually remove temporary artifacts and lockfiles before submission. Only modify `package.json` when specifically instructed.
+Importante!!! Quiero todos los pr en español
+## 2025-06-01 - Evitar commitear lockfiles y logs de runtime
+**Aprendizaje:** En este entorno sandbox, ejecutar `pnpm install` o `pnpm add` genera/actualiza `pnpm-lock.yaml`. Commitear un lockfile grande o logs de runtime como `preview.log` es señalado como mala práctica y viola la limpieza del proyecto. Además, agregar dependencias sin instrucción explícita es una violación de límites.
+**Acción:** Siempre verificar el estado de git o remover manualmente artefactos temporales y lockfiles antes del envío. Solo modificar `package.json` cuando se indique específicamente.
