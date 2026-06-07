@@ -169,23 +169,20 @@ const modalData = CONFIG.servicios.map(servicio => ({
         </div>
       `;
 
-      // Attach secondary close button listener
-      document.getElementById('modal-close-secondary')?.addEventListener('click', closeModal);
-
       backdrop.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
       modal.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
       modal.classList.add('scale-100');
       document.body.style.overflow = 'hidden';
 
       // Focus management & Trap setup
-      setTimeout(() => {
-        focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
-          .filter(el => {
-            const node = el;
-            const tagName = node.tagName.toUpperCase();
-            return tagName !== 'SVG' && tagName !== 'USE' && !node.hasAttribute('disabled');
-          });
+      focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+        .filter(el => {
+          const node = el;
+          const tagName = node.tagName.toUpperCase();
+          return tagName !== 'SVG' && tagName !== 'USE' && !node.hasAttribute('disabled');
+        });
 
+      setTimeout(() => {
         if (closeBtn) closeBtn.focus();
       }, 100);
 
@@ -233,7 +230,15 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
     backdrop.addEventListener('click', closeModal);
     closeBtn.addEventListener('click', closeModal);
-    
+
+    // Use event delegation for secondary close button
+    modalContent.addEventListener('click', (e) => {
+      const target = e.target;
+      if (target && typeof target.closest === 'function' && target.closest('#modal-close-secondary')) {
+        closeModal();
+      }
+    });
+
     document.addEventListener('keydown', (e) => {
       if (!isModalOpen) return;
 
