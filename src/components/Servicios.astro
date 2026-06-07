@@ -129,11 +129,18 @@ const modalData = CONFIG.servicios.map(servicio => ({
       return `<use href="#icon-${escapeHtml(iconName)}" />`;
     };
 
+    const updateFocusableElements = () => {
+      focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+        .filter(el => {
+          const node = el;
+          return node.tagName !== 'SVG' && node.tagName !== 'use' && !node.hasAttribute('disabled');
+        });
+    };
+
     const openModal = (index) => {
       const servicio = modalData[index];
       if (!servicio) return;
 
-      isModalOpen = true;
       lastFocusedElement = document.activeElement;
 
       const encodedTitle = encodeURIComponent(servicio.titulo);
@@ -167,28 +174,48 @@ const modalData = CONFIG.servicios.map(servicio => ({
             Consultar por este servicio
           </a>
           <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">
+        <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
+          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center">
+          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center" id="modal-cta">
+          <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola! Me interesa el servicio de: ' + servicio.titulo)}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center" id="modal-cta">
+            Consultar por WhatsApp
+          </a>
+          <button id="modal-close-secondary" class="w-full sm:w-auto font-body font-medium text-[14px] text-text-soft hover:text-navy py-4 px-8 transition-colors">
             Cerrar
           </button>
         </div>
       `;
 
+      isModalOpen = true;
       backdrop.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
       modal.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
       modal.classList.add('scale-100');
       document.body.style.overflow = 'hidden';
 
       // Focus management: Capture focusable elements once
+      // Focus management & Trap setup
+      updateFocusableElements();
       setTimeout(() => {
         focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
           .filter(el => {
-            const tagName = el.tagName.toUpperCase();
-            return tagName !== 'SVG' && tagName !== 'USE';
+            const node = el;
+            return node.tagName !== 'SVG' && node.tagName !== 'use' && !node.hasAttribute('disabled');
+            const tagName = node.tagName.toUpperCase();
+            return tagName !== 'SVG' && tagName !== 'USE' && !node.hasAttribute('disabled');
           });
 
         // Set initial focus to CTA for conversion optimization
         const cta = document.getElementById('modal-cta');
         if (cta) cta.focus();
         else if (closeBtn) closeBtn.focus();
+        if (closeBtn) closeBtn.focus();
+      }, 100);
+      isModalOpen = true;
+        const firstFocusable = modal.querySelector('#modal-cta') || closeBtn;
+        if (firstFocusable && typeof firstFocusable.focus === 'function') {
+          firstFocusable.focus();
+        }
+        if (closeBtn) closeBtn.focus();
       }, 100);
     };
 
@@ -215,6 +242,14 @@ const modalData = CONFIG.servicios.map(servicio => ({
       }, 400);
     };
 
+    // Use event delegation for secondary close button
+    modalContent.addEventListener('click', (e) => {
+      const target = e.target;
+      if (target && typeof target.closest === 'function' && target.closest('#modal-close-secondary')) {
+        closeModal();
+      }
+    });
+
     cards.forEach(card => {
       const openAction = () => {
         const index = card.getAttribute('data-index');
@@ -233,11 +268,18 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
     backdrop.addEventListener('click', closeModal);
     closeBtn.addEventListener('click', closeModal);
+
+    // Use event delegation for the secondary close button
+    modalContent.addEventListener('click', (e) => {
+      if (e.target.closest('#modal-close-secondary')) {
     
     // Use event delegation for elements inside dynamic content
     modalContent.addEventListener('click', (e) => {
       const target = e.target;
       if (target && typeof target.closest === 'function' && target.closest('#modal-close-secondary')) {
+    // Event delegation for secondary close button
+    modalContent.addEventListener('click', (e) => {
+      if (e.target.id === 'modal-close-secondary') {
         closeModal();
       }
     });
