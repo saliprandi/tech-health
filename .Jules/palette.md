@@ -49,6 +49,10 @@ Importante!!! Quiero todos los pr en español
 **Aprendizaje:** Usar `aria-label` en un link que contiene tanto información estática (como una dirección) como una acción (como "Abrir en Mapas") anulará completamente el texto interno. Para asegurar que los usuarios de lectores de pantalla lineales no pierdan contexto, el `aria-label` debe incluir tanto la información como la acción prevista.
 **Acción:** Al usar `aria-label` para clarificar acciones de links, siempre concatenar contenido de texto interno relevante para mantener el contexto para tecnologías asistivas.
 
+## 2026-06-07 - [UX: Bloqueo de scroll y gestión de foco en navegación móvil]
+**Aprendizaje:** Implementar el bloqueo de desplazamiento del fondo (`overflow: hidden`) cuando el menú móvil está abierto previene la desorientación del usuario. Además, guardar el `lastFocusedElement` y restaurarlo al cerrar el menú asegura que los usuarios de teclado mantengan su contexto de navegación, evitando que el foco se pierda al final del documento.
+**Acción:** Siempre implementar bloqueo de scroll y restauración de foco al desarrollar componentes de navegación móvil o modales interactivos.
+
 ## 2026-06-05 - [UX: Verbosidad de contador de caracteres]
 **Aprendizaje:** Agregar `aria-live="polite"` a un contador de caracteres en vivo puede causar que los lectores de pantalla anuncien el conteo en cada pulsación de tecla, lo cual frecuentemente se percibe como "ruidoso" o distractor.
 **Acción:** Para textareas estándar, preferir un contador de caracteres solo visual a menos que exista un requerimiento específico de accesibilidad para anuncios de conteo en tiempo real, o implementar lógica para anunciar solo en intervalos específicos (ej., cada 50 caracteres) o al acercarse al límite.
@@ -58,3 +62,10 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-04 - [UX: Accesibilidad de contador de caracteres en vivo]
 **Aprendizaje:** Agregar un contador de caracteres en vivo a textareas mejora la gestión de entrada, pero debe ser accesible. Usar `aria-describedby` en el textarea y `aria-live="polite"` en el contador asegura que los usuarios de lectores de pantalla se mantengan informados de su capacidad restante.
 **Acción:** Siempre emparejar contadores visuales con atributos ARIA para mantener un alto nivel de accesibilidad mientras se proporciona feedback agradable.
+
+## 2025-06-10 - [UX: Bloqueo de scroll y refinamiento de componentes]
+**Aprendizaje:** Implementar bloqueo de scroll en el `body` (`overflow: hidden`) al abrir menús móviles o modales previene el "scroll secundario" que desorienta al usuario. Además, la limpieza de JSX malformado es vital para la accesibilidad, ya que etiquetas duplicadas rompen el árbol de accesibilidad (AOM).
+**Acción:** Siempre sincronizar el estado de visibilidad de componentes superpuestos (modales, menús) con el overflow del body y validar que el JSX generado no contenga duplicaciones estructurales.
+## 2025-06-08 - [UX: Consolidación de scripts y gestión de estado]
+**Aprendizaje:** Al refactorizar componentes Astro con scripts complejos (como modales con trampas de foco), es vital consolidar listeners de eventos para evitar fugas de memoria y comportamientos erráticos. Sin embargo, la consolidación debe preservar meticulosamente las actualizaciones de estado globales (ej., `isModalOpen`) que rigen la lógica de accesibilidad por teclado.
+**Acción:** Siempre verificar que las variables de estado críticas se actualicen correctamente en los nuevos flujos consolidados y usar herramientas de automatización (como Playwright) para validar que la accesibilidad (tecla Escape, trampas de foco) siga operativa tras la refactorización.
