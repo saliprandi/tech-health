@@ -166,6 +166,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
         <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
           <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center" id="modal-cta">
 
+        <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
+          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center" id="modal-cta">
         <div class="flex flex-col sm:flex-row items-center gap-4 pt-8 border-t border-border">
           <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-4 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-md text-[15px]" id="modal-cta">
             <svg class="w-5 h-5 fill-current">
@@ -191,6 +193,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
         </div>
       `;
 
+      // Show modal
       backdrop?.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
       modal?.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
       modal?.classList.add('scale-100');
@@ -279,6 +282,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
       if (e.target && e.target.id === 'modal-close-secondary') closeModal();
     // Use event delegation for secondary close button
     modalContent.addEventListener('click', (e) => {
+      if (e.target && e.target.id === 'modal-close-secondary') {
       const target = e.target;
       if (target && typeof target.closest === 'function' && target.closest('#modal-close-secondary')) {
         closeModal();
