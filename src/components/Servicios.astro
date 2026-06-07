@@ -196,6 +196,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
         </ul>
 
         <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
+          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center" id="modal-cta">
+        <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
           <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola! Me interesa el servicio de: ' + servicio.titulo)}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center" id="modal-cta">
             Consultar por WhatsApp
           </a>
@@ -260,6 +262,15 @@ const modalData = CONFIG.servicios.map(servicio => ({
       document.body.style.overflow = 'hidden';
       isModalOpen = true;
 
+      // Focus management & Trap setup
+      focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+        .filter(el => {
+          const node = el;
+          const tagName = node.tagName.toUpperCase();
+          return tagName !== 'SVG' && tagName !== 'USE' && !node.hasAttribute('disabled');
+        });
+
+      setTimeout(() => {
       // Update focusable elements immediately after injection
       updateFocusableElements();
 
@@ -309,6 +320,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
         else if (closeBtn) closeBtn.focus();
         if (closeBtn) closeBtn.focus();
       }, 100);
+
       isModalOpen = true;
         const firstFocusable = modal.querySelector('#modal-cta') || closeBtn;
         if (firstFocusable && typeof firstFocusable.focus === 'function') {
@@ -380,6 +392,10 @@ const modalData = CONFIG.servicios.map(servicio => ({
     backdrop.addEventListener('click', closeModal);
     closeBtn.addEventListener('click', closeModal);
 
+    // Use event delegation for secondary close button
+    modalContent.addEventListener('click', (e) => {
+      const target = e.target;
+      if (target && typeof target.closest === 'function' && target.closest('#modal-close-secondary')) {
     modalContent.addEventListener('click', (e) => {
       const target = e.target;
       if (target instanceof HTMLElement && target.id === 'modal-close-secondary') {
