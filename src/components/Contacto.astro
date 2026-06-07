@@ -22,7 +22,7 @@ import { CONFIG } from '../data/config';
           <!-- WhatsApp -->
           <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-              <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor">
+              <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-phone" />
               </svg>
             </div>
@@ -33,24 +33,34 @@ import { CONFIG } from '../data/config';
           </a>
 
           <!-- Location -->
-          <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" aria-label={`Laboratorio: ${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}. Abrir en Google Maps`} class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
+          <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-              <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor">
+              <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-map-pin" />
               </svg>
             </div>
-            <div>
+            <div class="flex-grow">
               <div class="font-heading font-bold text-[16px] text-navy mb-1">Laboratorio</div>
-              <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.direccion}</div>
-              <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.ciudad_completa}</div>
-              <div class="font-body font-medium text-[12px] text-blue mt-1 group-hover:underline">Abrir en Google Maps &rarr;</div>
+              <div id="address-text" class="font-body text-[14px] text-text-soft">{CONFIG.contacto.direccion}, {CONFIG.contacto.ciudad_completa}</div>
+
+              <div class="flex items-center gap-4 mt-2">
+                <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" aria-label={`Abrir laboratorio en Google Maps: ${CONFIG.contacto.direccion}`} class="font-body font-medium text-[12px] text-blue hover:underline">
+                  Ver mapa &rarr;
+                </a>
+                <button id="copy-address" class="flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors group/copy" aria-label="Copiar dirección al portapapeles">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor">
+                    <use href="#icon-copy" />
+                  </svg>
+                  <span id="copy-text">Copiar</span>
+                </button>
+              </div>
             </div>
-          </a>
+          </div>
 
           <!-- Hours -->
           <div class="flex items-start gap-4 p-4 rounded-[12px] border border-transparent">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor">
+              <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-clock" />
               </svg>
             </div>
@@ -67,7 +77,7 @@ import { CONFIG } from '../data/config';
           {CONFIG.contacto.email && (
             <a href={`mailto:${CONFIG.contacto.email}`} class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
               <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor">
+                <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                   <use href="#icon-mail" />
                 </svg>
               </div>
@@ -111,7 +121,7 @@ import { CONFIG } from '../data/config';
                   <option value="Reparación / Mantenimiento correctivo" class="bg-navy text-white">Reparación / Mantenimiento correctivo</option>
                   <option value="Revisión de placa electrónica" class="bg-navy text-white">Revisión de placa electrónica</option>
                 </select>
-                <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" stroke-width="2" stroke="currentColor">
+                <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" stroke-width="2" stroke="currentColor" aria-hidden="true">
                   <use href="#icon-chevron-down" />
                 </svg>
               </div>
@@ -155,8 +165,8 @@ import { CONFIG } from '../data/config';
       const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
 
       if (isOpen) {
-        badge.innerHTML = '<span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora';
-        badge.classList.remove('bg-gray-100', 'text-gray-500');
+        badge.innerHTML = '<span class="relative flex h-2 w-2" aria-hidden="true"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora';
+        badge.classList.remove('bg-gray-100', 'text-gray-800');
         badge.classList.add('bg-emerald-100', 'text-emerald-800');
       } else {
         badge.textContent = 'Cerrado';
@@ -190,6 +200,26 @@ import { CONFIG } from '../data/config';
 
       textarea.addEventListener('input', updateCounter);
       updateCounter();
+    }
+
+    // Copy Address Logic
+    const copyBtn = document.getElementById('copy-address');
+    const addressText = document.getElementById('address-text')?.textContent || '';
+    const copyLabel = document.getElementById('copy-text');
+
+    if (copyBtn && copyLabel) {
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(addressText).then(() => {
+          const originalText = copyLabel.textContent;
+          copyLabel.textContent = '¡Copiado!';
+          copyBtn.classList.add('text-blue');
+
+          setTimeout(() => {
+            copyLabel.textContent = originalText;
+            copyBtn.classList.remove('text-blue');
+          }, 2000);
+        });
+      });
     }
 
     // Form Logic
