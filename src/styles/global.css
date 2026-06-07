@@ -64,7 +64,7 @@
     border-radius: 8px;
     padding: 12px 28px;
   }
-  
+
   .btn-primary:hover {
     background-color: var(--navy-dark);
     transform: translateY(-2px);
