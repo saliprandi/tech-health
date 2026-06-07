@@ -239,6 +239,14 @@ const modalData = CONFIG.servicios.map(servicio => ({
     backdrop.addEventListener('click', closeModal);
     closeBtn.addEventListener('click', closeModal);
 
+    // Use event delegation for secondary close button
+    modalContent.addEventListener('click', (e) => {
+      const target = e.target;
+      if (target && typeof target.closest === 'function' && target.closest('#modal-close-secondary')) {
+        closeModal();
+      }
+    });
+
     // Global Key Events
     document.addEventListener('keydown', (e) => {
       if (!isModalOpen) return;

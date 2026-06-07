@@ -49,6 +49,10 @@ Importante!!! Quiero todos los pr en español
 **Aprendizaje:** Usar `aria-label` en un link que contiene tanto información estática (como una dirección) como una acción (como "Abrir en Mapas") anulará completamente el texto interno. Para asegurar que los usuarios de lectores de pantalla lineales no pierdan contexto, el `aria-label` debe incluir tanto la información como la acción prevista.
 **Acción:** Al usar `aria-label` para clarificar acciones de links, siempre concatenar contenido de texto interno relevante para mantener el contexto para tecnologías asistivas.
 
+## 2026-06-07 - [UX: Bloqueo de scroll y gestión de foco en navegación móvil]
+**Aprendizaje:** Implementar el bloqueo de desplazamiento del fondo (`overflow: hidden`) cuando el menú móvil está abierto previene la desorientación del usuario. Además, guardar el `lastFocusedElement` y restaurarlo al cerrar el menú asegura que los usuarios de teclado mantengan su contexto de navegación, evitando que el foco se pierda al final del documento.
+**Acción:** Siempre implementar bloqueo de scroll y restauración de foco al desarrollar componentes de navegación móvil o modales interactivos.
+
 ## 2026-06-05 - [UX: Verbosidad de contador de caracteres]
 **Aprendizaje:** Agregar `aria-live="polite"` a un contador de caracteres en vivo puede causar que los lectores de pantalla anuncien el conteo en cada pulsación de tecla, lo cual frecuentemente se percibe como "ruidoso" o distractor.
 **Acción:** Para textareas estándar, preferir un contador de caracteres solo visual a menos que exista un requerimiento específico de accesibilidad para anuncios de conteo en tiempo real, o implementar lógica para anunciar solo en intervalos específicos (ej., cada 50 caracteres) o al acercarse al límite.
