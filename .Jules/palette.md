@@ -58,3 +58,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-04 - [UX: Accesibilidad de contador de caracteres en vivo]
 **Aprendizaje:** Agregar un contador de caracteres en vivo a textareas mejora la gestión de entrada, pero debe ser accesible. Usar `aria-describedby` en el textarea y `aria-live="polite"` en el contador asegura que los usuarios de lectores de pantalla se mantengan informados de su capacidad restante.
 **Acción:** Siempre emparejar contadores visuales con atributos ARIA para mantener un alto nivel de accesibilidad mientras se proporciona feedback agradable.
+
+## 2025-06-08 - [UX: Consolidación de scripts y gestión de estado]
+**Aprendizaje:** Al refactorizar componentes Astro con scripts complejos (como modales con trampas de foco), es vital consolidar listeners de eventos para evitar fugas de memoria y comportamientos erráticos. Sin embargo, la consolidación debe preservar meticulosamente las actualizaciones de estado globales (ej., `isModalOpen`) que rigen la lógica de accesibilidad por teclado.
+**Acción:** Siempre verificar que las variables de estado críticas se actualicen correctamente en los nuevos flujos consolidados y usar herramientas de automatización (como Playwright) para validar que la accesibilidad (tecla Escape, trampas de foco) siga operativa tras la refactorización.
