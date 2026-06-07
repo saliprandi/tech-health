@@ -143,6 +143,9 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
       lastFocusedElement = document.activeElement;
 
+      const encodedTitle = encodeURIComponent(servicio.titulo);
+      const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ')}${encodedTitle}`;
+
       // Populate content
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
@@ -163,6 +166,14 @@ const modalData = CONFIG.servicios.map(servicio => ({
           `).join('')}
         </ul>
 
+        <div class="flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-border">
+          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta">
+            <svg class="w-5 h-5 fill-current">
+              <use href="#icon-whatsapp" />
+            </svg>
+            Consultar por este servicio
+          </a>
+          <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">
         <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
           <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center">
           <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center" id="modal-cta">
@@ -181,6 +192,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
       modal.classList.add('scale-100');
       document.body.style.overflow = 'hidden';
 
+      // Focus management: Capture focusable elements once
       // Focus management & Trap setup
       updateFocusableElements();
       setTimeout(() => {
@@ -192,6 +204,10 @@ const modalData = CONFIG.servicios.map(servicio => ({
             return tagName !== 'SVG' && tagName !== 'USE' && !node.hasAttribute('disabled');
           });
 
+        // Set initial focus to CTA for conversion optimization
+        const cta = document.getElementById('modal-cta');
+        if (cta) cta.focus();
+        else if (closeBtn) closeBtn.focus();
         if (closeBtn) closeBtn.focus();
       }, 100);
       isModalOpen = true;
@@ -257,6 +273,10 @@ const modalData = CONFIG.servicios.map(servicio => ({
     modalContent.addEventListener('click', (e) => {
       if (e.target.closest('#modal-close-secondary')) {
     
+    // Use event delegation for elements inside dynamic content
+    modalContent.addEventListener('click', (e) => {
+      const target = e.target;
+      if (target && typeof target.closest === 'function' && target.closest('#modal-close-secondary')) {
     // Event delegation for secondary close button
     modalContent.addEventListener('click', (e) => {
       if (e.target.id === 'modal-close-secondary') {
@@ -277,12 +297,12 @@ const modalData = CONFIG.servicios.map(servicio => ({
         const first = focusableElements[0];
         const last = focusableElements[focusableElements.length - 1];
 
-        if (e.shiftKey) {
+        if (e.shiftKey) { // Shift + Tab
           if (document.activeElement === first) {
             e.preventDefault();
             if (last && typeof last.focus === 'function') last.focus();
           }
-        } else {
+        } else { // Tab
           if (document.activeElement === last) {
             e.preventDefault();
             if (first && typeof first.focus === 'function') first.focus();
