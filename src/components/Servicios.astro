@@ -104,7 +104,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
   </div>
 </section>
 
-<script define:vars={{ modalData, whatsappNumber: CONFIG.contacto.whatsapp }}>
+<script is:inline define:vars={{ modalData, whatsappNumber: CONFIG.contacto.whatsapp }}>
   document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.service-card');
     const backdrop = document.getElementById('service-modal-backdrop');
@@ -130,6 +130,35 @@ const modalData = CONFIG.servicios.map(servicio => ({
       return `<use href="#icon-${escapeHtml(iconName)}" />`;
     };
 
+    const closeModal = () => {
+      if (!isModalOpen) return;
+      isModalOpen = false;
+
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('scale-100');
+      modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+      document.body.style.overflow = '';
+
+      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        lastFocusedElement.focus();
+      }
+
+      // Clear content and set invisible after animation
+      setTimeout(() => {
+        if (!isModalOpen) {
+          modalContent.innerHTML = '';
+          backdrop.classList.add('invisible');
+          modal.classList.add('invisible');
+        }
+      }, 400);
+    };
+
+    const updateFocusableElements = () => {
+      if (!modal) return;
+      focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+        .filter(el => {
+          const tagName = el.tagName.toUpperCase();
+          return tagName !== 'SVG' && tagName !== 'USE' && !el.hasAttribute('disabled');
     const updateFocusableElements = () => {
       focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
         .filter(el => {
@@ -144,6 +173,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
       lastFocusedElement = document.activeElement;
 
+      // Populate content
       const encodedTitle = encodeURIComponent(servicio.titulo);
       const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ')}${encodedTitle}`;
 
@@ -165,6 +195,14 @@ const modalData = CONFIG.servicios.map(servicio => ({
           `).join('')}
         </ul>
 
+        <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
+          <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola! Me interesa el servicio de: ' + servicio.titulo)}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center" id="modal-cta">
+            Consultar por WhatsApp
+          </a>
+          <button id="modal-close-secondary" class="w-full sm:w-auto flex items-center justify-center gap-2 font-body font-medium text-[14px] text-text-soft hover:text-navy py-4 px-8 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" aria-hidden="true">
+              <use href="#icon-close" />
+            </svg>
         <div class="mt-10 flex flex-col sm:flex-row items-center gap-4 border-t border-border pt-8">
           <a
             id="modal-cta"
@@ -222,6 +260,19 @@ const modalData = CONFIG.servicios.map(servicio => ({
       document.body.style.overflow = 'hidden';
       isModalOpen = true;
 
+      // Update focusable elements immediately after injection
+      updateFocusableElements();
+
+      // Attach secondary close button listener
+      document.getElementById('modal-close-secondary')?.addEventListener('click', closeModal);
+
+      // Focus management initial
+      setTimeout(() => {
+        if (closeBtn) closeBtn.focus();
+      }, 100);
+    };
+
+    // Open logic
       setTimeout(() => {
         focusableElements = Array.from(modal?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])') || [])
           .filter(el => {
@@ -316,6 +367,14 @@ const modalData = CONFIG.servicios.map(servicio => ({
       });
     });
 
+    // Close logic
+    backdrop.addEventListener('click', closeModal);
+    closeBtn.addEventListener('click', closeModal);
+
+    // Use event delegation for secondary close button
+    modalContent.addEventListener('click', (e) => {
+      const target = e.target;
+      if (target && typeof target.closest === 'function' && target.closest('#modal-close-secondary')) {
     backdrop?.addEventListener('click', closeModal);
     closeBtn?.addEventListener('click', closeModal);
     backdrop.addEventListener('click', closeModal);
@@ -342,6 +401,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
       }
     });
 
+    // Global Key Events
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeModal();

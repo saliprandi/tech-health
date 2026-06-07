@@ -63,6 +63,9 @@ Importante!!! Quiero todos los pr en español
 **Aprendizaje:** Agregar un contador de caracteres en vivo a textareas mejora la gestión de entrada, pero debe ser accesible. Usar `aria-describedby` en el textarea y `aria-live="polite"` en el contador asegura que los usuarios de lectores de pantalla se mantengan informados de su capacidad restante.
 **Acción:** Siempre emparejar contadores visuales con atributos ARIA para mantener un alto nivel de accesibilidad mientras se proporciona feedback agradable.
 
+## 2026-06-07 - [A11y: Prevención de race conditions en focus traps]
+**Aprendizaje:** Al inyectar contenido dinámico en modales, popular el array de elementos enfocables (`focusableElements`) dentro de un `setTimeout` puede causar race conditions si el usuario interactúa con el teclado antes de que se complete el delay.
+**Acción:** Popular siempre el array de elementos enfocables inmediatamente después de la inyección de HTML en el DOM para asegurar que el focus trap sea robusto desde el primer milisegundo de visibilidad del modal.
 ## 2025-06-10 - [UX: Bloqueo de scroll y refinamiento de componentes]
 **Aprendizaje:** Implementar bloqueo de scroll en el `body` (`overflow: hidden`) al abrir menús móviles o modales previene el "scroll secundario" que desorienta al usuario. Además, la limpieza de JSX malformado es vital para la accesibilidad, ya que etiquetas duplicadas rompen el árbol de accesibilidad (AOM).
 **Acción:** Siempre sincronizar el estado de visibilidad de componentes superpuestos (modales, menús) con el overflow del body y validar que el JSX generado no contenga duplicaciones estructurales.
