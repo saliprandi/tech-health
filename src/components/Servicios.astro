@@ -114,7 +114,6 @@ const modalData = CONFIG.servicios.map(servicio => ({
     let lastFocusedElement = null;
     let focusableElements = [];
 
-    // Sanitize dynamic content
     const escapeHtml = (unsafe) => {
       if (typeof unsafe !== 'string') return '';
       return unsafe
@@ -146,7 +145,6 @@ const modalData = CONFIG.servicios.map(servicio => ({
       const encodedTitle = encodeURIComponent(servicio.titulo);
       const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ')}${encodedTitle}`;
 
-      // Populate content
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
           <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -166,6 +164,11 @@ const modalData = CONFIG.servicios.map(servicio => ({
           `).join('')}
         </ul>
 
+        <div class="flex flex-col sm:flex-row items-center gap-4 pt-8 border-t border-border">
+          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-4 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-md text-[15px]" id="modal-cta">
+            <svg class="w-5 h-5 fill-current">
+              <use href="#icon-whatsapp" />
+            </svg>
         <div class="flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-border">
           <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta">
             <svg class="w-5 h-5 fill-current">
@@ -180,18 +183,31 @@ const modalData = CONFIG.servicios.map(servicio => ({
           <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola! Me interesa el servicio de: ' + servicio.titulo)}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center" id="modal-cta">
             Consultar por WhatsApp
           </a>
-          <button id="modal-close-secondary" class="w-full sm:w-auto font-body font-medium text-[14px] text-text-soft hover:text-navy py-4 px-8 transition-colors">
+          <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-8 py-4 transition-colors text-[14px]">
             Cerrar
           </button>
         </div>
       `;
 
+      document.getElementById('modal-close-secondary')?.addEventListener('click', closeModal);
+
       isModalOpen = true;
       backdrop.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
       modal.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
-      modal.classList.add('scale-100');
+      modal.classList.add('scale-100', 'opacity-100');
       document.body.style.overflow = 'hidden';
+      isModalOpen = true;
 
+      setTimeout(() => {
+        focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+          .filter(el => {
+            const tagName = el.tagName.toUpperCase();
+            return tagName !== 'SVG' && tagName !== 'USE' && !el.hasAttribute('disabled');
+          });
+
+        const firstFocus = document.getElementById('modal-cta') || closeBtn;
+        if (firstFocus) firstFocus.focus();
+      }, 100);
       // Focus management: Capture focusable elements once
       // Focus management & Trap setup
       updateFocusableElements();
@@ -224,7 +240,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
       isModalOpen = false;
       
       backdrop.classList.add('opacity-0', 'pointer-events-none');
-      modal.classList.remove('scale-100');
+      modal.classList.remove('scale-100', 'opacity-100');
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       document.body.style.overflow = '';
 
@@ -232,7 +248,6 @@ const modalData = CONFIG.servicios.map(servicio => ({
         lastFocusedElement.focus();
       }
 
-      // Clear content and set invisible after animation
       setTimeout(() => {
         if (!isModalOpen) {
           modalContent.innerHTML = '';
@@ -257,7 +272,6 @@ const modalData = CONFIG.servicios.map(servicio => ({
       };
 
       card.addEventListener('click', openAction);
-
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -300,12 +314,12 @@ const modalData = CONFIG.servicios.map(servicio => ({
         if (e.shiftKey) { // Shift + Tab
           if (document.activeElement === first) {
             e.preventDefault();
-            if (last && typeof last.focus === 'function') last.focus();
+            last.focus();
           }
         } else { // Tab
           if (document.activeElement === last) {
             e.preventDefault();
-            if (first && typeof first.focus === 'function') first.focus();
+            first.focus();
           }
         }
       }
