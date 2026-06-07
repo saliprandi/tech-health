@@ -1,67 +1,71 @@
-## 2025-05-15 - Intl.DateTimeFormat 'numeric' constraint
-**Learning:** Using `weekday: 'numeric'` in `Intl.DateTimeFormat` is not supported in many environments and causes a `RangeError`.
-**Action:** Use `weekday: 'short'` or `'long'` and compare string values (e.g., 'Mon', 'Tue') for cross-browser reliability in client-side scripts.
+Importante!!! Quiero todos los pr en español
+## 2025-05-15 - Restricción 'numeric' de Intl.DateTimeFormat
+**Aprendizaje:** Usar `weekday: 'numeric'` en `Intl.DateTimeFormat` no está soportado en muchos entornos y causa un `RangeError`.
+**Acción:** Usar `weekday: 'short'` o `'long'` y comparar valores de texto (ej., 'Mon', 'Tue') para una confiabilidad cross-browser en scripts del lado del cliente.
 
-## 2025-05-15 - Micro-UX feedback and Script isolation
-**Learning:** Providing immediate button feedback (e.g., "Redirigiendo...") improves UX but errors in pre-execution logic (like date parsing) can block subsequent event listeners.
-**Action:** Wrap independent logic in try-catch or ensure early initialization is robust to prevent breaking core features like form submissions.
-## 2025-05-15 - [UX: Interaction Feedback with Animations]
-**Learning:** Adding subtle animations (like 'heartbeat' for medical icons) on group-hover provides delightful feedback that reinforces the brand identity (medical engineering) without being intrusive.
-**Action:** Define custom keyframes in `tailwind.config.mjs` and use `group-hover` on parent containers to trigger animations on child SVG icons.
-## 2025-05-15 - [Accessible Modals in Astro]
-**Learning:** Transitioning a static list to an interactive modal requires careful focus management and ARIA roles. Using `invisible` alongside `opacity-0` is crucial to ensure that hidden modal content is truly "gone" for screen readers and tab navigation during transitions.
-**Action:** Always use `role="dialog"`, `aria-modal="true"`, and implement focus traps or focus restoration for any modal implementation. Ensure interactive triggers have `role="button"` and keyboard listeners.
-## 2025-05-15 - Accessible Modal Pattern
-**Learning:** Implementing focus management (storing `lastFocusedElement` and restoring it) is critical for a smooth keyboard experience when using modals that are dynamically populated. Adding `role="button"` and `tabindex="0"` to `div` cards is an effective micro-UX improvement for accessibility when full refactoring to `<button>` is not feasible.
-**Action:** Always implement focus traps and restoration when adding modals or dropdowns.
-## 2025-06-01 - [ScrollSpy and ARIA current]
-**Learning:** Implementing ScrollSpy not only provides visual feedback but is also an opportunity to improve accessibility by using `aria-current="location"` on the active link. Using `IntersectionObserver` with a `rootMargin` that favors the top-middle of the viewport ensures the "active" section feels natural to the user's focus.
-**Action:** Always combine visual "active" states with semantic ARIA attributes to ensure the UX improvement benefits all users, including those using assistive technologies.
-## 2025-05-15 - Accessible Service Modals
-**Learning:** Interactive elements implemented as divs (like cards) must have role="button", tabindex="0", and keyboard listeners (Enter/Space) to be accessible. Modals require dialog roles, focus management (focusing the close button on open and restoring focus on close), and Escape key support.
-**Action:** Always implement focus management and ARIA roles when creating custom modal interactions.
-## 2025-06-01 - [Interactive Service Cards Accessibility]
-**Learning:** In Astro components, using static `div` elements for interactive features like opening modals creates accessibility barriers for keyboard and screen reader users. Simply adding `role="button"` and `tabindex="0"` is not enough; explicit keyboard listeners for 'Enter' and 'Space' must be added, and focus management (shifting focus to the modal and back) is crucial for a complete UX.
-**Action:** Always ensure that any custom interactive element has appropriate ARIA roles, keyboard support, and focus management from the start.
+## 2025-05-15 - Micro-UX feedback y aislamiento de scripts
+**Aprendizaje:** Proporcionar feedback inmediato en botones (ej., "Redirigiendo...") mejora la UX, pero errores en la lógica de pre-ejecución (como parsing de fechas) pueden bloquear listeners de eventos posteriores.
+**Acción:** Envolver lógica independiente en try-catch o asegurar que la inicialización temprana sea robusta para evitar romper funcionalidades core como envíos de formularios.
+## 2025-05-15 - [UX: Feedback de interacción con animaciones]
+**Aprendizaje:** Agregar animaciones sutiles (como 'heartbeat' para íconos médicos) en group-hover proporciona un feedback agradable que refuerza la identidad de marca (ingeniería médica) sin ser intrusivo.
+**Acción:** Definir keyframes personalizados en `tailwind.config.mjs` y usar `group-hover` en contenedores padre para disparar animaciones en íconos SVG hijos.
+## 2025-05-15 - [Modales accesibles en Astro]
+**Aprendizaje:** Transicionar una lista estática a un modal interactivo requiere una gestión cuidadosa del foco y roles ARIA. Usar `invisible` junto con `opacity-0` es crucial para asegurar que el contenido del modal oculto esté realmente "ausente" para lectores de pantalla y navegación por teclado durante las transiciones.
+**Acción:** Siempre usar `role="dialog"`, `aria-modal="true"`, e implementar trampas de foco o restauración de foco para cualquier implementación de modal. Asegurar que los disparadores interactivos tengan `role="button"` y listeners de teclado.
+## 2025-05-15 - Patrón de modal accesible
+**Aprendizaje:** Implementar gestión de foco (almacenar `lastFocusedElement` y restaurarlo) es crítico para una experiencia de teclado fluida al usar modales que se poblan dinámicamente. Agregar `role="button"` y `tabindex="0"` a tarjetas `div` es una mejora micro-UX efectiva para accesibilidad cuando no es factible refactorizar completamente a `<button>`.
+**Acción:** Siempre implementar trampas de foco y restauración al agregar modales o dropdowns.
+## 2025-06-01 - [ScrollSpy y ARIA current]
+**Aprendizaje:** Implementar ScrollSpy no solo proporciona feedback visual sino que también es una oportunidad para mejorar la accesibilidad usando `aria-current="location"` en el link activo. Usar `IntersectionObserver` con un `rootMargin` que favorece la parte superior-media del viewport asegura que la sección "activa" se sienta natural para el foco del usuario.
+**Acción:** Siempre combinar estados visuales "activos" con atributos ARIA semánticos para asegurar que la mejora de UX beneficie a todos los usuarios, incluyendo quienes usan tecnologías asistivas.
+## 2025-05-15 - Modales de servicio accesibles
+**Aprendizaje:** Elementos interactivos implementados como divs (como tarjetas) deben tener role="button", tabindex="0", y listeners de teclado (Enter/Space) para ser accesibles. Los modales requieren roles de diálogo, gestión de foco (enfocar el botón de cerrar al abrir y restaurar el foco al cerrar), y soporte para la tecla Escape.
+**Acción:** Siempre implementar gestión de foco y roles ARIA al crear interacciones de modal personalizadas.
+## 2025-06-01 - [Accesibilidad de tarjetas de servicio interactivas]
+**Aprendizaje:** En componentes Astro, usar elementos `div` estáticos para funcionalidades interactivas como abrir modales crea barreras de accesibilidad para usuarios de teclado y lectores de pantalla. Simplemente agregar `role="button"` y `tabindex="0"` no es suficiente; se deben agregar listeners de teclado explícitos para 'Enter' y 'Space', y la gestión de foco (mover el foco al modal y volver) es crucial para una UX completa.
+**Acción:** Asegurar siempre que cualquier elemento interactivo personalizado tenga roles ARIA apropiados, soporte de teclado y gestión de foco desde el inicio.
 
-## 2026-06-02 - [UX: Form Validation and Feedback]
-**Learning:** Converting non-semantic interactive sections to formal HTML `<form>` elements provides native validation and better mobile accessibility. Providing immediate visual feedback (e.g., 'Redirigiendo...') during external redirections reduces user uncertainty and prevents duplicate actions.
-**Action:** Always use semantic forms for user inputs and implement clear loading/transition states for async or external actions.
-## 2025-02-15 - [UX: Immediate Feedback on Redirect]
-**Learning:** Providing immediate visual feedback (changing button text to 'Redirigiendo...' and disabling it) during an external redirect (like WhatsApp) confirms the user's action and prevents duplicate submissions, making the interaction feel snappier and more reliable.
-**Action:** Always implement loading/redirecting states for buttons that trigger asynchronous or external navigation.
-## 2026-06-02 - State-Aware Navigation Accessibility
-**Learning:** Mobile navigation toggles must provide clear state feedback via ARIA attributes and support universal keyboard dismissibility (Escape key) to ensure a high-quality, inclusive UX.
-**Action:** Always implement `aria-expanded`, dynamic `aria-label` updates, and "Escape" key listeners for mobile navigation menus. Ensure focus is returned to the toggle when closed via keyboard.
-## 2025-06-05 - [Mobile Menu Accessibility]
-**Learning:** Mobile menu toggles should use `aria-expanded` and `aria-controls` to communicate state to screen readers. Dynamically updating the `aria-label` based on state (e.g., "Abrir menú" vs "Cerrar menú") provides clearer context for the current action.
-**Action:** Always implement ARIA state attributes and dynamic labels for mobile navigation toggles to improve the non-visual UX.
+## 2026-06-02 - [UX: Validación de formularios y feedback]
+**Aprendizaje:** Convertir secciones interactivas no semánticas a elementos HTML formales `<form>` proporciona validación nativa y mejor accesibilidad móvil. Proporcionar feedback visual inmediato (ej., 'Redirigiendo...') durante redirecciones externas reduce la incertidumbre del usuario y previene acciones duplicadas.
+**Acción:** Siempre usar formularios semánticos para entradas de usuario e implementar estados de carga/transición claros para acciones async o externas.
+## 2025-02-15 - [UX: Feedback inmediato en redirección]
+**Aprendizaje:** Proporcionar feedback visual inmediato (cambiar el texto del botón a 'Redirigiendo...' y deshabilitarlo) durante una redirección externa (como WhatsApp) confirma la acción del usuario y previene envíos duplicados, haciendo que la interacción se sienta más rápida y confiable.
+**Acción:** Siempre implementar estados de carga/redirección para botones que disparan navegación asíncrona o externa.
+## 2026-06-02 - Accesibilidad de navegación consciente de estado
+**Aprendizaje:** Los toggles de navegación móvil deben proporcionar feedback claro del estado vía atributos ARIA y soportar el cierre universal por teclado (tecla Escape) para asegurar una UX de alta calidad e inclusiva.
+**Acción:** Siempre implementar `aria-expanded`, actualizaciones dinámicas de `aria-label`, y listeners de tecla "Escape" para menús de navegación móvil. Asegurar que el foco vuelva al toggle cuando se cierra vía teclado.
+## 2025-06-05 - [Accesibilidad de menú móvil]
+**Aprendizaje:** Los toggles de menú móvil deben usar `aria-expanded` y `aria-controls` para comunicar el estado a lectores de pantalla. Actualizar dinámicamente el `aria-label` basado en el estado (ej., "Abrir menú" vs "Cerrar menú") proporciona un contexto más claro para la acción actual.
+**Acción:** Siempre implementar atributos de estado ARIA y etiquetas dinámicas para toggles de navegación móvil para mejorar la UX no visual.
 
-## 2025-06-05 - [UX: Real-time Business Hours Status]
-**Learning:** Providing immediate, glanceable information about business availability (e.g., "Abierto ahora" vs "Cerrado") reduces user cognitive load and manages expectations for response times before they even interact with a contact form.
-**Action:** Use client-side logic to calculate local time relative to the business's timezone and provide a high-contrast, color-coded status badge near contact methods.
-## 2026-06-03 - [UX: Real-time Availability Feedback]
-**Learning:** The 'Business Hours Status' badge is a highly effective micro-UX pattern for service-based sites. It provides immediate certainty to the user about laboratory availability without requiring them to parse a schedule. Using a client-side script with UTC offsets ensures accuracy across different user timezones while maintaining Tucumán's local context.
-**Action:** Implement dynamic status badges for any component displaying business hours to reduce user cognitive load and improve engagement.
+## 2025-06-05 - [UX: Estado de horario comercial en tiempo real]
+**Aprendizaje:** Proporcionar información inmediata y visible sobre la disponibilidad del negocio (ej., "Abierto ahora" vs "Cerrado") reduce la carga cognitiva del usuario y maneja las expectativas de tiempos de respuesta antes de que interactúen con un formulario de contacto.
+**Acción:** Usar lógica del lado del cliente para calcular la hora local relativa a la zona horaria del negocio y proporcionar un badge de estado de alto contraste y codificado por color cerca de los métodos de contacto.
+## 2026-06-03 - [UX: Feedback de disponibilidad en tiempo real]
+**Aprendizaje:** El badge de 'Estado de Horario Comercial' es un patrón micro-UX altamente efectivo para sitios basados en servicios. Proporciona certeza inmediata al usuario sobre la disponibilidad del laboratorio sin requerir que interpreten un horario. Usar un script del lado del cliente con offsets UTC asegura precisión a través de diferentes zonas horarias de usuarios manteniendo el contexto local de Tucumán.
+**Acción:** Implementar badges de estado dinámicos para cualquier componente que muestre horarios comerciales para reducir la carga cognitiva del usuario y mejorar el engagement.
 
-## 2026-06-05 - [A11y: Link Context and aria-label]
-**Learning:** Using `aria-label` on a link that contains both static information (like an address) and an action (like "Open in Maps") will override the internal text entirely. To ensure linear screen reader users don't lose context, the `aria-label` must include both the information and the intended action.
-**Action:** When using `aria-label` to clarify link actions, always concatenate relevant internal text content to maintain context for assistive technologies.
+## 2026-06-05 - [A11y: Contexto de links y aria-label]
+**Aprendizaje:** Usar `aria-label` en un link que contiene tanto información estática (como una dirección) como una acción (como "Abrir en Mapas") anulará completamente el texto interno. Para asegurar que los usuarios de lectores de pantalla lineales no pierdan contexto, el `aria-label` debe incluir tanto la información como la acción prevista.
+**Acción:** Al usar `aria-label` para clarificar acciones de links, siempre concatenar contenido de texto interno relevante para mantener el contexto para tecnologías asistivas.
 
-## 2026-06-05 - [UX: Character Counter Verbosity]
-**Learning:** Adding `aria-live="polite"` to a live character counter can cause screen readers to announce the count on every keystroke, which is often perceived as "noisy" or distracting.
-**Action:** For standard textareas, prefer a visual-only character counter unless a specific accessibility requirement for real-time count announcements exists, or implement logic to announce only at specific intervals (e.g., every 50 characters) or when approaching the limit.
-## 2025-06-06 - [UX: Live Character Counters]
-**Learning:** Adding a real-time character counter to textareas with strict length limits (like 500 characters) provides critical feedback that prevents user frustration during form submission. Using `aria-describedby` links the counter to the input for screen readers, while avoiding `aria-live="polite"` on the counter itself prevents excessive verbosity during every keystroke.
-**Action:** Always implement character counters for limited inputs, ensuring clear visual state changes (e.g., color shifts) as the limit approaches, and maintain accessibility via semantic ARIA associations.
-## 2026-06-04 - [UX: Live Character Counter Accessibility]
-**Learning:** Adding a live character counter to textareas improves input management, but it must be accessible. Using `aria-describedby` on the textarea and `aria-live="polite"` on the counter ensures screen reader users are kept informed of their remaining capacity.
-**Action:** Always pair visual counters with ARIA attributes to maintain a high level of accessibility while providing delightful feedback.
+## 2026-06-07 - [UX: Bloqueo de scroll y gestión de foco en navegación móvil]
+**Aprendizaje:** Implementar el bloqueo de desplazamiento del fondo (`overflow: hidden`) cuando el menú móvil está abierto previene la desorientación del usuario. Además, guardar el `lastFocusedElement` y restaurarlo al cerrar el menú asegura que los usuarios de teclado mantengan su contexto de navegación, evitando que el foco se pierda al final del documento.
+**Acción:** Siempre implementar bloqueo de scroll y restauración de foco al desarrollar componentes de navegación móvil o modales interactivos.
 
-## 2025-06-07 - [UX: Fixed Header Anchor Link Compatibility]
-**Learning:** Fixed headers often overlap target content when navigating via anchor links. Using `scroll-padding-top` on the `html` element is a clean, CSS-only solution that preserves the visual hierarchy and ensures headings are fully visible after navigation.
-**Action:** Always implement `scroll-padding-top` equal to the fixed header height in the global stylesheet.
+## 2026-06-05 - [UX: Verbosidad de contador de caracteres]
+**Aprendizaje:** Agregar `aria-live="polite"` a un contador de caracteres en vivo puede causar que los lectores de pantalla anuncien el conteo en cada pulsación de tecla, lo cual frecuentemente se percibe como "ruidoso" o distractor.
+**Acción:** Para textareas estándar, preferir un contador de caracteres solo visual a menos que exista un requerimiento específico de accesibilidad para anuncios de conteo en tiempo real, o implementar lógica para anunciar solo en intervalos específicos (ej., cada 50 caracteres) o al acercarse al límite.
+## 2025-06-06 - [UX: Contadores de caracteres en vivo]
+**Aprendizaje:** Agregar un contador de caracteres en tiempo real a textareas con límites estrictos de longitud (como 500 caracteres) proporciona feedback crítico que previene la frustración del usuario durante el envío de formularios. Usar `aria-describedby` vincula el contador al input para lectores de pantalla, mientras que evitar `aria-live="polite"` en el contador mismo previene verbosidad excesiva durante cada pulsación de tecla.
+**Acción:** Siempre implementar contadores de caracteres para inputs limitados, asegurando cambios visuales claros de estado (ej., cambios de color) a medida que se acerca el límite, y mantener accesibilidad vía asociaciones ARIA semánticas.
+## 2026-06-04 - [UX: Accesibilidad de contador de caracteres en vivo]
+**Aprendizaje:** Agregar un contador de caracteres en vivo a textareas mejora la gestión de entrada, pero debe ser accesible. Usar `aria-describedby` en el textarea y `aria-live="polite"` en el contador asegura que los usuarios de lectores de pantalla se mantengan informados de su capacidad restante.
+**Acción:** Siempre emparejar contadores visuales con atributos ARIA para mantener un alto nivel de accesibilidad mientras se proporciona feedback agradable.
 
-## 2025-06-07 - [A11y: Contrast for Small Decorative Text]
-**Learning:** Small, uppercase text in badges requires higher contrast than standard body text to remain readable. While `emerald-600` or `700` might look "on-brand", `emerald-800` (or higher) is often necessary to meet WCAG AA standards (4.5:1) for text below 14pt.
-**Action:** Prioritize legibility over brand-softness by using darker color variants for status badges and indicators.
+## 2025-06-10 - [UX: Bloqueo de scroll y refinamiento de componentes]
+**Aprendizaje:** Implementar bloqueo de scroll en el `body` (`overflow: hidden`) al abrir menús móviles o modales previene el "scroll secundario" que desorienta al usuario. Además, la limpieza de JSX malformado es vital para la accesibilidad, ya que etiquetas duplicadas rompen el árbol de accesibilidad (AOM).
+**Acción:** Siempre sincronizar el estado de visibilidad de componentes superpuestos (modales, menús) con el overflow del body y validar que el JSX generado no contenga duplicaciones estructurales.
+## 2025-06-08 - [UX: Consolidación de scripts y gestión de estado]
+**Aprendizaje:** Al refactorizar componentes Astro con scripts complejos (como modales con trampas de foco), es vital consolidar listeners de eventos para evitar fugas de memoria y comportamientos erráticos. Sin embargo, la consolidación debe preservar meticulosamente las actualizaciones de estado globales (ej., `isModalOpen`) que rigen la lógica de accesibilidad por teclado.
+**Acción:** Siempre verificar que las variables de estado críticas se actualicen correctamente en los nuevos flujos consolidados y usar herramientas de automatización (como Playwright) para validar que la accesibilidad (tecla Escape, trampas de foco) siga operativa tras la refactorización.
