@@ -58,3 +58,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-04 - [UX: Accesibilidad de contador de caracteres en vivo]
 **Aprendizaje:** Agregar un contador de caracteres en vivo a textareas mejora la gestión de entrada, pero debe ser accesible. Usar `aria-describedby` en el textarea y `aria-live="polite"` en el contador asegura que los usuarios de lectores de pantalla se mantengan informados de su capacidad restante.
 **Acción:** Siempre emparejar contadores visuales con atributos ARIA para mantener un alto nivel de accesibilidad mientras se proporciona feedback agradable.
+
+## 2025-06-10 - [UX: Bloqueo de scroll y refinamiento de componentes]
+**Aprendizaje:** Implementar bloqueo de scroll en el `body` (`overflow: hidden`) al abrir menús móviles o modales previene el "scroll secundario" que desorienta al usuario. Además, la limpieza de JSX malformado es vital para la accesibilidad, ya que etiquetas duplicadas rompen el árbol de accesibilidad (AOM).
+**Acción:** Siempre sincronizar el estado de visibilidad de componentes superpuestos (modales, menús) con el overflow del body y validar que el JSX generado no contenga duplicaciones estructurales.

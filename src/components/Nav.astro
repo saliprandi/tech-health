@@ -75,6 +75,7 @@ import { CONFIG } from '../data/config';
       if (isOpen) {
         menu?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]', 'invisible');
         menu?.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+        document.body.style.overflow = 'hidden';
         if (spans) {
           spans[0].classList.add('rotate-45', 'translate-y-[8px]');
           spans[1].classList.add('opacity-0');
@@ -83,6 +84,7 @@ import { CONFIG } from '../data/config';
       } else {
         menu?.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
         menu?.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+        document.body.style.overflow = '';
         if (spans) {
           spans[0].classList.remove('rotate-45', 'translate-y-[8px]');
           spans[1].classList.remove('opacity-0');
