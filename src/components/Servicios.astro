@@ -74,8 +74,6 @@ const modalData = CONFIG.servicios.map(servicio => ({
           </ul>
           
           <!-- Click Indicator -->
-          <div class="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300 text-blue bg-blue-pale p-2 rounded-full">
-          <div class="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-all duration-300 group-hover:translate-y-[-2px] group-focus-visible:translate-y-[-2px] text-blue bg-blue-pale p-2 rounded-full">
           <div class="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-all duration-300 text-blue bg-blue-pale p-2 rounded-full group-hover:translate-y-[-2px] group-focus-visible:translate-y-[-2px]">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true">
               <use href="#icon-expand" />
@@ -135,7 +133,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
       isModalOpen = false;
 
       backdrop.classList.add('opacity-0', 'pointer-events-none');
-      modal.classList.remove('scale-100');
+      modal.classList.remove('scale-100', 'opacity-100');
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       document.body.style.overflow = '';
 
@@ -159,11 +157,6 @@ const modalData = CONFIG.servicios.map(servicio => ({
         .filter(el => {
           const tagName = el.tagName.toUpperCase();
           return tagName !== 'SVG' && tagName !== 'USE' && !el.hasAttribute('disabled');
-    const updateFocusableElements = () => {
-      focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
-        .filter(el => {
-          const node = el;
-          return node.tagName !== 'SVG' && node.tagName !== 'use' && !node.hasAttribute('disabled');
         });
     };
 
@@ -197,50 +190,6 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
         <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
           <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center" id="modal-cta">
-        <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
-          <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola! Me interesa el servicio de: ' + servicio.titulo)}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center" id="modal-cta">
-            Consultar por WhatsApp
-          </a>
-          <button id="modal-close-secondary" class="w-full sm:w-auto flex items-center justify-center gap-2 font-body font-medium text-[14px] text-text-soft hover:text-navy py-4 px-8 transition-colors">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" aria-hidden="true">
-              <use href="#icon-close" />
-            </svg>
-        <div class="mt-10 flex flex-col sm:flex-row items-center gap-4 border-t border-border pt-8">
-          <a
-            id="modal-cta"
-            href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ' + servicio.titulo)}"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="flex-1 w-full sm:w-auto bg-navy text-white font-heading font-bold text-center py-4 px-6 rounded-xl hover:bg-navy-dark transition-all shadow-md active:scale-[0.98]"
-          >
-            Consultar por este servicio
-          </a>
-          <button
-            id="modal-close-secondary"
-            class="w-full sm:w-auto px-6 py-4 font-body font-medium text-text-soft hover:text-navy transition-colors focus-visible:ring-2 focus-visible:ring-blue"
-          >
-        <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
-          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center" id="modal-cta">
-
-        <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
-          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center" id="modal-cta">
-        <div class="flex flex-col sm:flex-row items-center gap-4 pt-8 border-t border-border">
-          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-4 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-md text-[15px]" id="modal-cta">
-            <svg class="w-5 h-5 fill-current">
-              <use href="#icon-whatsapp" />
-            </svg>
-        <div class="flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-border">
-          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta">
-            <svg class="w-5 h-5 fill-current">
-              <use href="#icon-whatsapp" />
-            </svg>
-            Consultar por este servicio
-          </a>
-          <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">
-        <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
-          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center">
-          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center" id="modal-cta">
-          <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola! Me interesa el servicio de: ' + servicio.titulo)}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center" id="modal-cta">
             Consultar por WhatsApp
           </a>
           <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-8 py-4 transition-colors text-[14px]">
@@ -250,123 +199,21 @@ const modalData = CONFIG.servicios.map(servicio => ({
       `;
 
       // Show modal
-      backdrop?.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
-      modal?.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
-      modal?.classList.add('scale-100');
-      document.getElementById('modal-close-secondary')?.addEventListener('click', closeModal);
-
-      isModalOpen = true;
       backdrop.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
       modal.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
       modal.classList.add('scale-100', 'opacity-100');
       document.body.style.overflow = 'hidden';
       isModalOpen = true;
 
-      // Focus management & Trap setup
-      focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
-        .filter(el => {
-          const node = el;
-          const tagName = node.tagName.toUpperCase();
-          return tagName !== 'SVG' && tagName !== 'USE' && !node.hasAttribute('disabled');
-        });
-
-      setTimeout(() => {
       // Update focusable elements immediately after injection
       updateFocusableElements();
 
-      // Attach secondary close button listener
-      document.getElementById('modal-close-secondary')?.addEventListener('click', closeModal);
-
       // Focus management initial
       setTimeout(() => {
-        if (closeBtn) closeBtn.focus();
-      }, 100);
-    };
-
-    // Open logic
-      setTimeout(() => {
-        focusableElements = Array.from(modal?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])') || [])
-          .filter(el => {
-            const node = el;
-            const tagName = node.tagName.toUpperCase();
-            return tagName !== 'SVG' && tagName !== 'USE' && !node.hasAttribute('disabled');
-          });
-        if (closeBtn && typeof closeBtn.focus === 'function') closeBtn.focus();
-      }, 100);
-        focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
-          .filter(el => {
-            const tagName = el.tagName.toUpperCase();
-            return tagName !== 'SVG' && tagName !== 'USE' && !el.hasAttribute('disabled');
-          });
-
         const firstFocus = document.getElementById('modal-cta') || closeBtn;
         if (firstFocus) firstFocus.focus();
       }, 100);
-      // Focus management: Capture focusable elements once
-      // Focus management & Trap setup
-      updateFocusableElements();
-      setTimeout(() => {
-        focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
-          .filter(el => {
-            const node = el;
-            return node.tagName !== 'SVG' && node.tagName !== 'use' && !node.hasAttribute('disabled');
-            const tagName = node.tagName.toUpperCase();
-            return tagName !== 'SVG' && tagName !== 'USE' && !node.hasAttribute('disabled');
-          });
-
-        // Set initial focus to CTA for conversion optimization
-        const cta = document.getElementById('modal-cta');
-        if (cta) cta.focus();
-        else if (closeBtn) closeBtn.focus();
-        if (closeBtn) closeBtn.focus();
-      }, 100);
-
-      isModalOpen = true;
-        const firstFocusable = modal.querySelector('#modal-cta') || closeBtn;
-        if (firstFocusable && typeof firstFocusable.focus === 'function') {
-          firstFocusable.focus();
-        }
-        if (closeBtn) closeBtn.focus();
-      }, 100);
     };
-
-    const closeModal = () => {
-      if (!isModalOpen) return;
-      isModalOpen = false;
-      backdrop?.classList.add('opacity-0', 'pointer-events-none');
-      modal?.classList.remove('scale-100');
-      modal?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
-      document.body.style.overflow = '';
-      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') lastFocusedElement.focus();
-      
-      backdrop.classList.add('opacity-0', 'pointer-events-none');
-      modal.classList.remove('scale-100', 'opacity-100');
-      modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
-      document.body.style.overflow = '';
-
-      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
-        lastFocusedElement.focus();
-      }
-
-      setTimeout(() => {
-        if (!isModalOpen) {
-          if (modalContent) modalContent.innerHTML = '';
-          backdrop?.classList.add('invisible');
-          modal?.classList.add('invisible');
-        }
-      }, 400);
-    };
-
-    modalContent?.addEventListener('click', (e) => {
-      if (e.target && e.target.id === 'modal-close-secondary') closeModal();
-    // Use event delegation for secondary close button
-    modalContent.addEventListener('click', (e) => {
-      if (e.target && e.target.id === 'modal-close-secondary') {
-      const target = e.target;
-      if (target && typeof target.closest === 'function' && target.closest('#modal-close-secondary')) {
-        closeModal();
-      }
-    });
 
     cards.forEach(card => {
       const openAction = () => {
@@ -379,79 +226,29 @@ const modalData = CONFIG.servicios.map(servicio => ({
       });
     });
 
-    // Close logic
     backdrop.addEventListener('click', closeModal);
     closeBtn.addEventListener('click', closeModal);
 
-    // Use event delegation for secondary close button
-    modalContent.addEventListener('click', (e) => {
-      const target = e.target;
-      if (target && typeof target.closest === 'function' && target.closest('#modal-close-secondary')) {
-    backdrop?.addEventListener('click', closeModal);
-    closeBtn?.addEventListener('click', closeModal);
-    backdrop.addEventListener('click', closeModal);
-    closeBtn.addEventListener('click', closeModal);
-
-    // Use event delegation for secondary close button
-    modalContent.addEventListener('click', (e) => {
-      const target = e.target;
-      if (target && typeof target.closest === 'function' && target.closest('#modal-close-secondary')) {
-    modalContent.addEventListener('click', (e) => {
-      const target = e.target;
-      if (target instanceof HTMLElement && target.id === 'modal-close-secondary') {
-        closeModal();
-      }
-    });
-    // Use event delegation for the secondary close button
-    modalContent.addEventListener('click', (e) => {
-      if (e.target.closest('#modal-close-secondary')) {
-    
-    // Use event delegation for elements inside dynamic content
-    modalContent.addEventListener('click', (e) => {
-      const target = e.target;
-      if (target && typeof target.closest === 'function' && target.closest('#modal-close-secondary')) {
     // Event delegation for secondary close button
     modalContent.addEventListener('click', (e) => {
-      if (e.target.id === 'modal-close-secondary') {
+      if (e.target && e.target.id === 'modal-close-secondary') {
         closeModal();
       }
     });
 
     // Global Key Events
     document.addEventListener('keydown', (e) => {
+      if (!isModalOpen) return;
+
       if (e.key === 'Escape') {
         closeModal();
       }
 
-      if (e.key === 'Tab' && isModalOpen) {
-        const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-        // Filter out non-interactive SVG/use tags that may be captured in some environments
-        const activeElements = Array.from(focusableElements).filter(el => el.tagName !== 'SVG' && el.tagName !== 'USE');
-
-        const firstElement = activeElements[0];
-        const lastElement = activeElements[activeElements.length - 1];
-
-        if (e.shiftKey) {
-          if (document.activeElement === firstElement) {
-            // @ts-ignore
-            lastElement?.focus?.();
-            e.preventDefault();
-          }
-        } else {
-          if (document.activeElement === lastElement) {
-            // @ts-ignore
-            firstElement?.focus?.();
-            e.preventDefault();
-      if (!isModalOpen) return;
-      if (e.key === 'Escape') closeModal();
       if (e.key === 'Tab') {
         if (focusableElements.length === 0) return;
+
         const first = focusableElements[0];
         const last = focusableElements[focusableElements.length - 1];
-        if (e.shiftKey) {
-          if (document.activeElement === first) { e.preventDefault(); if (last && typeof last.focus === 'function') last.focus(); }
-        } else {
-          if (document.activeElement === last) { e.preventDefault(); if (first && typeof first.focus === 'function') first.focus(); }
 
         if (e.shiftKey) { // Shift + Tab
           if (document.activeElement === first) {
