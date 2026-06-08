@@ -3,7 +3,7 @@ import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://saliprandi.github.io/tech-health/',
+  site: 'https://techhealth.com.ar/',
   output: 'static',
   integrations: [tailwind()]
 });

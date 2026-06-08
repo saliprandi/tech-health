@@ -109,7 +109,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
     const modal = document.getElementById('service-modal');
     const modalContent = document.getElementById('modal-content');
     const closeBtn = document.getElementById('close-modal');
-    
+
     let isModalOpen = false;
     let lastFocusedElement = null;
     let focusableElements = [];
@@ -135,18 +135,20 @@ const modalData = CONFIG.servicios.map(servicio => ({
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       modal.classList.remove('scale-100', 'opacity-100');
       modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+      backdrop?.classList.add('opacity-0', 'pointer-events-none');
+      modal?.classList.remove('scale-100', 'opacity-100');
+      modal?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       document.body.style.overflow = '';
 
       if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
         lastFocusedElement.focus();
       }
 
-      // Clear content and set invisible after animation
       setTimeout(() => {
         if (!isModalOpen) {
-          modalContent.innerHTML = '';
-          backdrop.classList.add('invisible');
-          modal.classList.add('invisible');
+          if (modalContent) modalContent.innerHTML = '';
+          backdrop?.classList.add('invisible');
+          modal?.classList.add('invisible');
         }
       }, 400);
     };
@@ -166,9 +168,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
       lastFocusedElement = document.activeElement;
 
-      // Populate content
-      const encodedTitle = encodeURIComponent(servicio.titulo);
-      const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ')}${encodedTitle}`;
+      const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ' + servicio.titulo)}`;
 
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
@@ -193,6 +193,13 @@ const modalData = CONFIG.servicios.map(servicio => ({
             Consultar por WhatsApp
           </a>
           <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-8 py-4 transition-colors text-[14px]">
+          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta">
+            <svg class="w-5 h-5 fill-current">
+              <use href="#icon-whatsapp" />
+            </svg>
+            Consultar por este servicio
+          </a>
+          <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">
             Cerrar
           </button>
         </div>
@@ -212,6 +219,18 @@ const modalData = CONFIG.servicios.map(servicio => ({
       setTimeout(() => {
         const firstFocus = document.getElementById('modal-cta') || closeBtn;
         if (firstFocus) firstFocus.focus();
+      backdrop?.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
+      modal?.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
+      modal?.classList.add('scale-100', 'opacity-100');
+      document.body.style.overflow = 'hidden';
+      isModalOpen = true;
+
+      updateFocusableElements();
+
+      setTimeout(() => {
+        const cta = document.getElementById('modal-cta');
+        if (cta) cta.focus();
+        else if (closeBtn) closeBtn.focus();
       }, 100);
     };
 
@@ -233,10 +252,31 @@ const modalData = CONFIG.servicios.map(servicio => ({
     modalContent.addEventListener('click', (e) => {
       if (e.target && e.target.id === 'modal-close-secondary') {
         closeModal();
+    backdrop?.addEventListener('click', closeModal);
+    closeBtn?.addEventListener('click', closeModal);
+
+    modalContent?.addEventListener('click', (e) => {
+      const target = e.target;
+      if (!target || typeof target.closest !== 'function') return;
+
+      if (target.closest('#modal-close-secondary')) {
+        closeModal();
+      }
+
+      const cta = target.closest('#modal-cta');
+      if (cta) {
+        cta.textContent = 'Redirigiendo...';
+        cta.classList.add('opacity-70', 'cursor-not-allowed');
+        // Restore after a delay in case the user comes back
+        setTimeout(() => {
+          if (cta.textContent === 'Redirigiendo...') {
+            cta.textContent = 'Consultar por este servicio';
+            cta.classList.remove('opacity-70', 'cursor-not-allowed');
+          }
+        }, 3000);
       }
     });
 
-    // Global Key Events
     document.addEventListener('keydown', (e) => {
       if (!isModalOpen) return;
 
@@ -250,12 +290,12 @@ const modalData = CONFIG.servicios.map(servicio => ({
         const first = focusableElements[0];
         const last = focusableElements[focusableElements.length - 1];
 
-        if (e.shiftKey) { // Shift + Tab
+        if (e.shiftKey) {
           if (document.activeElement === first) {
             e.preventDefault();
             last.focus();
           }
-        } else { // Tab
+        } else {
           if (document.activeElement === last) {
             e.preventDefault();
             first.focus();
