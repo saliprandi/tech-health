@@ -67,6 +67,12 @@ import { CONFIG } from '../data/config';
     let isOpen = false;
     let lastFocusedElement: HTMLElement | null = null;
 
+    const getFocusableElements = () => {
+      if (!menu || !toggle) return [];
+      const menuFocusables = Array.from(menu.querySelectorAll('a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])'));
+      return [toggle, ...menuFocusables] as HTMLElement[];
+    };
+
     const toggleMenu = () => {
       isOpen = !isOpen;
 
@@ -83,6 +89,12 @@ import { CONFIG } from '../data/config';
           spans[1].classList.add('opacity-0');
           spans[2].classList.add('-rotate-45', '-translate-y-[8px]');
         }
+
+        // Focus first link in menu after opening
+        setTimeout(() => {
+          const firstLink = menu?.querySelector('.mobile-link') as HTMLElement;
+          firstLink?.focus();
+        }, 100);
       } else {
         menu?.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
         menu?.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
@@ -112,11 +124,34 @@ import { CONFIG } from '../data/config';
       });
     });
 
-    // Close on Escape key
+    // Keyboard Navigation & Focus Trap
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (!isOpen) return;
+
+      if (e.key === 'Escape') {
         toggleMenu();
         if (toggle) (toggle as HTMLElement).focus();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        const focusables = getFocusableElements();
+        if (focusables.length === 0) return;
+
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
       }
     });
 
