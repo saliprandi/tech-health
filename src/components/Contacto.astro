@@ -208,15 +208,18 @@ import { CONFIG } from '../data/config';
     const copyLabel = document.getElementById('copy-text');
 
     if (copyBtn && copyLabel) {
+      const copyIcon = copyBtn.querySelector('use');
       copyBtn.addEventListener('click', () => {
         navigator.clipboard.writeText(addressText).then(() => {
           const originalText = copyLabel.textContent;
           copyLabel.textContent = '¡Copiado!';
           copyBtn.classList.add('text-blue');
+          if (copyIcon) copyIcon.setAttribute('href', '#icon-check');
 
           setTimeout(() => {
             copyLabel.textContent = originalText;
             copyBtn.classList.remove('text-blue');
+            if (copyIcon) copyIcon.setAttribute('href', '#icon-copy');
           }, 2000);
         });
       });
