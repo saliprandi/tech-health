@@ -229,8 +229,23 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
     modalContent?.addEventListener('click', (e) => {
       const target = e.target;
-      if (target && typeof target.closest === 'function' && target.closest('#modal-close-secondary')) {
+      if (!target || typeof target.closest !== 'function') return;
+
+      if (target.closest('#modal-close-secondary')) {
         closeModal();
+      }
+
+      const cta = target.closest('#modal-cta');
+      if (cta) {
+        cta.textContent = 'Redirigiendo...';
+        cta.classList.add('opacity-70', 'cursor-not-allowed');
+        // Restore after a delay in case the user comes back
+        setTimeout(() => {
+          if (cta.textContent === 'Redirigiendo...') {
+            cta.textContent = 'Consultar por este servicio';
+            cta.classList.remove('opacity-70', 'cursor-not-allowed');
+          }
+        }, 3000);
       }
     });
 
