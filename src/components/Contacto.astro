@@ -209,6 +209,8 @@ import { CONFIG } from '../data/config';
     const copyIconUse = copyBtn?.querySelector('use');
     const copyIconUse = document.getElementById('copy-icon-use');
 
+    if (copyBtn && copyLabel) {
+      const copyIcon = copyBtn.querySelector('use');
     if (copyBtn && copyLabel && copyIconUse) {
       copyBtn.addEventListener('click', () => {
         navigator.clipboard.writeText(addressText).then(() => {
@@ -218,6 +220,7 @@ import { CONFIG } from '../data/config';
           copyLabel.textContent = '¡Copiado!';
           copyIconUse.setAttribute('href', '#icon-check');
           copyBtn.classList.add('text-blue');
+          if (copyIcon) copyIcon.setAttribute('href', '#icon-check');
           if (copyIconUse) copyIconUse.setAttribute('href', '#icon-check');
 
           setTimeout(() => {
@@ -226,6 +229,8 @@ import { CONFIG } from '../data/config';
             copyBtn.classList.remove('text-blue');
             copyLabel.textContent = 'Copiar';
             copyBtn.classList.remove('text-blue');
+            if (copyIcon) copyIcon.setAttribute('href', '#icon-copy');
+          }, 2000);
             if (copyIconUse) copyIconUse.setAttribute('href', '#icon-copy');
           }, 2500);
         });
