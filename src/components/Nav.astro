@@ -83,6 +83,12 @@ import { CONFIG } from '../data/config';
           spans[1].classList.add('opacity-0');
           spans[2].classList.add('-rotate-45', '-translate-y-[8px]');
         }
+
+        // Set initial focus to the first link
+        setTimeout(() => {
+          const firstLink = menu?.querySelector('a');
+          if (firstLink) (firstLink as HTMLElement).focus();
+        }, 200);
       } else {
         menu?.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
         menu?.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
@@ -112,11 +118,34 @@ import { CONFIG } from '../data/config';
       });
     });
 
-    // Close on Escape key
+    // Keyboard Management (Focus Trap & Escape)
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (!isOpen) return;
+
+      if (e.key === 'Escape') {
         toggleMenu();
         if (toggle) (toggle as HTMLElement).focus();
+      }
+
+      if (e.key === 'Tab') {
+        const links = menu?.querySelectorAll('a') || [];
+        const elements = [toggle, ...Array.from(links)].filter(Boolean) as HTMLElement[];
+        if (elements.length === 0) return;
+
+        const first = elements[0];
+        const last = elements[elements.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
       }
     });
 
