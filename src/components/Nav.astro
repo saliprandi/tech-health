@@ -69,6 +69,12 @@ import { CONFIG } from '../data/config';
     let isOpen = false;
     let lastFocusedElement: HTMLElement | null = null;
 
+    const getFocusableElements = () => {
+      if (!menu || !toggle) return [];
+      const menuFocusables = Array.from(menu.querySelectorAll('a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])'));
+      return [toggle, ...menuFocusables] as HTMLElement[];
+    };
+
     const toggleMenu = () => {
       isOpen = !isOpen;
 
@@ -86,6 +92,11 @@ import { CONFIG } from '../data/config';
           spans[2].classList.add('-rotate-45', '-translate-y-[8px]');
         }
 
+        // Focus first link in menu after opening
+        setTimeout(() => {
+          const firstLink = menu?.querySelector('.mobile-link') as HTMLElement;
+          firstLink?.focus();
+        }, 100);
         // Set initial focus to the first link
         setTimeout(() => {
           const firstLink = menu?.querySelector('a');
@@ -127,6 +138,8 @@ import { CONFIG } from '../data/config';
       });
     });
 
+    // Keyboard Navigation & Focus Trap
+    document.addEventListener('keydown', (e) => {
     // Keyboard Management (Focus Trap & Escape)
     document.addEventListener('keydown', (e) => {
     // Handle focus trap and escape key
@@ -138,6 +151,27 @@ import { CONFIG } from '../data/config';
       if (e.key === 'Escape') {
         toggleMenu();
         if (toggle) (toggle as HTMLElement).focus();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        const focusables = getFocusableElements();
+        if (focusables.length === 0) return;
+
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
       }
 
       if (e.key === 'Tab') {
