@@ -20,7 +20,7 @@ import { CONFIG } from '../data/config';
 
     <!-- CTA & Mobile Toggle -->
     <div class="flex items-center gap-4">
-      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md">
+      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" id="nav-cta" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md">
         Consultar por WhatsApp
       </a>
 
@@ -45,7 +45,7 @@ import { CONFIG } from '../data/config';
     <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
     <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
     <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Contacto</a>
-    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mobile-link mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]">
+    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mobile-link mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]" id="mobile-nav-cta">
       Consultar por WhatsApp
     </a>
   </div>
@@ -58,20 +58,20 @@ import { CONFIG } from '../data/config';
 </style>
 
 <script>
-  let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
-
   function initNav() {
     const toggle = document.getElementById('menu-toggle');
     const menu = document.getElementById('mobile-menu');
     const mobileLinks = document.querySelectorAll('.mobile-link');
     const spans = toggle?.querySelectorAll('span');
+    const navCta = document.getElementById('nav-cta');
+    const mobileNavCta = document.getElementById('mobile-nav-cta');
 
     let isOpen = false;
     let lastFocusedElement: HTMLElement | null = null;
 
     const getFocusableElements = () => {
       if (!menu || !toggle) return [];
-      const menuFocusables = Array.from(menu.querySelectorAll('a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])'));
+      const menuFocusables = Array.from(menu.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])'));
       return [toggle, ...menuFocusables] as HTMLElement[];
     };
 
@@ -92,21 +92,9 @@ import { CONFIG } from '../data/config';
           spans[2].classList.add('-rotate-45', '-translate-y-[8px]');
         }
 
-        // Focus first link in menu after opening
         setTimeout(() => {
           const firstLink = menu?.querySelector('.mobile-link') as HTMLElement;
           firstLink?.focus();
-        }, 100);
-        // Set initial focus to the first link
-        setTimeout(() => {
-          const firstLink = menu?.querySelector('a');
-          if (firstLink) (firstLink as HTMLElement).focus();
-        }, 200);
-        // Micro-UX: Auto-focus first link for keyboard users
-        setTimeout(() => {
-          if (isOpen && mobileLinks.length > 0) {
-            (mobileLinks[0] as HTMLElement).focus();
-          }
         }, 200);
 
       } else {
@@ -119,38 +107,20 @@ import { CONFIG } from '../data/config';
           spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
         }
 
-        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
-          lastFocusedElement.focus();
-        }
+        if (lastFocusedElement) lastFocusedElement.focus();
 
-        // Add invisible after transition
         setTimeout(() => {
           if (!isOpen) menu?.classList.add('invisible');
         }, 300);
       }
     };
 
-    toggle?.addEventListener('click', toggleMenu);
-
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        if (isOpen) toggleMenu();
-      });
-    });
-
-    // Keyboard Navigation & Focus Trap
-    document.addEventListener('keydown', (e) => {
-    // Keyboard Management (Focus Trap & Escape)
-    document.addEventListener('keydown', (e) => {
-    // Handle focus trap and escape key
-    if (keydownHandler) document.removeEventListener('keydown', keydownHandler);
-
-    keydownHandler = (e: KeyboardEvent) => {
+    const handleKeydown = (e: KeyboardEvent) => {
       if (!isOpen) return;
 
       if (e.key === 'Escape') {
         toggleMenu();
-        if (toggle) (toggle as HTMLElement).focus();
+        toggle?.focus();
         return;
       }
 
@@ -173,49 +143,34 @@ import { CONFIG } from '../data/config';
           }
         }
       }
-
-      if (e.key === 'Tab') {
-        const links = menu?.querySelectorAll('a') || [];
-        const elements = [toggle, ...Array.from(links)].filter(Boolean) as HTMLElement[];
-        if (elements.length === 0) return;
-
-        const first = elements[0];
-        const last = elements[elements.length - 1];
-
-        if (e.shiftKey) {
-          if (document.activeElement === first) {
-            e.preventDefault();
-            last.focus();
-          }
-        } else {
-          if (document.activeElement === last) {
-            e.preventDefault();
-            first.focus();
-          }
-        }
-      }
-    });
-        const focusableElements = [toggle, ...Array.from(mobileLinks)] as HTMLElement[];
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-
-        if (e.shiftKey) { // Shift + Tab
-          if (document.activeElement === firstElement) {
-            e.preventDefault();
-            lastElement.focus();
-          }
-        } else { // Tab
-          if (document.activeElement === lastElement) {
-            e.preventDefault();
-            firstElement.focus();
-          }
-        }
-      }
     };
 
-    document.addEventListener('keydown', keydownHandler);
+    toggle?.addEventListener('click', toggleMenu);
 
-    // ScrollSpy Logic
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (isOpen) toggleMenu();
+      });
+    });
+
+    document.addEventListener('keydown', handleKeydown);
+
+    // WhatsApp Redirect Feedback
+    const handleCtaClick = (e: MouseEvent) => {
+      const cta = e.currentTarget as HTMLElement;
+      const originalText = cta.textContent;
+      cta.textContent = 'Redirigiendo...';
+      cta.classList.add('opacity-70', 'cursor-not-allowed');
+      setTimeout(() => {
+        cta.textContent = originalText;
+        cta.classList.remove('opacity-70', 'cursor-not-allowed');
+      }, 3000);
+    };
+
+    navCta?.addEventListener('click', handleCtaClick as EventListener);
+    mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
+
+    // ScrollSpy
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
 
@@ -244,11 +199,21 @@ import { CONFIG } from '../data/config';
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     sections.forEach(section => observer.observe(section));
+
+    // Cleanup for View Transitions
+    return () => {
+      document.removeEventListener('keydown', handleKeydown);
+      observer.disconnect();
+    };
   }
 
-  // Initial load
-  initNav();
+  let cleanup: (() => void) | undefined;
+  document.addEventListener('DOMContentLoaded', () => {
+    cleanup = initNav();
+  });
 
-  // Re-init on navigation (View Transitions)
-  document.addEventListener('astro:after-swap', initNav);
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanup) cleanup();
+    cleanup = initNav();
+  });
 </script>
