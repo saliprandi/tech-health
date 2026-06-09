@@ -76,3 +76,7 @@ Importante!!! Quiero todos los pr en español
 ## 2025-02-15 - [A11y: Gestión de foco en navegación móvil]
 **Aprendizaje:** Los menús de navegación móvil requieren una gestión de foco rigurosa para ser verdaderamente accesibles. Al abrir el menú, el foco debe moverse inmediatamente al primer elemento interactivo. Un "focus trap" debe activarse para evitar que el usuario tabule fuera del menú hacia el contenido principal oculto.
 **Acción:** Implementar siempre trampas de foco (`focus trap`) y enfoque inicial automático en componentes de navegación móvil, asegurando que el cierre (vía tecla Escape o click fuera) restaure el foco al disparador original.
+
+## 2025-02-15 - [UX: Persistencia de estado en feedback temporal]
+**Aprendizaje:** Al implementar feedback temporal (como "Redirigiendo..." o "¡Copiado!"), es una mejor práctica capturar dinámicamente el texto y los iconos originales en variables antes de modificarlos. Esto evita errores de inconsistencia visual si los valores originales cambian en el futuro o si la interacción se dispara repetidamente.
+**Acción:** Siempre capturar el estado original del DOM (`textContent`, `getAttribute('href')`) antes de aplicar cambios visuales transitorios y usar esas variables para restaurar el estado en los callbacks de `setTimeout`.

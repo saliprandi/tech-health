@@ -32,11 +32,11 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
 
       <!-- Buttons -->
       <div class="flex flex-wrap items-center gap-4 mt-2">
-        <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="btn-primary gap-2">
+        <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="btn-primary gap-2">
           <svg class="w-5 h-5 fill-current">
             <use href="#icon-whatsapp" />
           </svg>
-          Solicitar servicio
+          <span id="hero-cta-text">Solicitar servicio</span>
         </a>
         <a href="#servicios" class="btn-secondary">
           Ver servicios
@@ -77,3 +77,23 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
 
   </div>
 </section>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const heroCta = document.getElementById('hero-cta');
+    const heroCtaText = document.getElementById('hero-cta-text');
+
+    if (heroCta && heroCtaText) {
+      heroCta.addEventListener('click', () => {
+        const originalText = heroCtaText.textContent;
+        heroCtaText.textContent = 'Redirigiendo...';
+        heroCta.classList.add('opacity-70', 'cursor-not-allowed');
+
+        setTimeout(() => {
+          heroCtaText.textContent = originalText;
+          heroCta.classList.remove('opacity-70', 'cursor-not-allowed');
+        }, 3000);
+      });
+    }
+  });
+</script>
