@@ -157,6 +157,7 @@ import { CONFIG } from '../data/config';
       if (!badge) return;
 
       const now = new Date();
+      // UTC-3 offset for Tucumán
       const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
 
       const day = tucumanTime.getDay();
@@ -206,11 +207,8 @@ import { CONFIG } from '../data/config';
     const copyBtn = document.getElementById('copy-address');
     const addressText = document.getElementById('address-text')?.textContent || '';
     const copyLabel = document.getElementById('copy-text');
-    const copyIconUse = copyBtn?.querySelector('use');
     const copyIconUse = document.getElementById('copy-icon-use');
 
-    if (copyBtn && copyLabel) {
-      const copyIcon = copyBtn.querySelector('use');
     if (copyBtn && copyLabel && copyIconUse) {
       copyBtn.addEventListener('click', () => {
         navigator.clipboard.writeText(addressText).then(() => {
@@ -220,18 +218,11 @@ import { CONFIG } from '../data/config';
           copyLabel.textContent = '¡Copiado!';
           copyIconUse.setAttribute('href', '#icon-check');
           copyBtn.classList.add('text-blue');
-          if (copyIcon) copyIcon.setAttribute('href', '#icon-check');
-          if (copyIconUse) copyIconUse.setAttribute('href', '#icon-check');
 
           setTimeout(() => {
             copyLabel.textContent = originalText;
-            copyIconUse.setAttribute('href', originalIcon || '#icon-copy');
+            copyIconUse.setAttribute('href', originalIcon);
             copyBtn.classList.remove('text-blue');
-            copyLabel.textContent = 'Copiar';
-            copyBtn.classList.remove('text-blue');
-            if (copyIcon) copyIcon.setAttribute('href', '#icon-copy');
-          }, 2000);
-            if (copyIconUse) copyIconUse.setAttribute('href', '#icon-copy');
           }, 2500);
         });
       });
@@ -259,7 +250,6 @@ import { CONFIG } from '../data/config';
         const originalText = btn.textContent;
         btn.textContent = 'Redirigiendo...';
         btn.disabled = true;
-        btn.classList.add('opacity-70', 'cursor-not-allowed');
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
         const encodedMessage = encodeURIComponent(rawMessage);
@@ -270,8 +260,7 @@ import { CONFIG } from '../data/config';
         setTimeout(() => {
           btn.textContent = originalText;
           btn.disabled = false;
-          btn.classList.remove('opacity-70', 'cursor-not-allowed');
-        }, 2000);
+        }, 3000);
       });
     }
   });
