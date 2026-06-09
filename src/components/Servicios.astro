@@ -132,9 +132,6 @@ const modalData = CONFIG.servicios.map(servicio => ({
       if (!isModalOpen) return;
       isModalOpen = false;
 
-      backdrop.classList.add('opacity-0', 'pointer-events-none');
-      modal.classList.remove('scale-100', 'opacity-100');
-      modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
       backdrop?.classList.add('opacity-0', 'pointer-events-none');
       modal?.classList.remove('scale-100', 'opacity-100');
       modal?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
@@ -189,10 +186,6 @@ const modalData = CONFIG.servicios.map(servicio => ({
         </ul>
 
         <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
-          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center" id="modal-cta">
-            Consultar por WhatsApp
-          </a>
-          <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-8 py-4 transition-colors text-[14px]">
           <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta">
             <svg class="w-5 h-5 fill-current">
               <use href="#icon-whatsapp" />
@@ -205,20 +198,6 @@ const modalData = CONFIG.servicios.map(servicio => ({
         </div>
       `;
 
-      // Show modal
-      backdrop.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
-      modal.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
-      modal.classList.add('scale-100', 'opacity-100');
-      document.body.style.overflow = 'hidden';
-      isModalOpen = true;
-
-      // Update focusable elements immediately after injection
-      updateFocusableElements();
-
-      // Focus management initial
-      setTimeout(() => {
-        const firstFocus = document.getElementById('modal-cta') || closeBtn;
-        if (firstFocus) firstFocus.focus();
       backdrop?.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
       modal?.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
       modal?.classList.add('scale-100', 'opacity-100');
@@ -241,17 +220,13 @@ const modalData = CONFIG.servicios.map(servicio => ({
       };
       card.addEventListener('click', openAction);
       card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openAction(); }
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openAction();
+        }
       });
     });
 
-    backdrop.addEventListener('click', closeModal);
-    closeBtn.addEventListener('click', closeModal);
-
-    // Event delegation for secondary close button
-    modalContent.addEventListener('click', (e) => {
-      if (e.target && e.target.id === 'modal-close-secondary') {
-        closeModal();
     backdrop?.addEventListener('click', closeModal);
     closeBtn?.addEventListener('click', closeModal);
 
@@ -265,14 +240,13 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
       const cta = target.closest('#modal-cta');
       if (cta) {
-        cta.textContent = 'Redirigiendo...';
+        const originalText = cta.innerHTML;
+        cta.innerHTML = 'Redirigiendo...';
         cta.classList.add('opacity-70', 'cursor-not-allowed');
-        // Restore after a delay in case the user comes back
+
         setTimeout(() => {
-          if (cta.textContent === 'Redirigiendo...') {
-            cta.textContent = 'Consultar por este servicio';
-            cta.classList.remove('opacity-70', 'cursor-not-allowed');
-          }
+          cta.innerHTML = originalText;
+          cta.classList.remove('opacity-70', 'cursor-not-allowed');
         }, 3000);
       }
     });
