@@ -20,7 +20,7 @@ import { CONFIG } from '../data/config';
 
     <!-- CTA & Mobile Toggle -->
     <div class="flex items-center gap-4">
-      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md">
+      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" id="nav-cta" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md">
         Consultar por WhatsApp
       </a>
 
@@ -45,7 +45,7 @@ import { CONFIG } from '../data/config';
     <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
     <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
     <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Contacto</a>
-    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mobile-link mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]">
+    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mobile-link mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]" id="mobile-nav-cta">
       Consultar por WhatsApp
     </a>
   </div>
@@ -63,13 +63,15 @@ import { CONFIG } from '../data/config';
     const menu = document.getElementById('mobile-menu');
     const mobileLinks = document.querySelectorAll('.mobile-link');
     const spans = toggle?.querySelectorAll('span');
+    const navCta = document.getElementById('nav-cta');
+    const mobileNavCta = document.getElementById('mobile-nav-cta');
 
     let isOpen = false;
     let lastFocusedElement: HTMLElement | null = null;
 
     const getFocusableElements = () => {
       if (!menu || !toggle) return [];
-      const menuFocusables = Array.from(menu.querySelectorAll('a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])'));
+      const menuFocusables = Array.from(menu.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])'));
       return [toggle, ...menuFocusables] as HTMLElement[];
     };
 
@@ -92,7 +94,6 @@ import { CONFIG } from '../data/config';
           spans[2].classList.add('-rotate-45', '-translate-y-[8px]');
         }
 
-        // Focus first link in menu after opening
         setTimeout(() => {
           const firstLink = menu?.querySelector('.mobile-link') as HTMLElement;
           firstLink?.focus();
@@ -111,6 +112,7 @@ import { CONFIG } from '../data/config';
           spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
         }
 
+        if (lastFocusedElement) lastFocusedElement.focus();
         if (lastFocusedElement && typeof (lastFocusedElement as any).focus === 'function') {
           lastFocusedElement.focus();
         }
@@ -173,9 +175,26 @@ import { CONFIG } from '../data/config';
     });
 
     document.addEventListener('keydown', handleKeydown);
+
+    // WhatsApp Redirect Feedback
+    const handleCtaClick = (e: MouseEvent) => {
+      const cta = e.currentTarget as HTMLElement;
+      const originalText = cta.textContent;
+      cta.textContent = 'Redirigiendo...';
+      cta.classList.add('opacity-70', 'cursor-not-allowed');
+      setTimeout(() => {
+        cta.textContent = originalText;
+        cta.classList.remove('opacity-70', 'cursor-not-allowed');
+      }, 3000);
+    };
+
+    navCta?.addEventListener('click', handleCtaClick as EventListener);
+    mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
+
+    document.addEventListener('keydown', handleKeydown);
     document.addEventListener('keydown', keydownHandler);
 
-    // ScrollSpy Logic
+    // ScrollSpy
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
 
@@ -205,12 +224,18 @@ import { CONFIG } from '../data/config';
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     sections.forEach(section => observer.observe(section));
 
+    // Cleanup for View Transitions
     // Cleanup function for View Transitions
     return () => {
       document.removeEventListener('keydown', handleKeydown);
       observer.disconnect();
     };
   }
+
+  let cleanup: (() => void) | undefined;
+  document.addEventListener('DOMContentLoaded', () => {
+    cleanup = initNav();
+  });
 
   // Initial load
   let cleanup = initNav();

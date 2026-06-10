@@ -25,8 +25,8 @@ import { CONFIG } from '../data/config';
   </a>
 </div>
 
-<script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+<script>
+  function initWaFloat() {
     const tooltip = document.getElementById('wa-tooltip');
     const tooltipText = document.getElementById('wa-tooltip-text');
     const btn = document.getElementById('wa-float-btn');
@@ -45,6 +45,15 @@ import { CONFIG } from '../data/config';
         const originalText = tooltipText.textContent;
         tooltipText.textContent = '¡Redirigiendo!';
 
+        // Ensure tooltip is visible during redirection
+        if (tooltip) {
+          tooltip.classList.remove('opacity-0', 'translate-y-2');
+          tooltip.classList.add('opacity-100', 'translate-y-0');
+        }
+
+        setTimeout(() => {
+          tooltipText.textContent = originalText;
+        }, 3500);
         // Ensure tooltip is visible if it wasn't yet
         tooltip.classList.remove('opacity-0', 'translate-y-2');
         tooltip.classList.add('opacity-100', 'translate-y-0');
@@ -64,5 +73,8 @@ import { CONFIG } from '../data/config';
         }, 2000);
       });
     }
-  });
+  }
+
+  initWaFloat();
+  document.addEventListener('astro:after-swap', initWaFloat);
 </script>

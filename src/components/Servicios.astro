@@ -233,7 +233,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
     modalContent?.addEventListener('click', (e) => {
       const target = e.target;
-      if (!target || typeof target.closest !== 'function') return;
+      if (!target || !(target instanceof HTMLElement)) return;
 
       if (target.closest('#modal-close-secondary')) {
         closeModal();
@@ -241,6 +241,17 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
       const cta = target.closest('#modal-cta');
       if (cta) {
+        const originalText = cta.textContent;
+        cta.innerHTML = `
+          <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
+          Redirigiendo...
+        `;
+        cta.classList.add('opacity-70', 'cursor-not-allowed');
+        setTimeout(() => {
+          cta.innerHTML = `
+            <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
+            Consultar por este servicio
+          `;
         const originalText = cta.innerHTML;
         cta.innerHTML = 'Redirigiendo...';
         cta.classList.add('opacity-70', 'cursor-not-allowed');
