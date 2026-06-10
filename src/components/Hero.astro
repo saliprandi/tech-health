@@ -33,6 +33,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       <!-- Buttons -->
       <div class="flex flex-wrap items-center gap-4 mt-2">
         <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" id="hero-cta" class="btn-primary gap-2">
+        <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="btn-primary gap-2">
           <svg class="w-5 h-5 fill-current">
             <use href="#icon-whatsapp" />
           </svg>
@@ -92,6 +93,11 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         setTimeout(() => {
           heroCtaText.textContent = originalText;
           heroCta.classList.remove('opacity-70', 'cursor-not-allowed');
+        heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+        setTimeout(() => {
+          heroCtaText.textContent = originalText;
+          heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }, 3000);
       });
     }

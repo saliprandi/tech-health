@@ -190,7 +190,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
             <svg class="w-5 h-5 fill-current">
               <use href="#icon-whatsapp" />
             </svg>
-            Consultar por este servicio
+            <span id="modal-cta-text">Consultar por este servicio</span>
           </a>
           <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">
             Cerrar
@@ -198,6 +198,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
         </div>
       `;
 
+      // Show modal
       backdrop?.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
       modal?.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
       modal?.classList.add('scale-100', 'opacity-100');
@@ -220,7 +221,10 @@ const modalData = CONFIG.servicios.map(servicio => ({
       };
       card.addEventListener('click', openAction);
       card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openAction(); }
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openAction();
+        }
       });
     });
 
@@ -248,6 +252,19 @@ const modalData = CONFIG.servicios.map(servicio => ({
             <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
             Consultar por este servicio
           `;
+        const originalText = cta.innerHTML;
+        cta.innerHTML = 'Redirigiendo...';
+        cta.classList.add('opacity-70', 'cursor-not-allowed');
+
+        setTimeout(() => {
+          cta.innerHTML = originalText;
+      const ctaText = document.getElementById('modal-cta-text');
+      if (cta && ctaText) {
+        const originalText = ctaText.textContent;
+        ctaText.textContent = 'Redirigiendo...';
+        cta.classList.add('opacity-70', 'cursor-not-allowed');
+        setTimeout(() => {
+          ctaText.textContent = originalText;
           cta.classList.remove('opacity-70', 'cursor-not-allowed');
         }, 3000);
       }
