@@ -47,7 +47,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
           
           <!-- Icon -->
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue group-hover:scale-110 transition-transform">
-            <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true" set:html={getIconSvg(servicio.icono)}></svg>
+            <svg class="w-7 h-7 group-hover:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true" set:html={getIconSvg(servicio.icono)}></svg>
           </div>
 
           <!-- Content -->
@@ -240,40 +240,14 @@ const modalData = CONFIG.servicios.map(servicio => ({
       }
 
       const cta = target.closest('#modal-cta');
-      if (cta) {
-        const originalText = cta.innerText;
-        const originalText = cta.innerHTML;
-        cta.textContent = 'Redirigiendo...';
-        const originalText = cta.textContent;
-        cta.innerHTML = `
-          <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
-          Redirigiendo...
-        `;
-        cta.classList.add('opacity-70', 'cursor-not-allowed');
-        setTimeout(() => {
-          cta.textContent = originalText;
-          if (cta.textContent === 'Redirigiendo...') {
-            cta.innerHTML = originalText;
-            cta.classList.remove('opacity-70', 'cursor-not-allowed');
-          }
-          cta.innerHTML = `
-            <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
-            Consultar por este servicio
-          `;
-        const originalText = cta.innerHTML;
-        cta.innerHTML = 'Redirigiendo...';
-        cta.classList.add('opacity-70', 'cursor-not-allowed');
-
-        setTimeout(() => {
-          cta.innerHTML = originalText;
       const ctaText = document.getElementById('modal-cta-text');
       if (cta && ctaText) {
         const originalText = ctaText.textContent;
         ctaText.textContent = 'Redirigiendo...';
-        cta.classList.add('opacity-70', 'cursor-not-allowed');
+        cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         setTimeout(() => {
-          ctaText.textContent = originalText;
-          cta.classList.remove('opacity-70', 'cursor-not-allowed');
+          if (ctaText) ctaText.textContent = originalText;
+          if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }, 3000);
       }
     });
