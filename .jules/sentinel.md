@@ -13,3 +13,8 @@
 **Vulnerabilidad:** Corrupción de código masiva en componentes Astro y vulnerabilidades XSS conocidas en versiones antiguas de `astro` (`define:vars`).
 **Aprendizaje:** La corrupción sintáctica en archivos `.astro` (tags sin cerrar, duplicación de scripts) no solo rompe el build sino que puede facilitar la inyección de código al evadir protecciones del compilador. Fijar la versión de `astro` a una versión parcheada (`6.4.4`) es crucial para la seguridad contra XSS.
 **Prevención:** Utilizar siempre `pnpm astro check` para validar la integridad estructural y preferir versiones fijas de dependencias críticas de seguridad.
+
+## 2026-06-09 - [Corrupción estructural y brechas de seguridad en componentes Astro]
+**Vulnerabilidad:** XSS (falta de sanitización), Tabnabbing (falta de atributos rel) y dependencias desactualizadas.
+**Aprendizaje:** La duplicación de bloques de código en archivos .astro, producto de errores de fusión, genera inconsistencias donde las protecciones de seguridad se aplican en una parte del archivo pero no en la otra. Además, el uso de 'textContent' para resetear botones que contienen iconos en HTML puede romper la UI si no se maneja correctamente.
+**Prevención:** Realizar refactorizaciones completas de componentes cuando se detecte duplicación masiva. Validar siempre la persistencia de atributos de seguridad en elementos dinámicos. Utilizar 'pnpm overrides' para mitigar vulnerabilidades en dependencias transitivas de herramientas de construcción como 'to-ico'.

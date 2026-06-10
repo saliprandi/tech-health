@@ -45,6 +45,9 @@ import { CONFIG } from '../data/config';
         const originalText = tooltipText.textContent;
         tooltipText.textContent = '¡Redirigiendo!';
 
+        setTimeout(() => {
+          tooltipText.textContent = originalText;
+        }, 3000);
         // Ensure tooltip is visible during redirection
         if (tooltip) {
           tooltip.classList.remove('opacity-0', 'translate-y-2');

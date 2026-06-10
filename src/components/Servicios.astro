@@ -241,6 +241,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
       const cta = target.closest('#modal-cta');
       if (cta) {
+        const originalText = cta.innerHTML;
+        cta.textContent = 'Redirigiendo...';
         const originalText = cta.textContent;
         cta.innerHTML = `
           <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
@@ -248,6 +250,10 @@ const modalData = CONFIG.servicios.map(servicio => ({
         `;
         cta.classList.add('opacity-70', 'cursor-not-allowed');
         setTimeout(() => {
+          if (cta.textContent === 'Redirigiendo...') {
+            cta.innerHTML = originalText;
+            cta.classList.remove('opacity-70', 'cursor-not-allowed');
+          }
           cta.innerHTML = `
             <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
             Consultar por este servicio

@@ -27,7 +27,10 @@
   },
   "pnpm": {
     "overrides": {
-      "yaml": ">=2.8.3"
+      "yaml": ">=2.8.3",
+      "minimist": ">=1.2.6",
+      "form-data": ">=2.5.4",
+      "jpeg-js": ">=0.4.4"
     }
   }
 }
