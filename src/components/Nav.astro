@@ -20,7 +20,7 @@ import { CONFIG } from '../data/config';
 
     <!-- CTA & Mobile Toggle -->
     <div class="flex items-center gap-4">
-      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md">
+      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" id="nav-cta" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md">
         Consultar por WhatsApp
       </a>
 
@@ -45,7 +45,7 @@ import { CONFIG } from '../data/config';
     <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
     <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
     <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Contacto</a>
-    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mobile-link mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]">
+    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mobile-link mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]" id="mobile-nav-cta">
       Consultar por WhatsApp
     </a>
   </div>
@@ -58,13 +58,13 @@ import { CONFIG } from '../data/config';
 </style>
 
 <script>
-  let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
-
   function initNav() {
     const toggle = document.getElementById('menu-toggle');
     const menu = document.getElementById('mobile-menu');
     const mobileLinks = document.querySelectorAll('.mobile-link');
     const spans = toggle?.querySelectorAll('span');
+    const navCta = document.getElementById('nav-cta');
+    const mobileNavCta = document.getElementById('mobile-nav-cta');
 
     let isOpen = false;
     let lastFocusedElement: HTMLElement | null = null;
@@ -86,39 +86,45 @@ import { CONFIG } from '../data/config';
         menu?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]', 'invisible');
         menu?.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
         document.body.style.overflow = 'hidden';
+
+        if (spans && spans.length >= 3) {
         if (spans && spans.length === 3) {
           spans[0].classList.add('rotate-45', 'translate-y-[8px]');
           spans[1].classList.add('opacity-0');
           spans[2].classList.add('-rotate-45', '-translate-y-[8px]');
         }
 
-        // Focus first link in menu after opening
         setTimeout(() => {
           const firstLink = menu?.querySelector('.mobile-link') as HTMLElement;
           firstLink?.focus();
+        }, 100);
+        }, 150);
         }, 200);
 
       } else {
         menu?.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
         menu?.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
         document.body.style.overflow = '';
+
+        if (spans && spans.length >= 3) {
         if (spans && spans.length === 3) {
           spans[0].classList.remove('rotate-45', 'translate-y-[8px]');
           spans[1].classList.remove('opacity-0');
           spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
         }
 
-        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        if (lastFocusedElement) lastFocusedElement.focus();
+        if (lastFocusedElement && typeof (lastFocusedElement as any).focus === 'function') {
           lastFocusedElement.focus();
         }
 
-        // Add invisible after transition
         setTimeout(() => {
           if (!isOpen) menu?.classList.add('invisible');
         }, 300);
       }
     };
 
+    const handleKeydown = (e: KeyboardEvent) => {
     toggle?.addEventListener('click', toggleMenu);
 
     mobileLinks.forEach(link => {
@@ -129,13 +135,17 @@ import { CONFIG } from '../data/config';
 
     // Keyboard Management (Focus Trap & Escape)
     if (keydownHandler) document.removeEventListener('keydown', keydownHandler);
+    const handleKeydown = (e: KeyboardEvent) => {
+    if (keydownHandler) {
+      document.removeEventListener('keydown', keydownHandler);
+    }
 
     keydownHandler = (e: KeyboardEvent) => {
       if (!isOpen) return;
 
       if (e.key === 'Escape') {
         toggleMenu();
-        if (toggle) (toggle as HTMLElement).focus();
+        toggle?.focus();
         return;
       }
 
@@ -160,9 +170,38 @@ import { CONFIG } from '../data/config';
       }
     };
 
+    document.addEventListener('keydown', handleKeydown);
+    };
+
+    toggle?.addEventListener('click', toggleMenu);
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (isOpen) toggleMenu();
+      });
+    });
+
+    document.addEventListener('keydown', handleKeydown);
+
+    // WhatsApp Redirect Feedback
+    const handleCtaClick = (e: MouseEvent) => {
+      const cta = e.currentTarget as HTMLElement;
+      const originalText = cta.textContent;
+      cta.textContent = 'Redirigiendo...';
+      cta.classList.add('opacity-70', 'cursor-not-allowed');
+      setTimeout(() => {
+        cta.textContent = originalText;
+        cta.classList.remove('opacity-70', 'cursor-not-allowed');
+      }, 3000);
+    };
+
+    navCta?.addEventListener('click', handleCtaClick as EventListener);
+    mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
+
+    document.addEventListener('keydown', handleKeydown);
     document.addEventListener('keydown', keydownHandler);
 
-    // ScrollSpy Logic
+    // ScrollSpy
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
 
@@ -191,11 +230,28 @@ import { CONFIG } from '../data/config';
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     sections.forEach(section => observer.observe(section));
+
+    // Clean up event listener when needed (though initNav runs on swap)
+    // We return a cleanup function or just let it be since it's a single page app style
+    // Cleanup for View Transitions
+    // Cleanup function for View Transitions
+    return () => {
+      document.removeEventListener('keydown', handleKeydown);
+      observer.disconnect();
+    };
   }
 
+  let cleanup: (() => void) | undefined;
+  document.addEventListener('DOMContentLoaded', () => {
+    cleanup = initNav();
+  });
+
   // Initial load
-  initNav();
+  let cleanup = initNav();
 
   // Re-init on navigation (View Transitions)
-  document.addEventListener('astro:after-swap', initNav);
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanup) cleanup();
+    cleanup = initNav();
+  });
 </script>
