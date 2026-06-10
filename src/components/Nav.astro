@@ -3,7 +3,7 @@ import { CONFIG } from '../data/config';
 ---
 
 <nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
-  <div class="container-custom h-full px-[5%] flex items-center justify-between">
+  <div class="container-custom h-full px-[5%] flex items-center justify-between relative">
     
     <!-- Logo -->
     <a href="#hero" class="flex items-center group" aria-label="TechHealth Home">
@@ -37,6 +37,11 @@ import { CONFIG } from '../data/config';
         <span class="block w-6 h-0.5 bg-navy transition-transform duration-300 origin-center pointer-events-none"></span>
       </button>
     </div>
+
+    <!-- Reading Progress Bar Container -->
+    <div class="absolute bottom-0 left-0 w-full h-[2px] bg-transparent overflow-hidden">
+      <div id="reading-progress" class="h-full bg-blue transition-transform duration-75 ease-out origin-left scale-x-0"></div>
+    </div>
   </div>
 
   <!-- Mobile Menu -->
@@ -58,26 +63,21 @@ import { CONFIG } from '../data/config';
 </style>
 
 <script>
-  let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
+  let keyHandler: ((e: KeyboardEvent) => void) | null = null;
+  let scrollHandler: (() => void) | null = null;
 
   function initNav() {
     const toggle = document.getElementById('menu-toggle');
     const menu = document.getElementById('mobile-menu');
     const mobileLinks = document.querySelectorAll('.mobile-link');
     const spans = toggle?.querySelectorAll('span');
+    const progressBar = document.getElementById('reading-progress');
 
     let isOpen = false;
     let lastFocusedElement: HTMLElement | null = null;
 
-    const getFocusableElements = () => {
-      if (!menu || !toggle) return [];
-      const menuFocusables = Array.from(menu.querySelectorAll('a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])'));
-      return [toggle, ...menuFocusables] as HTMLElement[];
-    };
-
     const toggleMenu = () => {
       isOpen = !isOpen;
-
       toggle?.setAttribute('aria-expanded', isOpen.toString());
       toggle?.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
 
@@ -86,169 +86,74 @@ import { CONFIG } from '../data/config';
         menu?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]', 'invisible');
         menu?.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
         document.body.style.overflow = 'hidden';
-        if (spans) {
-          spans[0].classList.add('rotate-45', 'translate-y-[8px]');
-          spans[1].classList.add('opacity-0');
-          spans[2].classList.add('-rotate-45', '-translate-y-[8px]');
-        }
-
-        // Focus first link in menu after opening
-        setTimeout(() => {
-          const firstLink = menu?.querySelector('.mobile-link') as HTMLElement;
-          firstLink?.focus();
-        }, 100);
-        // Set initial focus to the first link
-        setTimeout(() => {
-          const firstLink = menu?.querySelector('a');
-          if (firstLink) (firstLink as HTMLElement).focus();
-        }, 200);
-        // Micro-UX: Auto-focus first link for keyboard users
-        setTimeout(() => {
-          if (isOpen && mobileLinks.length > 0) {
-            (mobileLinks[0] as HTMLElement).focus();
-          }
-        }, 200);
-
+        spans?.forEach((s, i) => {
+          if (i === 0) s.classList.add('rotate-45', 'translate-y-[8px]');
+          if (i === 1) s.classList.add('opacity-0');
+          if (i === 2) s.classList.add('-rotate-45', '-translate-y-[8px]');
+        });
+        setTimeout(() => (menu?.querySelector('.mobile-link') as HTMLElement)?.focus(), 200);
       } else {
         menu?.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
         menu?.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
         document.body.style.overflow = '';
-        if (spans) {
-          spans[0].classList.remove('rotate-45', 'translate-y-[8px]');
-          spans[1].classList.remove('opacity-0');
-          spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
-        }
-
-        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
-          lastFocusedElement.focus();
-        }
-
-        // Add invisible after transition
-        setTimeout(() => {
-          if (!isOpen) menu?.classList.add('invisible');
-        }, 300);
+        spans?.forEach((s, i) => {
+          if (i === 0) s.classList.remove('rotate-45', 'translate-y-[8px]');
+          if (i === 1) s.classList.remove('opacity-0');
+          if (i === 2) s.classList.remove('-rotate-45', '-translate-y-[8px]');
+        });
+        lastFocusedElement?.focus();
+        setTimeout(() => { if (!isOpen) menu?.classList.add('invisible'); }, 300);
       }
     };
 
     toggle?.addEventListener('click', toggleMenu);
+    mobileLinks.forEach(link => link.addEventListener('click', () => isOpen && toggleMenu()));
 
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        if (isOpen) toggleMenu();
-      });
-    });
-
-    // Keyboard Navigation & Focus Trap
-    document.addEventListener('keydown', (e) => {
-    // Keyboard Management (Focus Trap & Escape)
-    document.addEventListener('keydown', (e) => {
-    // Handle focus trap and escape key
-    if (keydownHandler) document.removeEventListener('keydown', keydownHandler);
-
-    keydownHandler = (e: KeyboardEvent) => {
+    if (keyHandler) document.removeEventListener('keydown', keyHandler);
+    keyHandler = (e: KeyboardEvent) => {
       if (!isOpen) return;
-
-      if (e.key === 'Escape') {
-        toggleMenu();
-        if (toggle) (toggle as HTMLElement).focus();
-        return;
-      }
-
-      if (e.key === 'Tab') {
-        const focusables = getFocusableElements();
-        if (focusables.length === 0) return;
-
-        const first = focusables[0];
-        const last = focusables[focusables.length - 1];
-
-        if (e.shiftKey) {
-          if (document.activeElement === first) {
-            e.preventDefault();
-            last.focus();
-          }
-        } else {
-          if (document.activeElement === last) {
-            e.preventDefault();
-            first.focus();
-          }
-        }
-      }
-
-      if (e.key === 'Tab') {
-        const links = menu?.querySelectorAll('a') || [];
-        const elements = [toggle, ...Array.from(links)].filter(Boolean) as HTMLElement[];
-        if (elements.length === 0) return;
-
-        const first = elements[0];
-        const last = elements[elements.length - 1];
-
-        if (e.shiftKey) {
-          if (document.activeElement === first) {
-            e.preventDefault();
-            last.focus();
-          }
-        } else {
-          if (document.activeElement === last) {
-            e.preventDefault();
-            first.focus();
-          }
-        }
-      }
-    });
-        const focusableElements = [toggle, ...Array.from(mobileLinks)] as HTMLElement[];
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-
-        if (e.shiftKey) { // Shift + Tab
-          if (document.activeElement === firstElement) {
-            e.preventDefault();
-            lastElement.focus();
-          }
-        } else { // Tab
-          if (document.activeElement === lastElement) {
-            e.preventDefault();
-            firstElement.focus();
-          }
+      if (e.key === 'Escape') { toggleMenu(); toggle?.focus(); }
+      else if (e.key === 'Tab') {
+        const focusables = [toggle, ...Array.from(mobileLinks)] as HTMLElement[];
+        if (e.shiftKey && document.activeElement === focusables[0]) {
+          e.preventDefault(); focusables[focusables.length - 1].focus();
+        } else if (!e.shiftKey && document.activeElement === focusables[focusables.length - 1]) {
+          e.preventDefault(); focusables[0].focus();
         }
       }
     };
+    document.addEventListener('keydown', keyHandler);
 
-    document.addEventListener('keydown', keydownHandler);
+    const updateProgress = () => {
+      if (!progressBar) return;
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      progressBar.style.transform = `scale-x(${totalHeight > 0 ? Math.min(scrollY / totalHeight, 1) : 0})`;
+    };
 
-    // ScrollSpy Logic
+    if (scrollHandler) window.removeEventListener('scroll', scrollHandler);
+    scrollHandler = updateProgress;
+    window.addEventListener('scroll', scrollHandler, { passive: true });
+    updateProgress();
+
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
-
-    const observerOptions = {
-      root: null,
-      rootMargin: '-30% 0px -70% 0px',
-      threshold: 0
-    };
-
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+    const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
           navLinks.forEach(link => {
-            if (link.getAttribute('href') === `#${id}`) {
-              link.classList.add('nav-link-active');
-              link.setAttribute('aria-current', 'location');
-            } else {
-              link.classList.remove('nav-link-active');
-              link.removeAttribute('aria-current');
-            }
+            const isActive = link.getAttribute('href') === `#${id}`;
+            link.classList.toggle('nav-link-active', isActive);
+            if (isActive) link.setAttribute('aria-current', 'location');
+            else link.removeAttribute('aria-current');
           });
         }
       });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-    sections.forEach(section => observer.observe(section));
+    }, { rootMargin: '-30% 0px -70% 0px' });
+    sections.forEach(s => observer.observe(s));
   }
 
-  // Initial load
   initNav();
-
-  // Re-init on navigation (View Transitions)
   document.addEventListener('astro:after-swap', initNav);
 </script>

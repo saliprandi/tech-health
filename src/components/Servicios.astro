@@ -103,205 +103,111 @@ const modalData = CONFIG.servicios.map(servicio => ({
 </section>
 
 <script is:inline define:vars={{ modalData, whatsappNumber: CONFIG.contacto.whatsapp }}>
-  document.addEventListener('DOMContentLoaded', () => {
-    const cards = document.querySelectorAll('.service-card');
-    const backdrop = document.getElementById('service-modal-backdrop');
-    const modal = document.getElementById('service-modal');
-    const modalContent = document.getElementById('modal-content');
-    const closeBtn = document.getElementById('close-modal');
-
+  (function() {
     let isModalOpen = false;
     let lastFocusedElement = null;
     let focusableElements = [];
+    let keyHandler = null;
 
-    const escapeHtml = (unsafe) => {
-      if (typeof unsafe !== 'string') return '';
-      return unsafe
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    };
+    function initServicios() {
+      const cards = document.querySelectorAll('.service-card');
+      const backdrop = document.getElementById('service-modal-backdrop');
+      const modal = document.getElementById('service-modal');
+      const modalContent = document.getElementById('modal-content');
+      const closeBtn = document.getElementById('close-modal');
 
-    const getIconSvg = (iconName) => {
-      return `<use href="#icon-${escapeHtml(iconName)}" />`;
-    };
+      if (!cards.length || !backdrop || !modal || !modalContent || !closeBtn) return;
 
-    const closeModal = () => {
-      if (!isModalOpen) return;
-      isModalOpen = false;
-
-      backdrop.classList.add('opacity-0', 'pointer-events-none');
-      modal.classList.remove('scale-100', 'opacity-100');
-      modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
-      backdrop?.classList.add('opacity-0', 'pointer-events-none');
-      modal?.classList.remove('scale-100', 'opacity-100');
-      modal?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
-      document.body.style.overflow = '';
-
-      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
-        lastFocusedElement.focus();
-      }
-
-      setTimeout(() => {
-        if (!isModalOpen) {
-          if (modalContent) modalContent.innerHTML = '';
-          backdrop?.classList.add('invisible');
-          modal?.classList.add('invisible');
-        }
-      }, 400);
-    };
-
-    const updateFocusableElements = () => {
-      if (!modal) return;
-      focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
-        .filter(el => {
-          const tagName = el.tagName.toUpperCase();
-          return tagName !== 'SVG' && tagName !== 'USE' && !el.hasAttribute('disabled');
-        });
-    };
-
-    const openModal = (index) => {
-      const servicio = modalData[index];
-      if (!servicio || !modalContent) return;
-
-      lastFocusedElement = document.activeElement;
-
-      const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ' + servicio.titulo)}`;
-
-      modalContent.innerHTML = `
-        <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
-          <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-            ${getIconSvg(servicio.icono)}
-          </svg>
-        </div>
-        <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
-        <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
-        <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
-        <ul class="flex flex-col gap-4 mb-10">
-          ${servicio.items.map(item => `
-            <li class="flex items-start gap-4 font-body text-[15px] text-text-soft">
-              <span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>
-              ${escapeHtml(item)}
-            </li>
-          `).join('')}
-        </ul>
-
-        <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
-          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-navy text-white font-heading font-bold text-[15px] py-4 px-8 rounded-[8px] hover:bg-navy-dark transition-all shadow-md text-center" id="modal-cta">
-            Consultar por WhatsApp
-          </a>
-          <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-8 py-4 transition-colors text-[14px]">
-          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta">
-            <svg class="w-5 h-5 fill-current">
-              <use href="#icon-whatsapp" />
-            </svg>
-            Consultar por este servicio
-          </a>
-          <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">
-            Cerrar
-          </button>
-        </div>
-      `;
-
-      // Show modal
-      backdrop.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
-      modal.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
-      modal.classList.add('scale-100', 'opacity-100');
-      document.body.style.overflow = 'hidden';
-      isModalOpen = true;
-
-      // Update focusable elements immediately after injection
-      updateFocusableElements();
-
-      // Focus management initial
-      setTimeout(() => {
-        const firstFocus = document.getElementById('modal-cta') || closeBtn;
-        if (firstFocus) firstFocus.focus();
-      backdrop?.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
-      modal?.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
-      modal?.classList.add('scale-100', 'opacity-100');
-      document.body.style.overflow = 'hidden';
-      isModalOpen = true;
-
-      updateFocusableElements();
-
-      setTimeout(() => {
-        const cta = document.getElementById('modal-cta');
-        if (cta) cta.focus();
-        else if (closeBtn) closeBtn.focus();
-      }, 100);
-    };
-
-    cards.forEach(card => {
-      const openAction = () => {
-        const index = card.getAttribute('data-index');
-        if (index !== null) openModal(parseInt(index));
+      const escapeHtml = (unsafe) => {
+        if (typeof unsafe !== 'string') return '';
+        return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
       };
-      card.addEventListener('click', openAction);
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openAction(); }
+
+      const closeModal = () => {
+        if (!isModalOpen) return;
+        isModalOpen = false;
+        backdrop.classList.add('opacity-0', 'pointer-events-none', 'invisible');
+        modal.classList.add('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
+        modal.classList.remove('scale-100', 'opacity-100');
+        document.body.style.overflow = '';
+        lastFocusedElement?.focus();
+        setTimeout(() => { if (!isModalOpen) modalContent.innerHTML = ''; }, 400);
+      };
+
+      const updateFocusables = () => {
+        focusableElements = Array.from(modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])'))
+          .filter(el => !el.hasAttribute('disabled') && el.tagName !== 'SVG' && el.tagName !== 'USE');
+      };
+
+      const openModal = (index) => {
+        const s = modalData[index];
+        if (!s) return;
+        lastFocusedElement = document.activeElement;
+        const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ' + s.titulo)}`;
+
+        modalContent.innerHTML = `
+          <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
+            <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><use href="#icon-${escapeHtml(s.icono)}" /></svg>
+          </div>
+          <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(s.titulo)}</h3>
+          <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(s.descripcion)}</p>
+          <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
+          <ul class="flex flex-col gap-4 mb-10">
+            ${s.items.map(item => `<li class="flex items-start gap-4 font-body text-[15px] text-text-soft"><span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>${escapeHtml(item)}</li>`).join('')}
+          </ul>
+          <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
+            <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-sm focus-visible:ring-2 focus-visible:ring-blue" id="modal-cta">
+              <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
+              Consultar por este servicio
+            </a>
+            <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy rounded-md">Cerrar</button>
+          </div>
+        `;
+
+        backdrop.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
+        modal.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
+        modal.classList.add('scale-100', 'opacity-100');
+        document.body.style.overflow = 'hidden';
+        isModalOpen = true;
+        updateFocusables();
+        setTimeout(() => (document.getElementById('modal-cta') || closeBtn).focus(), 100);
+      };
+
+      cards.forEach(card => {
+        card.onclick = () => openModal(parseInt(card.dataset.index));
+        card.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(parseInt(card.dataset.index)); } };
       });
-    });
 
-    backdrop.addEventListener('click', closeModal);
-    closeBtn.addEventListener('click', closeModal);
+      backdrop.onclick = closeModal;
+      closeBtn.onclick = closeModal;
 
-    // Event delegation for secondary close button
-    modalContent.addEventListener('click', (e) => {
-      if (e.target && e.target.id === 'modal-close-secondary') {
-        closeModal();
-    backdrop?.addEventListener('click', closeModal);
-    closeBtn?.addEventListener('click', closeModal);
-
-    modalContent?.addEventListener('click', (e) => {
-      const target = e.target;
-      if (!target || typeof target.closest !== 'function') return;
-
-      if (target.closest('#modal-close-secondary')) {
-        closeModal();
-      }
-
-      const cta = target.closest('#modal-cta');
-      if (cta) {
-        cta.textContent = 'Redirigiendo...';
-        cta.classList.add('opacity-70', 'cursor-not-allowed');
-        // Restore after a delay in case the user comes back
-        setTimeout(() => {
-          if (cta.textContent === 'Redirigiendo...') {
-            cta.textContent = 'Consultar por este servicio';
-            cta.classList.remove('opacity-70', 'cursor-not-allowed');
-          }
-        }, 3000);
-      }
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!isModalOpen) return;
-
-      if (e.key === 'Escape') {
-        closeModal();
-      }
-
-      if (e.key === 'Tab') {
-        if (focusableElements.length === 0) return;
-
-        const first = focusableElements[0];
-        const last = focusableElements[focusableElements.length - 1];
-
-        if (e.shiftKey) {
-          if (document.activeElement === first) {
-            e.preventDefault();
-            last.focus();
-          }
-        } else {
-          if (document.activeElement === last) {
-            e.preventDefault();
-            first.focus();
-          }
+      modalContent.onclick = (e) => {
+        const target = e.target;
+        if (target.closest('#modal-close-secondary')) closeModal();
+        const cta = target.closest('#modal-cta');
+        if (cta) {
+          const oldT = cta.innerHTML;
+          cta.innerHTML = 'Redirigiendo...';
+          cta.classList.add('opacity-70', 'cursor-not-allowed');
+          setTimeout(() => { cta.innerHTML = oldT; cta.classList.remove('opacity-70', 'cursor-not-allowed'); }, 3000);
         }
-      }
-    });
-  });
+      };
+
+      if (keyHandler) document.removeEventListener('keydown', keyHandler);
+      keyHandler = (e) => {
+        if (!isModalOpen) return;
+        if (e.key === 'Escape') closeModal();
+        if (e.key === 'Tab') {
+          if (!focusableElements.length) return;
+          const first = focusableElements[0], last = focusableElements[focusableElements.length - 1];
+          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      };
+      document.addEventListener('keydown', keyHandler);
+    }
+
+    initServicios();
+    document.addEventListener('astro:after-swap', initServicios);
+  })();
 </script>

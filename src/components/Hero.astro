@@ -32,11 +32,11 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
 
       <!-- Buttons -->
       <div class="flex flex-wrap items-center gap-4 mt-2">
-        <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="btn-primary gap-2">
+        <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="btn-primary gap-2">
           <svg class="w-5 h-5 fill-current">
             <use href="#icon-whatsapp" />
           </svg>
-          Solicitar servicio
+          <span id="hero-cta-text">Solicitar servicio</span>
         </a>
         <a href="#servicios" class="btn-secondary">
           Ver servicios
@@ -77,3 +77,26 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
 
   </div>
 </section>
+
+<script>
+  function initHeroFeedback() {
+    const heroBtn = document.getElementById('hero-cta');
+    const heroText = document.getElementById('hero-cta-text');
+    if (!heroBtn || !heroText) return;
+
+    const handleClick = () => {
+      const originalText = heroText.textContent;
+      heroText.textContent = 'Redirigiendo...';
+      heroBtn.classList.add('opacity-70', 'cursor-not-allowed');
+      setTimeout(() => {
+        heroText.textContent = originalText;
+        heroBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+      }, 3000);
+    };
+
+    heroBtn.addEventListener('click', handleClick);
+  }
+
+  initHeroFeedback();
+  document.addEventListener('astro:after-swap', initHeroFeedback);
+</script>
