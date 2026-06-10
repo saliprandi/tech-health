@@ -190,7 +190,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
             <svg class="w-5 h-5 fill-current">
               <use href="#icon-whatsapp" />
             </svg>
-            Consultar por este servicio
+            <span id="modal-cta-text">Consultar por este servicio</span>
           </a>
           <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">
             Cerrar
@@ -221,7 +221,10 @@ const modalData = CONFIG.servicios.map(servicio => ({
       };
       card.addEventListener('click', openAction);
       card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openAction(); }
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openAction();
+        }
       });
     });
 
@@ -230,7 +233,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
     modalContent?.addEventListener('click', (e) => {
       const target = e.target;
-      if (!target || typeof target.closest !== 'function') return;
+      if (!target || !(target instanceof HTMLElement)) return;
 
       if (target.closest('#modal-close-secondary')) {
         closeModal();
@@ -239,11 +242,37 @@ const modalData = CONFIG.servicios.map(servicio => ({
       const cta = target.closest('#modal-cta');
       if (cta) {
         const originalText = cta.innerText;
+        const originalText = cta.innerHTML;
         cta.textContent = 'Redirigiendo...';
+        const originalText = cta.textContent;
+        cta.innerHTML = `
+          <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
+          Redirigiendo...
+        `;
         cta.classList.add('opacity-70', 'cursor-not-allowed');
-        // Restore after a delay in case the user comes back
         setTimeout(() => {
           cta.textContent = originalText;
+          if (cta.textContent === 'Redirigiendo...') {
+            cta.innerHTML = originalText;
+            cta.classList.remove('opacity-70', 'cursor-not-allowed');
+          }
+          cta.innerHTML = `
+            <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
+            Consultar por este servicio
+          `;
+        const originalText = cta.innerHTML;
+        cta.innerHTML = 'Redirigiendo...';
+        cta.classList.add('opacity-70', 'cursor-not-allowed');
+
+        setTimeout(() => {
+          cta.innerHTML = originalText;
+      const ctaText = document.getElementById('modal-cta-text');
+      if (cta && ctaText) {
+        const originalText = ctaText.textContent;
+        ctaText.textContent = 'Redirigiendo...';
+        cta.classList.add('opacity-70', 'cursor-not-allowed');
+        setTimeout(() => {
+          ctaText.textContent = originalText;
           cta.classList.remove('opacity-70', 'cursor-not-allowed');
         }, 3000);
       }
