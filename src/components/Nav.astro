@@ -97,17 +97,6 @@ import { CONFIG } from '../data/config';
           const firstLink = menu?.querySelector('.mobile-link') as HTMLElement;
           firstLink?.focus();
         }, 100);
-        // Set initial focus to the first link
-        setTimeout(() => {
-          const firstLink = menu?.querySelector('a');
-          if (firstLink) (firstLink as HTMLElement).focus();
-        }, 200);
-        // Micro-UX: Auto-focus first link for keyboard users
-        setTimeout(() => {
-          if (isOpen && mobileLinks.length > 0) {
-            (mobileLinks[0] as HTMLElement).focus();
-          }
-        }, 200);
 
       } else {
         menu?.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
@@ -138,11 +127,7 @@ import { CONFIG } from '../data/config';
       });
     });
 
-    // Keyboard Navigation & Focus Trap
-    document.addEventListener('keydown', (e) => {
     // Keyboard Management (Focus Trap & Escape)
-    document.addEventListener('keydown', (e) => {
-    // Handle focus trap and escape key
     if (keydownHandler) document.removeEventListener('keydown', keydownHandler);
 
     keydownHandler = (e: KeyboardEvent) => {
@@ -170,44 +155,6 @@ import { CONFIG } from '../data/config';
           if (document.activeElement === last) {
             e.preventDefault();
             first.focus();
-          }
-        }
-      }
-
-      if (e.key === 'Tab') {
-        const links = menu?.querySelectorAll('a') || [];
-        const elements = [toggle, ...Array.from(links)].filter(Boolean) as HTMLElement[];
-        if (elements.length === 0) return;
-
-        const first = elements[0];
-        const last = elements[elements.length - 1];
-
-        if (e.shiftKey) {
-          if (document.activeElement === first) {
-            e.preventDefault();
-            last.focus();
-          }
-        } else {
-          if (document.activeElement === last) {
-            e.preventDefault();
-            first.focus();
-          }
-        }
-      }
-    });
-        const focusableElements = [toggle, ...Array.from(mobileLinks)] as HTMLElement[];
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-
-        if (e.shiftKey) { // Shift + Tab
-          if (document.activeElement === firstElement) {
-            e.preventDefault();
-            lastElement.focus();
-          }
-        } else { // Tab
-          if (document.activeElement === lastElement) {
-            e.preventDefault();
-            firstElement.focus();
           }
         }
       }
