@@ -38,6 +38,13 @@ import { CONFIG } from '../data/config';
       }
     };
 
+    const hideTooltip = () => {
+      if (tooltip) {
+        tooltip.classList.add('opacity-0', 'translate-y-2');
+        tooltip.classList.remove('opacity-100', 'translate-y-0');
+      }
+    };
+
     // Show tooltip after 5 seconds
     setTimeout(showTooltip, 5000);
 
@@ -51,45 +58,15 @@ import { CONFIG } from '../data/config';
         showTooltip();
 
         // Disable temporarily to provide visual feedback and prevent multiple clicks
-        btn.classList.add('opacity-70', 'cursor-not-allowed');
+        btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         setTimeout(() => {
-          tooltipText.textContent = originalText;
-          btn.classList.remove('opacity-70', 'cursor-not-allowed');
-        }, 3000);
-        setTimeout(() => {
-          tooltipText.textContent = '¡Hola! ¿En qué podemos ayudarte?';
-        }, 3000);
-
-        setTimeout(() => {
-          tooltipText.textContent = originalText;
-        }, 3000);
-        // Ensure tooltip is visible during redirection
-        if (tooltip) {
-          tooltip.classList.remove('opacity-0', 'translate-y-2');
-          tooltip.classList.add('opacity-100', 'translate-y-0');
-        }
-
-        setTimeout(() => {
-          tooltipText.textContent = originalText;
-        }, 3500);
-        // Ensure tooltip is visible if it wasn't yet
-        tooltip.classList.remove('opacity-0', 'translate-y-2');
-        tooltip.classList.add('opacity-100', 'translate-y-0');
-
-        setTimeout(() => {
-          tooltipText.textContent = originalText;
-        }, 3000);
-        // Hide tooltip after a short while and restore text
-        setTimeout(() => {
-          if (tooltip) {
-            tooltip.classList.add('opacity-0', 'translate-y-2');
-            tooltip.classList.remove('opacity-100', 'translate-y-0');
-          }
+          hideTooltip();
           setTimeout(() => {
             tooltipText.textContent = originalText;
+            btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           }, 500);
-        }, 2000);
+        }, 3000);
       });
     }
   }

@@ -4,21 +4,21 @@
 
 @layer base {
   :root {
-    --navy:       #12336A;   /* color primario dominante */
-    --navy-dark:  #0a2248;   /* hover de navy */
-    --blue:       #2563A8;   /* color secundario, acentos */
-    --blue-light: #4A90D9;   /* acentos suaves, íconos en fondo oscuro */
-    --blue-pale:  #EBF3FC;   /* fondos de íconos, badges */
-    --white:      #ffffff;
-    --off-white:  #F7F9FC;   /* fondo de secciones alternas */
-    --gray:       #8898AA;   /* texto muted */
-    --text:       #1a2332;   /* texto principal */
-    --text-soft:  #4A5568;   /* texto secundario */
-    --border:     rgba(18,51,106,0.12);
+    --navy: #12336a; /* color primario dominante */
+    --navy-dark: #0a2248; /* hover de navy */
+    --blue: #2563a8; /* color secundario, acentos */
+    --blue-light: #4a90d9; /* acentos suaves, íconos en fondo oscuro */
+    --blue-pale: #ebf3fc; /* fondos de íconos, badges */
+    --white: #ffffff;
+    --off-white: #f7f9fc; /* fondo de secciones alternas */
+    --gray: #8898aa; /* texto muted */
+    --text: #1a2332; /* texto principal */
+    --text-soft: #4a5568; /* texto secundario */
+    --border: rgba(18, 51, 106, 0.12);
   }
 
   html {
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
     scroll-behavior: smooth;
     scroll-padding-top: 68px;
     color: var(--text);
@@ -27,7 +27,7 @@
 
   body {
     @apply antialiased leading-relaxed;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
     font-size: 16px;
     line-height: 1.7;
     margin: 0;
@@ -35,8 +35,13 @@
     overflow-x: hidden;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Plus Jakarta Sans", sans-serif;
     color: var(--navy);
     letter-spacing: -0.02em;
   }
@@ -68,7 +73,7 @@
   .btn-primary:hover {
     background-color: var(--navy-dark);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(18,51,106,0.15);
+    box-shadow: 0 8px 20px rgba(18, 51, 106, 0.15);
   }
 
   .btn-secondary {
@@ -81,7 +86,7 @@
 
   .btn-secondary:hover {
     border-color: var(--navy);
-    background-color: rgba(18,51,106, 0.03);
+    background-color: rgba(18, 51, 106, 0.03);
     transform: translateY(-2px);
   }
 }

@@ -3,7 +3,8 @@ export const CONFIG = {
     nombre: "TechHealth",
     subtitulo: "Medical Engineering",
     slogan: "Cuidamos los equipos que cuidan vidas",
-    descripcion: "Empresa tucumana de ingeniería en electromedicina especializada en mantenimiento preventivo y correctivo, diagnóstico y reparación de instrumentos médicos de alta complejidad.",
+    descripcion:
+      "Empresa tucumana de ingeniería en electromedicina especializada en mantenimiento preventivo y correctivo, diagnóstico y reparación de instrumentos médicos de alta complejidad.",
     ciudad: "San Miguel de Tucumán",
     provincia: "Tucumán",
     pais: "Argentina",
@@ -15,7 +16,8 @@ export const CONFIG = {
     email: "",
     direccion: "Dr. Bernardo de Monteagudo 349, Piso 7B",
     ciudad_completa: "San Miguel de Tucumán, Tucumán",
-    maps_url: "https://maps.google.com/?q=Dr.+Bernardo+de+Monteagudo+349,+San+Miguel+de+Tucum%C3%A1n,+Tucum%C3%A1n,+Argentina",
+    maps_url:
+      "https://maps.google.com/?q=Dr.+Bernardo+de+Monteagudo+349,+San+Miguel+de+Tucum%C3%A1n,+Tucum%C3%A1n,+Argentina",
     horario: "Lunes a viernes · 9:00 a 18:00 hs",
   },
 
@@ -30,14 +32,16 @@ export const CONFIG = {
       iniciales: "SA",
       nombre: "Santiago Aliprandi",
       cargo: "Técnico en Electromedicina",
-      descripcion: "Fundador de TechHealth. Especialista en microelectrónica y diagnóstico de equipos médicos de alta complejidad. Orientado a la reparación a nivel de placa electrónica.",
+      descripcion:
+        "Fundador de TechHealth. Especialista en microelectrónica y diagnóstico de equipos médicos de alta complejidad. Orientado a la reparación a nivel de placa electrónica.",
       color: "#12336A",
     },
     {
       iniciales: "GA",
       nombre: "Germán Aliprandi",
       cargo: "Técnico Electrónico",
-      descripcion: "Más de 29 años de experiencia en reparación y mantenimiento de equipos electrónicos. Ex técnico de Gayoll, Brunelli y Gadget (Rafaela, Santa Fe). Especialista en diagnóstico de fallas.",
+      descripcion:
+        "Más de 29 años de experiencia en reparación y mantenimiento de equipos electrónicos. Ex técnico de Gayoll, Brunelli y Gadget (Rafaela, Santa Fe). Especialista en diagnóstico de fallas.",
       color: "#2563A8",
     },
   ],
@@ -46,7 +50,8 @@ export const CONFIG = {
     {
       icono: "shield",
       titulo: "Mantenimiento preventivo",
-      descripcion: "Inspecciones programadas para mantener los equipos médicos en condiciones óptimas de funcionamiento y seguridad.",
+      descripcion:
+        "Inspecciones programadas para mantener los equipos médicos en condiciones óptimas de funcionamiento y seguridad.",
       items: [
         "Inspección visual y funcional completa",
         "Limpieza y lubricación de componentes",
@@ -57,7 +62,8 @@ export const CONFIG = {
     {
       icono: "tool",
       titulo: "Mantenimiento correctivo",
-      descripcion: "Intervención rápida ante fallas, minimizando el tiempo fuera de servicio de los equipos críticos.",
+      descripcion:
+        "Intervención rápida ante fallas, minimizando el tiempo fuera de servicio de los equipos críticos.",
       items: [
         "Diagnóstico preciso de la falla",
         "Reparación con componentes de calidad",
@@ -68,7 +74,8 @@ export const CONFIG = {
     {
       icono: "circuit",
       titulo: "Diagnóstico y reparación de placas",
-      descripcion: "Especialización en microelectrónica: análisis profundo y reparación de circuitos electrónicos médicos a nivel de componente.",
+      descripcion:
+        "Especialización en microelectrónica: análisis profundo y reparación de circuitos electrónicos médicos a nivel de componente.",
       items: [
         "Análisis de componentes SMD y THT",
         "Diagnóstico con instrumental especializado",
