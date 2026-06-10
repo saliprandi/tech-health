@@ -42,7 +42,7 @@ import { CONFIG } from '../data/config';
     setTimeout(showTooltip, 5000);
 
     // Feedback on click
-    if (btn && tooltipText) {
+    if (btn && tooltipText && tooltip) {
       btn.addEventListener('click', () => {
         const originalText = tooltipText.textContent;
         tooltipText.textContent = '¡Redirigiendo!';
@@ -51,45 +51,18 @@ import { CONFIG } from '../data/config';
         showTooltip();
 
         // Disable temporarily to provide visual feedback and prevent multiple clicks
-        btn.classList.add('opacity-70', 'cursor-not-allowed');
+        btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         setTimeout(() => {
           tooltipText.textContent = originalText;
-          btn.classList.remove('opacity-70', 'cursor-not-allowed');
-        }, 3000);
-        setTimeout(() => {
-          tooltipText.textContent = '¡Hola! ¿En qué podemos ayudarte?';
-        }, 3000);
+          btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
-        setTimeout(() => {
-          tooltipText.textContent = originalText;
-        }, 3000);
-        // Ensure tooltip is visible during redirection
-        if (tooltip) {
-          tooltip.classList.remove('opacity-0', 'translate-y-2');
-          tooltip.classList.add('opacity-100', 'translate-y-0');
-        }
-
-        setTimeout(() => {
-          tooltipText.textContent = originalText;
-        }, 3500);
-        // Ensure tooltip is visible if it wasn't yet
-        tooltip.classList.remove('opacity-0', 'translate-y-2');
-        tooltip.classList.add('opacity-100', 'translate-y-0');
-
-        setTimeout(() => {
-          tooltipText.textContent = originalText;
-        }, 3000);
-        // Hide tooltip after a short while and restore text
-        setTimeout(() => {
+          // Hide tooltip after a short while and restore text
           if (tooltip) {
             tooltip.classList.add('opacity-0', 'translate-y-2');
             tooltip.classList.remove('opacity-100', 'translate-y-0');
           }
-          setTimeout(() => {
-            tooltipText.textContent = originalText;
-          }, 500);
-        }, 2000);
+        }, 3000);
       });
     }
   }

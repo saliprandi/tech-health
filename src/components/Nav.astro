@@ -87,7 +87,6 @@ import { CONFIG } from '../data/config';
         menu?.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
         document.body.style.overflow = 'hidden';
 
-        if (spans && spans.length >= 3) {
         if (spans && spans.length === 3) {
           spans[0].classList.add('rotate-45', 'translate-y-[8px]');
           spans[1].classList.add('opacity-0');
@@ -98,23 +97,19 @@ import { CONFIG } from '../data/config';
           const firstLink = menu?.querySelector('.mobile-link') as HTMLElement;
           firstLink?.focus();
         }, 100);
-        }, 150);
-        }, 200);
 
       } else {
         menu?.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
         menu?.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
         document.body.style.overflow = '';
 
-        if (spans && spans.length >= 3) {
         if (spans && spans.length === 3) {
           spans[0].classList.remove('rotate-45', 'translate-y-[8px]');
           spans[1].classList.remove('opacity-0');
           spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
         }
 
-        if (lastFocusedElement) lastFocusedElement.focus();
-        if (lastFocusedElement && typeof (lastFocusedElement as any).focus === 'function') {
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
           lastFocusedElement.focus();
         }
 
@@ -125,22 +120,6 @@ import { CONFIG } from '../data/config';
     };
 
     const handleKeydown = (e: KeyboardEvent) => {
-    toggle?.addEventListener('click', toggleMenu);
-
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        if (isOpen) toggleMenu();
-      });
-    });
-
-    // Keyboard Management (Focus Trap & Escape)
-    if (keydownHandler) document.removeEventListener('keydown', keydownHandler);
-    const handleKeydown = (e: KeyboardEvent) => {
-    if (keydownHandler) {
-      document.removeEventListener('keydown', keydownHandler);
-    }
-
-    keydownHandler = (e: KeyboardEvent) => {
       if (!isOpen) return;
 
       if (e.key === 'Escape') {
@@ -170,17 +149,12 @@ import { CONFIG } from '../data/config';
       }
     };
 
-    document.addEventListener('keydown', handleKeydown);
+    const handleLinkClick = () => {
+      if (isOpen) toggleMenu();
     };
 
     toggle?.addEventListener('click', toggleMenu);
-
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        if (isOpen) toggleMenu();
-      });
-    });
-
+    mobileLinks.forEach(link => link.addEventListener('click', handleLinkClick));
     document.addEventListener('keydown', handleKeydown);
 
     // WhatsApp Redirect Feedback
@@ -188,18 +162,15 @@ import { CONFIG } from '../data/config';
       const cta = e.currentTarget as HTMLElement;
       const originalText = cta.textContent;
       cta.textContent = 'Redirigiendo...';
-      cta.classList.add('opacity-70', 'cursor-not-allowed');
+      cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
       setTimeout(() => {
         cta.textContent = originalText;
-        cta.classList.remove('opacity-70', 'cursor-not-allowed');
+        cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
       }, 3000);
     };
 
     navCta?.addEventListener('click', handleCtaClick as EventListener);
     mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
-
-    document.addEventListener('keydown', handleKeydown);
-    document.addEventListener('keydown', keydownHandler);
 
     // ScrollSpy
     const sections = document.querySelectorAll('section[id]');
@@ -231,23 +202,21 @@ import { CONFIG } from '../data/config';
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     sections.forEach(section => observer.observe(section));
 
-    // Clean up event listener when needed (though initNav runs on swap)
-    // We return a cleanup function or just let it be since it's a single page app style
-    // Cleanup for View Transitions
     // Cleanup function for View Transitions
     return () => {
+      toggle?.removeEventListener('click', toggleMenu);
+      mobileLinks.forEach(link => link.removeEventListener('click', handleLinkClick));
       document.removeEventListener('keydown', handleKeydown);
+      navCta?.removeEventListener('click', handleCtaClick as EventListener);
+      mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
       observer.disconnect();
     };
   }
 
   let cleanup: (() => void) | undefined;
-  document.addEventListener('DOMContentLoaded', () => {
-    cleanup = initNav();
-  });
 
   // Initial load
-  let cleanup = initNav();
+  cleanup = initNav();
 
   // Re-init on navigation (View Transitions)
   document.addEventListener('astro:after-swap', () => {
