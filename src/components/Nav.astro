@@ -134,6 +134,7 @@ import { CONFIG } from '../data/config';
     });
 
     // Keyboard Management (Focus Trap & Escape)
+    if (keydownHandler) document.removeEventListener('keydown', keydownHandler);
     const handleKeydown = (e: KeyboardEvent) => {
     if (keydownHandler) {
       document.removeEventListener('keydown', keydownHandler);
