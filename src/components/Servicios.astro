@@ -35,7 +35,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
         <div
-          class="service-card group relative bg-off-white border border-transparent hover:border-border rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-within:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
+          class="service-card group relative bg-off-white border border-transparent rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-within:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
           data-index={index}
           tabindex="0"
           role="button"
@@ -241,6 +241,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
       const cta = target.closest('#modal-cta');
       if (cta) {
+        const originalText = cta.innerText;
         const originalText = cta.innerHTML;
         cta.textContent = 'Redirigiendo...';
         const originalText = cta.textContent;
@@ -250,6 +251,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
         `;
         cta.classList.add('opacity-70', 'cursor-not-allowed');
         setTimeout(() => {
+          cta.textContent = originalText;
           if (cta.textContent === 'Redirigiendo...') {
             cta.innerHTML = originalText;
             cta.classList.remove('opacity-70', 'cursor-not-allowed');

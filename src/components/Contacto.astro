@@ -216,6 +216,8 @@ import { CONFIG } from '../data/config';
           copyBtn.classList.add('text-blue');
 
           setTimeout(() => {
+            copyLabel.textContent = originalText;
+            copyIconUse.setAttribute('href', originalIcon || '#icon-copy');
             copyLabel.textContent = 'Copiar';
             copyIconUse.setAttribute('href', '#icon-copy');
             copyLabel.textContent = originalText;
