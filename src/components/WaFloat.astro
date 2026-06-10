@@ -15,7 +15,7 @@ import { CONFIG } from '../data/config';
     href={`https://wa.me/${CONFIG.contacto.whatsapp}`}
     target="_blank"
     rel="noopener noreferrer"
-    class="pointer-events-auto w-[58px] h-[58px] bg-[#25D366] rounded-full flex items-center justify-center text-white hover:scale-[1.08] transition-transform duration-300 shadow-lg"
+    class="w-[58px] h-[58px] bg-[#25D366] rounded-full flex items-center justify-center text-white hover:scale-[1.08] transition-transform duration-300 shadow-lg pointer-events-auto"
     style="box-shadow: 0 4px 20px rgba(37,211,102,0.5);"
     aria-label="Contactar por WhatsApp"
   >
@@ -45,6 +45,13 @@ import { CONFIG } from '../data/config';
         const originalText = tooltipText.textContent;
         tooltipText.textContent = '¡Redirigiendo!';
 
+        // Ensure tooltip is visible if it wasn't yet
+        tooltip.classList.remove('opacity-0', 'translate-y-2');
+        tooltip.classList.add('opacity-100', 'translate-y-0');
+
+        setTimeout(() => {
+          tooltipText.textContent = originalText;
+        }, 3000);
         // Hide tooltip after a short while and restore text
         setTimeout(() => {
           if (tooltip) {

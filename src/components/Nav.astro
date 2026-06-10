@@ -58,8 +58,6 @@ import { CONFIG } from '../data/config';
 </style>
 
 <script>
-  let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
-
   function initNav() {
     const toggle = document.getElementById('menu-toggle');
     const menu = document.getElementById('mobile-menu');
@@ -86,6 +84,8 @@ import { CONFIG } from '../data/config';
         menu?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]', 'invisible');
         menu?.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
         document.body.style.overflow = 'hidden';
+
+        if (spans && spans.length >= 3) {
         if (spans && spans.length === 3) {
           spans[0].classList.add('rotate-45', 'translate-y-[8px]');
           spans[1].classList.add('opacity-0');
@@ -96,12 +96,15 @@ import { CONFIG } from '../data/config';
         setTimeout(() => {
           const firstLink = menu?.querySelector('.mobile-link') as HTMLElement;
           firstLink?.focus();
+        }, 150);
         }, 200);
 
       } else {
         menu?.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
         menu?.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
         document.body.style.overflow = '';
+
+        if (spans && spans.length >= 3) {
         if (spans && spans.length === 3) {
           spans[0].classList.remove('rotate-45', 'translate-y-[8px]');
           spans[1].classList.remove('opacity-0');
@@ -112,13 +115,13 @@ import { CONFIG } from '../data/config';
           lastFocusedElement.focus();
         }
 
-        // Add invisible after transition
         setTimeout(() => {
           if (!isOpen) menu?.classList.add('invisible');
         }, 300);
       }
     };
 
+    const handleKeydown = (e: KeyboardEvent) => {
     toggle?.addEventListener('click', toggleMenu);
 
     mobileLinks.forEach(link => {
@@ -136,7 +139,7 @@ import { CONFIG } from '../data/config';
 
       if (e.key === 'Escape') {
         toggleMenu();
-        if (toggle) (toggle as HTMLElement).focus();
+        toggle?.focus();
         return;
       }
 
@@ -161,6 +164,15 @@ import { CONFIG } from '../data/config';
       }
     };
 
+    toggle?.addEventListener('click', toggleMenu);
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (isOpen) toggleMenu();
+      });
+    });
+
+    document.addEventListener('keydown', handleKeydown);
     document.addEventListener('keydown', keydownHandler);
 
     // ScrollSpy Logic
@@ -192,11 +204,20 @@ import { CONFIG } from '../data/config';
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     sections.forEach(section => observer.observe(section));
+
+    // Cleanup function for View Transitions
+    return () => {
+      document.removeEventListener('keydown', handleKeydown);
+      observer.disconnect();
+    };
   }
 
   // Initial load
-  initNav();
+  let cleanup = initNav();
 
   // Re-init on navigation (View Transitions)
-  document.addEventListener('astro:after-swap', initNav);
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanup) cleanup();
+    cleanup = initNav();
+  });
 </script>
