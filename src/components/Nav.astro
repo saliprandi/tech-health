@@ -39,6 +39,11 @@ import { CONFIG } from '../data/config';
     </div>
   </div>
 
+  <!-- Reading Progress Bar -->
+  <div class="absolute bottom-0 left-0 w-full h-[3px] bg-blue-pale overflow-hidden pointer-events-none" aria-hidden="true">
+    <div id="progress-bar" class="h-full bg-blue-light w-0 transition-all duration-150 ease-out"></div>
+  </div>
+
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99] invisible" role="navigation" aria-label="Menú móvil">
     <a href="#servicios" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Servicios</a>
@@ -58,6 +63,8 @@ import { CONFIG } from '../data/config';
 </style>
 
 <script>
+  let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
+
   function initNav() {
     const toggle = document.getElementById('menu-toggle');
     const menu = document.getElementById('mobile-menu');
@@ -65,6 +72,7 @@ import { CONFIG } from '../data/config';
     const spans = toggle?.querySelectorAll('span');
     const navCta = document.getElementById('nav-cta');
     const mobileNavCta = document.getElementById('mobile-nav-cta');
+    const progressBar = document.getElementById('progress-bar');
 
     let isOpen = false;
     let lastFocusedElement: HTMLElement | null = null;
@@ -87,7 +95,6 @@ import { CONFIG } from '../data/config';
         menu?.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
         document.body.style.overflow = 'hidden';
 
-        if (spans && spans.length >= 3) {
         if (spans && spans.length === 3) {
           spans[0].classList.add('rotate-45', 'translate-y-[8px]');
           spans[1].classList.add('opacity-0');
@@ -97,16 +104,13 @@ import { CONFIG } from '../data/config';
         setTimeout(() => {
           const firstLink = menu?.querySelector('.mobile-link') as HTMLElement;
           firstLink?.focus();
-        }, 100);
         }, 150);
-        }, 200);
 
       } else {
         menu?.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
         menu?.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
         document.body.style.overflow = '';
 
-        if (spans && spans.length >= 3) {
         if (spans && spans.length === 3) {
           spans[0].classList.remove('rotate-45', 'translate-y-[8px]');
           spans[1].classList.remove('opacity-0');
@@ -114,9 +118,6 @@ import { CONFIG } from '../data/config';
         }
 
         if (lastFocusedElement) lastFocusedElement.focus();
-        if (lastFocusedElement && typeof (lastFocusedElement as any).focus === 'function') {
-          lastFocusedElement.focus();
-        }
 
         setTimeout(() => {
           if (!isOpen) menu?.classList.add('invisible');
@@ -124,7 +125,6 @@ import { CONFIG } from '../data/config';
       }
     };
 
-    const handleKeydown = (e: KeyboardEvent) => {
     toggle?.addEventListener('click', toggleMenu);
 
     mobileLinks.forEach(link => {
@@ -134,8 +134,6 @@ import { CONFIG } from '../data/config';
     });
 
     // Keyboard Management (Focus Trap & Escape)
-    if (keydownHandler) document.removeEventListener('keydown', keydownHandler);
-    const handleKeydown = (e: KeyboardEvent) => {
     if (keydownHandler) {
       document.removeEventListener('keydown', keydownHandler);
     }
@@ -170,18 +168,7 @@ import { CONFIG } from '../data/config';
       }
     };
 
-    document.addEventListener('keydown', handleKeydown);
-    };
-
-    toggle?.addEventListener('click', toggleMenu);
-
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        if (isOpen) toggleMenu();
-      });
-    });
-
-    document.addEventListener('keydown', handleKeydown);
+    document.addEventListener('keydown', keydownHandler);
 
     // WhatsApp Redirect Feedback
     const handleCtaClick = (e: MouseEvent) => {
@@ -197,9 +184,6 @@ import { CONFIG } from '../data/config';
 
     navCta?.addEventListener('click', handleCtaClick as EventListener);
     mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
-
-    document.addEventListener('keydown', handleKeydown);
-    document.addEventListener('keydown', keydownHandler);
 
     // ScrollSpy
     const sections = document.querySelectorAll('section[id]');
@@ -231,12 +215,24 @@ import { CONFIG } from '../data/config';
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     sections.forEach(section => observer.observe(section));
 
-    // Clean up event listener when needed (though initNav runs on swap)
-    // We return a cleanup function or just let it be since it's a single page app style
-    // Cleanup for View Transitions
+    // Progress Bar Logic
+    const updateProgressBar = () => {
+      if (!progressBar) return;
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      progressBar.style.width = scrolled + "%";
+    };
+
+    window.addEventListener('scroll', updateProgressBar);
+    updateProgressBar();
+
     // Cleanup function for View Transitions
     return () => {
-      document.removeEventListener('keydown', handleKeydown);
+      if (keydownHandler) {
+        document.removeEventListener('keydown', keydownHandler);
+      }
+      window.removeEventListener('scroll', updateProgressBar);
       observer.disconnect();
     };
   }
@@ -245,9 +241,6 @@ import { CONFIG } from '../data/config';
   document.addEventListener('DOMContentLoaded', () => {
     cleanup = initNav();
   });
-
-  // Initial load
-  let cleanup = initNav();
 
   // Re-init on navigation (View Transitions)
   document.addEventListener('astro:after-swap', () => {
