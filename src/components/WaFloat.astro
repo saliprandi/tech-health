@@ -40,7 +40,7 @@ import { CONFIG } from '../data/config';
     }, 5000);
 
     // Feedback on click
-    if (btn && tooltipText && tooltip) {
+    if (btn && tooltipText) {
       btn.addEventListener('click', () => {
         const originalText = tooltipText.textContent;
         tooltipText.textContent = '¡Redirigiendo!';
@@ -52,6 +52,16 @@ import { CONFIG } from '../data/config';
         setTimeout(() => {
           tooltipText.textContent = originalText;
         }, 3000);
+        // Hide tooltip after a short while and restore text
+        setTimeout(() => {
+          if (tooltip) {
+            tooltip.classList.add('opacity-0', 'translate-y-2');
+            tooltip.classList.remove('opacity-100', 'translate-y-0');
+          }
+          setTimeout(() => {
+            tooltipText.textContent = originalText;
+          }, 500);
+        }, 2000);
       });
     }
   });

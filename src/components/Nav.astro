@@ -86,6 +86,7 @@ import { CONFIG } from '../data/config';
         document.body.style.overflow = 'hidden';
 
         if (spans && spans.length >= 3) {
+        if (spans && spans.length === 3) {
           spans[0].classList.add('rotate-45', 'translate-y-[8px]');
           spans[1].classList.add('opacity-0');
           spans[2].classList.add('-rotate-45', '-translate-y-[8px]');
@@ -96,6 +97,7 @@ import { CONFIG } from '../data/config';
           const firstLink = menu?.querySelector('.mobile-link') as HTMLElement;
           firstLink?.focus();
         }, 150);
+        }, 200);
 
       } else {
         menu?.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
@@ -103,12 +105,13 @@ import { CONFIG } from '../data/config';
         document.body.style.overflow = '';
 
         if (spans && spans.length >= 3) {
+        if (spans && spans.length === 3) {
           spans[0].classList.remove('rotate-45', 'translate-y-[8px]');
           spans[1].classList.remove('opacity-0');
           spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
         }
 
-        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        if (lastFocusedElement && typeof (lastFocusedElement as any).focus === 'function') {
           lastFocusedElement.focus();
         }
 
@@ -119,6 +122,19 @@ import { CONFIG } from '../data/config';
     };
 
     const handleKeydown = (e: KeyboardEvent) => {
+    toggle?.addEventListener('click', toggleMenu);
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (isOpen) toggleMenu();
+      });
+    });
+
+    if (keydownHandler) {
+      document.removeEventListener('keydown', keydownHandler);
+    }
+
+    keydownHandler = (e: KeyboardEvent) => {
       if (!isOpen) return;
 
       if (e.key === 'Escape') {
@@ -157,6 +173,7 @@ import { CONFIG } from '../data/config';
     });
 
     document.addEventListener('keydown', handleKeydown);
+    document.addEventListener('keydown', keydownHandler);
 
     // ScrollSpy Logic
     const sections = document.querySelectorAll('section[id]');
