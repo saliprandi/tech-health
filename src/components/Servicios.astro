@@ -240,40 +240,14 @@ const modalData = CONFIG.servicios.map(servicio => ({
       }
 
       const cta = target.closest('#modal-cta');
-      if (cta) {
-        const originalText = cta.innerText;
-        const originalText = cta.innerHTML;
-        cta.textContent = 'Redirigiendo...';
-        const originalText = cta.textContent;
-        cta.innerHTML = `
-          <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
-          Redirigiendo...
-        `;
-        cta.classList.add('opacity-70', 'cursor-not-allowed');
-        setTimeout(() => {
-          cta.textContent = originalText;
-          if (cta.textContent === 'Redirigiendo...') {
-            cta.innerHTML = originalText;
-            cta.classList.remove('opacity-70', 'cursor-not-allowed');
-          }
-          cta.innerHTML = `
-            <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
-            Consultar por este servicio
-          `;
-        const originalText = cta.innerHTML;
-        cta.innerHTML = 'Redirigiendo...';
-        cta.classList.add('opacity-70', 'cursor-not-allowed');
-
-        setTimeout(() => {
-          cta.innerHTML = originalText;
       const ctaText = document.getElementById('modal-cta-text');
       if (cta && ctaText) {
         const originalText = ctaText.textContent;
         ctaText.textContent = 'Redirigiendo...';
-        cta.classList.add('opacity-70', 'cursor-not-allowed');
+        cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         setTimeout(() => {
           ctaText.textContent = originalText;
-          cta.classList.remove('opacity-70', 'cursor-not-allowed');
+          cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }, 3000);
       }
     });
