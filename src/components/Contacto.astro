@@ -150,7 +150,9 @@ import { CONFIG } from '../data/config';
 </section>
 
 <script is:inline define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
-  document.addEventListener('DOMContentLoaded', () => {
+  let statusInterval;
+
+  function initContacto() {
     // Business Hours Status Badge Logic
     const updateStatusBadge = () => {
       const badge = document.getElementById('status-badge');
@@ -177,8 +179,9 @@ import { CONFIG } from '../data/config';
       badge.classList.remove('hidden');
     };
 
+    if (statusInterval) clearInterval(statusInterval);
     updateStatusBadge();
-    setInterval(updateStatusBadge, 60000);
+    statusInterval = setInterval(updateStatusBadge, 60000);
 
     // Character Counter Logic
     const textarea = document.getElementById('f-desc');
@@ -210,6 +213,9 @@ import { CONFIG } from '../data/config';
 
     if (copyBtn && copyLabel && copyIconUse) {
       copyBtn.addEventListener('click', () => {
+        const originalText = copyLabel.textContent;
+        const originalIcon = copyIconUse.getAttribute('href');
+
         navigator.clipboard.writeText(addressText).then(() => {
           copyLabel.textContent = '¡Copiado!';
           copyIconUse.setAttribute('href', '#icon-check');
@@ -218,10 +224,6 @@ import { CONFIG } from '../data/config';
           setTimeout(() => {
             copyLabel.textContent = originalText;
             copyIconUse.setAttribute('href', originalIcon || '#icon-copy');
-            copyLabel.textContent = 'Copiar';
-            copyIconUse.setAttribute('href', '#icon-copy');
-            copyLabel.textContent = originalText;
-            copyIconUse.setAttribute('href', originalIcon);
             copyBtn.classList.remove('text-blue');
           }, 2500);
         });
@@ -251,7 +253,7 @@ import { CONFIG } from '../data/config';
         const originalText = btnText.textContent;
         btnText.textContent = 'Redirigiendo...';
         btn.disabled = true;
-        btn.classList.add('opacity-70', 'cursor-not-allowed');
+        btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
         const encodedMessage = encodeURIComponent(rawMessage);
@@ -262,9 +264,12 @@ import { CONFIG } from '../data/config';
         setTimeout(() => {
           btnText.textContent = originalText;
           btn.disabled = false;
-          btn.classList.remove('opacity-70', 'cursor-not-allowed');
+          btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }, 3000);
       });
     }
-  });
+  }
+
+  document.addEventListener('DOMContentLoaded', initContacto);
+  document.addEventListener('astro:after-swap', initContacto);
 </script>
