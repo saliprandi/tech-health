@@ -134,7 +134,7 @@ import { CONFIG } from '../data/config';
             </div>
 
             <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold text-[15px] py-4 rounded-[8px] hover:bg-blue-pale transition-all shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
-              Enviar por WhatsApp
+              <span id="f-submit-text">Enviar por WhatsApp</span>
             </button>
             <p class="font-body text-[12px] text-white/40 text-center mt-2">
               Será redirigido a WhatsApp para enviar el mensaje.
@@ -206,11 +206,8 @@ import { CONFIG } from '../data/config';
     const copyBtn = document.getElementById('copy-address');
     const addressText = document.getElementById('address-text')?.textContent || '';
     const copyLabel = document.getElementById('copy-text');
-    const copyIconUse = copyBtn?.querySelector('use');
     const copyIconUse = document.getElementById('copy-icon-use');
 
-    if (copyBtn && copyLabel) {
-      const copyIcon = copyBtn.querySelector('use');
     if (copyBtn && copyLabel && copyIconUse) {
       copyBtn.addEventListener('click', () => {
         navigator.clipboard.writeText(addressText).then(() => {
@@ -220,18 +217,11 @@ import { CONFIG } from '../data/config';
           copyLabel.textContent = '¡Copiado!';
           copyIconUse.setAttribute('href', '#icon-check');
           copyBtn.classList.add('text-blue');
-          if (copyIcon) copyIcon.setAttribute('href', '#icon-check');
-          if (copyIconUse) copyIconUse.setAttribute('href', '#icon-check');
 
           setTimeout(() => {
             copyLabel.textContent = originalText;
-            copyIconUse.setAttribute('href', originalIcon || '#icon-copy');
+            copyIconUse.setAttribute('href', originalIcon);
             copyBtn.classList.remove('text-blue');
-            copyLabel.textContent = 'Copiar';
-            copyBtn.classList.remove('text-blue');
-            if (copyIcon) copyIcon.setAttribute('href', '#icon-copy');
-          }, 2000);
-            if (copyIconUse) copyIconUse.setAttribute('href', '#icon-copy');
           }, 2500);
         });
       });
@@ -240,8 +230,9 @@ import { CONFIG } from '../data/config';
     // Form Logic
     const form = document.getElementById('contact-form');
     const btn = document.getElementById('f-submit');
+    const btnText = document.getElementById('f-submit-text');
 
-    if (form && btn) {
+    if (form && btn && btnText) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -256,8 +247,8 @@ import { CONFIG } from '../data/config';
         const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
         const desc = document.getElementById('f-desc')?.value.trim() || 'Sin detalles adicionales';
 
-        const originalText = btn.textContent;
-        btn.textContent = 'Redirigiendo...';
+        const originalText = btnText.textContent;
+        btnText.textContent = 'Redirigiendo...';
         btn.disabled = true;
         btn.classList.add('opacity-70', 'cursor-not-allowed');
 
@@ -268,10 +259,10 @@ import { CONFIG } from '../data/config';
         window.open(url, '_blank', 'noopener,noreferrer');
 
         setTimeout(() => {
-          btn.textContent = originalText;
+          btnText.textContent = originalText;
           btn.disabled = false;
           btn.classList.remove('opacity-70', 'cursor-not-allowed');
-        }, 2000);
+        }, 3000);
       });
     }
   });
