@@ -155,11 +155,24 @@ import { CONFIG } from '../data/config';
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       }
     };
+
+    const closeOnLinkClick = () => {
+      if (isOpen) toggleMenu();
+    };
     document.addEventListener('keydown', keydownHandler);
 
     toggle?.addEventListener('click', toggleMenu);
     mobileLinks.forEach(link => link.addEventListener('click', () => { if (isOpen) toggleMenu(); }));
 
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', closeOnLinkClick);
+    });
+
+    if (keydownHandler) {
+      document.removeEventListener('keydown', keydownHandler);
+    }
+    keydownHandler = handleKeydown;
+    document.addEventListener('keydown', keydownHandler);
 
     const handleLinkClick = () => {
       if (isOpen) toggleMenu();
@@ -176,6 +189,10 @@ import { CONFIG } from '../data/config';
       cta.textContent = 'Redirigiendo...';
       cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
       setTimeout(() => {
+        if (cta) {
+          cta.textContent = originalText;
+          cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        }
         cta.textContent = originalText;
         cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
       }, 3000);
@@ -253,6 +270,25 @@ import { CONFIG } from '../data/config';
     };
   }
 
+    if (observer) observer.disconnect();
+    observer = new IntersectionObserver(observerCallback, observerOptions);
+    sections.forEach(section => observer!.observe(section));
+
+    return () => {
+      toggle?.removeEventListener('click', toggleMenu);
+      mobileLinks.forEach(link => {
+        link.removeEventListener('click', closeOnLinkClick);
+      });
+      if (keydownHandler) {
+        document.removeEventListener('keydown', keydownHandler);
+        keydownHandler = null;
+      }
+      if (observer) {
+        observer.disconnect();
+        observer = null;
+      }
+      navCta?.removeEventListener('click', handleCtaClick as EventListener);
+      mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
   let cleanup = initNav();
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     sections.forEach(section => observer.observe(section));
@@ -275,6 +311,12 @@ import { CONFIG } from '../data/config';
 
   let cleanup = initNav();
   let cleanup: (() => void) | undefined;
+
+  // Initial load
+  document.addEventListener('DOMContentLoaded', () => {
+    cleanup = initNav();
+  });
+
 
   // Initial load
   cleanup = initNav();

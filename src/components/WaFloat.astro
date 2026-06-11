@@ -114,6 +114,12 @@ import { CONFIG } from '../data/config';
       const originalText = tooltipText.textContent;
       tooltipText.textContent = '¡Redirigiendo!';
 
+        // Disable temporarily to provide visual feedback and prevent multiple clicks
+        btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+        setTimeout(() => {
+          if (tooltipText) tooltipText.textContent = originalText;
+          if (btn) btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
       showTooltip();
 
       btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
