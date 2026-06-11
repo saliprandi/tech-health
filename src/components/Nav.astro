@@ -110,6 +110,7 @@ import { CONFIG } from '../data/config';
         }
 
         if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        if (lastFocusedElement) {
           lastFocusedElement.focus();
         }
 
@@ -203,6 +204,7 @@ import { CONFIG } from '../data/config';
     sections.forEach(section => observer.observe(section));
 
     // Cleanup function for View Transitions
+    // Cleanup for View Transitions
     return () => {
       toggle?.removeEventListener('click', toggleMenu);
       mobileLinks.forEach(link => link.removeEventListener('click', handleLinkClick));

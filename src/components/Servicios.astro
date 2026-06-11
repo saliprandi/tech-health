@@ -104,6 +104,13 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
 <script is:inline define:vars={{ modalData, whatsappNumber: CONFIG.contacto.whatsapp }}>
   (function() {
+  function initServicios() {
+    const cards = document.querySelectorAll('.service-card');
+    const backdrop = document.getElementById('service-modal-backdrop');
+    const modal = document.getElementById('service-modal');
+    const modalContent = document.getElementById('modal-content');
+    const closeBtn = document.getElementById('close-modal');
+
     let isModalOpen = false;
     let lastFocusedElement = null;
     let focusableElements = [];
@@ -208,6 +215,44 @@ const modalData = CONFIG.servicios.map(servicio => ({
         isModalOpen = true;
 
         updateFocusableElements(modal);
+            <span id="modal-cta-text">Consultar por este servicio</span>
+          </a>
+          <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">
+            Cerrar
+          </button>
+        </div>
+      `;
+
+      // Show modal
+      backdrop?.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
+      modal?.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
+      modal?.classList.add('scale-100', 'opacity-100');
+      document.body.style.overflow = 'hidden';
+      isModalOpen = true;
+
+      updateFocusableElements();
+
+      setTimeout(() => {
+        const cta = document.getElementById('modal-cta');
+        if (cta) cta.focus();
+        else if (closeBtn) closeBtn.focus();
+      }, 100);
+
+      // Handle Modal CTA click
+      const cta = document.getElementById('modal-cta');
+      const ctaText = document.getElementById('modal-cta-text');
+      if (cta && ctaText) {
+        cta.addEventListener('click', () => {
+          const originalText = ctaText.textContent;
+          ctaText.textContent = 'Redirigiendo...';
+          cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          setTimeout(() => {
+            ctaText.textContent = originalText;
+            cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          }, 3000);
+        });
+      }
+    };
 
         setTimeout(() => {
           const cta = document.getElementById('modal-cta');
@@ -241,6 +286,17 @@ const modalData = CONFIG.servicios.map(servicio => ({
       const handleModalContentClick = (e) => {
         const target = e.target;
         if (!target || !(target instanceof HTMLElement)) return;
+    backdrop?.addEventListener('click', closeModal);
+    closeBtn?.addEventListener('click', closeModal);
+
+    modalContent?.addEventListener('click', (e) => {
+      const target = e.target;
+      if (!target || !(target instanceof HTMLElement)) return;
+
+      if (target.closest('#modal-close-secondary')) {
+        closeModal();
+      }
+    });
 
         if (target.closest('#modal-close-secondary')) {
           closeModal();
@@ -311,4 +367,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
       cleanup = initServicios();
     });
   })();
+  }
+
+  document.addEventListener('DOMContentLoaded', initServicios);
+  document.addEventListener('astro:after-swap', initServicios);
 </script>
