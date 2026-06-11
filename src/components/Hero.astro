@@ -15,7 +15,10 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       
       <!-- Badge -->
       <div class="inline-flex items-center gap-2 bg-blue-pale text-blue font-heading font-bold text-[12px] uppercase tracking-wider py-2 px-4 rounded-full">
-        <span class="w-2 h-2 rounded-full bg-blue"></span>
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-blue"></span>
+        </span>
         {CONFIG.empresa.ciudad} · {CONFIG.empresa.pais}
       </div>
 
@@ -82,14 +85,11 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
   function initHero() {
     const heroCta = document.getElementById('hero-cta');
     const heroCtaText = document.getElementById('hero-cta-text');
+
     if (heroCta && heroCtaText) {
       const handleCtaClick = () => {
         const originalText = heroCtaText.textContent;
         heroCtaText.textContent = 'Redirigiendo...';
-        heroCta.classList.add('opacity-70', 'cursor-not-allowed');
-        setTimeout(() => {
-          heroCtaText.textContent = originalText;
-          heroCta.classList.remove('opacity-70', 'cursor-not-allowed');
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         setTimeout(() => {
@@ -104,13 +104,13 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         heroCta.removeEventListener('click', handleCtaClick);
       };
     }
+    return () => {};
   }
 
-  let cleanup = initHero();
+  let cleanupHero = initHero();
+
   document.addEventListener('astro:after-swap', () => {
-    if (cleanup) cleanup();
-    cleanup = initHero();
+    if (cleanupHero) cleanupHero();
+    cleanupHero = initHero();
   });
-  initHero();
-  document.addEventListener('astro:after-swap', initHero);
 </script>
