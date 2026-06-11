@@ -76,3 +76,11 @@ Importante!!! Quiero todos los pr en español
 ## 2025-02-15 - [A11y: Gestión de foco en navegación móvil]
 **Aprendizaje:** Los menús de navegación móvil requieren una gestión de foco rigurosa para ser verdaderamente accesibles. Al abrir el menú, el foco debe moverse inmediatamente al primer elemento interactivo. Un "focus trap" debe activarse para evitar que el usuario tabule fuera del menú hacia el contenido principal oculto.
 **Acción:** Implementar siempre trampas de foco (`focus trap`) y enfoque inicial automático en componentes de navegación móvil, asegurando que el cierre (vía tecla Escape o click fuera) restaure el foco al disparador original.
+
+## 2025-02-15 - [Astro: Transferencia de datos segura a scripts del cliente]
+**Aprendizaje:** En Astro, las variables definidas en el frontmatter no son accesibles directamente en los bloques `<script>` si estos se procesan como módulos externos o se agrupan. Usar atributos `data-*` en elementos HTML es el método más robusto y seguro para pasar configuraciones (como números de WhatsApp o listas de servicios) al cliente, evitando errores de referencia y manteniendo la separación de preocupaciones.
+**Acción:** Siempre encapsular datos del servidor en atributos `data-` de los elementos raíz de los componentes y recuperarlos en el script mediante `dataset` para asegurar que la lógica del cliente sea resiliente al bundling y a las transiciones de vista.
+
+## 2025-02-15 - [Astro: Resolución de corrupción estructural y duplicación de scripts]
+**Aprendizaje:** La duplicación masiva de bloques `<script>` y HTML en componentes Astro (causada por conflictos de fusión) puede generar cientos de errores de construcción. Refactorizar completamente el componente para consolidar la lógica en funciones de inicialización/limpieza compatibles con `astro:after-swap` es esencial para la estabilidad y el rendimiento en sitios con View Transitions.
+**Acción:** Ante signos de duplicación lógica o errores sintácticos repetitivos, priorizar la refactorización integral del componente sobre parches incrementales para garantizar una base de código limpia y mantenible.
