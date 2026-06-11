@@ -52,7 +52,6 @@ import { CONFIG } from '../data/config';
 
   <!-- Reading Progress Bar -->
   <div id="reading-progress" class="absolute bottom-0 left-0 w-full h-[3px] bg-blue origin-left scale-x-0 transition-transform duration-150 ease-out pointer-events-none" aria-hidden="true"></div>
-  <div id="reading-progress" class="absolute bottom-0 left-0 w-full h-[3px] bg-blue origin-left scale-x-0 transition-transform duration-75 pointer-events-none"></div>
 </nav>
 
 <style>
@@ -62,10 +61,6 @@ import { CONFIG } from '../data/config';
 </style>
 
 <script>
-  let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
-  let observer: IntersectionObserver | null = null;
-  let scrollHandler: (() => void) | null = null;
-
   function initNav() {
     const toggle = document.getElementById('menu-toggle');
     const menu = document.getElementById('mobile-menu');
@@ -88,27 +83,22 @@ import { CONFIG } from '../data/config';
         menu?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]', 'invisible');
         menu?.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
         document.body.style.overflow = 'hidden';
-        if (spans?.length === 3) {
 
         if (spans && spans.length === 3) {
           spans[0].classList.add('rotate-45', 'translate-y-[8px]');
           spans[1].classList.add('opacity-0');
           spans[2].classList.add('-rotate-45', '-translate-y-[8px]');
         }
-        setTimeout(() => (menu?.querySelector('.mobile-link') as HTMLElement)?.focus(), 150);
 
         setTimeout(() => {
           const firstLink = menu?.querySelector('.mobile-link') as HTMLElement;
           firstLink?.focus();
-        }, 200);
         }, 150);
-        }, 100);
 
       } else {
         menu?.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
         menu?.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
         document.body.style.overflow = '';
-        if (spans?.length === 3) {
 
         if (spans && spans.length === 3) {
           spans[0].classList.remove('rotate-45', 'translate-y-[8px]');
@@ -116,88 +106,37 @@ import { CONFIG } from '../data/config';
           spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
         }
 
-        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
         if (lastFocusedElement) lastFocusedElement.focus();
         setTimeout(() => { if (!isOpen) menu?.classList.add('invisible'); }, 300);
       }
     };
 
-    if (keydownHandler) document.removeEventListener('keydown', keydownHandler);
-    keydownHandler = (e: KeyboardEvent) => {
-
-        if (lastFocusedElement && typeof (lastFocusedElement as any).focus === 'function') {
-        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
-        if (lastFocusedElement) {
-          lastFocusedElement.focus();
-        }
-
-        setTimeout(() => {
-          if (!isOpen) menu?.classList.add('invisible');
-        }, 300);
-      }
-    };
-
-    toggle?.addEventListener('click', toggleMenu);
-
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        if (isOpen) toggleMenu();
-      });
-    });
-
-    // Keyboard Management (Focus Trap & Escape)
-    if (keydownHandler) document.removeEventListener('keydown', keydownHandler);
-
-    keydownHandler = (e: KeyboardEvent) => {
     const handleKeydown = (e: KeyboardEvent) => {
       if (!isOpen) return;
       if (e.key === 'Escape') {
         toggleMenu();
         toggle?.focus();
       }
-    };
-
-    toggle?.addEventListener('click', toggleMenu);
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', () => { if (isOpen) toggleMenu(); });
-    });
-      if (e.key === 'Escape') { toggleMenu(); toggle?.focus(); }
       if (e.key === 'Tab') {
         const focusables = [toggle, ...Array.from(menu?.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])') || [])] as HTMLElement[];
         const first = focusables[0];
         const last = focusables[focusables.length - 1];
-        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
 
-    document.addEventListener('keydown', keydownHandler);
     const closeOnLinkClick = () => {
       if (isOpen) toggleMenu();
     };
-    document.addEventListener('keydown', keydownHandler);
 
     toggle?.addEventListener('click', toggleMenu);
-    mobileLinks.forEach(link => link.addEventListener('click', () => { if (isOpen) toggleMenu(); }));
-
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', closeOnLinkClick);
-    });
-
-    keydownHandler = handleKeydown;
-    document.addEventListener('keydown', keydownHandler);
-    if (keydownHandler) {
-      document.removeEventListener('keydown', keydownHandler);
-    }
-    keydownHandler = handleKeydown;
-    document.addEventListener('keydown', keydownHandler);
-
-    const handleLinkClick = () => {
-      if (isOpen) toggleMenu();
-    };
-
-    toggle?.addEventListener('click', toggleMenu);
-    mobileLinks.forEach(link => link.addEventListener('click', handleLinkClick));
+    mobileLinks.forEach(link => link.addEventListener('click', closeOnLinkClick));
     document.addEventListener('keydown', handleKeydown);
 
     // WhatsApp Redirect Feedback
@@ -211,57 +150,31 @@ import { CONFIG } from '../data/config';
           cta.textContent = originalText;
           cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }
-        cta.textContent = originalText;
-        cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
       }, 3000);
     };
+
     navCta?.addEventListener('click', handleCtaClick as EventListener);
     mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
 
-    // ScrollSpy
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const observer = new IntersectionObserver((entries) => {
-    if (scrollHandler) window.removeEventListener('scroll', scrollHandler);
-    scrollHandler = () => {
-      if (!progressBar) return;
-      const winScroll = document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      progressBar.style.transform = `scaleX(${height > 0 ? winScroll / height : 0})`;
-    };
-    window.addEventListener('scroll', scrollHandler, { passive: true });
-    scrollHandler();
-
+    // Reading Progress
     const updateProgress = () => {
       if (!progressBar) return;
       const winScroll = document.documentElement.scrollTop;
       const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       if (height > 0) {
-        const scrolled = winScroll / height;
-        progressBar.style.transform = `scaleX(${scrolled})`;
+        progressBar.style.transform = `scaleX(${winScroll / height})`;
       } else {
         progressBar.style.transform = 'scaleX(0)';
       }
     };
 
-    toggle?.addEventListener('click', toggleMenu);
-
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        if (isOpen) toggleMenu();
-      });
-    });
-
-    document.addEventListener('keydown', handleKeydown);
-    navCta?.addEventListener('click', handleCtaClick as EventListener);
-    mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
-    window.addEventListener('scroll', updateProgress);
+    window.addEventListener('scroll', updateProgress, { passive: true });
     updateProgress();
 
+    // ScrollSpy
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
-    if (observer) observer.disconnect();
-    observer = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
@@ -277,82 +190,25 @@ import { CONFIG } from '../data/config';
         }
       });
     }, { rootMargin: '-30% 0px -70% 0px' });
+
     sections.forEach(section => observer.observe(section));
 
-    sections.forEach(section => observer!.observe(section));
-
-    return () => {
-      if (keydownHandler) document.removeEventListener('keydown', keydownHandler);
-      if (scrollHandler) window.removeEventListener('scroll', scrollHandler);
-      if (observer) observer.disconnect();
-    };
-  }
-
-    if (observer) observer.disconnect();
-    observer = new IntersectionObserver(observerCallback, observerOptions);
-    sections.forEach(section => observer!.observe(section));
-
-    if (observer) observer.disconnect();
-    observer = new IntersectionObserver(observerCallback, observerOptions);
-    sections.forEach(section => observer!.observe(section));
-
-    // Return cleanup function
-    return () => {
-      if (keydownHandler) document.removeEventListener('keydown', keydownHandler);
-      if (observer) observer.disconnect();
     return () => {
       toggle?.removeEventListener('click', toggleMenu);
-      mobileLinks.forEach(link => {
-        link.removeEventListener('click', closeOnLinkClick);
-      });
-      if (keydownHandler) {
-        document.removeEventListener('keydown', keydownHandler);
-        keydownHandler = null;
-      }
-      if (observer) {
-        observer.disconnect();
-        observer = null;
-      }
+      mobileLinks.forEach(link => link.removeEventListener('click', closeOnLinkClick));
+      document.removeEventListener('keydown', handleKeydown);
       navCta?.removeEventListener('click', handleCtaClick as EventListener);
       mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
-  let cleanup = initNav();
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-    sections.forEach(section => observer.observe(section));
-
-    return () => {
-      if (keydownHandler) document.removeEventListener('keydown', keydownHandler);
-      toggle?.removeEventListener('click', toggleMenu);
-    return () => {
-      toggle?.removeEventListener('click', toggleMenu);
-      document.removeEventListener('keydown', handleKeydown);
       window.removeEventListener('scroll', updateProgress);
-    // Cleanup function for View Transitions
-    // Cleanup for View Transitions
-    return () => {
-      toggle?.removeEventListener('click', toggleMenu);
-      mobileLinks.forEach(link => link.removeEventListener('click', handleLinkClick));
-      document.removeEventListener('keydown', handleKeydown);
-      navCta?.removeEventListener('click', handleCtaClick as EventListener);
-      mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
       observer.disconnect();
     };
   }
 
-  let cleanup = initNav();
-  let cleanup: (() => void) | undefined;
+  let cleanupNav: (() => void) | undefined;
+  cleanupNav = initNav();
 
-  // Initial load
-  document.addEventListener('DOMContentLoaded', () => {
-    cleanup = initNav();
-  });
-
-
-  // Initial load
-  cleanup = initNav();
-
-  // Re-init on navigation (View Transitions)
   document.addEventListener('astro:after-swap', () => {
-    if (cleanup) cleanup();
-    cleanup = initNav();
+    if (cleanupNav) cleanupNav();
+    cleanupNav = initNav();
   });
 </script>

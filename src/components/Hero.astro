@@ -82,35 +82,32 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
   function initHero() {
     const heroCta = document.getElementById('hero-cta');
     const heroCtaText = document.getElementById('hero-cta-text');
-    if (heroCta && heroCtaText) {
-      const handleCtaClick = () => {
-        const originalText = heroCtaText.textContent;
-        heroCtaText.textContent = 'Redirigiendo...';
-        heroCta.classList.add('opacity-70', 'cursor-not-allowed');
-        setTimeout(() => {
-          heroCtaText.textContent = originalText;
-          heroCta.classList.remove('opacity-70', 'cursor-not-allowed');
-        heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
-        setTimeout(() => {
-          if (heroCtaText) heroCtaText.textContent = originalText;
-          if (heroCta) heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-        }, 3000);
-      };
+    if (!heroCta || !heroCtaText) return () => {};
 
-      heroCta.addEventListener('click', handleCtaClick);
+    const handleCtaClick = () => {
+      const originalText = heroCtaText.textContent;
+      heroCtaText.textContent = 'Redirigiendo...';
+      heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
-      return () => {
-        heroCta.removeEventListener('click', handleCtaClick);
-      };
-    }
+      setTimeout(() => {
+        if (heroCtaText) heroCtaText.textContent = originalText;
+        if (heroCta) heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+      }, 3000);
+    };
+
+    heroCta.addEventListener('click', handleCtaClick);
+
+    return () => {
+      heroCta.removeEventListener('click', handleCtaClick);
+    };
   }
 
-  let cleanup = initHero();
+  let cleanupHero: (() => void) | undefined;
+  cleanupHero = initHero();
+
   document.addEventListener('astro:after-swap', () => {
-    if (cleanup) cleanup();
-    cleanup = initHero();
+    if (cleanupHero) cleanupHero();
+    cleanupHero = initHero();
   });
-  initHero();
-  document.addEventListener('astro:after-swap', initHero);
 </script>
