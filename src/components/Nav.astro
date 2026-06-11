@@ -109,6 +109,7 @@ import { CONFIG } from '../data/config';
           spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
         }
 
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
         if (lastFocusedElement) {
           lastFocusedElement.focus();
         }
@@ -149,14 +150,12 @@ import { CONFIG } from '../data/config';
       }
     };
 
+    const handleLinkClick = () => {
+      if (isOpen) toggleMenu();
+    };
+
     toggle?.addEventListener('click', toggleMenu);
-
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        if (isOpen) toggleMenu();
-      });
-    });
-
+    mobileLinks.forEach(link => link.addEventListener('click', handleLinkClick));
     document.addEventListener('keydown', handleKeydown);
 
     // WhatsApp Redirect Feedback
@@ -204,9 +203,14 @@ import { CONFIG } from '../data/config';
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     sections.forEach(section => observer.observe(section));
 
+    // Cleanup function for View Transitions
     // Cleanup for View Transitions
     return () => {
+      toggle?.removeEventListener('click', toggleMenu);
+      mobileLinks.forEach(link => link.removeEventListener('click', handleLinkClick));
       document.removeEventListener('keydown', handleKeydown);
+      navCta?.removeEventListener('click', handleCtaClick as EventListener);
+      mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
       observer.disconnect();
     };
   }
