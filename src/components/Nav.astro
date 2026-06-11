@@ -114,6 +114,8 @@ import { CONFIG } from '../data/config';
           spans[1].classList.remove('opacity-0');
           spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
         }
+
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
         if (lastFocusedElement) lastFocusedElement.focus();
         setTimeout(() => { if (!isOpen) menu?.classList.add('invisible'); }, 300);
       }
@@ -134,6 +136,18 @@ import { CONFIG } from '../data/config';
       }
     };
 
+    toggle?.addEventListener('click', toggleMenu);
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (isOpen) toggleMenu();
+      });
+    });
+
+    // Keyboard Management (Focus Trap & Escape)
+    if (keydownHandler) document.removeEventListener('keydown', keydownHandler);
+
+    keydownHandler = (e: KeyboardEvent) => {
     const handleKeydown = (e: KeyboardEvent) => {
       if (!isOpen) return;
       if (e.key === 'Escape') {
@@ -156,6 +170,7 @@ import { CONFIG } from '../data/config';
       }
     };
 
+    document.addEventListener('keydown', keydownHandler);
     const closeOnLinkClick = () => {
       if (isOpen) toggleMenu();
     };
@@ -274,6 +289,14 @@ import { CONFIG } from '../data/config';
     observer = new IntersectionObserver(observerCallback, observerOptions);
     sections.forEach(section => observer!.observe(section));
 
+    if (observer) observer.disconnect();
+    observer = new IntersectionObserver(observerCallback, observerOptions);
+    sections.forEach(section => observer!.observe(section));
+
+    // Return cleanup function
+    return () => {
+      if (keydownHandler) document.removeEventListener('keydown', keydownHandler);
+      if (observer) observer.disconnect();
     return () => {
       toggle?.removeEventListener('click', toggleMenu);
       mobileLinks.forEach(link => {

@@ -446,12 +446,16 @@ const modalData = CONFIG.servicios.map(servicio => ({
         ctaText.textContent = 'Redirigiendo...';
         cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         setTimeout(() => {
+          ctaText.textContent = originalText;
+          cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           if (ctaText) ctaText.textContent = originalText;
           if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }, 3000);
         setTimeout(() => { ctaText.textContent = originalText; cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none'); }, 3000);
       }
     });
+
+    const handleKeydown = (e) => {
     document.addEventListener('keydown', (e) => {
       if (isModalOpen && e.key === 'Escape') closeModal();
     });
@@ -520,6 +524,25 @@ const modalData = CONFIG.servicios.map(servicio => ({
             }
           }
         }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeydown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeydown);
+    };
+  }
+
+  let cleanupServicios;
+  document.addEventListener('DOMContentLoaded', () => {
+    cleanupServicios = initServicios();
+  });
+
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanupServicios) cleanupServicios();
+    cleanupServicios = initServicios();
+  });
       };
 
       document.addEventListener('keydown', handleGlobalKeydown);
