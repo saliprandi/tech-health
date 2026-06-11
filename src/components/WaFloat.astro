@@ -26,78 +26,11 @@ import { CONFIG } from '../data/config';
 </div>
 
 <script>
-  (function() {
-    function initWaFloat() {
-      const tooltip = document.getElementById('wa-tooltip');
-      const tooltipText = document.getElementById('wa-tooltip-text');
-      const btn = document.getElementById('wa-float-btn');
-
-      const showTooltip = () => {
-        if (tooltip) {
-          tooltip.classList.remove('opacity-0', 'translate-y-2');
-          tooltip.classList.add('opacity-100', 'translate-y-0');
-        }
-      };
-
-      const hideTooltip = () => {
-        if (tooltip) {
-          tooltip.classList.add('opacity-0', 'translate-y-2');
-          tooltip.classList.remove('opacity-100', 'translate-y-0');
-        }
-      };
-
-      // Show tooltip after 5 seconds
-      const initialTimeout = setTimeout(showTooltip, 5000);
-
-      // Feedback on click
-      const handleBtnClick = () => {
-        if (!tooltipText || !btn) return;
-
-        const originalText = tooltipText.textContent || '¡Hola! ¿En qué podemos ayudarte?';
-        tooltipText.textContent = '¡Redirigiendo!';
-
-        showTooltip();
-        btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-
-        setTimeout(() => {
-          tooltipText.textContent = originalText;
-          btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-          hideTooltip();
-        }, 3000);
-      };
-
-      btn?.addEventListener('click', handleBtnClick);
-
-      return () => {
-        clearTimeout(initialTimeout);
-        btn?.removeEventListener('click', handleBtnClick);
-      };
   function initWaFloat() {
     const tooltip = document.getElementById('wa-tooltip');
     const tooltipText = document.getElementById('wa-tooltip-text');
     const btn = document.getElementById('wa-float-btn');
-    if (!tooltip || !tooltipText || !btn) return;
-    setTimeout(() => {
-      tooltip.classList.remove('opacity-0', 'translate-y-2');
-      tooltip.classList.add('opacity-100', 'translate-y-0');
-    }, 5000);
-    btn.addEventListener('click', () => {
-      const originalText = tooltipText.textContent;
-      tooltipText.textContent = '¡Redirigiendo!';
-      btn.classList.add('opacity-70', 'cursor-not-allowed');
-      setTimeout(() => {
-        tooltipText.textContent = originalText;
-        btn.classList.remove('opacity-70', 'cursor-not-allowed');
-      }, 3000);
-    });
-  }
-  initWaFloat();
-  document.addEventListener('astro:after-swap', initWaFloat);
 
-    if (!tooltip || !tooltipText || !btn) return;
-
-    const showTooltip = () => {
-      tooltip.classList.remove('opacity-0', 'translate-y-2');
     if (!tooltip || !tooltipText || !btn) return () => {};
 
     const showTooltip = () => {
@@ -119,65 +52,20 @@ import { CONFIG } from '../data/config';
     const initialTimer = setTimeout(showTooltip, 5000);
     let feedbackTimer: ReturnType<typeof setTimeout> | null = null;
     let restoreTextTimer: ReturnType<typeof setTimeout> | null = null;
-      if (tooltip) {
-        tooltip.classList.remove('opacity-0', 'translate-y-2', 'invisible');
-        tooltip.classList.add('opacity-100', 'translate-y-0');
-      }
-    };
-
-    const hideTooltip = () => {
-      if (tooltip) {
-        tooltip.classList.add('opacity-0', 'translate-y-2');
-        tooltip.classList.remove('opacity-100', 'translate-y-0');
-      }
-    };
-
-    // Show tooltip after 5 seconds
-    const initialTimeout = setTimeout(showTooltip, 5000);
-
-    // Feedback on click
-    btn.addEventListener('click', () => {
-      const originalText = tooltipText.textContent || '¡Hola! ¿En qué podemos ayudarte?';
-      tooltipText.textContent = '¡Redirigiendo!';
-      showTooltip();
-      btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-      setTimeout(() => {
-        hideTooltip();
-        setTimeout(() => {
-          tooltipText.textContent = originalText;
-          btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-        }, 500);
-      }, 3000);
-    });
-
-    return () => clearTimeout(initialTimeout);
-    if (btn && tooltipText && tooltip) {
-      btn.addEventListener('click', () => {
-        const originalText = tooltipText.textContent;
-        tooltipText.textContent = '¡Redirigiendo!';
 
     const handleBtnClick = () => {
       const originalText = tooltipText.textContent;
       tooltipText.textContent = '¡Redirigiendo!';
-
-        // Disable temporarily to provide visual feedback and prevent multiple clicks
-        btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-
-        setTimeout(() => {
-          tooltipText.textContent = originalText;
-          btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-          hideTooltip();
-
-        setTimeout(() => {
-          if (tooltipText) tooltipText.textContent = originalText;
-          if (btn) btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
       showTooltip();
 
       btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
+      if (feedbackTimer) clearTimeout(feedbackTimer);
       feedbackTimer = setTimeout(() => {
         btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         hideTooltip();
+
+        if (restoreTextTimer) clearTimeout(restoreTextTimer);
         restoreTextTimer = setTimeout(() => {
           tooltipText.textContent = originalText;
         }, 500);
@@ -192,38 +80,14 @@ import { CONFIG } from '../data/config';
       if (restoreTextTimer) clearTimeout(restoreTextTimer);
       btn.removeEventListener('click', handleBtnClick);
     };
-        // Disable temporarily to provide visual feedback and prevent multiple clicks
-        btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+  }
 
-        setTimeout(() => {
-          tooltipText.textContent = originalText;
-          btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+  let cleanup: (() => void) | undefined;
 
-          // Hide tooltip after a short while and restore text
-          if (tooltip) {
-            tooltip.classList.add('opacity-0', 'translate-y-2');
-            tooltip.classList.remove('opacity-100', 'translate-y-0');
-          }
+  // Initial load
+  cleanup = initWaFloat();
 
-        // Hide tooltip after a short while and restore text
-        setTimeout(() => {
-          hideTooltip();
-          setTimeout(() => {
-            tooltipText.textContent = originalText;
-            btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-          }, 500);
-        }, 3000);
-      });
-    }
-
-    let cleanup = initWaFloat();
-
-    document.addEventListener('astro:after-swap', () => {
-      if (cleanup) cleanup();
-      cleanup = initWaFloat();
-    });
-  })();
-  let cleanup = initWaFloat();
+  // Re-init on navigation (View Transitions)
   document.addEventListener('astro:after-swap', () => {
     if (cleanup) cleanup();
     cleanup = initWaFloat();

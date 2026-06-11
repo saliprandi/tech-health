@@ -63,6 +63,10 @@ Importante!!! Quiero todos los pr en español
 **Aprendizaje:** Agregar un contador de caracteres en vivo a textareas mejora la gestión de entrada, pero debe ser accesible. Usar `aria-describedby` en el textarea y `aria-live="polite"` en el contador asegura que los usuarios de lectores de pantalla se mantengan informados de su capacidad restante.
 **Acción:** Siempre emparejar contadores visuales con atributos ARIA para mantener un alto nivel de accesibilidad mientras se proporciona feedback agradable.
 
+## 2025-06-15 - [UX: Animación de badge de ubicación y accesibilidad]
+**Aprendizaje:** Las animaciones de pulso (como `animate-ping`) en badges de estado o ubicación proporcionan un toque de "vida" que indica actividad en tiempo real. Sin embargo, para no excluir a usuarios de lectores de pantalla, es vital acompañarlas de un `aria-label` descriptivo que comunique el contexto visual.
+**Acción:** Siempre que se añadan micro-interacciones puramente visuales, asegurar que su propósito esté reflejado en el árbol de accesibilidad mediante etiquetas ARIA semánticas.
+
 ## 2026-06-07 - [A11y: Prevención de race conditions en focus traps]
 **Aprendizaje:** Al inyectar contenido dinámico en modales, popular el array de elementos enfocables (`focusableElements`) dentro de un `setTimeout` puede causar race conditions si el usuario interactúa con el teclado antes de que se complete el delay.
 **Acción:** Popular siempre el array de elementos enfocables inmediatamente después de la inyección de HTML en el DOM para asegurar que el focus trap sea robusto desde el primer milisegundo de visibilidad del modal.
