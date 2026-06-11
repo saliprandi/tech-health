@@ -82,21 +82,23 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
   function initHero() {
     const heroCta = document.getElementById('hero-cta');
     const heroCtaText = document.getElementById('hero-cta-text');
-
     if (heroCta && heroCtaText) {
       heroCta.addEventListener('click', () => {
         const originalText = heroCtaText.textContent;
         heroCtaText.textContent = 'Redirigiendo...';
+        heroCta.classList.add('opacity-70', 'cursor-not-allowed');
+        setTimeout(() => {
+          heroCtaText.textContent = originalText;
+          heroCta.classList.remove('opacity-70', 'cursor-not-allowed');
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         setTimeout(() => {
-          heroCtaText.textContent = originalText;
-          heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          if (heroCtaText) heroCtaText.textContent = originalText;
+          if (heroCta) heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }, 3000);
       });
     }
   }
-
   initHero();
   document.addEventListener('astro:after-swap', initHero);
 </script>
