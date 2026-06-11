@@ -33,6 +33,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       <!-- Buttons -->
       <div class="flex flex-wrap items-center gap-4 mt-2">
         <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" id="hero-cta" class="btn-primary gap-2">
+        <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="btn-primary gap-2">
           <svg class="w-5 h-5 fill-current">
             <use href="#icon-whatsapp" />
           </svg>
@@ -82,11 +83,14 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
   function initHero() {
     const heroCta = document.getElementById('hero-cta');
     const heroCtaText = document.getElementById('hero-cta-text');
-
     if (heroCta && heroCtaText) {
       heroCta.addEventListener('click', () => {
         const originalText = heroCtaText.textContent;
         heroCtaText.textContent = 'Redirigiendo...';
+        heroCta.classList.add('opacity-70', 'cursor-not-allowed');
+        setTimeout(() => {
+          heroCtaText.textContent = originalText;
+          heroCta.classList.remove('opacity-70', 'cursor-not-allowed');
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         setTimeout(() => {
@@ -96,7 +100,6 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       });
     }
   }
-
   initHero();
   document.addEventListener('astro:after-swap', initHero);
 </script>
