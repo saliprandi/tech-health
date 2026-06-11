@@ -31,6 +31,10 @@ import { CONFIG } from '../data/config';
     const tooltipText = document.getElementById('wa-tooltip-text');
     const btn = document.getElementById('wa-float-btn');
 
+    if (!tooltip || !tooltipText || !btn) return;
+
+    const showTooltip = () => {
+      tooltip.classList.remove('opacity-0', 'translate-y-2');
     if (!tooltip || !tooltipText || !btn) return () => {};
 
     const showTooltip = () => {
@@ -66,9 +70,24 @@ import { CONFIG } from '../data/config';
     };
 
     // Show tooltip after 5 seconds
-    setTimeout(showTooltip, 5000);
+    const initialTimeout = setTimeout(showTooltip, 5000);
 
     // Feedback on click
+    btn.addEventListener('click', () => {
+      const originalText = tooltipText.textContent || '¡Hola! ¿En qué podemos ayudarte?';
+      tooltipText.textContent = '¡Redirigiendo!';
+      showTooltip();
+      btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+      setTimeout(() => {
+        hideTooltip();
+        setTimeout(() => {
+          tooltipText.textContent = originalText;
+          btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        }, 500);
+      }, 3000);
+    });
+
+    return () => clearTimeout(initialTimeout);
     if (btn && tooltipText && tooltip) {
       btn.addEventListener('click', () => {
         const originalText = tooltipText.textContent;
