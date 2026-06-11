@@ -114,6 +114,8 @@ import { CONFIG } from '../data/config';
         }
 
         if (lastFocusedElement && typeof (lastFocusedElement as any).focus === 'function') {
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        if (lastFocusedElement) {
           lastFocusedElement.focus();
         }
 
@@ -153,14 +155,23 @@ import { CONFIG } from '../data/config';
       }
     };
 
+    const handleLinkClick = () => {
+      if (isOpen) toggleMenu();
+    };
+
+    toggle?.addEventListener('click', toggleMenu);
+    mobileLinks.forEach(link => link.addEventListener('click', handleLinkClick));
+    document.addEventListener('keydown', handleKeydown);
+
+    // WhatsApp Redirect Feedback
     const handleCtaClick = (e: MouseEvent) => {
       const cta = e.currentTarget as HTMLElement;
       const originalText = cta.textContent;
       cta.textContent = 'Redirigiendo...';
-      cta.classList.add('opacity-70', 'cursor-not-allowed');
+      cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
       setTimeout(() => {
         cta.textContent = originalText;
-        cta.classList.remove('opacity-70', 'cursor-not-allowed');
+        cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
       }, 3000);
     };
 
@@ -224,6 +235,14 @@ import { CONFIG } from '../data/config';
       toggle?.removeEventListener('click', toggleMenu);
       document.removeEventListener('keydown', handleKeydown);
       window.removeEventListener('scroll', updateProgress);
+    // Cleanup function for View Transitions
+    // Cleanup for View Transitions
+    return () => {
+      toggle?.removeEventListener('click', toggleMenu);
+      mobileLinks.forEach(link => link.removeEventListener('click', handleLinkClick));
+      document.removeEventListener('keydown', handleKeydown);
+      navCta?.removeEventListener('click', handleCtaClick as EventListener);
+      mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
       observer.disconnect();
     };
   }
