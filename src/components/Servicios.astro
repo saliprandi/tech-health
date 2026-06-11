@@ -103,7 +103,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
 </section>
 
 <script is:inline define:vars={{ modalData, whatsappNumber: CONFIG.contacto.whatsapp }}>
-  document.addEventListener('DOMContentLoaded', () => {
+  (function() {
+  function initServicios() {
     const cards = document.querySelectorAll('.service-card');
     const backdrop = document.getElementById('service-modal-backdrop');
     const modal = document.getElementById('service-modal');
@@ -148,6 +149,162 @@ const modalData = CONFIG.servicios.map(servicio => ({
         <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
           <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta">
             <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
+    const initServicios = () => {
+      const cards = document.querySelectorAll('.service-card');
+      const backdrop = document.getElementById('service-modal-backdrop');
+      const modal = document.getElementById('service-modal');
+      const modalContent = document.getElementById('modal-content');
+      const closeBtn = document.getElementById('close-modal');
+
+      if (!cards.length || !backdrop || !modal || !modalContent || !closeBtn) return () => {};
+
+      const escapeHtml = (unsafe) => {
+        if (typeof unsafe !== 'string') return '';
+        return unsafe
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      };
+
+      const getIconSvg = (iconName) => {
+        return `<use href="#icon-${escapeHtml(iconName)}" />`;
+      };
+
+      const closeModal = () => {
+        if (!isModalOpen) return;
+        isModalOpen = false;
+
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+        modal.classList.remove('scale-100', 'opacity-100');
+        modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+        document.body.style.overflow = '';
+
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+          lastFocusedElement.focus();
+        }
+
+        setTimeout(() => {
+          if (!isModalOpen) {
+            modalContent.innerHTML = '';
+            backdrop.classList.add('invisible');
+            modal.classList.add('invisible');
+          }
+        }, 400);
+      };
+
+      const updateFocusableElements = () => {
+        focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+          .filter(el => {
+            const tagName = el.tagName.toUpperCase();
+            return tagName !== 'SVG' && tagName !== 'USE' && !el.hasAttribute('disabled');
+          });
+      };
+
+      const openModal = (index) => {
+        const servicio = modalData[index];
+        if (!servicio) return;
+
+        lastFocusedElement = document.activeElement;
+
+        const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ' + servicio.titulo)}`;
+
+    const updateFocusableElements = (modal) => {
+      if (!modal) return;
+      focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+        .filter(el => {
+          const tagName = el.tagName.toUpperCase();
+          return tagName !== 'SVG' && tagName !== 'USE' && !el.hasAttribute('disabled');
+        });
+    };
+
+    function initServicios() {
+      const cards = document.querySelectorAll('.service-card');
+      const backdrop = document.getElementById('service-modal-backdrop');
+      const modal = document.getElementById('service-modal');
+      const modalContent = document.getElementById('modal-content');
+      const closeBtn = document.getElementById('close-modal');
+
+      if (!cards.length || !backdrop || !modal || !modalContent || !closeBtn) return;
+
+      const closeModal = () => {
+        if (!isModalOpen) return;
+        isModalOpen = false;
+
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+        modal.classList.remove('scale-100', 'opacity-100');
+        modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+        document.body.style.overflow = '';
+
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+          lastFocusedElement.focus();
+        }
+
+        setTimeout(() => {
+          if (!isModalOpen) {
+            modalContent.innerHTML = '';
+            backdrop.classList.add('invisible');
+            modal.classList.add('invisible');
+          }
+        }, 400);
+      };
+
+      const openModal = (index) => {
+        const servicio = modalData[index];
+        if (!servicio) return;
+
+        lastFocusedElement = document.activeElement;
+
+        const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ' + servicio.titulo)}`;
+
+        modalContent.innerHTML = `
+          <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
+            <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              ${getIconSvg(servicio.icono)}
+            </svg>
+          </div>
+          <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
+          <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
+          <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
+          <ul class="flex flex-col gap-4 mb-10">
+            ${servicio.items.map(item => `
+              <li class="flex items-start gap-4 font-body text-[15px] text-text-soft">
+                <span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>
+                ${escapeHtml(item)}
+              </li>
+            `).join('')}
+          </ul>
+
+          <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
+            <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta">
+              <svg class="w-5 h-5 fill-current">
+                <use href="#icon-whatsapp" />
+              </svg>
+              <span id="modal-cta-text">Consultar por este servicio</span>
+            </a>
+            <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">
+              Cerrar
+            </button>
+          </div>
+        `;
+
+        backdrop.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
+        modal.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
+        modal.classList.add('scale-100', 'opacity-100');
+        document.body.style.overflow = 'hidden';
+        isModalOpen = true;
+
+        updateFocusableElements();
+
+        setTimeout(() => {
+          const cta = document.getElementById('modal-cta');
+          if (cta) cta.focus();
+          else closeBtn.focus();
+        }, 100);
+      };
+
+        updateFocusableElements(modal);
             <span id="modal-cta-text">Consultar por este servicio</span>
           </a>
           <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">Cerrar</button>
@@ -167,6 +324,96 @@ const modalData = CONFIG.servicios.map(servicio => ({
       card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(parseInt(card.getAttribute('data-index'))); } });
     });
 
+      updateFocusableElements();
+
+      setTimeout(() => {
+        const cta = document.getElementById('modal-cta');
+        if (cta) cta.focus();
+        else if (closeBtn) closeBtn.focus();
+      }, 100);
+
+      // Handle Modal CTA click
+      const cta = document.getElementById('modal-cta');
+      const ctaText = document.getElementById('modal-cta-text');
+      if (cta && ctaText) {
+        cta.addEventListener('click', () => {
+          const originalText = ctaText.textContent;
+          ctaText.textContent = 'Redirigiendo...';
+          cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          setTimeout(() => {
+            ctaText.textContent = originalText;
+            cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          }, 3000);
+        });
+      }
+    };
+
+        setTimeout(() => {
+          const cta = document.getElementById('modal-cta');
+          if (cta) cta.focus();
+          else closeBtn.focus();
+        }, 100);
+      };
+
+      const handleCardClick = (e) => {
+        const card = e.currentTarget;
+        const index = card.getAttribute('data-index');
+        if (index !== null) openModal(parseInt(index));
+      };
+
+      const handleCardKeydown = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const card = e.currentTarget;
+          const index = card.getAttribute('data-index');
+          const index = e.currentTarget.getAttribute('data-index');
+          if (index !== null) openModal(parseInt(index));
+        }
+      };
+
+      cards.forEach(card => {
+        card.addEventListener('click', handleCardClick);
+        card.addEventListener('keydown', handleCardKeydown);
+      });
+
+      backdrop.addEventListener('click', closeModal);
+      closeBtn.addEventListener('click', closeModal);
+
+      const handleModalContentClick = (e) => {
+        const target = e.target;
+        if (!target) return;
+
+        if (target.closest('#modal-close-secondary')) {
+          closeModal();
+        }
+
+        const cta = target.closest('#modal-cta');
+        const ctaText = document.getElementById('modal-cta-text');
+        if (cta && ctaText) {
+          const originalText = ctaText.textContent;
+          ctaText.textContent = 'Redirigiendo...';
+          cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          setTimeout(() => {
+            ctaText.textContent = originalText;
+            cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          }, 3000);
+        }
+      };
+
+      modalContent.addEventListener('click', handleModalContentClick);
+
+      const handleGlobalKeydown = (e) => {
+        if (!isModalOpen) return;
+
+        if (e.key === 'Escape') {
+          closeModal();
+          return;
+        }
+
+
+      const handleModalContentClick = (e) => {
+        const target = e.target;
+        if (!target || !(target instanceof HTMLElement)) return;
     backdrop?.addEventListener('click', closeModal);
     closeBtn?.addEventListener('click', closeModal);
     modalContent?.addEventListener('click', (e) => {
@@ -190,6 +437,89 @@ const modalData = CONFIG.servicios.map(servicio => ({
         if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       }
+      const target = e.target;
+      if (!target || !(target instanceof HTMLElement)) return;
+
+      if (target.closest('#modal-close-secondary')) {
+        closeModal();
+      }
     });
-  });
+
+        if (target.closest('#modal-close-secondary')) {
+          closeModal();
+        }
+
+        const cta = target.closest('#modal-cta');
+        const ctaText = document.getElementById('modal-cta-text');
+
+        if (cta && ctaText) {
+          const originalText = ctaText.textContent;
+          ctaText.textContent = 'Redirigiendo...';
+          cta.classList.add('opacity-70', 'pointer-events-none');
+
+          setTimeout(() => {
+            ctaText.textContent = originalText;
+            cta.classList.remove('opacity-70', 'pointer-events-none');
+          }, 3000);
+        }
+      };
+
+      modalContent.addEventListener('click', handleModalContentClick);
+
+      const handleGlobalKeydown = (e) => {
+        if (!isModalOpen) return;
+
+        if (e.key === 'Escape') {
+          closeModal();
+        }
+
+        if (e.key === 'Tab') {
+          if (focusableElements.length === 0) return;
+
+          const first = focusableElements[0];
+          const last = focusableElements[focusableElements.length - 1];
+
+          if (e.shiftKey) {
+            if (document.activeElement === first) {
+              e.preventDefault();
+              last.focus();
+            }
+          } else {
+            if (document.activeElement === last) {
+              e.preventDefault();
+              first.focus();
+            }
+          }
+        }
+      };
+
+      document.addEventListener('keydown', handleGlobalKeydown);
+
+      return () => {
+        cards.forEach(card => {
+          card.removeEventListener('click', handleCardClick);
+          card.removeEventListener('keydown', handleCardKeydown);
+        });
+        backdrop.removeEventListener('click', closeModal);
+        closeBtn.removeEventListener('click', closeModal);
+        modalContent.removeEventListener('click', handleModalContentClick);
+        document.removeEventListener('keydown', handleGlobalKeydown);
+      };
+    };
+
+    let cleanup = initServicios();
+
+    }
+
+    let cleanup;
+    cleanup = initServicios();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initServicios();
+    });
+  })();
+  }
+
+  document.addEventListener('DOMContentLoaded', initServicios);
+  document.addEventListener('astro:after-swap', initServicios);
 </script>
