@@ -211,15 +211,14 @@ import { CONFIG } from '../data/config';
     if (copyBtn && copyLabel && copyIconUse) {
       copyBtn.addEventListener('click', () => {
         navigator.clipboard.writeText(addressText).then(() => {
+          const originalText = copyLabel.textContent;
+          const originalIcon = copyIconUse.getAttribute('href');
+
           copyLabel.textContent = '¡Copiado!';
           copyIconUse.setAttribute('href', '#icon-check');
           copyBtn.classList.add('text-blue');
 
           setTimeout(() => {
-            copyLabel.textContent = originalText;
-            copyIconUse.setAttribute('href', originalIcon || '#icon-copy');
-            copyLabel.textContent = 'Copiar';
-            copyIconUse.setAttribute('href', '#icon-copy');
             copyLabel.textContent = originalText;
             copyIconUse.setAttribute('href', originalIcon);
             copyBtn.classList.remove('text-blue');
@@ -251,7 +250,7 @@ import { CONFIG } from '../data/config';
         const originalText = btnText.textContent;
         btnText.textContent = 'Redirigiendo...';
         btn.disabled = true;
-        btn.classList.add('opacity-70', 'cursor-not-allowed');
+        btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
         const encodedMessage = encodeURIComponent(rawMessage);
@@ -262,7 +261,7 @@ import { CONFIG } from '../data/config';
         setTimeout(() => {
           btnText.textContent = originalText;
           btn.disabled = false;
-          btn.classList.remove('opacity-70', 'cursor-not-allowed');
+          btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }, 3000);
       });
     }
