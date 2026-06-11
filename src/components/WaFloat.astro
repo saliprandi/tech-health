@@ -30,6 +30,23 @@ import { CONFIG } from '../data/config';
     const tooltip = document.getElementById('wa-tooltip');
     const tooltipText = document.getElementById('wa-tooltip-text');
     const btn = document.getElementById('wa-float-btn');
+    if (!tooltip || !tooltipText || !btn) return;
+    setTimeout(() => {
+      tooltip.classList.remove('opacity-0', 'translate-y-2');
+      tooltip.classList.add('opacity-100', 'translate-y-0');
+    }, 5000);
+    btn.addEventListener('click', () => {
+      const originalText = tooltipText.textContent;
+      tooltipText.textContent = '¡Redirigiendo!';
+      btn.classList.add('opacity-70', 'cursor-not-allowed');
+      setTimeout(() => {
+        tooltipText.textContent = originalText;
+        btn.classList.remove('opacity-70', 'cursor-not-allowed');
+      }, 3000);
+    });
+  }
+  initWaFloat();
+  document.addEventListener('astro:after-swap', initWaFloat);
 
     if (!tooltip || !tooltipText || !btn) return;
 

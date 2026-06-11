@@ -100,6 +100,7 @@ import { CONFIG } from '../data/config';
         setTimeout(() => {
           const firstLink = menu?.querySelector('.mobile-link') as HTMLElement;
           firstLink?.focus();
+        }, 150);
         }, 100);
 
       } else {
@@ -135,6 +136,16 @@ import { CONFIG } from '../data/config';
 
     const handleKeydown = (e: KeyboardEvent) => {
       if (!isOpen) return;
+      if (e.key === 'Escape') {
+        toggleMenu();
+        toggle?.focus();
+      }
+    };
+
+    toggle?.addEventListener('click', toggleMenu);
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => { if (isOpen) toggleMenu(); });
+    });
       if (e.key === 'Escape') { toggleMenu(); toggle?.focus(); }
       if (e.key === 'Tab') {
         const focusables = [toggle, ...Array.from(menu?.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])') || [])] as HTMLElement[];
@@ -172,6 +183,10 @@ import { CONFIG } from '../data/config';
     navCta?.addEventListener('click', handleCtaClick as EventListener);
     mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
 
+    // ScrollSpy
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const observer = new IntersectionObserver((entries) => {
     if (scrollHandler) window.removeEventListener('scroll', scrollHandler);
     scrollHandler = () => {
       if (!progressBar) return;
@@ -227,6 +242,8 @@ import { CONFIG } from '../data/config';
         }
       });
     }, { rootMargin: '-30% 0px -70% 0px' });
+    sections.forEach(section => observer.observe(section));
+
     sections.forEach(section => observer!.observe(section));
 
     return () => {
@@ -256,6 +273,7 @@ import { CONFIG } from '../data/config';
     };
   }
 
+  let cleanup = initNav();
   let cleanup: (() => void) | undefined;
 
   // Initial load

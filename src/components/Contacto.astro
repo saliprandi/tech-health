@@ -96,7 +96,7 @@ import { CONFIG } from '../data/config';
         <div class="bg-navy rounded-card p-8 md:p-11 shadow-hero-card">
           <h3 class="font-heading font-bold text-[24px] text-white mb-6">Envíenos su consulta</h3>
 
-          <form id="contact-form" class="flex flex-col gap-5">
+          <form id="contact-form" class="flex flex-col gap-5" data-whatsapp={CONFIG.contacto.whatsapp}>
 
             <div class="flex flex-col gap-1.5">
               <label for="f-nombre" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">
@@ -149,8 +149,13 @@ import { CONFIG } from '../data/config';
   </div>
 </section>
 
-<script is:inline define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
-  document.addEventListener('DOMContentLoaded', () => {
+<script>
+  function initContacto() {
+    const form = document.getElementById('contact-form');
+    if (!form) return;
+
+    const whatsappNumber = form.getAttribute('data-whatsapp');
+
     // Business Hours Status Badge Logic
     const updateStatusBadge = () => {
       const badge = document.getElementById('status-badge');
@@ -179,10 +184,10 @@ import { CONFIG } from '../data/config';
     };
 
     updateStatusBadge();
-    setInterval(updateStatusBadge, 60000);
+    const statusInterval = setInterval(updateStatusBadge, 60000);
 
     // Character Counter Logic
-    const textarea = document.getElementById('f-desc');
+    const textarea = document.getElementById('f-desc') as HTMLTextAreaElement | null;
     const counter = document.getElementById('char-counter');
 
     if (textarea && counter) {
@@ -234,26 +239,25 @@ import { CONFIG } from '../data/config';
     }
 
     // Form Logic
-    const form = document.getElementById('contact-form');
-    const btn = document.getElementById('f-submit');
+    const btn = document.getElementById('f-submit') as HTMLButtonElement | null;
     const btnText = document.getElementById('f-submit-text');
 
     if (form && btn && btnText) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        if (!form.checkValidity()) {
-          form.reportValidity();
+        if (!(form as HTMLFormElement).checkValidity()) {
+          (form as HTMLFormElement).reportValidity();
           return;
         }
 
-        const nombre = document.getElementById('f-nombre')?.value.trim() || 'No especificado';
-        const tel = document.getElementById('f-tel')?.value.trim() || 'No especificado';
-        const servicioel = document.getElementById('f-servicio');
+        const nombre = (document.getElementById('f-nombre') as HTMLInputElement)?.value.trim() || 'No especificado';
+        const tel = (document.getElementById('f-tel') as HTMLInputElement)?.value.trim() || 'No especificado';
+        const servicioel = document.getElementById('f-servicio') as HTMLSelectElement | null;
         const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
-        const desc = document.getElementById('f-desc')?.value.trim() || 'Sin detalles adicionales';
+        const desc = (document.getElementById('f-desc') as HTMLTextAreaElement)?.value.trim() || 'Sin detalles adicionales';
 
-        const originalText = btnText.textContent;
+        const originalBtnText = btnText.textContent;
         btnText.textContent = 'Redirigiendo...';
         btn.disabled = true;
         btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
@@ -265,11 +269,25 @@ import { CONFIG } from '../data/config';
         window.open(url, '_blank', 'noopener,noreferrer');
 
         setTimeout(() => {
-          btnText.textContent = originalText;
+          btnText.textContent = originalBtnText;
           btn.disabled = false;
           btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }, 3000);
       });
     }
+
+    return () => {
+      clearInterval(statusInterval);
+    };
+  }
+
+  let cleanupContacto: (() => void) | undefined;
+
+  // Initial load
+  cleanupContacto = initContacto();
+
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanupContacto) cleanupContacto();
+    cleanupContacto = initContacto();
   });
 </script>

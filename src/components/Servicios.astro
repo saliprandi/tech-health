@@ -124,10 +124,16 @@ const modalData = CONFIG.servicios.map(servicio => ({
       if (!isModalOpen) return;
       isModalOpen = false;
       backdrop?.classList.add('opacity-0', 'pointer-events-none');
-      modal?.classList.remove('scale-100', 'opacity-100');
       modal?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+      modal?.classList.remove('scale-100', 'opacity-100');
       document.body.style.overflow = '';
       if (lastFocusedElement) lastFocusedElement.focus();
+      setTimeout(() => {
+        if (!isModalOpen) {
+          backdrop?.classList.add('invisible');
+          modal?.classList.add('invisible');
+        }
+      }, 400);
       setTimeout(() => { if (!isModalOpen) { if (modalContent) modalContent.innerHTML = ''; backdrop?.classList.add('invisible'); modal?.classList.add('invisible'); } }, 400);
     };
 
@@ -138,12 +144,20 @@ const modalData = CONFIG.servicios.map(servicio => ({
       const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ' + servicio.titulo)}`;
       modalContent.innerHTML = `
         <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
+          <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor"><use href="#icon-${servicio.icono}" /></svg>
           <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><use href="#icon-${escapeHtml(servicio.icono)}" /></svg>
         </div>
-        <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
-        <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
-        <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
+        <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${servicio.titulo}</h3>
+        <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${servicio.descripcion}</p>
         <ul class="flex flex-col gap-4 mb-10">
+          ${servicio.items.map(item => `<li class="flex items-start gap-4 font-body text-[15px] text-text-soft"><span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>${item}</li>`).join('')}
+        </ul>
+        <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
+          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg" id="modal-cta">
+            <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
+            <span id="modal-cta-text">Consultar por este servicio</span>
+          </a>
+          <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2">Cerrar</button>
           ${servicio.items.map(item => `<li class="flex items-start gap-4 font-body text-[15px] text-text-soft"><span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>${escapeHtml(item)}</li>`).join('')}
         </ul>
         <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
@@ -315,6 +329,12 @@ const modalData = CONFIG.servicios.map(servicio => ({
       modal?.classList.add('scale-100', 'opacity-100');
       document.body.style.overflow = 'hidden';
       isModalOpen = true;
+      setTimeout(() => { document.getElementById('modal-cta')?.focus(); }, 100);
+    };
+
+    cards.forEach(card => {
+      card.addEventListener('click', () => openModal(parseInt(card.getAttribute('data-index'))));
+    });
       focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')).filter(el => el.tagName !== 'SVG' && el.tagName !== 'USE' && !el.hasAttribute('disabled'));
       setTimeout(() => { (document.getElementById('modal-cta') || closeBtn)?.focus(); }, 100);
     };
@@ -427,8 +447,12 @@ const modalData = CONFIG.servicios.map(servicio => ({
         setTimeout(() => { ctaText.textContent = originalText; cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none'); }, 3000);
       }
     });
-
     document.addEventListener('keydown', (e) => {
+      if (isModalOpen && e.key === 'Escape') closeModal();
+    });
+  }
+
+  initServicios();
       if (!isModalOpen) return;
       if (e.key === 'Escape') closeModal();
       if (e.key === 'Tab') {
