@@ -149,29 +149,29 @@ import { CONFIG } from '../data/config';
   </div>
 </section>
 
-<script is:inline define:vars={{ whatsappNumber: CONFIG.contacto.whatsapp }}>
-  let statusInterval;
-
-  function initContacto() {
 <script>
   function initContacto() {
-    const form = document.getElementById('contact-form');
-    if (!form) return;
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    const badge = document.getElementById('status-badge');
+    const textarea = document.getElementById('f-desc') as HTMLTextAreaElement | null;
+    const counter = document.getElementById('char-counter');
+    const copyBtn = document.getElementById('copy-address');
+    const copyLabel = document.getElementById('copy-text');
+    const copyIconUse = document.getElementById('copy-icon-use');
+    const addressText = document.getElementById('address-text')?.textContent || '';
+    const btn = document.getElementById('f-submit') as HTMLButtonElement | null;
+    const btnText = document.getElementById('f-submit-text');
 
-    const whatsappNumber = form.getAttribute('data-whatsapp');
+    let statusInterval: ReturnType<typeof setInterval> | null = null;
 
     // Business Hours Status Badge Logic
     const updateStatusBadge = () => {
-      const badge = document.getElementById('status-badge');
       if (!badge) return;
-
       const now = new Date();
       // Tucumán is UTC-3
       const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
-
       const day = tucumanTime.getDay();
       const hour = tucumanTime.getHours();
-
       const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
 
       if (isOpen) {
@@ -183,24 +183,17 @@ import { CONFIG } from '../data/config';
         badge.classList.remove('bg-emerald-100', 'text-emerald-800');
         badge.classList.add('bg-gray-100', 'text-gray-800');
       }
-
       badge.classList.remove('hidden');
     };
 
-    if (statusInterval) clearInterval(statusInterval);
     updateStatusBadge();
     statusInterval = setInterval(updateStatusBadge, 60000);
-    const statusInterval = setInterval(updateStatusBadge, 60000);
 
     // Character Counter Logic
-    const textarea = document.getElementById('f-desc') as HTMLTextAreaElement | null;
-    const counter = document.getElementById('char-counter');
-
     if (textarea && counter) {
       const updateCounter = () => {
         const length = textarea.value.length;
         counter.textContent = length + ' / 500';
-
         if (length >= 450) {
           counter.classList.add('text-blue-light');
           counter.classList.remove('text-white/40');
@@ -209,21 +202,12 @@ import { CONFIG } from '../data/config';
           counter.classList.add('text-white/40');
         }
       };
-
       textarea.addEventListener('input', updateCounter);
       updateCounter();
     }
 
     // Copy Address Logic
-    const copyBtn = document.getElementById('copy-address');
-    const addressText = document.getElementById('address-text')?.textContent || '';
-    const copyLabel = document.getElementById('copy-text');
-    const copyIconUse = document.getElementById('copy-icon-use');
-
     if (copyBtn && copyLabel && copyIconUse) {
-      const originalText = copyLabel.textContent;
-      const originalIcon = copyIconUse.getAttribute('href');
-
       copyBtn.addEventListener('click', () => {
         const originalText = copyLabel.textContent;
         const originalIcon = copyIconUse.getAttribute('href');
@@ -232,28 +216,25 @@ import { CONFIG } from '../data/config';
           copyLabel.textContent = '¡Copiado!';
           copyIconUse.setAttribute('href', '#icon-check');
           copyBtn.classList.add('text-blue');
+          copyBtn.setAttribute('aria-label', 'Dirección copiada con éxito');
 
           setTimeout(() => {
-            copyLabel.textContent = originalText;
-            copyIconUse.setAttribute('href', originalIcon);
             copyLabel.textContent = originalText || 'Copiar';
             copyIconUse.setAttribute('href', originalIcon || '#icon-copy');
             copyBtn.classList.remove('text-blue');
+            copyBtn.setAttribute('aria-label', 'Copiar dirección al portapapeles');
           }, 2500);
         });
       });
     }
 
     // Form Logic
-    const btn = document.getElementById('f-submit') as HTMLButtonElement | null;
-    const btnText = document.getElementById('f-submit-text');
-
     if (form && btn && btnText) {
+      const whatsappNumber = form.getAttribute('data-whatsapp');
       form.addEventListener('submit', (e) => {
         e.preventDefault();
-
-        if (!(form as HTMLFormElement).checkValidity()) {
-          (form as HTMLFormElement).reportValidity();
+        if (!form.checkValidity()) {
+          form.reportValidity();
           return;
         }
 
@@ -281,23 +262,24 @@ import { CONFIG } from '../data/config';
         }, 3000);
       });
     }
-  }
-
-  document.addEventListener('DOMContentLoaded', initContacto);
-  document.addEventListener('astro:after-swap', initContacto);
 
     return () => {
-      clearInterval(statusInterval);
+      if (statusInterval) clearInterval(statusInterval);
     };
   }
 
-  let cleanupContacto: (() => void) | undefined;
+  let cleanup: (() => void) | undefined;
 
-  // Initial load
-  cleanupContacto = initContacto();
+  document.addEventListener('DOMContentLoaded', () => {
+    cleanup = initContacto();
+  });
 
   document.addEventListener('astro:after-swap', () => {
-    if (cleanupContacto) cleanupContacto();
-    cleanupContacto = initContacto();
+    if (cleanup) cleanup();
+    cleanup = initContacto();
   });
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    cleanup = initContacto();
+  }
 </script>
