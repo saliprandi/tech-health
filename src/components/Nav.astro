@@ -100,6 +100,7 @@ import { CONFIG } from '../data/config';
         setTimeout(() => {
           const firstLink = menu?.querySelector('.mobile-link') as HTMLElement;
           firstLink?.focus();
+        }, 200);
         }, 150);
         }, 100);
 
@@ -183,6 +184,8 @@ import { CONFIG } from '../data/config';
       link.addEventListener('click', closeOnLinkClick);
     });
 
+    keydownHandler = handleKeydown;
+    document.addEventListener('keydown', keydownHandler);
     if (keydownHandler) {
       document.removeEventListener('keydown', keydownHandler);
     }
@@ -316,6 +319,9 @@ import { CONFIG } from '../data/config';
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     sections.forEach(section => observer.observe(section));
 
+    return () => {
+      if (keydownHandler) document.removeEventListener('keydown', keydownHandler);
+      toggle?.removeEventListener('click', toggleMenu);
     return () => {
       toggle?.removeEventListener('click', toggleMenu);
       document.removeEventListener('keydown', handleKeydown);
