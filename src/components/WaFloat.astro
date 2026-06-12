@@ -51,6 +51,8 @@ import { CONFIG } from '../data/config';
     const initialTimeout = setTimeout(showTooltip, 5000);
 
     const handleBtnClick = () => {
+      const originalText = tooltipText.textContent;
+      tooltipText.textContent = '¡Redirigiendo!';
       const originalText = tooltipText.textContent || '¡Hola! ¿En qué podemos ayudarte?';
       tooltipText.textContent = '¡Redirigiendo!';
 
@@ -74,6 +76,13 @@ import { CONFIG } from '../data/config';
     };
   }
 
+  let cleanupWaFloat: (() => void) | undefined;
+  cleanupWaFloat = initWaFloat();
+
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanupWaFloat) cleanupWaFloat();
+    cleanupWaFloat = initWaFloat();
+  });
   let cleanup: (() => void) | undefined;
   cleanup = initWaFloat();
 

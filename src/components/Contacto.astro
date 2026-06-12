@@ -151,6 +151,8 @@ import { CONFIG } from '../data/config';
 </section>
 
 <script>
+  function initContacto() {
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
   (function() {
     function initContacto() {
       const form = document.getElementById('contact-form') as HTMLFormElement | null;
@@ -169,12 +171,18 @@ import { CONFIG } from '../data/config';
     const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
     const submitBtnText = document.getElementById('f-submit-text');
 
+    if (!form) return () => {};
+
+    const whatsappNumber = form.getAttribute('data-whatsapp') || '';
+
+    // Business Hours Status Badge
     const updateStatusBadge = () => {
       if (!badge) return;
       const now = new Date();
       const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
       const day = tucumanTime.getDay();
       const hour = tucumanTime.getHours();
+
       const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
 
       if (isOpen) {
@@ -190,6 +198,7 @@ import { CONFIG } from '../data/config';
     updateStatusBadge();
     const statusInterval = setInterval(updateStatusBadge, 60000);
 
+    // Character Counter
     const updateCounter = () => {
       if (!textarea || !counter) return;
       const length = textarea.value.length;
@@ -206,6 +215,11 @@ import { CONFIG } from '../data/config';
     textarea?.addEventListener('input', updateCounter);
     updateCounter();
 
+    // Copy Address
+    const handleCopy = () => {
+      if (!copyBtn || !copyLabel || !copyIconUse) return;
+      const originalText = copyLabel.textContent;
+      const originalIcon = copyIconUse.getAttribute('href') || '';
     const handleCopy = () => {
       if (!copyLabel || !copyIconUse || !copyBtn) return;
       const originalText = copyLabel.textContent;
@@ -290,6 +304,68 @@ import { CONFIG } from '../data/config';
 
       if (!form) return () => {};
 
+        setTimeout(() => {
+          copyLabel.textContent = originalText;
+          copyIconUse.setAttribute('href', originalIcon);
+          copyBtn.classList.remove('text-blue');
+          if (announcement) announcement.textContent = '';
+        }, 2500);
+      });
+    };
+
+    copyBtn?.addEventListener('click', handleCopy);
+
+    // Form Submission
+    const handleSubmit = (e: Event) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const nombre = (document.getElementById('f-nombre') as HTMLInputElement)?.value.trim() || 'No especificado';
+      const tel = (document.getElementById('f-tel') as HTMLInputElement)?.value.trim() || 'No especificado';
+      const servicioel = document.getElementById('f-servicio') as HTMLSelectElement | null;
+      const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
+      const desc = textarea?.value.trim() || 'Sin detalles adicionales';
+
+      if (submitBtn && submitBtnText) {
+        const originalBtnText = submitBtnText.textContent;
+        submitBtnText.textContent = 'Redirigiendo...';
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
+        const encodedMessage = encodeURIComponent(rawMessage);
+        const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+        window.open(url, '_blank', 'noopener,noreferrer');
+
+        setTimeout(() => {
+          submitBtnText.textContent = originalBtnText;
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        }, 3000);
+      }
+    };
+
+    form.addEventListener('submit', handleSubmit);
+
+    return () => {
+      clearInterval(statusInterval);
+      textarea?.removeEventListener('input', updateCounter);
+      copyBtn?.removeEventListener('click', handleCopy);
+      form.removeEventListener('submit', handleSubmit);
+    };
+  }
+
+  let cleanupContacto: (() => void) | undefined;
+  cleanupContacto = initContacto();
+
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanupContacto) cleanupContacto();
+    cleanupContacto = initContacto();
+  });
       const whatsappNumber = form.getAttribute('data-whatsapp');
       const announcement = document.getElementById('copy-announcement');
       const btn = document.getElementById('f-submit') as HTMLButtonElement | null;

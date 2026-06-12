@@ -140,6 +140,13 @@ const modalData = CONFIG.servicios.map(servicio => ({
         isModalOpen = false;
 
         backdrop.classList.add('opacity-0', 'pointer-events-none');
+        modal.classList.remove('scale-100', 'opacity-100');
+        modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+        document.body.style.overflow = '';
+
+        if (lastFocusedElement) {
+          lastFocusedElement.focus();
+        }
         modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
         modal.classList.remove('scale-100', 'opacity-100');
         document.body.style.overflow = '';
@@ -157,6 +164,10 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
       const updateFocusableElements = () => {
         focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+          .filter(el => {
+             const tag = el.tagName.toLowerCase();
+             return tag !== 'svg' && tag !== 'use' && !el.hasAttribute('disabled');
+          });
           .filter(el => el.tagName !== 'SVG' && el.tagName !== 'USE' && !el.hasAttribute('disabled'));
       };
 
@@ -270,6 +281,41 @@ const modalData = CONFIG.servicios.map(servicio => ({
       const handleCardKeydown = (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
+          handleCardAction(e);
+        }
+      };
+
+      const handleGlobalKeydown = (e) => {
+        if (!isModalOpen) return;
+
+        if (e.key === 'Escape') {
+          closeModal();
+          return;
+        }
+
+        if (e.key === 'Tab') {
+          if (focusableElements.length === 0) return;
+          const first = focusableElements[0];
+          const last = focusableElements[focusableElements.length - 1];
+          if (e.shiftKey) {
+            if (document.activeElement === first) {
+              e.preventDefault();
+              last.focus();
+            }
+          } else {
+            if (document.activeElement === last) {
+              e.preventDefault();
+              first.focus();
+            }
+          }
+        }
+      };
+
+      const handleModalClick = (e) => {
+        if (e.target.closest('#modal-close-secondary')) {
+          closeModal();
+          return;
+        }
           const index = e.currentTarget.getAttribute('data-index');
           if (index !== null) openModal(parseInt(index));
         }
@@ -292,6 +338,18 @@ const modalData = CONFIG.servicios.map(servicio => ({
             if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           }, 3000);
         }
+      };
+
+      cards.forEach(card => {
+        card.addEventListener('click', handleCardAction);
+        card.addEventListener('keydown', handleCardKeydown);
+      });
+
+      backdrop.addEventListener('click', closeModal);
+      closeBtn.addEventListener('click', closeModal);
+      modalContent.addEventListener('click', handleModalClick);
+      document.addEventListener('keydown', handleGlobalKeydown);
+
       });
 
       document.addEventListener('keydown', handleKeydown);
@@ -336,12 +394,13 @@ const modalData = CONFIG.servicios.map(servicio => ({
         });
         backdrop.removeEventListener('click', closeModal);
         closeBtn.removeEventListener('click', closeModal);
-        modalContent.removeEventListener('click', handleModalContentClick);
+        modalContent.removeEventListener('click', handleModalClick);
         document.removeEventListener('keydown', handleGlobalKeydown);
         document.body.style.overflow = '';
       };
     }
 
+    let cleanupServicios = initServicios();
     let cleanup = initServicios();
     let cleanupServicios = initServicios();
 

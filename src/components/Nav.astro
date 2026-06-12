@@ -234,7 +234,6 @@ import { CONFIG } from '../data/config';
           spans[2].classList.add('-rotate-45', '-translate-y-[8px]');
         }
 
-        setTimeout(() => (menu.querySelector('.mobile-link') as HTMLElement)?.focus(), 150);
         setTimeout(() => {
           const firstLink = menu.querySelector('.mobile-link') as HTMLElement;
           firstLink?.focus();
@@ -250,6 +249,13 @@ import { CONFIG } from '../data/config';
           spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
         }
 
+        if (lastFocusedElement) {
+          lastFocusedElement.focus();
+        }
+
+        setTimeout(() => {
+          if (!isOpen) menu?.classList.add('invisible');
+        }, 300);
         if (lastFocusedElement) lastFocusedElement.focus();
         setTimeout(() => { if (!isOpen) menu?.classList.add('invisible'); }, 300);
         setTimeout(() => { if (!isOpen) menu.classList.add('invisible'); }, 300);
@@ -275,6 +281,10 @@ import { CONFIG } from '../data/config';
           first.focus();
         }
       }
+    };
+
+    const handleLinkClick = () => {
+      if (isOpen) toggleMenu();
     };
 
     const handleLinkClick = () => { if (isOpen) toggleMenu(); };
@@ -316,6 +326,11 @@ import { CONFIG } from '../data/config';
       if (!progressBar) return;
       const winScroll = document.documentElement.scrollTop;
       const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      if (height > 0) {
+        progressBar.style.transform = `scaleX(${winScroll / height})`;
+      } else {
+        progressBar.style.transform = 'scaleX(0)';
+      }
       const scrolled = height > 0 ? winScroll / height : 0;
       progressBar.style.transform = `scaleX(${scrolled})`;
     };
@@ -337,13 +352,27 @@ import { CONFIG } from '../data/config';
       });
     }, { rootMargin: '-30% 0px -70% 0px' });
 
+    const handleCtaClick = (e: MouseEvent) => {
+      const cta = e.currentTarget as HTMLElement;
+      const originalText = cta.textContent;
+      cta.textContent = 'Redirigiendo...';
+      cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+      setTimeout(() => {
+        if (cta) {
+          cta.textContent = originalText;
+          cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        }
+      }, 3000);
+    };
+
     toggle?.addEventListener('click', toggleMenu);
     mobileLinks.forEach(link => link.addEventListener('click', handleLinkClick));
     document.addEventListener('keydown', handleKeydown);
-    navCta?.addEventListener('click', handleCtaClick as EventListener);
-    mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
     window.addEventListener('scroll', updateProgress, { passive: true });
     sections.forEach(section => observer.observe(section));
+    navCta?.addEventListener('click', handleCtaClick as EventListener);
+    mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
+
 
     const handleLinkClick = () => { if (isOpen) toggleMenu(); };
 
@@ -364,6 +393,10 @@ import { CONFIG } from '../data/config';
       toggle?.removeEventListener('click', toggleMenu);
       mobileLinks.forEach(link => link.removeEventListener('click', handleLinkClick));
       document.removeEventListener('keydown', handleKeydown);
+      window.removeEventListener('scroll', updateProgress);
+      observer.disconnect();
+      navCta?.removeEventListener('click', handleCtaClick as EventListener);
+      mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
       window.removeEventListener('scroll', handleScroll);
       navCta?.removeEventListener('click', handleCtaClick as EventListener);
       mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
@@ -372,6 +405,12 @@ import { CONFIG } from '../data/config';
     };
   }
 
+  let cleanupNav: (() => void) | undefined;
+  cleanupNav = initNav();
+
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanupNav) cleanupNav();
+    cleanupNav = initNav();
   let cleanupNav = initNav();
 
   document.addEventListener('astro:after-swap', () => {
