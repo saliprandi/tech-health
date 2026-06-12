@@ -21,7 +21,7 @@ import { CONFIG } from '../data/config';
     <!-- CTA & Mobile Toggle -->
     <div class="flex items-center gap-4">
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" id="nav-cta" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md">
-        <span id="nav-cta-text">Consultar por WhatsApp</span>
+        Consultar por WhatsApp
       </a>
 
       <!-- Hamburger Button -->
@@ -40,13 +40,13 @@ import { CONFIG } from '../data/config';
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="fixed top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99] invisible" role="navigation" aria-label="Menú móvil">
+  <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99] invisible" role="navigation" aria-label="Menú móvil">
     <a href="#servicios" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Servicios</a>
     <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
     <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
     <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Contacto</a>
     <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mobile-link mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]" id="mobile-nav-cta">
-      <span id="mobile-nav-cta-text">Consultar por WhatsApp</span>
+      Consultar por WhatsApp
     </a>
   </div>
 
@@ -56,228 +56,153 @@ import { CONFIG } from '../data/config';
 
 <style>
   .nav-link-active {
-    @apply text-blue !important;
+    color: #2563a8 !important;
   }
 </style>
 
 <script>
   function initNav() {
-    const toggle = document.getElementById('menu-toggle');
-    const menu = document.getElementById('mobile-menu');
-    const progress = document.getElementById('reading-progress');
-    const links = document.querySelectorAll('.nav-link');
-    const sections = document.querySelectorAll('section[id]');
-    if (!toggle || !menu || !progress) return;
+    var toggle = document.getElementById('menu-toggle');
+    var menu = document.getElementById('mobile-menu');
+    var progress = document.getElementById('reading-progress');
+    var mobileLinks = document.querySelectorAll('.mobile-link');
+    var navLinks = document.querySelectorAll('.nav-link');
+    var sections = document.querySelectorAll('section[id]');
+    var navCta = document.getElementById('nav-cta');
+    var mobileNavCta = document.getElementById('mobile-nav-cta');
 
-    const onToggle = () => {
-      const open = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', (!open).toString());
-      menu.classList.toggle('opacity-100');
-      menu.classList.toggle('invisible');
-      menu.classList.toggle('pointer-events-auto');
+    if (!toggle || !menu || !progress) return function() {};
+    var spans = toggle.querySelectorAll('span');
 
-      if (!open) {
-        // Simple focus trap logic
-        const focusable = menu.querySelectorAll('a, button');
-        const first = focusable[0] as HTMLElement;
-        const last = focusable[focusable.length - 1] as HTMLElement;
+    var isOpen = false;
+    var lastFocusedElement = document.activeElement;
 
-        const handleTrap = (e: KeyboardEvent) => {
-          if (e.key === 'Tab') {
-            if (e.shiftKey) {
-              if (document.activeElement === first) {
-                e.preventDefault();
-                last.focus();
-              }
+    function toggleMenu() {
+      if (!toggle || !menu) return;
+      isOpen = !isOpen;
+      toggle.setAttribute('aria-expanded', isOpen.toString());
+      toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+
+      if (isOpen) {
+        lastFocusedElement = document.activeElement;
+        menu.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]', 'invisible');
+        menu.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+        document.body.style.overflow = 'hidden';
+        if (spans) {
+          for (var si = 0; si < spans.length; si++) {
+            if (si === 0) { spans[si].classList.add('rotate-45', 'translate-y-[8px]'); }
+            if (si === 1) { spans[si].classList.add('opacity-0'); }
+            if (si === 2) { spans[si].classList.add('-rotate-45', '-translate-y-[8px]'); }
+          }
+        }
+        setTimeout(function() {
+          if (!menu) return;
+          var el = menu.querySelector('.mobile-link');
+          if (el instanceof HTMLElement) el.focus();
+        }, 150);
+      } else {
+        menu.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
+        menu.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+        document.body.style.overflow = '';
+        if (spans) {
+          for (var si = 0; si < spans.length; si++) {
+            if (si === 0) { spans[si].classList.remove('rotate-45', 'translate-y-[8px]'); }
+            if (si === 1) { spans[si].classList.remove('opacity-0'); }
+            if (si === 2) { spans[si].classList.remove('-rotate-45', '-translate-y-[8px]'); }
+          }
+        }
+        if (lastFocusedElement instanceof HTMLElement) lastFocusedElement.focus();
+        setTimeout(function() { if (!isOpen && menu) menu.classList.add('invisible'); }, 300);
+      }
+    }
+
+    function handleKeydown() {
+      var e = arguments.length > 0 ? arguments[0] : null;
+      if (!e || typeof e.key !== 'string' || typeof e.preventDefault !== 'function') return;
+      if (!isOpen) return;
+      if (!toggle || !menu) return;
+      if (e.key === 'Escape') { toggleMenu(); if (toggle) toggle.focus(); return; }
+      if (e.key === 'Tab') {
+        if (!toggle || !menu) return;
+        var focusables = [];
+        focusables.push(toggle);
+        var q = menu.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])');
+        for (var fi = 0; fi < q.length; fi++) {
+          var item = q[fi];
+          if (item && item.tagName !== 'svg' && item.tagName !== 'use') focusables.push(item);
+        }
+        if (!focusables.length) return;
+        var first = focusables[0];
+        var last = focusables[focusables.length - 1];
+        if (first instanceof HTMLElement && last instanceof HTMLElement) {
+          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      }
+    }
+
+    function handleCtaClick() {
+      var e = arguments.length > 0 ? arguments[0] : null;
+      if (!e || typeof e.preventDefault !== 'function' || !e.currentTarget) return;
+      var cta = e.currentTarget;
+      var text = cta.querySelector('span') || cta;
+      var original = text.textContent;
+      text.textContent = 'Redirigiendo...';
+      cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+      setTimeout(function() { text.textContent = original; cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none'); }, 3000);
+    }
+
+    function updateProgress() {
+      if (!progress) return;
+      var h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      progress.style.transform = 'scaleX(' + (h > 0 ? window.scrollY / h : 0) + ')';
+    }
+
+    var observer = new IntersectionObserver(function(entries) {
+      for (var ei = 0; ei < entries.length; ei++) {
+        var entry = entries[ei];
+        if (entry.isIntersecting) {
+          var id = entry.target.getAttribute('id');
+          for (var ni = 0; ni < navLinks.length; ni++) {
+            var link = navLinks[ni];
+            if (link.getAttribute('href') === '#' + id) {
+              link.classList.add('nav-link-active');
+              link.setAttribute('aria-current', 'location');
             } else {
-              if (document.activeElement === last) {
-                e.preventDefault();
-                first.focus();
-              }
+              link.classList.remove('nav-link-active');
+              link.removeAttribute('aria-current');
             }
           }
-        };
-        menu.addEventListener('keydown', handleTrap as any);
-      }
-    };
-
-    const onScroll = () => {
-      const h = document.documentElement.scrollHeight - window.innerHeight;
-      const s = h > 0 ? window.scrollY / h : 0;
-      progress.style.transform = `scaleX(${s})`;
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
-          links.forEach(l => {
-            if (l.getAttribute('href') === `#${id}`) l.classList.add('nav-link-active');
-            else l.classList.remove('nav-link-active');
-          });
         }
-      });
+      }
     }, { rootMargin: '-30% 0px -70% 0px' });
 
-    toggle.addEventListener('click', onToggle);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    sections.forEach(s => observer.observe(s));
+    toggle.addEventListener('click', toggleMenu);
+    for (var mi = 0; mi < mobileLinks.length; mi++) {
+      mobileLinks[mi].addEventListener('click', function() { if (isOpen) toggleMenu(); });
+    }
+    document.addEventListener('keydown', handleKeydown);
+    if (navCta) navCta.addEventListener('click', handleCtaClick);
+    if (mobileNavCta) mobileNavCta.addEventListener('click', handleCtaClick);
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    for (var si2 = 0; si2 < sections.length; si2++) { observer.observe(sections[si2]); }
+    updateProgress();
 
-    return () => {
-      toggle.removeEventListener('click', onToggle);
-      window.removeEventListener('scroll', onScroll);
+    return function() {
+      if (!toggle || !menu || !progress) return;
+      toggle.removeEventListener('click', toggleMenu);
+      for (var mi2 = 0; mi2 < mobileLinks.length; mi2++) {
+        mobileLinks[mi2].removeEventListener('click', toggleMenu);
+      }
+      document.removeEventListener('keydown', handleKeydown);
+      if (navCta) navCta.removeEventListener('click', handleCtaClick);
+      if (mobileNavCta) mobileNavCta.removeEventListener('click', handleCtaClick);
+      window.removeEventListener('scroll', updateProgress);
       observer.disconnect();
+      document.body.style.overflow = '';
     };
   }
 
-  let cleanNav = initNav();
-  document.addEventListener('astro:after-swap', () => {
-    cleanNav?.();
-    cleanNav = initNav();
-  });
-  (function() {
-    function initNav() {
-      const toggle = document.getElementById('menu-toggle') as HTMLButtonElement | null;
-      const menu = document.getElementById('mobile-menu');
-      const mobileLinks = document.querySelectorAll('.mobile-link');
-      const spans = toggle?.querySelectorAll('span');
-      const navCta = document.getElementById('nav-cta');
-      const mobileNavCta = document.getElementById('mobile-nav-cta');
-      const progressBar = document.getElementById('reading-progress');
-      const sections = document.querySelectorAll('section[id]');
-      const navLinks = document.querySelectorAll('.nav-link');
-
-      let isOpen = false;
-      let lastFocusedElement: HTMLElement | null = null;
-
-      if (!toggle || !menu || !progressBar) return () => {};
-
-      const toggleMenu = (forceClose = false) => {
-        if (forceClose) isOpen = false;
-        else isOpen = !isOpen;
-
-        toggle.setAttribute('aria-expanded', isOpen.toString());
-        toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
-
-        if (isOpen) {
-          lastFocusedElement = document.activeElement as HTMLElement;
-          menu.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]', 'invisible');
-          menu.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
-          document.body.style.overflow = 'hidden';
-
-          if (spans && spans.length === 3) {
-            spans[0].classList.add('rotate-45', 'translate-y-[8px]');
-            spans[1].classList.add('opacity-0');
-            spans[2].classList.add('-rotate-45', '-translate-y-[8px]');
-          }
-
-          setTimeout(() => (menu.querySelector('.mobile-link') as HTMLElement)?.focus(), 150);
-        } else {
-          menu.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
-          menu.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
-          document.body.style.overflow = '';
-
-          if (spans && spans.length === 3) {
-            spans[0].classList.remove('rotate-45', 'translate-y-[8px]');
-            spans[1].classList.remove('opacity-0');
-            spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
-          }
-
-          if (lastFocusedElement) lastFocusedElement.focus();
-          setTimeout(() => { if (!isOpen) menu.classList.add('invisible'); }, 300);
-        }
-      };
-
-      const handleKeydown = (e: KeyboardEvent) => {
-        if (!isOpen) return;
-        if (e.key === 'Escape') {
-          toggleMenu(true);
-          toggle.focus();
-        }
-        if (e.key === 'Tab') {
-          const focusables = [toggle, ...Array.from(menu.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])') || [])] as HTMLElement[];
-          const first = focusables[0];
-          const last = focusables[focusables.length - 1];
-          if (e.shiftKey && document.activeElement === first) {
-            e.preventDefault();
-            last.focus();
-          } else if (!e.shiftKey && document.activeElement === last) {
-            e.preventDefault();
-            first.focus();
-          }
-        }
-      };
-
-      const updateProgress = () => {
-        const winScroll = document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = height > 0 ? winScroll / height : 0;
-        progressBar.style.transform = `scaleX(${scrolled})`;
-      };
-
-      const handleLinkClick = () => {
-        if (isOpen) toggleMenu();
-      };
-
-      const handleToggleClick = () => toggleMenu();
-
-      const handleCtaClick = (e: MouseEvent) => {
-        const cta = e.currentTarget as HTMLElement;
-        const originalText = cta.textContent;
-        cta.textContent = 'Redirigiendo...';
-        cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-        setTimeout(() => {
-          if (cta) {
-            cta.textContent = originalText;
-            cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-          }
-        }, 3000);
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const id = entry.target.getAttribute('id');
-            navLinks.forEach(link => {
-              if (link.getAttribute('href') === `#${id}`) {
-                link.classList.add('nav-link-active');
-                link.setAttribute('aria-current', 'location');
-              } else {
-                link.classList.remove('nav-link-active');
-                link.removeAttribute('aria-current');
-              }
-            });
-          }
-        });
-      }, { rootMargin: '-30% 0px -70% 0px' });
-
-      toggle.addEventListener('click', handleToggleClick);
-      mobileLinks.forEach(link => link.addEventListener('click', handleLinkClick));
-      document.addEventListener('keydown', handleKeydown);
-      navCta?.addEventListener('click', handleCtaClick as EventListener);
-      mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
-      window.addEventListener('scroll', updateProgress, { passive: true });
-      sections.forEach(section => observer.observe(section));
-
-      updateProgress();
-
-      return () => {
-        toggle.removeEventListener('click', handleToggleClick);
-        mobileLinks.forEach(link => link.removeEventListener('click', handleLinkClick));
-        document.removeEventListener('keydown', handleKeydown);
-        navCta?.removeEventListener('click', handleCtaClick as EventListener);
-        mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
-        window.removeEventListener('scroll', updateProgress);
-        observer.disconnect();
-        document.body.style.overflow = '';
-      };
-    }
-
-    let cleanup: (() => void) | undefined;
-    cleanup = initNav();
-    document.addEventListener('astro:after-swap', () => {
-      if (cleanup) cleanup();
-      cleanup = initNav();
-    });
-  })();
+  var cleanup = initNav();
+  document.addEventListener('astro:after-swap', function() { if (cleanup) cleanup(); cleanup = initNav(); });
 </script>

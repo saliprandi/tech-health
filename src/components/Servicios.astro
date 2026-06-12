@@ -1,6 +1,7 @@
 ---
 import { CONFIG } from '../data/config';
 
+// Helper to return the correct SVG tag based on icon name
 const getIconSvg = (iconName: string) => {
   return `<use href="#icon-${iconName}" />`;
 };
@@ -16,6 +17,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
 <section id="servicios" class="bg-white section-padding">
   <div class="container-custom">
+    
+    <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
       <div class="max-w-xl">
         <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Servicios</div>
@@ -24,34 +27,38 @@ const modalData = CONFIG.servicios.map(servicio => ({
         </h2>
       </div>
       <p class="font-body text-[16px] text-text-soft max-w-md md:text-right pb-2">
-        Aseguramos la máxima disponibilidad y precisión de su equipamiento médico.
+        Aseguramos la máxima disponibilidad y precisión de su equipamiento médico a través de servicios especializados.
       </p>
     </div>
 
+    <!-- Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (
         <div
-          class="service-card group relative bg-off-white border border-transparent rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover cursor-pointer focus-visible:ring-2 focus-visible:ring-blue"
+          class="service-card group relative bg-off-white border border-transparent rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-within:shadow-card-hover overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
           data-index={index}
           tabindex="0"
           role="button"
           aria-haspopup="dialog"
-          aria-label={`Ver detalles: ${servicio.titulo}`}
+          aria-label={`Ver detalles del servicio: ${servicio.titulo}`}
         >
-          <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
-          <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue">
-            <svg class="w-7 h-7" fill="none" stroke-width="1.5" stroke="currentColor" set:html={getIconSvg(servicio.icono)}></svg>
           <!-- Animated Top Bar -->
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-500 ease-out"></div>
           
           <!-- Icon -->
           <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue group-hover:scale-110 transition-transform">
-            <svg class="w-7 h-7 group-hover:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-              <use href={`#icon-${servicio.icono}`} />
-            </svg>
+            <svg class="w-7 h-7 group-hover:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true" set:html={getIconSvg(servicio.icono)}></svg>
           </div>
-          <h3 class="font-heading font-bold text-[22px] text-navy mb-3">{servicio.titulo}</h3>
-          <p class="font-body font-light text-[15px] text-text-soft mb-6">{servicio.descripcion}</p>
+
+          <!-- Content -->
+          <h3 class="font-heading font-bold text-[22px] text-navy mb-3">
+            {servicio.titulo}
+          </h3>
+          <p class="font-body font-light text-[15px] text-text-soft mb-6 leading-relaxed">
+            {servicio.descripcion}
+          </p>
+
+          <!-- List -->
           <ul class="flex flex-col gap-3">
             {servicio.items.slice(0, 3).map(item => (
               <li class="flex items-start gap-3 font-body text-[14px] text-text-soft">
@@ -59,11 +66,16 @@ const modalData = CONFIG.servicios.map(servicio => ({
                 {item}
               </li>
             ))}
+            {servicio.items.length > 3 && (
+              <li class="font-body text-[14px] text-blue font-medium mt-1">
+                Y más...
+              </li>
+            )}
           </ul>
           
           <!-- Click Indicator -->
           <div class="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-all duration-300 text-blue bg-blue-pale p-2 rounded-full group-hover:translate-y-[-2px] group-focus-visible:translate-y-[-2px]">
-            <svg class="w-5 h-5 fill-none" stroke="currentColor" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true">
               <use href="#icon-expand" />
             </svg>
           </div>
@@ -72,12 +84,19 @@ const modalData = CONFIG.servicios.map(servicio => ({
     </div>
   </div>
 
+  <!-- Maximize Modal -->
   <div id="service-modal-backdrop" class="fixed inset-0 bg-navy-dark/95 backdrop-blur-sm z-[210] opacity-0 pointer-events-none invisible transition-opacity duration-400"></div>
-  <div id="service-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none invisible transition-all duration-400 scale-95" role="dialog" aria-modal="true">
+
+  <div id="service-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none invisible transition-all duration-400 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
-      <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors" aria-label="Cerrar">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor"><use href="#icon-close" /></svg>
+      <!-- Close Button -->
+      <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors duration-300 z-10 focus-visible:ring-2 focus-visible:ring-blue" aria-label="Cerrar modal">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true">
+          <use href="#icon-close" />
+        </svg>
       </button>
+      
+      <!-- Dynamic Content -->
       <div id="modal-content" class="pt-2 pb-2"></div>
     </div>
   </div>
@@ -85,209 +104,154 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
 <script is:inline define:vars={{ modalData, whatsappNumber: CONFIG.contacto.whatsapp }}>
   (function() {
-    let isModalOpen = false;
-    const escapeHtml = (u) => typeof u === 'string' ? u.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;") : '';
-
-    const closeModal = () => {
-      const b = document.getElementById('service-modal-backdrop');
-      const m = document.getElementById('service-modal');
-      if (!b || !m) return;
-      isModalOpen = false;
-      b.classList.add('opacity-0', 'pointer-events-none');
-      m.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
-      document.body.style.overflow = '';
-      setTimeout(() => { if (!isModalOpen) { b.classList.add('invisible'); m.classList.add('invisible'); } }, 400);
-    };
-
-    const openModal = (i) => {
-      const s = modalData[i];
-      if (!s) return;
-      const c = document.getElementById('modal-content');
-      const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Interés: ' + s.titulo)}`;
-      c.innerHTML = `
-        <h3 class="font-heading font-extrabold text-[28px] text-navy mb-4">${escapeHtml(s.titulo)}</h3>
-        <p class="font-body font-light text-[17px] text-text-soft mb-8">${escapeHtml(s.descripcion)}</p>
-        <ul class="flex flex-col gap-4 mb-10">
-          ${s.items.map(item => `<li class="flex items-start gap-4 font-body text-[15px] text-text-soft">${escapeHtml(item)}</li>`).join('')}
-        </ul>
-        <a href="${waUrl}" id="modal-cta" target="_blank" rel="noopener noreferrer" class="inline-flex bg-navy text-white font-bold py-3 px-8 rounded-lg">WhatsApp</a>
-      `;
-      const b = document.getElementById('service-modal-backdrop');
-      const m = document.getElementById('service-modal');
-      b.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
-      m.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
-      m.classList.add('scale-100', 'opacity-100');
-      document.body.style.overflow = 'hidden';
-      isModalOpen = true;
-    };
-
-    const init = () => {
-      document.querySelectorAll('.service-card').forEach(c => {
-        c.addEventListener('click', () => openModal(c.dataset.index));
-      });
-      document.getElementById('service-modal-backdrop')?.addEventListener('click', closeModal);
-      document.getElementById('close-modal')?.addEventListener('click', closeModal);
-    };
-
-    init();
-    document.addEventListener('astro:after-swap', init);
-    const escapeHtml = (unsafe) => {
-      if (typeof unsafe !== 'string') return '';
-      return unsafe
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    };
-
     function initServicios() {
-      const cards = document.querySelectorAll('.service-card');
-      const backdrop = document.getElementById('service-modal-backdrop');
-      const modal = document.getElementById('service-modal');
-      const modalContent = document.getElementById('modal-content');
-      const closeBtn = document.getElementById('close-modal');
+      var cards = document.querySelectorAll('.service-card');
+      var backdrop = document.getElementById('service-modal-backdrop');
+      var modal = document.getElementById('service-modal');
+      var modalContent = document.getElementById('modal-content');
+      var closeBtn = document.getElementById('close-modal');
 
-      if (!cards.length || !backdrop || !modal || !modalContent || !closeBtn) return () => {};
+      if (!cards.length || !backdrop || !modal || !modalContent || !closeBtn) return function() {};
 
-      let isModalOpen = false;
-      let lastFocusedElement = null;
-      let focusableElements = [];
+      var isModalOpen = false;
+      var lastFocusedElement = document.activeElement;
+      var focusableElements = [];
 
-      const updateFocusableElements = () => {
-        focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
-          .filter(el => {
-             const tag = el.tagName.toLowerCase();
-             return tag !== 'svg' && tag !== 'use' && !el.hasAttribute('disabled');
-          });
-      };
+      function escapeHtml(unsafe) {
+        if (typeof unsafe !== 'string') return '';
+        return unsafe.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+      }
 
-      const closeModal = () => {
+      function getFocusableElements() {
+        if (!modal) return [];
+        var q = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        var result = [];
+        for (var fi = 0; fi < q.length; fi++) {
+          var item = q[fi];
+          if (item && item.tagName !== 'SVG' && item.tagName !== 'USE' && !item.hasAttribute('disabled')) {
+            result.push(item);
+          }
+        }
+        return result;
+      }
+
+      function closeModal() {
         if (!isModalOpen) return;
+        if (!backdrop || !modal || !modalContent) return;
         isModalOpen = false;
-
         backdrop.classList.add('opacity-0', 'pointer-events-none');
         modal.classList.remove('scale-100', 'opacity-100');
         modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
         document.body.style.overflow = '';
-
-        if (lastFocusedElement) lastFocusedElement.focus();
-
-        setTimeout(() => {
+        if (lastFocusedElement instanceof HTMLElement) lastFocusedElement.focus();
+        setTimeout(function() {
           if (!isModalOpen) {
             modalContent.innerHTML = '';
             backdrop.classList.add('invisible');
             modal.classList.add('invisible');
           }
         }, 400);
-      };
+      }
 
-      const openModal = (index) => {
-        const servicio = modalData[index];
+      function openModal(index) {
+        var servicio = modalData[index];
         if (!servicio) return;
+        if (!backdrop || !modal || !modalContent || !closeBtn) return;
 
         lastFocusedElement = document.activeElement;
-        const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ' + servicio.titulo)}`;
+        var waUrl = 'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ' + servicio.titulo);
 
-        modalContent.innerHTML = `
-          <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
-            <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><use href="#icon-${escapeHtml(servicio.icono)}" /></svg>
-          </div>
-          <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
-          <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
-
-          <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
-          <ul class="flex flex-col gap-4 mb-10">
-            ${servicio.items.map(item => `<li class="flex items-start gap-4 font-body text-[15px] text-text-soft"><span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>${escapeHtml(item)}</li>`).join('')}
-          </ul>
-          <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
-            <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta">
-              <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
-              <span id="modal-cta-text">Consultar por este servicio</span>
-            </a>
-            <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">Cerrar</button>
-          </div>
-        `;
+        modalContent.innerHTML = ''
+          + '<div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">'
+          + '<svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><use href="#icon-' + escapeHtml(servicio.icono) + '" /></svg></div>'
+          + '<h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">' + escapeHtml(servicio.titulo) + '</h3>'
+          + '<p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">' + escapeHtml(servicio.descripcion) + '</p>'
+          + '<h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>'
+          + '<ul class="flex flex-col gap-4 mb-10">'
+          + servicio.items.map(function(item) { return '<li class="flex items-start gap-4 font-body text-[15px] text-text-soft"><span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>' + escapeHtml(item) + '</li>'; }).join('')
+          + '</ul>'
+          + '<div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">'
+          + '<a href="' + waUrl + '" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta">'
+          + '<svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>'
+          + '<span id="modal-cta-text">Consultar por este servicio</span></a>'
+          + '<button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">Cerrar</button>'
+          + '</div>';
 
         backdrop.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
         modal.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'scale-95');
         modal.classList.add('scale-100', 'opacity-100');
         document.body.style.overflow = 'hidden';
         isModalOpen = true;
-
-        updateFocusableElements();
-        setTimeout(() => {
-          (document.getElementById('modal-cta') || closeBtn).focus();
+        focusableElements = getFocusableElements();
+        var focusTarget = document.getElementById('modal-cta');
+        setTimeout(function() {
+          if (focusTarget) { focusTarget.focus(); }
+          else if (closeBtn) { closeBtn.focus(); }
         }, 100);
-      };
+      }
 
-      const handleCardAction = (e) => {
-        const card = e.currentTarget;
-        const index = card.getAttribute('data-index');
+      function handleCardAction(e) {
+        if (!e || !e.currentTarget) return;
+        var target = e.currentTarget;
+        var index = target.getAttribute ? target.getAttribute('data-index') : null;
         if (index !== null) openModal(parseInt(index));
-      };
+      }
 
-      const handleModalContentClick = (e) => {
-        if (e.target.closest('#modal-close-secondary')) closeModal();
-
-        const cta = e.target.closest('#modal-cta');
-        const ctaText = document.getElementById('modal-cta-text');
-        if (cta && ctaText) {
-          const originalText = ctaText.textContent;
-          ctaText.textContent = 'Redirigiendo...';
-          cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-          setTimeout(() => {
-            if (ctaText) ctaText.textContent = originalText;
-            if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-          }, 3000);
+      function handleCardKeydown(e) {
+        if (!e || typeof e.key !== 'string' || typeof e.preventDefault !== 'function') return;
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleCardAction(e);
         }
-      };
+      }
 
-      const handleGlobalKeydown = (e) => {
+      function handleGlobalKeydown(e) {
+        if (!e || typeof e.key !== 'string' || typeof e.preventDefault !== 'function') return;
         if (!isModalOpen) return;
-
-        if (e.key === 'Escape') {
-          closeModal();
-          return;
-        }
-
+        if (e.key === 'Escape') { closeModal(); return; }
         if (e.key === 'Tab') {
           if (focusableElements.length === 0) return;
-          const first = focusableElements[0];
-          const last = focusableElements[focusableElements.length - 1];
-          if (e.shiftKey) {
-            if (document.activeElement === first) {
-              e.preventDefault();
-              last.focus();
-            }
-          } else {
-            if (document.activeElement === last) {
-              e.preventDefault();
-              first.focus();
+          var first = focusableElements[0];
+          var last = focusableElements[focusableElements.length - 1];
+          if (first instanceof HTMLElement && last instanceof HTMLElement) {
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+          }
+        }
+      }
+
+      function handleModalContentClick(e) {
+        if (!e || !e.target) return;
+        var target = e.target;
+        if (target.closest && target.closest('#modal-close-secondary')) { closeModal(); return; }
+        if (target.closest) {
+          var cta = target.closest('#modal-cta');
+          if (cta) {
+            var text = document.getElementById('modal-cta-text');
+            if (text) {
+              var original = text.textContent;
+              text.textContent = 'Redirigiendo...';
+              cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+              setTimeout(function() { text.textContent = original; cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none'); }, 3000);
             }
           }
         }
-      };
+      }
 
-      cards.forEach(card => {
-        card.addEventListener('click', handleCardAction);
-        card.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            handleCardAction(e);
-          }
-        });
-      });
-
+      for (var ci = 0; ci < cards.length; ci++) {
+        cards[ci].addEventListener('click', handleCardAction);
+        cards[ci].addEventListener('keydown', handleCardKeydown);
+      }
       backdrop.addEventListener('click', closeModal);
       closeBtn.addEventListener('click', closeModal);
       modalContent.addEventListener('click', handleModalContentClick);
       document.addEventListener('keydown', handleGlobalKeydown);
 
-      return () => {
-        cards.forEach(card => {
-          card.removeEventListener('click', handleCardAction);
-        });
+      return function() {
+        for (var ci2 = 0; ci2 < cards.length; ci2++) {
+          cards[ci2].removeEventListener('click', handleCardAction);
+          cards[ci2].removeEventListener('keydown', handleCardKeydown);
+        }
         backdrop.removeEventListener('click', closeModal);
         closeBtn.removeEventListener('click', closeModal);
         modalContent.removeEventListener('click', handleModalContentClick);
@@ -296,12 +260,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
       };
     }
 
-    let cleanup;
-    cleanup = initServicios();
-
-    document.addEventListener('astro:after-swap', () => {
-      if (cleanup) cleanup();
-      cleanup = initServicios();
-    });
+    var cleanup = initServicios();
+    document.addEventListener('astro:after-swap', function() { if (cleanup) cleanup(); cleanup = initServicios(); });
   })();
 </script>
