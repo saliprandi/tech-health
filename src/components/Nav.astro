@@ -84,7 +84,7 @@ import { CONFIG } from '../data/config';
 
       if (isOpen) {
         lastFocusedElement = document.activeElement as HTMLElement;
-        menu.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]', 'invisible');
+        menu.classList.remove('invisible', 'opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
         menu.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
         document.body.style.overflow = 'hidden';
 
@@ -95,6 +95,10 @@ import { CONFIG } from '../data/config';
         }
 
         setTimeout(() => (menu.querySelector('.mobile-link') as HTMLElement)?.focus(), 150);
+        setTimeout(() => {
+          const firstLink = menu.querySelector('.mobile-link') as HTMLElement;
+          firstLink?.focus();
+        }, 150);
       } else {
         menu.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
         menu.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
@@ -107,6 +111,7 @@ import { CONFIG } from '../data/config';
         }
 
         if (lastFocusedElement) lastFocusedElement.focus();
+        setTimeout(() => { if (!isOpen) menu?.classList.add('invisible'); }, 300);
         setTimeout(() => { if (!isOpen) menu.classList.add('invisible'); }, 300);
       }
     };
@@ -119,6 +124,7 @@ import { CONFIG } from '../data/config';
       }
       if (e.key === 'Tab') {
         const focusables = [toggle, ...Array.from(menu?.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])') || [])] as HTMLElement[];
+        if (focusables.length === 0) return;
         const first = focusables[0];
         const last = focusables[focusables.length - 1];
         if (e.shiftKey && document.activeElement === first) {
@@ -132,6 +138,26 @@ import { CONFIG } from '../data/config';
     };
 
     const handleLinkClick = () => { if (isOpen) toggleMenu(); };
+    const handleLinkClick = () => {
+      if (isOpen) toggleMenu();
+    };
+
+    const handleScroll = () => {
+      if (!progressBar) return;
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      if (height > 0) {
+        progressBar.style.transform = `scaleX(${winScroll / height})`;
+      } else {
+        progressBar.style.transform = 'scaleX(0)';
+      }
+    const updateProgress = () => {
+      if (!progressBar) return;
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? winScroll / height : 0;
+      progressBar.style.transform = `scaleX(${scrolled})`;
+    };
 
     const handleCtaClick = (e: MouseEvent) => {
       const cta = e.currentTarget as HTMLElement;
@@ -179,15 +205,28 @@ import { CONFIG } from '../data/config';
     window.addEventListener('scroll', updateProgress, { passive: true });
     sections.forEach(section => observer.observe(section));
 
+    const handleLinkClick = () => { if (isOpen) toggleMenu(); };
+
+    // Attach listeners
+    toggle?.addEventListener('click', toggleMenu);
+    mobileLinks.forEach(link => link.addEventListener('click', handleLinkClick));
+    document.addEventListener('keydown', handleKeydown);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    navCta?.addEventListener('click', handleCtaClick as EventListener);
+    mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
+    sections.forEach(section => observer.observe(section));
+
+    handleScroll();
+    // Initial state
     updateProgress();
 
     return () => {
       toggle?.removeEventListener('click', toggleMenu);
       mobileLinks.forEach(link => link.removeEventListener('click', handleLinkClick));
       document.removeEventListener('keydown', handleKeydown);
+      window.removeEventListener('scroll', handleScroll);
       navCta?.removeEventListener('click', handleCtaClick as EventListener);
       mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
-      window.removeEventListener('scroll', updateProgress);
       observer.disconnect();
       document.body.style.overflow = '';
     };
@@ -198,5 +237,13 @@ import { CONFIG } from '../data/config';
   document.addEventListener('astro:after-swap', () => {
     cleanupNav();
     cleanupNav = initNav();
+  let cleanup: (() => void) | undefined;
+
+  // Initial load
+  cleanup = initNav();
+
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanup) cleanup();
+    cleanup = initNav();
   });
 </script>

@@ -37,6 +37,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       <div class="flex flex-wrap items-center gap-4 mt-2">
         <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="btn-primary gap-2 group">
           <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat" aria-hidden="true">
+          <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat">
             <use href="#icon-whatsapp" />
           </svg>
           <span id="hero-cta-text">Solicitar servicio</span>
@@ -85,14 +86,12 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
   function initHero() {
     const heroCta = document.getElementById('hero-cta');
     const heroCtaText = document.getElementById('hero-cta-text');
-
     if (!heroCta || !heroCtaText) return () => {};
 
     const handleCtaClick = () => {
       const originalText = heroCtaText.textContent;
       heroCtaText.textContent = 'Redirigiendo...';
       heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-
       setTimeout(() => {
         if (heroCtaText) heroCtaText.textContent = originalText;
         if (heroCta) heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
@@ -100,7 +99,6 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
     };
 
     heroCta.addEventListener('click', handleCtaClick);
-
     return () => {
       heroCta.removeEventListener('click', handleCtaClick);
     };
@@ -111,5 +109,10 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
   document.addEventListener('astro:after-swap', () => {
     cleanupHero();
     cleanupHero = initHero();
+  let cleanup: (() => void) | undefined;
+  cleanup = initHero();
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanup) cleanup();
+    cleanup = initHero();
   });
 </script>
