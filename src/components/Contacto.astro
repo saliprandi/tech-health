@@ -40,8 +40,11 @@ import { CONFIG } from '../data/config';
           <form id="contact-form" class="flex flex-col gap-5" data-whatsapp={CONFIG.contacto.whatsapp}>
             <input type="text" id="f-nombre" name="nombre" required placeholder="Nombre completo" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
             <input type="tel" id="f-tel" name="telefono" required placeholder="Teléfono / WhatsApp" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
-            <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="Mensaje..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none"></textarea>
-            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px]">Enviar por WhatsApp</button>
+            <div class="relative">
+              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="Mensaje..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none"></textarea>
+              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body">0 / 500</div>
+            </div>
+            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98]">Enviar por WhatsApp</button>
           </form>
         </div>
       </div>
@@ -52,8 +55,16 @@ import { CONFIG } from '../data/config';
 <script>
   function initContacto() {
     const f = document.getElementById('contact-form') as HTMLFormElement | null;
+    const desc = document.getElementById('f-desc') as HTMLTextAreaElement | null;
+    const counter = document.getElementById('char-counter');
     if (!f) return;
     const w = f.dataset.whatsapp;
+
+    const onInput = () => {
+      if (desc && counter) {
+        counter.textContent = `${desc.value.length} / 500`;
+      }
+    };
 
     const handleSub = (e: Event) => {
       e.preventDefault();
@@ -64,6 +75,7 @@ import { CONFIG } from '../data/config';
     };
 
     f.addEventListener('submit', handleSub);
+    desc?.addEventListener('input', onInput);
 
     const cp = document.getElementById('copy-address');
     const onCp = () => {
@@ -80,6 +92,7 @@ import { CONFIG } from '../data/config';
 
     return () => {
       f.removeEventListener('submit', handleSub);
+      desc?.removeEventListener('input', onInput);
       cp?.removeEventListener('click', onCp);
     };
   }

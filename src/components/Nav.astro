@@ -75,6 +75,30 @@ import { CONFIG } from '../data/config';
       menu.classList.toggle('opacity-100');
       menu.classList.toggle('invisible');
       menu.classList.toggle('pointer-events-auto');
+
+      if (!open) {
+        // Simple focus trap logic
+        const focusable = menu.querySelectorAll('a, button');
+        const first = focusable[0] as HTMLElement;
+        const last = focusable[focusable.length - 1] as HTMLElement;
+
+        const handleTrap = (e: KeyboardEvent) => {
+          if (e.key === 'Tab') {
+            if (e.shiftKey) {
+              if (document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+              }
+            } else {
+              if (document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+              }
+            }
+          }
+        };
+        menu.addEventListener('keydown', handleTrap as any);
+      }
     };
 
     const onScroll = () => {
