@@ -51,6 +51,7 @@ import { CONFIG } from '../data/config';
   </div>
 
   <!-- Reading Progress Bar -->
+  <div id="reading-progress" class="absolute bottom-0 left-0 w-full h-[3px] bg-blue origin-left scale-x-0 transition-transform duration-75 ease-out"></div>
   <div id="reading-progress" class="absolute bottom-0 left-0 w-full h-[3px] bg-blue origin-left scale-x-0 transition-transform duration-150 ease-out pointer-events-none" aria-hidden="true"></div>
 </nav>
 
@@ -68,6 +69,7 @@ import { CONFIG } from '../data/config';
     const spans = toggle?.querySelectorAll('span');
     const navCta = document.getElementById('nav-cta');
     const mobileNavCta = document.getElementById('mobile-nav-cta');
+    const progress = document.getElementById('reading-progress');
     const progressBar = document.getElementById('reading-progress');
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
@@ -114,6 +116,7 @@ import { CONFIG } from '../data/config';
           spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
         }
 
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
         if (lastFocusedElement) lastFocusedElement.focus();
         setTimeout(() => { if (!isOpen) menu?.classList.add('invisible'); }, 300);
         if (lastFocusedElement) lastFocusedElement.focus();
@@ -153,6 +156,15 @@ import { CONFIG } from '../data/config';
       }
     };
 
+    const handleScroll = () => {
+      if (!progress) return;
+      const height = document.documentElement.scrollHeight - window.innerHeight;
+      if (height > 0) {
+        const scrolled = (window.scrollY / height);
+        progress.style.transform = `scaleX(${scrolled})`;
+      } else {
+        progress.style.transform = 'scaleX(0)';
+      }
     const closeOnLinkClick = () => {
     const closeOnLinkClick = () => { if (isOpen) toggleMenu(); };
     const handleLinkClick = () => {
@@ -162,6 +174,8 @@ import { CONFIG } from '../data/config';
     toggle?.addEventListener('click', toggleMenu);
     mobileLinks.forEach(link => link.addEventListener('click', closeOnLinkClick));
     document.addEventListener('keydown', handleKeydown);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
 
     // WhatsApp Redirect Feedback
     const handleCtaClick = (e: MouseEvent) => {
@@ -170,6 +184,8 @@ import { CONFIG } from '../data/config';
       cta.textContent = 'Redirigiendo...';
       cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
       setTimeout(() => {
+        cta.textContent = originalText;
+        cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         if (cta) {
           cta.textContent = originalText;
           cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
@@ -180,6 +196,9 @@ import { CONFIG } from '../data/config';
     navCta?.addEventListener('click', handleCtaClick as EventListener);
     mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
 
+    // ScrollSpy
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
 
     const updateProgress = () => {
       if (!progressBar) return;
@@ -309,6 +328,15 @@ import { CONFIG } from '../data/config';
       toggle?.removeEventListener('click', toggleMenu);
       mobileLinks.forEach(link => link.removeEventListener('click', closeOnLinkClick));
       document.removeEventListener('keydown', handleKeydown);
+      window.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
+      toggle?.removeEventListener('click', toggleMenu);
+      navCta?.removeEventListener('click', handleCtaClick as EventListener);
+      mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
+    };
+  }
+
+  let cleanup = initNav();
       navCta?.removeEventListener('click', handleCtaClick as EventListener);
       mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
       window.removeEventListener('scroll', updateProgress);

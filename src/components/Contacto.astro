@@ -348,6 +348,9 @@ import { CONFIG } from '../data/config';
         const originalIcon = copyIconUse.getAttribute('href');
 
         navigator.clipboard.writeText(addressText).then(() => {
+          const originalText = copyLabel.textContent;
+          const originalIcon = copyIconUse.getAttribute('href');
+
           copyLabel.textContent = '¡Copiado!';
           copyIconUse.setAttribute('href', '#icon-check');
           copyBtn.classList.add('text-blue');
@@ -355,6 +358,7 @@ import { CONFIG } from '../data/config';
 
           setTimeout(() => {
             copyLabel.textContent = originalText;
+            copyIconUse.setAttribute('href', originalIcon);
             copyLabel.textContent = originalText || 'Copiar';
             copyIconUse.setAttribute('href', originalIcon || '#icon-copy');
             copyBtn.classList.remove('text-blue');

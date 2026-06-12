@@ -335,6 +335,29 @@ const modalData = CONFIG.servicios.map(servicio => ({
         card.addEventListener('keydown', handleCardKeydown);
       });
 
+    backdrop?.addEventListener('click', closeModal);
+    closeBtn?.addEventListener('click', closeModal);
+
+    modalContent?.addEventListener('click', (e) => {
+      const target = e.target;
+      if (!target || !(target instanceof HTMLElement)) return;
+
+      if (target.closest('#modal-close-secondary')) {
+        closeModal();
+      }
+
+      const cta = target.closest('#modal-cta');
+      const ctaText = document.getElementById('modal-cta-text');
+      if (cta && ctaText) {
+        const originalText = ctaText.textContent;
+        ctaText.textContent = 'Redirigiendo...';
+        cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        setTimeout(() => {
+          ctaText.textContent = originalText;
+          cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        }, 3000);
+      }
+    });
       backdrop.addEventListener('click', closeModal);
       closeBtn.addEventListener('click', closeModal);
 
