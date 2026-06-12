@@ -313,6 +313,15 @@ import { CONFIG } from '../data/config';
       if (isOpen) toggleMenu();
     };
 
+    // Reading Progress
+    const updateProgress = () => {
+      if (!progressBar) return;
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? winScroll / height : 0;
+      progressBar.style.transform = `scaleX(${scrolled})`;
+    };
+
     // WhatsApp Redirect Feedback
     const handleCtaClick = (e: Event) => {
     const handleScroll = () => {
@@ -338,6 +347,12 @@ import { CONFIG } from '../data/config';
       cta.textContent = 'Redirigiendo...';
       cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
       setTimeout(() => {
+        cta.textContent = originalText;
+        cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+      }, 3000);
+    };
+
+    // ScrollSpy Observer
         if (cta) {
           cta.textContent = originalText;
           cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
@@ -380,6 +395,7 @@ import { CONFIG } from '../data/config';
       });
     }, { rootMargin: '-30% 0px -70% 0px' });
 
+    // Initial setup and event listeners
     const handleCtaClick = (e: MouseEvent) => {
       const cta = e.currentTarget as HTMLElement;
       const textSpan = cta.querySelector('span');
@@ -470,6 +486,10 @@ import { CONFIG } from '../data/config';
       navCta?.removeEventListener('click', handleCtaClick as EventListener);
       mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
       observer.disconnect();
+    };
+  }
+
+  let cleanup = initNav();
       document.body.style.overflow = '';
     };
   }

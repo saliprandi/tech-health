@@ -144,6 +144,7 @@ import { CONFIG } from '../data/config';
       const handleBtnClick = () => {
         const originalText = tooltipText.textContent || '¡Hola! ¿En qué podemos ayudarte?';
         tooltipText.textContent = '¡Redirigiendo!';
+
         showTooltip();
 
         btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
@@ -160,6 +161,10 @@ import { CONFIG } from '../data/config';
         btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         setTimeout(() => {
+          hideTooltip();
+          setTimeout(() => {
+            tooltipText.textContent = originalText;
+            btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           if (btn) btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           hideTooltip();
           setTimeout(() => {
@@ -196,6 +201,11 @@ import { CONFIG } from '../data/config';
       };
     }
 
+    let cleanupWaFloat = initWaFloat();
+
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanupWaFloat) cleanupWaFloat();
+      cleanupWaFloat = initWaFloat();
     let cleanup = initWaFloat();
     let cleanupWaFloat = initWaFloat();
 

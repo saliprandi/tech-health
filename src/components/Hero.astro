@@ -15,6 +15,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       
       <!-- Badge -->
       <div class="inline-flex items-center gap-2 bg-blue-pale text-blue font-heading font-bold text-[12px] uppercase tracking-wider py-2 px-4 rounded-full" aria-label={`Ubicación: ${CONFIG.empresa.ciudad}, ${CONFIG.empresa.pais}`}>
+        <span class="relative flex h-2 w-2" aria-label="Indicador de servicio activo">
         <span class="relative flex h-2 w-2" aria-hidden="true">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue opacity-75"></span>
           <span class="relative inline-flex rounded-full h-2 w-2 bg-blue"></span>
@@ -36,6 +37,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       <!-- Buttons -->
       <div class="flex flex-wrap items-center gap-4 mt-2">
         <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="btn-primary gap-2 group">
+          <svg class="w-5 h-5 fill-current">
           <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat" aria-hidden="true">
           <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat">
             <use href="#icon-whatsapp" />
@@ -137,6 +139,11 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
     };
   }
 
+  let cleanupHero = initHero();
+
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanupHero) cleanupHero();
+    cleanupHero = initHero();
   let cleanupHero: (() => void) | undefined;
   cleanupHero = initHero();
 
