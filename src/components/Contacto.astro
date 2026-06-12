@@ -22,7 +22,7 @@ import { CONFIG } from '../data/config';
           <!-- WhatsApp -->
           <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-              <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <svg class="w-5 h-5 group-hover:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-phone" />
               </svg>
             </div>
@@ -170,6 +170,9 @@ import { CONFIG } from '../data/config';
     const copyIconUse = document.getElementById('copy-icon-use');
     const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
     const submitBtnText = document.getElementById('f-submit-text');
+    const announcement = document.getElementById('copy-announcement');
+
+    // Business Hours Status Badge Logic
 
     if (!form) return () => {};
 
@@ -198,6 +201,7 @@ import { CONFIG } from '../data/config';
     updateStatusBadge();
     const statusInterval = setInterval(updateStatusBadge, 60000);
 
+    // Character Counter Logic
     // Character Counter
     const updateCounter = () => {
       if (!textarea || !counter) return;
@@ -215,6 +219,7 @@ import { CONFIG } from '../data/config';
     textarea?.addEventListener('input', updateCounter);
     updateCounter();
 
+    // Copy Address Logic
     // Copy Address
     const handleCopy = () => {
       if (!copyBtn || !copyLabel || !copyIconUse) return;
@@ -314,6 +319,14 @@ import { CONFIG } from '../data/config';
     };
 
     copyBtn?.addEventListener('click', handleCopy);
+
+    // Form Logic
+    const handleSubmit = (e: Event) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
 
     // Form Submission
     const handleSubmit = (e: Event) => {
@@ -464,6 +477,43 @@ import { CONFIG } from '../data/config';
         const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
         const desc = (document.getElementById('f-desc') as HTMLTextAreaElement)?.value.trim() || 'Sin detalles adicionales';
 
+      if (submitBtn && submitBtnText) {
+        const originalBtnText = submitBtnText.textContent;
+        submitBtnText.textContent = 'Redirigiendo...';
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
+        const encodedMessage = encodeURIComponent(rawMessage);
+        const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+        window.open(url, '_blank', 'noopener,noreferrer');
+
+        setTimeout(() => {
+          submitBtnText.textContent = originalBtnText;
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        }, 3000);
+      }
+    };
+
+    form.addEventListener('submit', handleSubmit);
+
+    return () => {
+      clearInterval(statusInterval);
+      textarea?.removeEventListener('input', updateCounter);
+      copyBtn?.removeEventListener('click', handleCopy);
+      form.removeEventListener('submit', handleSubmit);
+    };
+  }
+
+  let cleanup: (() => void) | undefined;
+  cleanup = initContacto();
+
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanup) cleanup();
+    cleanup = initContacto();
+  });
         if (btn && btnText) {
           const originalBtnText = btnText.textContent;
           btnText.textContent = 'Redirigiendo...';

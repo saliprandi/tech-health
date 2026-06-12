@@ -48,6 +48,10 @@ import { CONFIG } from '../data/config';
       }, 500);
     };
 
+    // Show tooltip after 5 seconds
+    const initialTimeout = setTimeout(showTooltip, 5000);
+
+    const handleBtnClick = () => {
     const initialTimeout = setTimeout(showTooltip, 5000);
 
     const handleBtnClick = () => {
@@ -62,6 +66,8 @@ import { CONFIG } from '../data/config';
       setTimeout(() => {
         hideTooltip();
         setTimeout(() => {
+          tooltipText.textContent = originalText;
+          btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           if (tooltipText) tooltipText.textContent = originalText;
           if (btn) btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }, 500);
@@ -85,6 +91,11 @@ import { CONFIG } from '../data/config';
   });
   let cleanup: (() => void) | undefined;
   cleanup = initWaFloat();
+
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanup) cleanup();
+    cleanup = initWaFloat();
+  });
 
   document.addEventListener('astro:after-swap', () => {
     if (cleanup) cleanup();

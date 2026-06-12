@@ -96,6 +96,9 @@ Importante!!! Quiero todos los pr en español
 **Aprendizaje:** Usar un indicador de pulso (`animate-ping`) proporciona una señal visual sutil de "actividad" o "presencia local" que refuerza la confianza del usuario en servicios regionales.
 **Acción:** Implementar estados de animación sutiles para badges de ubicación y acompañarlos de `aria-label` descriptivos para no perder accesibilidad en elementos puramente visuales.
 
+## 2025-06-20 - [UX: Feedback visual en tarjetas de equipo]
+**Aprendizaje:** Implementar estados de hover sutiles en tarjetas informativas (como el equipo en Nosotros.astro) mejora la percepción de calidad y "life" del sitio. Usar una combinación de elevación (shadow-card-hover), cambio de borde (border-blue/20) y escala en elementos internos (group-hover:scale-110) crea una respuesta visual cohesiva.
+**Acción:** Aplicar patrones de feedback 'group' en componentes de tarjetas para guiar la atención del usuario y reforzar la interactividad sin sobrecargar la interfaz.
 ## 2025-06-20 - [A11y: Accesibilidad de tarjetas de servicio y modales]
 **Aprendizaje:** En este repositorio, los componentes Astro presentaban una alta redundancia y corrupción estructural en sus scripts, lo que rompía tanto la accesibilidad como el build. La implementación de un focus trap robusto y la restauración del foco al cerrar modales es vital cuando se usan View Transitions, ya que el estado del DOM puede volverse inconsistente si no se maneja una limpieza adecuada de event listeners.
 **Acción:** Al refactorizar componentes interactivos, priorizar la consolidación de la lógica de inicialización en una única función que devuelva un cleanup, y asegurar que el soporte de teclado (Enter/Space) esté integrado desde el inicio en elementos con roles interactivos.
