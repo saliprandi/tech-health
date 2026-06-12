@@ -89,6 +89,11 @@ import { CONFIG } from '../data/config';
     if (cleanupWaFloat) cleanupWaFloat();
     cleanupWaFloat = initWaFloat();
   });
+
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanupWaFloat) cleanupWaFloat();
+    cleanupWaFloat = initWaFloat();
+  });
   let cleanup: (() => void) | undefined;
   cleanup = initWaFloat();
 

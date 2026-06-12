@@ -21,7 +21,7 @@ import { CONFIG } from '../data/config';
     <!-- CTA & Mobile Toggle -->
     <div class="flex items-center gap-4">
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" id="nav-cta" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md">
-        Consultar por WhatsApp
+        <span id="nav-cta-text">Consultar por WhatsApp</span>
       </a>
 
       <!-- Hamburger Button -->
@@ -40,13 +40,13 @@ import { CONFIG } from '../data/config';
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99] invisible" role="navigation" aria-label="Menú móvil">
+  <div id="mobile-menu" class="fixed top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99] invisible" role="navigation" aria-label="Menú móvil">
     <a href="#servicios" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Servicios</a>
     <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
     <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
     <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Contacto</a>
     <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mobile-link mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]" id="mobile-nav-cta">
-      Consultar por WhatsApp
+      <span id="mobile-nav-cta-text">Consultar por WhatsApp</span>
     </a>
   </div>
 
@@ -215,6 +215,10 @@ import { CONFIG } from '../data/config';
     let isOpen = false;
     let lastFocusedElement: HTMLElement | null = null;
 
+    const toggleMenu = (forceClose = false) => {
+      if (forceClose) isOpen = false;
+      else isOpen = !isOpen;
+
     const toggleMenu = () => {
       if (!toggle || !menu) return;
       isOpen = !isOpen;
@@ -234,7 +238,6 @@ import { CONFIG } from '../data/config';
           spans[2].classList.add('-rotate-45', '-translate-y-[8px]');
         }
 
-        setTimeout(() => (menu.querySelector('.mobile-link') as HTMLElement)?.focus(), 150);
         setTimeout(() => {
           const firstLink = menu.querySelector('.mobile-link') as HTMLElement;
           firstLink?.focus();
@@ -268,7 +271,7 @@ import { CONFIG } from '../data/config';
     const handleKeydown = (e: KeyboardEvent) => {
       if (!isOpen) return;
       if (e.key === 'Escape') {
-        toggleMenu();
+        toggleMenu(true);
         toggle?.focus();
       }
       if (e.key === 'Tab') {
@@ -353,6 +356,8 @@ import { CONFIG } from '../data/config';
       } else {
         progressBar.style.transform = 'scaleX(0)';
       }
+    };
+
       const scrolled = height > 0 ? winScroll / height : 0;
       progressBar.style.transform = `scaleX(${scrolled})`;
     };
@@ -375,6 +380,25 @@ import { CONFIG } from '../data/config';
       });
     }, { rootMargin: '-30% 0px -70% 0px' });
 
+    const handleCtaClick = (e: MouseEvent) => {
+      const cta = e.currentTarget as HTMLElement;
+      const textSpan = cta.querySelector('span');
+      if (!textSpan) return;
+
+      const originalText = textSpan.textContent;
+      textSpan.textContent = 'Redirigiendo...';
+      cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+      setTimeout(() => {
+        if (textSpan) textSpan.textContent = originalText;
+        if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+      }, 3000);
+    };
+
+    toggle?.addEventListener('click', () => toggleMenu());
+    mobileLinks.forEach(link => link.addEventListener('click', () => toggleMenu(true)));
+    document.addEventListener('keydown', handleKeydown);
+    window.addEventListener('scroll', updateProgress, { passive: true });
     // Attach Listeners
     toggle?.addEventListener('click', toggleMenu);
     mobileLinks.forEach(link => link.addEventListener('click', handleLinkClick));
@@ -421,6 +445,12 @@ import { CONFIG } from '../data/config';
     mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
     sections.forEach(section => observer.observe(section));
 
+    updateProgress();
+
+    return () => {
+      toggle?.removeEventListener('click', () => toggleMenu());
+      document.removeEventListener('keydown', handleKeydown);
+      window.removeEventListener('scroll', updateProgress);
     handleScroll();
     // Initial state
     updateProgress();
@@ -447,6 +477,10 @@ import { CONFIG } from '../data/config';
   let cleanup: (() => void) | undefined;
   let cleanupNav: (() => void) | undefined;
   cleanupNav = initNav();
+
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanupNav) cleanupNav();
+    cleanupNav = initNav();
 
   document.addEventListener('astro:after-swap', () => {
     if (cleanupNav) cleanupNav();

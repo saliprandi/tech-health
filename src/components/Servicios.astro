@@ -123,6 +123,9 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
       if (!cards.length || !backdrop || !modal || !modalContent || !closeBtn) return () => {};
 
+      const updateFocusableElements = () => {
+        focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+          .filter(el => el.tagName !== 'SVG' && el.tagName !== 'USE' && !el.hasAttribute('disabled'));
       let isModalOpen = false;
       let lastFocusedElement = null;
       let focusableElements = [];
@@ -157,7 +160,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
         modal.classList.remove('scale-100', 'opacity-100');
         document.body.style.overflow = '';
 
-        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        if (lastFocusedElement) {
           lastFocusedElement.focus();
         }
         if (lastFocusedElement) lastFocusedElement.focus();
@@ -215,6 +218,12 @@ const modalData = CONFIG.servicios.map(servicio => ({
         modal.classList.add('scale-100', 'opacity-100');
         document.body.style.overflow = 'hidden';
         isModalOpen = true;
+
+        updateFocusableElements();
+        setTimeout(() => {
+          (document.getElementById('modal-cta') || closeBtn).focus();
+        }, 100);
+      };
 
         updateFocusableElements();
         setTimeout(() => { (document.getElementById('modal-cta') || closeBtn).focus(); }, 100);
@@ -337,6 +346,10 @@ const modalData = CONFIG.servicios.map(servicio => ({
       };
 
       const handleModalContentClick = (e) => {
+        if (e.target.closest('#modal-close-secondary')) {
+          closeModal();
+          return;
+        }
         if (e.target.closest('#modal-close-secondary')) closeModal();
 
         const cta = e.target.closest('#modal-cta');
@@ -394,6 +407,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
       });
 
       cards.forEach(card => {
+        card.addEventListener('click', handleCardClick);
         card.addEventListener('click', handleCardAction);
         card.addEventListener('keydown', handleCardKeydown);
       });
@@ -402,6 +416,9 @@ const modalData = CONFIG.servicios.map(servicio => ({
       closeBtn.addEventListener('click', closeModal);
       modalContent.addEventListener('click', handleModalContentClick);
       document.addEventListener('keydown', handleGlobalKeydown);
+
+      return () => {
+        cards.forEach(card => {
 
       return () => {
         backdrop.removeEventListener('click', closeModal);
@@ -430,6 +447,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
       };
     };
 
+    let cleanupServicios = initServicios();
     let cleanup;
     cleanup = initServicios();
     }
