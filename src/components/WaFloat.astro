@@ -31,6 +31,7 @@ import { CONFIG } from '../data/config';
     const tooltipText = document.getElementById('wa-tooltip-text');
     const btn = document.getElementById('wa-float-btn');
 
+    if (!tooltip || !tooltipText || !btn) return;
     if (!tooltip || !tooltipText || !btn) return () => {};
 
     const showTooltip = () => {
@@ -48,7 +49,6 @@ import { CONFIG } from '../data/config';
       }, 500);
     };
 
-    // Show tooltip after 5 seconds
     const initialTimer = setTimeout(showTooltip, 5000);
     let feedbackTimer: ReturnType<typeof setTimeout> | null = null;
     let restoreTextTimer: ReturnType<typeof setTimeout> | null = null;
@@ -57,8 +57,8 @@ import { CONFIG } from '../data/config';
       const originalText = tooltipText.textContent;
       tooltipText.textContent = '¡Redirigiendo!';
       showTooltip();
-
       btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+      setTimeout(() => {
 
       if (feedbackTimer) clearTimeout(feedbackTimer);
       if (restoreTextTimer) clearTimeout(restoreTextTimer);
@@ -66,7 +66,7 @@ import { CONFIG } from '../data/config';
       feedbackTimer = setTimeout(() => {
         btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         hideTooltip();
-        restoreTextTimer = setTimeout(() => {
+        setTimeout(() => {
           tooltipText.textContent = originalText;
         }, 500);
       }, 3000);
@@ -76,11 +76,12 @@ import { CONFIG } from '../data/config';
 
     return () => {
       clearTimeout(initialTimer);
-      if (feedbackTimer) clearTimeout(feedbackTimer);
-      if (restoreTextTimer) clearTimeout(restoreTextTimer);
       btn.removeEventListener('click', handleBtnClick);
     };
   }
+
+  let cleanup: (() => void) | undefined;
+  document.addEventListener('DOMContentLoaded', () => { cleanup = initWaFloat(); });
 
   let cleanup: (() => void) | undefined;
   cleanup = initWaFloat();
