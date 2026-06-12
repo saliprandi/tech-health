@@ -87,6 +87,27 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
     const heroCta = document.getElementById('hero-cta');
     const heroCtaText = document.getElementById('hero-cta-text');
 
+    if (!heroCta || !heroCtaText) return () => {};
+
+    const handleCtaClick = () => {
+      const originalText = heroCtaText.textContent;
+      heroCtaText.textContent = 'Redirigiendo...';
+      heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+      setTimeout(() => {
+        if (heroCtaText) heroCtaText.textContent = originalText;
+        if (heroCta) heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+      }, 3000);
+    };
+
+    heroCta.addEventListener('click', handleCtaClick);
+
+    return () => {
+      heroCta.removeEventListener('click', handleCtaClick);
+    };
+  }
+
+  let cleanup = initHero();
     if (heroCta && heroCtaText) {
       const handleCtaClick = () => {
         const originalText = heroCtaText.textContent;

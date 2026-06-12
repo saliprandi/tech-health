@@ -49,11 +49,22 @@ import { CONFIG } from '../data/config';
       }, 500);
     };
 
+    const initialTimeout = setTimeout(showTooltip, 5000);
     const initialTimer = setTimeout(showTooltip, 5000);
     let feedbackTimer: ReturnType<typeof setTimeout> | null = null;
     let restoreTextTimer: ReturnType<typeof setTimeout> | null = null;
 
     const handleBtnClick = () => {
+      const originalText = tooltipText.textContent || '¡Hola! ¿En qué podemos ayudarte?';
+      tooltipText.textContent = '¡Redirigiendo!';
+      showTooltip();
+
+      btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+      feedbackTimer = setTimeout(() => {
+        btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        hideTooltip();
+        restoreTextTimer = setTimeout(() => {
       const originalText = tooltipText.textContent;
       tooltipText.textContent = '¡Redirigiendo!';
       showTooltip();
@@ -76,11 +87,15 @@ import { CONFIG } from '../data/config';
     btn.addEventListener('click', handleBtnClick);
 
     return () => {
+      clearTimeout(initialTimeout);
+      if (feedbackTimer) clearTimeout(feedbackTimer);
+      if (restoreTextTimer) clearTimeout(restoreTextTimer);
       clearTimeout(initialTimer);
       btn.removeEventListener('click', handleBtnClick);
     };
   }
 
+  let cleanup = initWaFloat();
   let cleanup: (() => void) | undefined;
 
   document.addEventListener('DOMContentLoaded', () => {

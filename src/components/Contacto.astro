@@ -157,6 +157,12 @@ import { CONFIG } from '../data/config';
     const textarea = document.getElementById('f-desc') as HTMLTextAreaElement | null;
     const counter = document.getElementById('char-counter');
     const copyBtn = document.getElementById('copy-address');
+    const addressText = document.getElementById('address-text')?.textContent || '';
+    const copyLabel = document.getElementById('copy-text');
+    const copyIconUse = document.getElementById('copy-icon-use');
+    const btn = document.getElementById('f-submit') as HTMLButtonElement | null;
+    const btnText = document.getElementById('f-submit-text');
+
     const copyLabel = document.getElementById('copy-text');
     const copyIconUse = document.getElementById('copy-icon-use');
     const addressText = document.getElementById('address-text')?.textContent || '';
@@ -173,7 +179,6 @@ import { CONFIG } from '../data/config';
     const updateStatusBadge = () => {
       if (!badge) return;
       const now = new Date();
-      // Tucumán is UTC-3
       const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
       const day = tucumanTime.getDay();
       const hour = tucumanTime.getHours();
@@ -181,17 +186,21 @@ import { CONFIG } from '../data/config';
 
       if (isOpen) {
         badge.innerHTML = '<span class="relative flex h-2 w-2" aria-hidden="true"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora';
-        badge.classList.remove('bg-gray-100', 'text-gray-800');
-        badge.classList.add('bg-emerald-100', 'text-emerald-800');
+        badge.className = 'inline-flex items-center gap-1.5 font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500 bg-emerald-100 text-emerald-800';
       } else {
         badge.textContent = 'Cerrado';
-        badge.classList.remove('bg-emerald-100', 'text-emerald-800');
-        badge.classList.add('bg-gray-100', 'text-gray-800');
+        badge.className = 'inline-flex items-center gap-1.5 font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500 bg-gray-100 text-gray-800';
       }
       badge.classList.remove('hidden');
     };
 
     updateStatusBadge();
+    const statusInterval = setInterval(updateStatusBadge, 60000);
+
+    const updateCounter = () => {
+      if (!textarea || !counter) return;
+      const length = textarea.value.length;
+      counter.textContent = `${length} / 500`;
     statusInterval = setInterval(updateStatusBadge, 60000);
 
     // Character Counter Logic
@@ -225,6 +234,13 @@ import { CONFIG } from '../data/config';
       }
     };
 
+    textarea?.addEventListener('input', updateCounter);
+    updateCounter();
+
+    const handleCopyClick = () => {
+      if (!copyLabel || !copyIconUse || !copyBtn) return;
+      const originalText = copyLabel.textContent;
+      const originalIcon = copyIconUse.getAttribute('href');
     if (textarea) {
     const updateCounter = () => {
       if (!textarea || !counter) return;
@@ -290,6 +306,27 @@ import { CONFIG } from '../data/config';
       });
     };
 
+    copyBtn?.addEventListener('click', handleCopyClick);
+
+    const handleFormSubmit = (e: Event) => {
+      e.preventDefault();
+      if (!form || !btn || !btnText) return;
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const nombre = (document.getElementById('f-nombre') as HTMLInputElement)?.value.trim() || 'No especificado';
+      const tel = (document.getElementById('f-tel') as HTMLInputElement)?.value.trim() || 'No especificado';
+      const servicioel = document.getElementById('f-servicio') as HTMLSelectElement | null;
+      const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
+      const desc = (document.getElementById('f-desc') as HTMLTextAreaElement)?.value.trim() || 'Sin detalles adicionales';
+
+      const originalBtnText = btnText.textContent;
+      btnText.textContent = 'Redirigiendo...';
+      btn.disabled = true;
+      btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
     copyBtn?.addEventListener('click', handleCopy);
     if (copyBtn) copyBtn.addEventListener('click', handleCopy);
 
@@ -337,6 +374,13 @@ import { CONFIG } from '../data/config';
       window.open(url, '_blank', 'noopener,noreferrer');
 
       setTimeout(() => {
+        btnText.textContent = originalBtnText;
+        btn.disabled = false;
+        btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+      }, 3000);
+    };
+
+    form.addEventListener('submit', handleFormSubmit);
         if (btnText) btnText.textContent = originalBtnText || 'Enviar por WhatsApp';
         if (btnText) btnText.textContent = originalBtnText;
         if (btn) {
@@ -357,6 +401,12 @@ import { CONFIG } from '../data/config';
     return () => {
       clearInterval(statusInterval);
       textarea?.removeEventListener('input', updateCounter);
+      copyBtn?.removeEventListener('click', handleCopyClick);
+      form.removeEventListener('submit', handleFormSubmit);
+    };
+  }
+
+  let cleanup = initContacto();
       copyBtn?.removeEventListener('click', handleCopy);
       if (textarea) textarea.removeEventListener('input', updateCounter);
       if (copyBtn) copyBtn.removeEventListener('click', handleCopy);

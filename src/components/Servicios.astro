@@ -122,6 +122,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
       return `<use href="#icon-${escapeHtml(iconName)}" />`;
     };
 
+    const initServicios = () => {
     function initServicios() {
       const cards = document.querySelectorAll('.service-card');
       const backdrop = document.getElementById('service-modal-backdrop');
@@ -313,6 +314,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
       const handleCardKeydown = (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
+          const card = e.currentTarget;
+          const index = card.getAttribute('data-index');
           handleCardClick(e);
           const index = e.currentTarget.getAttribute('data-index');
           if (index !== null) openModal(parseInt(index));
@@ -332,6 +335,13 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
         const cta = target.closest('#modal-cta');
         const ctaText = document.getElementById('modal-cta-text');
+
+        if (cta && ctaText) {
+          const originalText = ctaText.textContent;
+          ctaText.textContent = 'Redirigiendo...';
+          cta.classList.add('opacity-70', 'pointer-events-none');
+
+          setTimeout(() => {
         if (cta && ctaText) {
           const originalText = ctaText.textContent;
           ctaText.textContent = 'Redirigiendo...';
@@ -397,6 +407,9 @@ const modalData = CONFIG.servicios.map(servicio => ({
         modalContent.removeEventListener('click', handleModalContentClick);
         document.removeEventListener('keydown', handleKeydown);
       };
+    };
+
+    let cleanup = initServicios();
     }
 
     let cleanup = initServicios();
