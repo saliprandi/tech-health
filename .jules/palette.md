@@ -63,6 +63,10 @@ Importante!!! Quiero todos los pr en español
 **Aprendizaje:** Agregar un contador de caracteres en vivo a textareas mejora la gestión de entrada, pero debe ser accesible. Usar `aria-describedby` en el textarea y `aria-live="polite"` en el contador asegura que los usuarios de lectores de pantalla se mantengan informados de su capacidad restante.
 **Acción:** Siempre emparejar contadores visuales con atributos ARIA para mantener un alto nivel de accesibilidad mientras se proporciona feedback agradable.
 
+## 2025-06-15 - [UX: Animación de badge de ubicación y accesibilidad]
+**Aprendizaje:** Las animaciones de pulso (como `animate-ping`) en badges de estado o ubicación proporcionan un toque de "vida" que indica actividad en tiempo real. Sin embargo, para no excluir a usuarios de lectores de pantalla, es vital acompañarlas de un `aria-label` descriptivo que comunique el contexto visual.
+**Acción:** Siempre que se añadan micro-interacciones puramente visuales, asegurar que su propósito esté reflejado en el árbol de accesibilidad mediante etiquetas ARIA semánticas.
+
 ## 2026-06-07 - [A11y: Prevención de race conditions en focus traps]
 **Aprendizaje:** Al inyectar contenido dinámico en modales, popular el array de elementos enfocables (`focusableElements`) dentro de un `setTimeout` puede causar race conditions si el usuario interactúa con el teclado antes de que se complete el delay.
 **Acción:** Popular siempre el array de elementos enfocables inmediatamente después de la inyección de HTML en el DOM para asegurar que el focus trap sea robusto desde el primer milisegundo de visibilidad del modal.
@@ -76,3 +80,14 @@ Importante!!! Quiero todos los pr en español
 ## 2025-02-15 - [A11y: Gestión de foco en navegación móvil]
 **Aprendizaje:** Los menús de navegación móvil requieren una gestión de foco rigurosa para ser verdaderamente accesibles. Al abrir el menú, el foco debe moverse inmediatamente al primer elemento interactivo. Un "focus trap" debe activarse para evitar que el usuario tabule fuera del menú hacia el contenido principal oculto.
 **Acción:** Implementar siempre trampas de foco (`focus trap`) y enfoque inicial automático en componentes de navegación móvil, asegurando que el cierre (vía tecla Escape o click fuera) restaure el foco al disparador original.
+
+## 2026-06-15 - [UX: Ciclo de vida en Astro View Transitions]
+**Aprendizaje:** El uso de View Transitions en Astro requiere un patrón de inicialización que devuelva una función de limpieza. Sin esta limpieza, los listeners de eventos y los intervalos se acumulan tras cada navegación, provocando comportamientos erráticos.
+**Acción:** Implementar siempre un retorno de `cleanup()` en las funciones `init` y llamarlo antes de re-inicializar en el evento `astro:after-swap`.
+
+## 2026-06-15 - [A11y: Gestión de foco y corrupción estructural]
+**Aprendizaje:** La corrupción estructural (etiquetas duplicadas, scripts mal cerrados) rompe no solo el build sino también la accesibilidad del sitio. La consolidación de la lógica de modales y menús móviles es fundamental para que las trampas de foco funcionen de manera predecible.
+**Acción:** Priorizar la integridad sintáctica de los componentes para asegurar que los atributos ARIA y la gestión del foco se apliquen correctamente.
+## 2025-06-11 - [UX: Indicador de ubicación con feedback visual]
+**Aprendizaje:** Usar un indicador de pulso (`animate-ping`) proporciona una señal visual sutil de "actividad" o "presencia local" que refuerza la confianza del usuario en servicios regionales.
+**Acción:** Implementar estados de animación sutiles para badges de ubicación y acompañarlos de `aria-label` descriptivos para no perder accesibilidad en elementos puramente visuales.
