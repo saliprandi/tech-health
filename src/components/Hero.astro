@@ -16,7 +16,6 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       <!-- Badge -->
       <div class="inline-flex items-center gap-2 bg-blue-pale text-blue font-heading font-bold text-[12px] uppercase tracking-wider py-2 px-4 rounded-full" aria-label={`Ubicación: ${CONFIG.empresa.ciudad}, ${CONFIG.empresa.pais}`}>
         <span class="relative flex h-2 w-2" aria-hidden="true">
-        <span class="relative flex h-2 w-2">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue opacity-75"></span>
           <span class="relative inline-flex rounded-full h-2 w-2 bg-blue"></span>
         </span>
@@ -38,8 +37,6 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       <div class="flex flex-wrap items-center gap-4 mt-2">
         <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="btn-primary gap-2 group">
           <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat">
-        <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="btn-primary gap-2">
-          <svg class="w-5 h-5 fill-current">
             <use href="#icon-whatsapp" />
           </svg>
           <span id="hero-cta-text">Solicitar servicio</span>
@@ -109,53 +106,11 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
     };
   }
 
-  let cleanupHero: (() => void) | undefined;
-  cleanupHero = initHero();
-  }
-
-  let cleanup = initHero();
-  }
-
-  let cleanup = initHero();
-    if (heroCta && heroCtaText) {
-      const handleCtaClick = () => {
-        const originalText = heroCtaText.textContent;
-        heroCtaText.textContent = 'Redirigiendo...';
-        heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-
-        setTimeout(() => {
-          if (heroCtaText) heroCtaText.textContent = originalText;
-          if (heroCta) heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-        }, 3000);
-      };
-
-      heroCta.addEventListener('click', handleCtaClick);
-
-      return () => {
-        heroCta.removeEventListener('click', handleCtaClick);
-      };
-    }
-    return () => {};
-  }
-
   let cleanup: (() => void) | undefined;
-
-  // Initial load
-  cleanup = initHero();
-
-  // Re-init on navigation (View Transitions)
-  document.addEventListener('DOMContentLoaded', () => {
-    cleanup = initHero();
-  });
-  document.addEventListener('DOMContentLoaded', () => { cleanup = initHero(); });
   cleanup = initHero();
 
   document.addEventListener('astro:after-swap', () => {
-    if (cleanupHero) cleanupHero();
-    cleanupHero = initHero();
-  });
-
-  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    if (cleanup) cleanup();
     cleanup = initHero();
-  }
+  });
 </script>

@@ -91,3 +91,7 @@ Importante!!! Quiero todos los pr en español
 ## 2025-06-11 - [UX: Indicador de ubicación con feedback visual]
 **Aprendizaje:** Usar un indicador de pulso (`animate-ping`) proporciona una señal visual sutil de "actividad" o "presencia local" que refuerza la confianza del usuario en servicios regionales.
 **Acción:** Implementar estados de animación sutiles para badges de ubicación y acompañarlos de `aria-label` descriptivos para no perder accesibilidad en elementos puramente visuales.
+
+## 2025-06-20 - [UX: Feedback visual en tarjetas de equipo]
+**Aprendizaje:** Implementar estados de hover sutiles en tarjetas informativas (como el equipo en Nosotros.astro) mejora la percepción de calidad y "life" del sitio. Usar una combinación de elevación (shadow-card-hover), cambio de borde (border-blue/20) y escala en elementos internos (group-hover:scale-110) crea una respuesta visual cohesiva.
+**Acción:** Aplicar patrones de feedback 'group' en componentes de tarjetas para guiar la atención del usuario y reforzar la interactividad sin sobrecargar la interfaz.
