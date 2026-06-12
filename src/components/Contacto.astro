@@ -153,11 +153,20 @@ import { CONFIG } from '../data/config';
 <script>
   function initContacto() {
     const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    const badge = document.getElementById('status-badge');
+    const textarea = document.getElementById('f-desc') as HTMLTextAreaElement | null;
+    const counter = document.getElementById('char-counter');
+    const copyBtn = document.getElementById('copy-address');
+    const copyLabel = document.getElementById('copy-text');
+    const copyIconUse = document.getElementById('copy-icon-use');
+    const addressText = document.getElementById('address-text')?.textContent || '';
+    const btn = document.getElementById('f-submit') as HTMLButtonElement | null;
+    const btnText = document.getElementById('f-submit-text');
     if (!form) return;
     const form = document.getElementById('contact-form');
     if (!form) return () => {};
 
-    const whatsappNumber = form.getAttribute('data-whatsapp');
+    let statusInterval: ReturnType<typeof setInterval> | null = null;
 
     // Business Hours Status Badge Logic
     const badge = document.getElementById('status-badge');
@@ -183,6 +192,21 @@ import { CONFIG } from '../data/config';
     };
 
     updateStatusBadge();
+    statusInterval = setInterval(updateStatusBadge, 60000);
+
+    // Character Counter Logic
+    if (textarea && counter) {
+      const updateCounter = () => {
+        const length = textarea.value.length;
+        counter.textContent = length + ' / 500';
+        if (length >= 450) {
+          counter.classList.add('text-blue-light');
+          counter.classList.remove('text-white/40');
+        } else {
+          counter.classList.remove('text-blue-light');
+          counter.classList.add('text-white/40');
+        }
+      };
     const statusInterval = setInterval(updateStatusBadge, 60000);
 
     // Character Counter Logic
@@ -222,6 +246,24 @@ import { CONFIG } from '../data/config';
     }
 
     // Copy Address Logic
+    if (copyBtn && copyLabel && copyIconUse) {
+      copyBtn.addEventListener('click', () => {
+        const originalText = copyLabel.textContent;
+        const originalIcon = copyIconUse.getAttribute('href');
+
+        navigator.clipboard.writeText(addressText).then(() => {
+          copyLabel.textContent = '¡Copiado!';
+          copyIconUse.setAttribute('href', '#icon-check');
+          copyBtn.classList.add('text-blue');
+          copyBtn.setAttribute('aria-label', 'Dirección copiada con éxito');
+
+          setTimeout(() => {
+            copyLabel.textContent = originalText || 'Copiar';
+            copyIconUse.setAttribute('href', originalIcon || '#icon-copy');
+            copyBtn.classList.remove('text-blue');
+            copyBtn.setAttribute('aria-label', 'Copiar dirección al portapapeles');
+          }, 2500);
+        });
     const copyBtn = document.getElementById('copy-address');
     const addressText = document.getElementById('address-text')?.textContent || '';
     const copyLabel = document.getElementById('copy-text');
@@ -252,6 +294,14 @@ import { CONFIG } from '../data/config';
     if (copyBtn) copyBtn.addEventListener('click', handleCopy);
 
     // Form Logic
+    if (form && btn && btnText) {
+      const whatsappNumber = form.getAttribute('data-whatsapp');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
     const btn = document.getElementById('f-submit') as HTMLButtonElement | null;
     const btnText = document.getElementById('f-submit-text');
 
@@ -292,6 +342,12 @@ import { CONFIG } from '../data/config';
         if (btn) {
           btn.disabled = false;
           btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        }, 3000);
+      });
+    }
+
+    return () => {
+      if (statusInterval) clearInterval(statusInterval);
         }
       }, 3000);
     };
@@ -309,6 +365,10 @@ import { CONFIG } from '../data/config';
   }
 
   let cleanup: (() => void) | undefined;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    cleanup = initContacto();
+  });
   document.addEventListener('DOMContentLoaded', () => { cleanup = initContacto(); });
   cleanup = initContacto();
 
@@ -316,4 +376,8 @@ import { CONFIG } from '../data/config';
     if (cleanup) cleanup();
     cleanup = initContacto();
   });
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    cleanup = initContacto();
+  }
 </script>

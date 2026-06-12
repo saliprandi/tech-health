@@ -15,6 +15,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       
       <!-- Badge -->
       <div class="inline-flex items-center gap-2 bg-blue-pale text-blue font-heading font-bold text-[12px] uppercase tracking-wider py-2 px-4 rounded-full" aria-label={`Ubicación: ${CONFIG.empresa.ciudad}, ${CONFIG.empresa.pais}`}>
+        <span class="relative flex h-2 w-2" aria-hidden="true">
         <span class="relative flex h-2 w-2">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue opacity-75"></span>
           <span class="relative inline-flex rounded-full h-2 w-2 bg-blue"></span>
@@ -108,6 +109,10 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
   }
 
   let cleanup: (() => void) | undefined;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    cleanup = initHero();
+  });
   document.addEventListener('DOMContentLoaded', () => { cleanup = initHero(); });
   cleanup = initHero();
 
@@ -115,4 +120,8 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
     if (cleanup) cleanup();
     cleanup = initHero();
   });
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    cleanup = initHero();
+  }
 </script>

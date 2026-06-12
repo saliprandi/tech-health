@@ -63,10 +63,11 @@ import { CONFIG } from '../data/config';
       if (feedbackTimer) clearTimeout(feedbackTimer);
       if (restoreTextTimer) clearTimeout(restoreTextTimer);
 
-      feedbackTimer = setTimeout(() => {
-        btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+      setTimeout(() => {
+        if (btn) btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         hideTooltip();
         setTimeout(() => {
+          if (tooltipText) tooltipText.textContent = originalText;
           tooltipText.textContent = originalText;
         }, 500);
       }, 3000);
@@ -81,6 +82,13 @@ import { CONFIG } from '../data/config';
   }
 
   let cleanup: (() => void) | undefined;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    cleanup = initWaFloat();
+  });
+
+
+  let cleanup: (() => void) | undefined;
   document.addEventListener('DOMContentLoaded', () => { cleanup = initWaFloat(); });
 
   let cleanup: (() => void) | undefined;
@@ -90,4 +98,8 @@ import { CONFIG } from '../data/config';
     if (cleanup) cleanup();
     cleanup = initWaFloat();
   });
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    cleanup = initWaFloat();
+  }
 </script>
