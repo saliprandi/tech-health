@@ -81,6 +81,13 @@ Importante!!! Quiero todos los pr en español
 **Aprendizaje:** Los menús de navegación móvil requieren una gestión de foco rigurosa para ser verdaderamente accesibles. Al abrir el menú, el foco debe moverse inmediatamente al primer elemento interactivo. Un "focus trap" debe activarse para evitar que el usuario tabule fuera del menú hacia el contenido principal oculto.
 **Acción:** Implementar siempre trampas de foco (`focus trap`) y enfoque inicial automático en componentes de navegación móvil, asegurando que el cierre (vía tecla Escape o click fuera) restaure el foco al disparador original.
 
+## 2026-06-15 - [UX: Ciclo de vida en Astro View Transitions]
+**Aprendizaje:** El uso de View Transitions en Astro requiere un patrón de inicialización que devuelva una función de limpieza. Sin esta limpieza, los listeners de eventos y los intervalos se acumulan tras cada navegación, provocando comportamientos erráticos.
+**Acción:** Implementar siempre un retorno de `cleanup()` en las funciones `init` y llamarlo antes de re-inicializar en el evento `astro:after-swap`.
+
+## 2026-06-15 - [A11y: Gestión de foco y corrupción estructural]
+**Aprendizaje:** La corrupción estructural (etiquetas duplicadas, scripts mal cerrados) rompe no solo el build sino también la accesibilidad del sitio. La consolidación de la lógica de modales y menús móviles es fundamental para que las trampas de foco funcionen de manera predecible.
+**Acción:** Priorizar la integridad sintáctica de los componentes para asegurar que los atributos ARIA y la gestión del foco se apliquen correctamente.
 ## 2025-06-11 - [UX: Indicador de ubicación con feedback visual]
 **Aprendizaje:** Usar un indicador de pulso (`animate-ping`) proporciona una señal visual sutil de "actividad" o "presencia local" que refuerza la confianza del usuario en servicios regionales.
 **Acción:** Implementar estados de animación sutiles para badges de ubicación y acompañarlos de `aria-label` descriptivos para no perder accesibilidad en elementos puramente visuales.

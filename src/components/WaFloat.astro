@@ -109,6 +109,10 @@ import { CONFIG } from '../data/config';
     const initialTimeout = setTimeout(showTooltip, 5000);
     const initialTimer = setTimeout(showTooltip, 5000);
     let feedbackTimer: ReturnType<typeof setTimeout> | null = null;
+    let restoreTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const handleBtnClick = () => {
+      const originalText = tooltipText.textContent || '';
     let restoreTextTimer: ReturnType<typeof setTimeout> | null = null;
 
     const handleBtnClick = () => {
@@ -132,6 +136,7 @@ import { CONFIG } from '../data/config';
       feedbackTimer = setTimeout(() => {
         btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         hideTooltip();
+        restoreTimer = setTimeout(() => {
 
         if (restoreTextTimer) clearTimeout(restoreTextTimer);
         restoreTextTimer = setTimeout(() => {
@@ -152,6 +157,13 @@ import { CONFIG } from '../data/config';
     return () => {
       clearTimeout(initialTimeout);
       if (feedbackTimer) clearTimeout(feedbackTimer);
+      if (restoreTimer) clearTimeout(restoreTimer);
+      btn.removeEventListener('click', handleBtnClick);
+    };
+  }
+
+  let cleanupWaFloat: (() => void) | undefined;
+  cleanupWaFloat = initWaFloat();
       if (restoreTextTimer) clearTimeout(restoreTextTimer);
       clearTimeout(initialTimer);
       btn.removeEventListener('click', handleBtnClick);
@@ -179,8 +191,8 @@ import { CONFIG } from '../data/config';
   cleanup = initWaFloat();
 
   document.addEventListener('astro:after-swap', () => {
-    if (cleanup) cleanup();
-    cleanup = initWaFloat();
+    if (cleanupWaFloat) cleanupWaFloat();
+    cleanupWaFloat = initWaFloat();
   });
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
