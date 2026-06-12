@@ -154,6 +154,129 @@ import { CONFIG } from '../data/config';
   (function() {
     function initContacto() {
       const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  function initContacto() {
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    if (!form) return () => {};
+
+    const whatsappNumber = form.getAttribute('data-whatsapp') || '';
+    const badge = document.getElementById('status-badge');
+    const textarea = document.getElementById('f-desc') as HTMLTextAreaElement | null;
+    const counter = document.getElementById('char-counter');
+    const copyBtn = document.getElementById('copy-address');
+    const addressText = document.getElementById('address-text')?.textContent || '';
+    const copyLabel = document.getElementById('copy-text');
+    const copyIconUse = document.getElementById('copy-icon-use');
+    const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
+    const submitBtnText = document.getElementById('f-submit-text');
+
+    const updateStatusBadge = () => {
+      if (!badge) return;
+      const now = new Date();
+      const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
+      const day = tucumanTime.getDay();
+      const hour = tucumanTime.getHours();
+      const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
+
+      if (isOpen) {
+        badge.innerHTML = '<span class="relative flex h-2 w-2" aria-hidden="true"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora';
+        badge.className = 'inline-flex items-center gap-1.5 font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500 bg-emerald-100 text-emerald-800';
+      } else {
+        badge.textContent = 'Cerrado';
+        badge.className = 'inline-flex items-center gap-1.5 font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500 bg-gray-100 text-gray-800';
+      }
+      badge.classList.remove('hidden');
+    };
+
+    updateStatusBadge();
+    const statusInterval = setInterval(updateStatusBadge, 60000);
+
+    const updateCounter = () => {
+      if (!textarea || !counter) return;
+      const length = textarea.value.length;
+      counter.textContent = `${length} / 500`;
+      if (length >= 450) {
+        counter.classList.add('text-blue-light');
+        counter.classList.remove('text-white/40');
+      } else {
+        counter.classList.remove('text-blue-light');
+        counter.classList.add('text-white/40');
+      }
+    };
+
+    textarea?.addEventListener('input', updateCounter);
+    updateCounter();
+
+    const handleCopy = () => {
+      if (!copyLabel || !copyIconUse || !copyBtn) return;
+      const originalText = copyLabel.textContent;
+      const originalIcon = copyIconUse.getAttribute('href');
+
+      navigator.clipboard.writeText(addressText).then(() => {
+        copyLabel.textContent = '¡Copiado!';
+        copyIconUse.setAttribute('href', '#icon-check');
+        copyBtn.classList.add('text-blue');
+        setTimeout(() => {
+          if (copyLabel) copyLabel.textContent = originalText;
+          if (copyIconUse) copyIconUse.setAttribute('href', originalIcon || '#icon-copy');
+          if (copyBtn) copyBtn.classList.remove('text-blue');
+        }, 2500);
+      });
+    };
+
+    copyBtn?.addEventListener('click', handleCopy);
+
+    const handleSubmit = (e: Event) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      const nombre = (document.getElementById('f-nombre') as HTMLInputElement)?.value.trim() || 'No especificado';
+      const tel = (document.getElementById('f-tel') as HTMLInputElement)?.value.trim() || 'No especificado';
+      const servicioel = document.getElementById('f-servicio') as HTMLSelectElement | null;
+      const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
+      const desc = (document.getElementById('f-desc') as HTMLTextAreaElement)?.value.trim() || 'Sin detalles adicionales';
+
+      if (submitBtn && submitBtnText) {
+        const originalBtnText = submitBtnText.textContent;
+        submitBtnText.textContent = 'Redirigiendo...';
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
+        const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(rawMessage)}`;
+        window.open(url, '_blank', 'noopener,noreferrer');
+        setTimeout(() => {
+          if (submitBtnText) submitBtnText.textContent = originalBtnText;
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          }
+        }, 3000);
+      }
+    };
+
+    form.addEventListener('submit', handleSubmit);
+
+    return () => {
+      clearInterval(statusInterval);
+      textarea?.removeEventListener('input', updateCounter);
+      copyBtn?.removeEventListener('click', handleCopy);
+      form.removeEventListener('submit', handleSubmit);
+    };
+  }
+
+  let cleanup: (() => void) | undefined;
+  cleanup = initContacto();
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanup) cleanup();
+    cleanup = initContacto();
+  });
+  (function() {
+    function initContacto() {
+      const form = document.getElementById('contact-form') as HTMLFormElement | null;
+      if (!form) return () => {};
+
+      const whatsappNumber = form.getAttribute('data-whatsapp') || '';
       const badge = document.getElementById('status-badge');
       const textarea = document.getElementById('f-desc') as HTMLTextAreaElement | null;
       const counter = document.getElementById('char-counter');
@@ -168,6 +291,16 @@ import { CONFIG } from '../data/config';
       if (!form) return () => {};
 
       const whatsappNumber = form.getAttribute('data-whatsapp');
+      const announcement = document.getElementById('copy-announcement');
+      const btn = document.getElementById('f-submit') as HTMLButtonElement | null;
+      const btnText = document.getElementById('f-submit-text');
+
+      // Business Hours Status Badge Logic
+      const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
+      const submitBtnText = document.getElementById('f-submit-text');
+      const announcement = document.getElementById('copy-announcement');
+
+      let statusInterval: ReturnType<typeof setInterval> | null = null;
 
       const updateStatusBadge = () => {
         if (!badge) return;
@@ -191,6 +324,9 @@ import { CONFIG } from '../data/config';
       updateStatusBadge();
       const statusInterval = setInterval(updateStatusBadge, 60000);
 
+      // Character Counter Logic
+      statusInterval = setInterval(updateStatusBadge, 60000);
+
       const updateCounter = () => {
         if (!textarea || !counter) return;
         const length = textarea.value.length;
@@ -209,6 +345,14 @@ import { CONFIG } from '../data/config';
 
       const handleCopy = () => {
         if (!copyBtn || !copyLabel || !copyIconUse) return;
+      // Copy Address Logic
+      const handleCopy = () => {
+        if (!copyLabel || !copyIconUse || !copyBtn) return;
+        const originalText = copyLabel.textContent;
+        const originalIcon = copyIconUse.getAttribute('href') || '#icon-copy';
+
+      const handleCopy = () => {
+        if (!copyLabel || !copyIconUse || !copyBtn) return;
         const originalText = copyLabel.textContent;
         const originalIcon = copyIconUse.getAttribute('href');
 
@@ -220,6 +364,7 @@ import { CONFIG } from '../data/config';
 
           setTimeout(() => {
             copyLabel.textContent = originalText;
+            copyIconUse.setAttribute('href', originalIcon);
             copyIconUse.setAttribute('href', originalIcon || '#icon-copy');
             copyBtn.classList.remove('text-blue');
             if (announcement) announcement.textContent = '';
@@ -229,6 +374,7 @@ import { CONFIG } from '../data/config';
 
       copyBtn?.addEventListener('click', handleCopy);
 
+      // Form Submit Logic
       const handleSubmit = (e: Event) => {
         e.preventDefault();
         if (!form.checkValidity()) {
@@ -242,11 +388,16 @@ import { CONFIG } from '../data/config';
         const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
         const desc = (document.getElementById('f-desc') as HTMLTextAreaElement)?.value.trim() || 'Sin detalles adicionales';
 
-        if (btnText && btn) {
+        if (btn && btnText) {
           const originalBtnText = btnText.textContent;
           btnText.textContent = 'Redirigiendo...';
           btn.disabled = true;
           btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        if (submitBtn && submitBtnText) {
+          const originalBtnText = submitBtnText.textContent;
+          submitBtnText.textContent = 'Redirigiendo...';
+          submitBtn.disabled = true;
+          submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
           const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
           const encodedMessage = encodeURIComponent(rawMessage);
@@ -255,9 +406,9 @@ import { CONFIG } from '../data/config';
           window.open(url, '_blank', 'noopener,noreferrer');
 
           setTimeout(() => {
-            btnText.textContent = originalBtnText;
-            btn.disabled = false;
-            btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+            submitBtnText.textContent = originalBtnText;
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           }, 3000);
         }
       };
@@ -266,6 +417,7 @@ import { CONFIG } from '../data/config';
 
       return () => {
         clearInterval(statusInterval);
+        if (statusInterval) clearInterval(statusInterval);
         textarea?.removeEventListener('input', updateCounter);
         copyBtn?.removeEventListener('click', handleCopy);
         form.removeEventListener('submit', handleSubmit);
@@ -273,9 +425,13 @@ import { CONFIG } from '../data/config';
     }
 
     let cleanup = initContacto();
+    let cleanupContacto = initContacto();
+    let cleanup: (() => void) | undefined;
+    cleanup = initContacto();
+
     document.addEventListener('astro:after-swap', () => {
-      if (cleanup) cleanup();
-      cleanup = initContacto();
+      cleanupContacto();
+      cleanupContacto = initContacto();
     });
   })();
 </script>
