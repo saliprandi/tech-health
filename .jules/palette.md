@@ -85,9 +85,13 @@ Importante!!! Quiero todos los pr en español
 **Aprendizaje:** El uso de View Transitions en Astro requiere un patrón de inicialización que devuelva una función de limpieza. Sin esta limpieza, los listeners de eventos y los intervalos se acumulan tras cada navegación, provocando comportamientos erráticos.
 **Acción:** Implementar siempre un retorno de `cleanup()` en las funciones `init` y llamarlo antes de re-inicializar en el evento `astro:after-swap`.
 
-## 2026-06-15 - [A11y: Gestión de foco y corrupción estructural]
+## 2025-06-15 - [A11y: Gestión de foco y corrupción estructural]
 **Aprendizaje:** La corrupción estructural (etiquetas duplicadas, scripts mal cerrados) rompe no solo el build sino también la accesibilidad del sitio. La consolidación de la lógica de modales y menús móviles es fundamental para que las trampas de foco funcionen de manera predecible.
 **Acción:** Priorizar la integridad sintáctica de los componentes para asegurar que los atributos ARIA y la gestión del foco se apliquen correctamente.
+
+## 2025-06-16 - [UX: Feedback interactivo en tarjetas de equipo]
+**Aprendizaje:** Agregar estados de hover combinados (`scale`, `shadow` y `border-color`) en tarjetas de equipo usando el patrón `group` de Tailwind mejora significativamente la percepción de interactividad y modernidad del sitio sin comprometer el rendimiento.
+**Acción:** Usar `group-hover` para coordinar múltiples transformaciones visuales en componentes complejos y asegurar que las transiciones sean suaves (`transition-all duration-300`).
 ## 2025-06-11 - [UX: Indicador de ubicación con feedback visual]
 **Aprendizaje:** Usar un indicador de pulso (`animate-ping`) proporciona una señal visual sutil de "actividad" o "presencia local" que refuerza la confianza del usuario en servicios regionales.
 **Acción:** Implementar estados de animación sutiles para badges de ubicación y acompañarlos de `aria-label` descriptivos para no perder accesibilidad en elementos puramente visuales.

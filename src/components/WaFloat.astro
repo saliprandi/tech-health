@@ -19,7 +19,7 @@ import { CONFIG } from '../data/config';
     style="box-shadow: 0 4px 20px rgba(37,211,102,0.5);"
     aria-label="Contactar por WhatsApp"
   >
-    <svg class="w-[30px] h-[30px] fill-current group-hover:animate-heartbeat">
+    <svg class="w-[30px] h-[30px] fill-current group-hover:animate-heartbeat" aria-hidden="true">
       <use href="#icon-whatsapp" />
     </svg>
   </a>
@@ -108,6 +108,19 @@ import { CONFIG } from '../data/config';
         }, 500);
       };
 
+      const initialTimer = setTimeout(showTooltip, 5000);
+
+      const handleBtnClick = () => {
+        const originalText = tooltipText.textContent;
+        tooltipText.textContent = '¡Redirigiendo!';
+        showTooltip();
+        btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+        setTimeout(() => {
+          if (btn) btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          hideTooltip();
+          setTimeout(() => {
+            if (tooltipText) tooltipText.textContent = originalText;
       initialTimeout = setTimeout(showTooltip, 5000);
 
       const handleBtnClick = () => {
@@ -131,6 +144,7 @@ import { CONFIG } from '../data/config';
       btn.addEventListener('click', handleBtnClick);
 
       return () => {
+        clearTimeout(initialTimer);
         if (initialTimeout) clearTimeout(initialTimeout);
         if (feedbackTimer) clearTimeout(feedbackTimer);
         if (restoreTimer) clearTimeout(restoreTimer);
@@ -138,6 +152,11 @@ import { CONFIG } from '../data/config';
       };
     }
 
+    let cleanupWaFloat = initWaFloat();
+
+    document.addEventListener('astro:after-swap', () => {
+      cleanupWaFloat();
+      cleanupWaFloat = initWaFloat();
     let cleanup: (() => void) | undefined;
     cleanup = initWaFloat();
 

@@ -36,6 +36,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       <!-- Buttons -->
       <div class="flex flex-wrap items-center gap-4 mt-2">
         <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="btn-primary gap-2 group">
+          <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat" aria-hidden="true">
           <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat">
             <use href="#icon-whatsapp" />
           </svg>
@@ -103,6 +104,11 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
     };
   }
 
+  let cleanupHero = initHero();
+
+  document.addEventListener('astro:after-swap', () => {
+    cleanupHero();
+    cleanupHero = initHero();
   let cleanup: (() => void) | undefined;
   cleanup = initHero();
   document.addEventListener('astro:after-swap', () => {
