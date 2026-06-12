@@ -108,6 +108,19 @@ import { CONFIG } from '../data/config';
         }, 500);
       };
 
+      // Show tooltip after 5 seconds
+      const initialTimeout = setTimeout(showTooltip, 5000);
+
+      const handleBtnClick = () => {
+        const originalText = tooltipText.textContent || '¡Hola! ¿En qué podemos ayudarte?';
+        tooltipText.textContent = '¡Redirigiendo!';
+        showTooltip();
+
+        btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+        feedbackTimer = setTimeout(() => {
+          btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          hideTooltip();
       const initialTimer = setTimeout(showTooltip, 5000);
 
       const handleBtnClick = () => {
@@ -144,6 +157,7 @@ import { CONFIG } from '../data/config';
       btn.addEventListener('click', handleBtnClick);
 
       return () => {
+        clearTimeout(initialTimeout);
         clearTimeout(initialTimer);
         if (initialTimeout) clearTimeout(initialTimeout);
         if (feedbackTimer) clearTimeout(feedbackTimer);
@@ -152,6 +166,7 @@ import { CONFIG } from '../data/config';
       };
     }
 
+    let cleanup = initWaFloat();
     let cleanupWaFloat = initWaFloat();
 
     document.addEventListener('astro:after-swap', () => {

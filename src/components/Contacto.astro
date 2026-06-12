@@ -151,6 +151,9 @@ import { CONFIG } from '../data/config';
 </section>
 
 <script>
+  (function() {
+    function initContacto() {
+      const form = document.getElementById('contact-form') as HTMLFormElement | null;
   function initContacto() {
     const form = document.getElementById('contact-form') as HTMLFormElement | null;
     if (!form) return () => {};
@@ -281,6 +284,13 @@ import { CONFIG } from '../data/config';
       const addressText = document.getElementById('address-text')?.textContent || '';
       const copyLabel = document.getElementById('copy-text');
       const copyIconUse = document.getElementById('copy-icon-use');
+      const btn = document.getElementById('f-submit') as HTMLButtonElement | null;
+      const btnText = document.getElementById('f-submit-text');
+      const announcement = document.getElementById('copy-announcement');
+
+      if (!form) return () => {};
+
+      const whatsappNumber = form.getAttribute('data-whatsapp');
       const announcement = document.getElementById('copy-announcement');
       const btn = document.getElementById('f-submit') as HTMLButtonElement | null;
       const btnText = document.getElementById('f-submit-text');
@@ -333,6 +343,8 @@ import { CONFIG } from '../data/config';
       textarea?.addEventListener('input', updateCounter);
       updateCounter();
 
+      const handleCopy = () => {
+        if (!copyBtn || !copyLabel || !copyIconUse) return;
       // Copy Address Logic
       const handleCopy = () => {
         if (!copyLabel || !copyIconUse || !copyBtn) return;
@@ -412,6 +424,7 @@ import { CONFIG } from '../data/config';
       };
     }
 
+    let cleanup = initContacto();
     let cleanupContacto = initContacto();
     let cleanup: (() => void) | undefined;
     cleanup = initContacto();

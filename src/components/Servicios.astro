@@ -178,24 +178,14 @@ const modalData = CONFIG.servicios.map(servicio => ({
           <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
           <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
           <ul class="flex flex-col gap-4 mb-10">
-            ${servicio.items.map(item => `
-              <li class="flex items-start gap-4 font-body text-[15px] text-text-soft">
-                <span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>
-                ${escapeHtml(item)}
-              </li>
-            `).join('')}
+            ${servicio.items.map(item => `<li class="flex items-start gap-4 font-body text-[15px] text-text-soft"><span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>${escapeHtml(item)}</li>`).join('')}
           </ul>
-
           <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
             <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta">
-              <svg class="w-5 h-5 fill-current">
-                <use href="#icon-whatsapp" />
-              </svg>
+              <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
               <span id="modal-cta-text">Consultar por este servicio</span>
             </a>
-            <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">
-              Cerrar
-            </button>
+            <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">Cerrar</button>
           </div>
         `;
 
@@ -260,6 +250,10 @@ const modalData = CONFIG.servicios.map(servicio => ({
       closeBtn.addEventListener('click', closeModal);
 
       modalContent.addEventListener('click', (e) => {
+        if (e.target.closest('#modal-close-secondary')) {
+          closeModal();
+          return;
+        }
         const target = e.target;
         if (!target || !(target instanceof HTMLElement)) return;
 
@@ -291,6 +285,9 @@ const modalData = CONFIG.servicios.map(servicio => ({
           ctaText.textContent = 'Redirigiendo...';
           cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           setTimeout(() => {
+            ctaText.textContent = originalText;
+            cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          }, 3000);
             if (ctaText) ctaText.textContent = originalText;
             if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           }, 3000);
@@ -314,13 +311,14 @@ const modalData = CONFIG.servicios.map(servicio => ({
           if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
           else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
         }
-      };
-
-      cards.forEach(card => {
-        card.addEventListener('click', handleCardClick);
-        card.addEventListener('keydown', handleCardKeydown);
       });
 
+      document.addEventListener('keydown', handleKeydown);
+
+      return () => {
+        backdrop.removeEventListener('click', closeModal);
+        closeBtn.removeEventListener('click', closeModal);
+        document.removeEventListener('keydown', handleKeydown);
       backdrop.addEventListener('click', closeModal);
       closeBtn.addEventListener('click', closeModal);
       modalContent.addEventListener('click', handleModalContentClick);
@@ -344,6 +342,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
       };
     }
 
+    let cleanup = initServicios();
     let cleanupServicios = initServicios();
 
     document.addEventListener('astro:after-swap', () => {
