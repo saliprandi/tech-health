@@ -85,14 +85,12 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
   function initHero() {
     const heroCta = document.getElementById('hero-cta');
     const heroCtaText = document.getElementById('hero-cta-text');
-
     if (!heroCta || !heroCtaText) return () => {};
 
     const handleCtaClick = () => {
       const originalText = heroCtaText.textContent;
       heroCtaText.textContent = 'Redirigiendo...';
       heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-
       setTimeout(() => {
         if (heroCtaText) heroCtaText.textContent = originalText;
         if (heroCta) heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
@@ -100,7 +98,6 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
     };
 
     heroCta.addEventListener('click', handleCtaClick);
-
     return () => {
       heroCta.removeEventListener('click', handleCtaClick);
     };
@@ -108,7 +105,6 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
 
   let cleanup: (() => void) | undefined;
   cleanup = initHero();
-
   document.addEventListener('astro:after-swap', () => {
     if (cleanup) cleanup();
     cleanup = initHero();
