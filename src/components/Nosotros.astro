@@ -27,10 +27,11 @@ import { CONFIG } from '../data/config';
         <h3 class="font-heading font-bold text-[20px] text-navy mb-6">Nuestro Equipo</h3>
         <div class="flex flex-col gap-4">
           {CONFIG.equipo.map(member => (
-            <div class="bg-white rounded-[16px] p-5 shadow-sm border border-border flex flex-col sm:flex-row gap-[20px] items-start sm:items-center">
+            <div class="group bg-white rounded-[16px] p-5 shadow-sm border border-border flex flex-col sm:flex-row gap-[20px] items-start sm:items-center hover:shadow-card-hover hover:border-blue/20 transition-all duration-300">
+            <div class="group bg-white rounded-[16px] p-5 shadow-sm border border-border hover:shadow-card-hover hover:border-blue/20 transition-all duration-300 flex flex-col sm:flex-row gap-[20px] items-start sm:items-center">
               
               <!-- Avatar -->
-              <div class="w-[54px] h-[54px] rounded-full flex items-center justify-center flex-shrink-0" style={`background-color: ${member.color}`}>
+              <div class="w-[54px] h-[54px] rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style={`background-color: ${member.color}`}>
                 <span class="font-heading font-bold text-white text-[20px]">
                   {member.iniciales}
                 </span>
