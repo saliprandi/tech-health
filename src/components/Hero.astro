@@ -83,27 +83,33 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
 
 <script>
   function initHero() {
-    const cta = document.getElementById('hero-cta');
-    const txt = document.getElementById('hero-cta-text');
-    if (!cta || !txt) return;
+    const heroCta = document.getElementById('hero-cta');
+    const heroCtaText = document.getElementById('hero-cta-text');
 
-    const onClick = () => {
-      const old = txt.textContent;
-      txt.textContent = 'Redirigiendo...';
-      cta.classList.add('opacity-70', 'pointer-events-none');
+    if (!heroCta || !heroCtaText) return () => {};
+
+    const handleCtaClick = () => {
+      const originalText = heroCtaText.textContent;
+      heroCtaText.textContent = 'Redirigiendo...';
+      heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
       setTimeout(() => {
-        txt.textContent = old;
-        cta.classList.remove('opacity-70', 'pointer-events-none');
+        if (heroCtaText) heroCtaText.textContent = originalText;
+        if (heroCta) heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
       }, 3000);
     };
 
-    cta.addEventListener('click', onClick);
-    return () => cta.removeEventListener('click', onClick);
+    heroCta.addEventListener('click', handleCtaClick);
+
+    return () => {
+      heroCta.removeEventListener('click', handleCtaClick);
+    };
   }
 
-  let cleanHero = initHero();
+  let cleanupHero = initHero();
+
   document.addEventListener('astro:after-swap', () => {
-    cleanHero?.();
-    cleanHero = initHero();
+    if (cleanupHero) cleanupHero();
+    cleanupHero = initHero();
   });
 </script>
