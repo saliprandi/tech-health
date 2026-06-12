@@ -15,6 +15,11 @@
 **Prevención:** Utilizar siempre `pnpm astro check` para validar la integridad estructural y preferir versiones fijas de dependencias críticas de seguridad.
 
 ## 2026-06-09 - [Corrupción estructural y brechas de seguridad en componentes Astro]
-**Vulnerabilidad:** XSS (falta de sanitización), Tabnabbing (falta de atributos rel) y dependencias desactualizadas.
-**Aprendizaje:** La duplicación de bloques de código en archivos .astro, producto de errores de fusión, genera inconsistencias donde las protecciones de seguridad se aplican en una parte del archivo pero no en la otra. Además, el uso de 'textContent' para resetear botones que contienen iconos en HTML puede romper la UI si no se maneja correctamente.
-**Prevención:** Realizar refactorizaciones completas de componentes cuando se detecte duplicación masiva. Validar siempre la persistencia de atributos de seguridad en elementos dinámicos. Utilizar 'pnpm overrides' para mitigar vulnerabilidades en dependencias transitivas de herramientas de construcción como 'to-ico'.
+**Vulnerability:** XSS (falta de sanitización), Tabnabbing (falta de atributos rel) y dependencias desactualizadas.
+**Learning:** La duplicación de bloques de código en archivos .astro, producto de errores de fusión, genera inconsistencias donde las protecciones de seguridad se aplican en una parte del archivo pero no en la otra. Además, el uso de 'textContent' para resetear botones que contienen iconos en HTML puede romper la UI si no se maneja correctamente.
+**Prevention:** Realizar refactorizaciones completas de componentes cuando se detecte duplicación masiva. Validar siempre la persistencia de atributos de seguridad en elementos dinámicos. Utilizar 'pnpm overrides' para mitigar vulnerabilidades en dependencias transitivas de herramientas de construcción como 'to-ico'.
+
+## 2026-06-11 - [Mitigación de XSS mediante saneamiento sistemático y limpieza estructural]
+**Vulnerability:** XSS potencial por inyección de contenido dinámico no saneado mediante `innerHTML`.
+**Learning:** La corrupción estructural en componentes Astro facilita la evasión de medidas de seguridad si el saneamiento (como `escapeHtml`) no se aplica de manera uniforme en todos los bloques de código concurrentes. Refactorizar para consolidar la lógica interactiva es un prerrequisito para garantizar la integridad de la seguridad.
+**Prevention:** Enmascarar todo contenido dinámico inyectado vía `innerHTML` con una función de escape robusta y asegurar que la inicialización de scripts maneje correctamente los eventos de navegación de Astro (`astro:after-swap`) para evitar duplicación de listeners.
