@@ -104,6 +104,24 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
 <script is:inline define:vars={{ modalData, whatsappNumber: CONFIG.contacto.whatsapp }}>
   (function() {
+    let isModalOpen = false;
+    let lastFocusedElement = null;
+    let focusableElements = [];
+
+    const escapeHtml = (unsafe) => {
+      if (typeof unsafe !== 'string') return '';
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    };
+
+    const getIconSvg = (iconName) => {
+      return `<use href="#icon-${escapeHtml(iconName)}" />`;
+    };
+
     function initServicios() {
       const cards = document.querySelectorAll('.service-card');
       const backdrop = document.getElementById('service-modal-backdrop');
@@ -147,6 +165,32 @@ const modalData = CONFIG.servicios.map(servicio => ({
       const openModal = (index) => {
         const servicio = modalData[index];
         if (!servicio) return;
+      const closeModal = () => {
+        if (!isModalOpen) return;
+        isModalOpen = false;
+
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+        modal.classList.remove('scale-100', 'opacity-100');
+        modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+        document.body.style.overflow = '';
+
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+          lastFocusedElement.focus();
+        }
+
+        setTimeout(() => {
+          if (!isModalOpen) {
+            modalContent.innerHTML = '';
+            backdrop.classList.add('invisible');
+            modal.classList.add('invisible');
+          }
+        }, 400);
+      };
+
+      const openModal = (index) => {
+        const servicio = modalData[index];
+        if (!servicio) return;
+
         lastFocusedElement = document.activeElement;
         const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ' + servicio.titulo)}`;
 
@@ -165,6 +209,32 @@ const modalData = CONFIG.servicios.map(servicio => ({
               <span id="modal-cta-text">Consultar por este servicio</span>
             </a>
             <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2">Cerrar</button>
+            <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              ${getIconSvg(servicio.icono)}
+            </svg>
+          </div>
+          <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
+          <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
+          <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
+          <ul class="flex flex-col gap-4 mb-10">
+            ${servicio.items.map(item => `
+              <li class="flex items-start gap-4 font-body text-[15px] text-text-soft">
+                <span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>
+                ${escapeHtml(item)}
+              </li>
+            `).join('')}
+          </ul>
+
+          <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
+            <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta">
+              <svg class="w-5 h-5 fill-current">
+                <use href="#icon-whatsapp" />
+              </svg>
+              <span id="modal-cta-text">Consultar por este servicio</span>
+            </a>
+            <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">
+              Cerrar
+            </button>
           </div>
         `;
 
@@ -197,12 +267,23 @@ const modalData = CONFIG.servicios.map(servicio => ({
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           handleCardClick(e);
+          const index = e.currentTarget.getAttribute('data-index');
+          if (index !== null) openModal(parseInt(index));
         }
       };
 
       const handleModalContentClick = (e) => {
         if (e.target.closest('#modal-close-secondary')) closeModal();
         const cta = e.target.closest('#modal-cta');
+        const target = e.target;
+        if (!target) return;
+
+        if (target.closest('#modal-close-secondary')) {
+          closeModal();
+          return;
+        }
+
+        const cta = target.closest('#modal-cta');
         const ctaText = document.getElementById('modal-cta-text');
         if (cta && ctaText) {
           const originalText = ctaText.textContent;
@@ -224,6 +305,35 @@ const modalData = CONFIG.servicios.map(servicio => ({
       closeBtn.addEventListener('click', closeModal);
       modalContent.addEventListener('click', handleModalContentClick);
       document.addEventListener('keydown', handleKeydown);
+      modalContent.addEventListener('click', handleModalContentClick);
+
+      const handleGlobalKeydown = (e) => {
+        if (!isModalOpen) return;
+
+        if (e.key === 'Escape') {
+          closeModal();
+          return;
+        }
+
+        if (e.key === 'Tab') {
+          if (focusableElements.length === 0) return;
+          const first = focusableElements[0];
+          const last = focusableElements[focusableElements.length - 1];
+          if (e.shiftKey) {
+            if (document.activeElement === first) {
+              e.preventDefault();
+              last.focus();
+            }
+          } else {
+            if (document.activeElement === last) {
+              e.preventDefault();
+              first.focus();
+            }
+          }
+        }
+      };
+
+      document.addEventListener('keydown', handleGlobalKeydown);
 
       return () => {
         cards.forEach(card => {
@@ -239,6 +349,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
     let cleanup;
     document.addEventListener('DOMContentLoaded', () => { cleanup = initServicios(); });
+    cleanup = initServicios();
+
     document.addEventListener('astro:after-swap', () => {
       if (cleanup) cleanup();
       cleanup = initServicios();

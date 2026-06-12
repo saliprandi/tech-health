@@ -85,6 +85,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
   function initHero() {
     const heroCta = document.getElementById('hero-cta');
     const heroCtaText = document.getElementById('hero-cta-text');
+
     if (heroCta && heroCtaText) {
       const handleCtaClick = () => {
         const originalText = heroCtaText.textContent;
@@ -103,10 +104,13 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         heroCta.removeEventListener('click', handleCtaClick);
       };
     }
+    return () => {};
   }
 
   let cleanup: (() => void) | undefined;
   document.addEventListener('DOMContentLoaded', () => { cleanup = initHero(); });
+  cleanup = initHero();
+
   document.addEventListener('astro:after-swap', () => {
     if (cleanup) cleanup();
     cleanup = initHero();

@@ -32,6 +32,7 @@ import { CONFIG } from '../data/config';
     const btn = document.getElementById('wa-float-btn');
 
     if (!tooltip || !tooltipText || !btn) return;
+    if (!tooltip || !tooltipText || !btn) return () => {};
 
     const showTooltip = () => {
       tooltip.classList.remove('opacity-0', 'translate-y-2', 'invisible');
@@ -49,6 +50,8 @@ import { CONFIG } from '../data/config';
     };
 
     const initialTimer = setTimeout(showTooltip, 5000);
+    let feedbackTimer: ReturnType<typeof setTimeout> | null = null;
+    let restoreTextTimer: ReturnType<typeof setTimeout> | null = null;
 
     const handleBtnClick = () => {
       const originalText = tooltipText.textContent;
@@ -56,6 +59,11 @@ import { CONFIG } from '../data/config';
       showTooltip();
       btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
       setTimeout(() => {
+
+      if (feedbackTimer) clearTimeout(feedbackTimer);
+      if (restoreTextTimer) clearTimeout(restoreTextTimer);
+
+      feedbackTimer = setTimeout(() => {
         btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         hideTooltip();
         setTimeout(() => {
@@ -74,6 +82,10 @@ import { CONFIG } from '../data/config';
 
   let cleanup: (() => void) | undefined;
   document.addEventListener('DOMContentLoaded', () => { cleanup = initWaFloat(); });
+
+  let cleanup: (() => void) | undefined;
+  cleanup = initWaFloat();
+
   document.addEventListener('astro:after-swap', () => {
     if (cleanup) cleanup();
     cleanup = initWaFloat();
