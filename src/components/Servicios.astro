@@ -101,6 +101,16 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
 <script is:inline define:vars={{ modalData, whatsappNumber: CONFIG.contacto.whatsapp }}>
   (function() {
+    const escapeHtml = (unsafe) => {
+      if (typeof unsafe !== 'string') return '';
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    };
+
     function initServicios() {
       const cards = document.querySelectorAll('.service-card');
       const backdrop = document.getElementById('service-modal-backdrop');
@@ -245,6 +255,23 @@ const modalData = CONFIG.servicios.map(servicio => ({
         }
 
         const cta = target.closest('#modal-cta');
+      const handleCardClick = (e) => {
+        const index = e.currentTarget.getAttribute('data-index');
+        if (index !== null) openModal(parseInt(index));
+      };
+
+      const handleCardKeydown = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const index = e.currentTarget.getAttribute('data-index');
+          if (index !== null) openModal(parseInt(index));
+        }
+      };
+
+      const handleModalContentClick = (e) => {
+        if (e.target.closest('#modal-close-secondary')) closeModal();
+
+        const cta = e.target.closest('#modal-cta');
         const ctaText = document.getElementById('modal-cta-text');
         if (cta && ctaText) {
           const originalText = ctaText.textContent;
@@ -263,16 +290,64 @@ const modalData = CONFIG.servicios.map(servicio => ({
         backdrop.removeEventListener('click', closeModal);
         closeBtn.removeEventListener('click', closeModal);
         document.removeEventListener('keydown', handleKeydown);
+      };
+
+      const handleGlobalKeydown = (e) => {
+        if (!isModalOpen) return;
+
+        if (e.key === 'Escape') {
+          closeModal();
+          return;
+        }
+
+        if (e.key === 'Tab') {
+          if (focusableElements.length === 0) return;
+          const first = focusableElements[0];
+          const last = focusableElements[focusableElements.length - 1];
+          if (e.shiftKey) {
+            if (document.activeElement === first) {
+              e.preventDefault();
+              last.focus();
+            }
+          } else {
+            if (document.activeElement === last) {
+              e.preventDefault();
+              first.focus();
+            }
+          }
+        }
+      };
+
+      cards.forEach(card => {
+        card.addEventListener('click', handleCardClick);
+        card.addEventListener('keydown', handleCardKeydown);
+      });
+
+      backdrop.addEventListener('click', closeModal);
+      closeBtn.addEventListener('click', closeModal);
+      modalContent.addEventListener('click', handleModalContentClick);
+      document.addEventListener('keydown', handleGlobalKeydown);
+
+      return () => {
+        cards.forEach(card => {
+          card.removeEventListener('click', handleCardClick);
+          card.removeEventListener('keydown', handleCardKeydown);
+        });
+        backdrop.removeEventListener('click', closeModal);
+        closeBtn.removeEventListener('click', closeModal);
+        modalContent.removeEventListener('click', handleModalContentClick);
+        document.removeEventListener('keydown', handleGlobalKeydown);
         document.body.style.overflow = '';
       };
     }
 
     let cleanupServicios;
     cleanupServicios = initServicios();
+    let cleanup = initServicios();
 
     document.addEventListener('astro:after-swap', () => {
-      if (cleanupServicios) cleanupServicios();
-      cleanupServicios = initServicios();
+      if (cleanup) cleanup();
+      cleanup = initServicios();
     });
   })();
 </script>
