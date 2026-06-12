@@ -61,6 +61,80 @@ import { CONFIG } from '../data/config';
 </style>
 
 <script>
+  function initNav() {
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    const progress = document.getElementById('reading-progress');
+    const links = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section[id]');
+    if (!toggle || !menu || !progress) return;
+
+    const onToggle = () => {
+      const open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', (!open).toString());
+      menu.classList.toggle('opacity-100');
+      menu.classList.toggle('invisible');
+      menu.classList.toggle('pointer-events-auto');
+
+      if (!open) {
+        // Simple focus trap logic
+        const focusable = menu.querySelectorAll('a, button');
+        const first = focusable[0] as HTMLElement;
+        const last = focusable[focusable.length - 1] as HTMLElement;
+
+        const handleTrap = (e: KeyboardEvent) => {
+          if (e.key === 'Tab') {
+            if (e.shiftKey) {
+              if (document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+              }
+            } else {
+              if (document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+              }
+            }
+          }
+        };
+        menu.addEventListener('keydown', handleTrap as any);
+      }
+    };
+
+    const onScroll = () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      const s = h > 0 ? window.scrollY / h : 0;
+      progress.style.transform = `scaleX(${s})`;
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          links.forEach(l => {
+            if (l.getAttribute('href') === `#${id}`) l.classList.add('nav-link-active');
+            else l.classList.remove('nav-link-active');
+          });
+        }
+      });
+    }, { rootMargin: '-30% 0px -70% 0px' });
+
+    toggle.addEventListener('click', onToggle);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    sections.forEach(s => observer.observe(s));
+
+    return () => {
+      toggle.removeEventListener('click', onToggle);
+      window.removeEventListener('scroll', onScroll);
+      observer.disconnect();
+    };
+  }
+
+  let cleanNav = initNav();
+  document.addEventListener('astro:after-swap', () => {
+    cleanNav?.();
+    cleanNav = initNav();
+  });
   (function() {
     function initNav() {
       const toggle = document.getElementById('menu-toggle') as HTMLButtonElement | null;
