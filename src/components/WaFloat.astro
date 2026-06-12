@@ -26,91 +26,6 @@ import { CONFIG } from '../data/config';
 </div>
 
 <script>
-  function initWaFloat() {
-    const tooltip = document.getElementById('wa-tooltip');
-    const tooltipText = document.getElementById('wa-tooltip-text');
-    const btn = document.getElementById('wa-float-btn');
-
-    if (!tooltip || !tooltipText || !btn) return () => {};
-
-    const showTooltip = () => {
-      tooltip.classList.remove('opacity-0', 'translate-y-2', 'invisible');
-      tooltip.classList.add('opacity-100', 'translate-y-0');
-    };
-
-    const hideTooltip = () => {
-      tooltip.classList.add('opacity-0', 'translate-y-2');
-      tooltip.classList.remove('opacity-100', 'translate-y-0');
-      setTimeout(() => {
-        if (tooltip.classList.contains('opacity-0')) {
-          tooltip.classList.add('invisible');
-        }
-      }, 500);
-    };
-
-    // Show tooltip after 5 seconds
-    const initialTimeout = setTimeout(showTooltip, 5000);
-
-    const handleBtnClick = () => {
-    const initialTimeout = setTimeout(showTooltip, 5000);
-
-    const handleBtnClick = () => {
-      const originalText = tooltipText.textContent;
-      tooltipText.textContent = '¡Redirigiendo!';
-      const originalText = tooltipText.textContent || '¡Hola! ¿En qué podemos ayudarte?';
-      tooltipText.textContent = '¡Redirigiendo!';
-
-      showTooltip();
-      btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-
-      setTimeout(() => {
-        hideTooltip();
-        setTimeout(() => {
-          tooltipText.textContent = originalText;
-          btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-          if (tooltipText) tooltipText.textContent = originalText;
-          if (btn) btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-        }, 500);
-      }, 3000);
-    };
-
-    btn.addEventListener('click', handleBtnClick);
-
-    return () => {
-      clearTimeout(initialTimeout);
-      btn.removeEventListener('click', handleBtnClick);
-    };
-  }
-
-  let cleanupWaFloat: (() => void) | undefined;
-  cleanupWaFloat = initWaFloat();
-
-  document.addEventListener('astro:after-swap', () => {
-    if (cleanupWaFloat) cleanupWaFloat();
-    cleanupWaFloat = initWaFloat();
-  });
-
-  document.addEventListener('astro:after-swap', () => {
-    if (cleanupWaFloat) cleanupWaFloat();
-    cleanupWaFloat = initWaFloat();
-  });
-  let cleanup: (() => void) | undefined;
-  cleanup = initWaFloat();
-
-  document.addEventListener('astro:after-swap', () => {
-    if (cleanup) cleanup();
-    cleanup = initWaFloat();
-  });
-
-  document.addEventListener('astro:after-swap', () => {
-    if (cleanup) cleanup();
-    cleanup = initWaFloat();
-  });
-
-  document.addEventListener('astro:after-swap', () => {
-    if (cleanup) cleanup();
-    cleanup = initWaFloat();
-  });
   (function() {
     function initWaFloat() {
       const tooltip = document.getElementById('wa-tooltip');
@@ -138,37 +53,6 @@ import { CONFIG } from '../data/config';
         }, 500);
       };
 
-      // Show tooltip after 5 seconds
-      const initialTimeout = setTimeout(showTooltip, 5000);
-
-      const handleBtnClick = () => {
-        const originalText = tooltipText.textContent || '¡Hola! ¿En qué podemos ayudarte?';
-        tooltipText.textContent = '¡Redirigiendo!';
-
-        showTooltip();
-
-        btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-
-        feedbackTimer = setTimeout(() => {
-          btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-          hideTooltip();
-      const initialTimer = setTimeout(showTooltip, 5000);
-
-      const handleBtnClick = () => {
-        const originalText = tooltipText.textContent;
-        tooltipText.textContent = '¡Redirigiendo!';
-        showTooltip();
-        btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-
-        setTimeout(() => {
-          hideTooltip();
-          setTimeout(() => {
-            tooltipText.textContent = originalText;
-            btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-          if (btn) btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-          hideTooltip();
-          setTimeout(() => {
-            if (tooltipText) tooltipText.textContent = originalText;
       initialTimeout = setTimeout(showTooltip, 5000);
 
       const handleBtnClick = () => {
@@ -192,8 +76,6 @@ import { CONFIG } from '../data/config';
       btn.addEventListener('click', handleBtnClick);
 
       return () => {
-        clearTimeout(initialTimeout);
-        clearTimeout(initialTimer);
         if (initialTimeout) clearTimeout(initialTimeout);
         if (feedbackTimer) clearTimeout(feedbackTimer);
         if (restoreTimer) clearTimeout(restoreTimer);
@@ -201,20 +83,8 @@ import { CONFIG } from '../data/config';
       };
     }
 
-    let cleanupWaFloat = initWaFloat();
-
-    document.addEventListener('astro:after-swap', () => {
-      if (cleanupWaFloat) cleanupWaFloat();
-      cleanupWaFloat = initWaFloat();
-    let cleanup = initWaFloat();
-    let cleanupWaFloat = initWaFloat();
-
-    document.addEventListener('astro:after-swap', () => {
-      cleanupWaFloat();
-      cleanupWaFloat = initWaFloat();
     let cleanup: (() => void) | undefined;
     cleanup = initWaFloat();
-
     document.addEventListener('astro:after-swap', () => {
       if (cleanup) cleanup();
       cleanup = initWaFloat();
