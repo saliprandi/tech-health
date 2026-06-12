@@ -21,7 +21,7 @@ import { CONFIG } from '../data/config';
     <!-- CTA & Mobile Toggle -->
     <div class="flex items-center gap-4">
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" id="nav-cta" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md">
-        Consultar por WhatsApp
+        <span id="nav-cta-text">Consultar por WhatsApp</span>
       </a>
 
       <!-- Hamburger Button -->
@@ -40,18 +40,17 @@ import { CONFIG } from '../data/config';
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="absolute top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99] invisible" role="navigation" aria-label="Menú móvil">
+  <div id="mobile-menu" class="fixed top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99] invisible" role="navigation" aria-label="Menú móvil">
     <a href="#servicios" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Servicios</a>
     <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
     <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
     <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Contacto</a>
     <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mobile-link mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]" id="mobile-nav-cta">
-      Consultar por WhatsApp
+      <span id="mobile-nav-cta-text">Consultar por WhatsApp</span>
     </a>
   </div>
 
   <!-- Reading Progress Bar -->
-  <div id="reading-progress" class="absolute bottom-0 left-0 w-full h-[3px] bg-blue origin-left scale-x-0 transition-transform duration-75 ease-out"></div>
   <div id="reading-progress" class="absolute bottom-0 left-0 w-full h-[3px] bg-blue origin-left scale-x-0 transition-transform duration-150 ease-out pointer-events-none" aria-hidden="true"></div>
 </nav>
 
@@ -69,18 +68,17 @@ import { CONFIG } from '../data/config';
     const spans = toggle?.querySelectorAll('span');
     const navCta = document.getElementById('nav-cta');
     const mobileNavCta = document.getElementById('mobile-nav-cta');
-    const progress = document.getElementById('reading-progress');
     const progressBar = document.getElementById('reading-progress');
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const sections = document.querySelectorAll('section[id]');
 
     let isOpen = false;
     let lastFocusedElement: HTMLElement | null = null;
 
-    const toggleMenu = () => {
-      isOpen = !isOpen;
+    const toggleMenu = (forceClose = false) => {
+      if (forceClose) isOpen = false;
+      else isOpen = !isOpen;
+
       if (!toggle || !menu) return;
 
       toggle.setAttribute('aria-expanded', isOpen.toString());
@@ -98,13 +96,10 @@ import { CONFIG } from '../data/config';
           spans[2].classList.add('-rotate-45', '-translate-y-[8px]');
         }
 
-        setTimeout(() => (menu.querySelector('.mobile-link') as HTMLElement)?.focus(), 150);
         setTimeout(() => {
-          const firstLink = menu?.querySelector('.mobile-link') as HTMLElement;
+          const firstLink = menu.querySelector('.mobile-link') as HTMLElement;
           firstLink?.focus();
         }, 150);
-        }, 200);
-
       } else {
         menu.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
         menu.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
@@ -116,22 +111,12 @@ import { CONFIG } from '../data/config';
           spans[2].classList.remove('-rotate-45', '-translate-y-[8px]');
         }
 
-        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
-        if (lastFocusedElement) lastFocusedElement.focus();
-        setTimeout(() => { if (!isOpen) menu?.classList.add('invisible'); }, 300);
-        if (lastFocusedElement) lastFocusedElement.focus();
-        if (lastFocusedElement) lastFocusedElement.focus();
-        setTimeout(() => { if (!isOpen) menu.classList.add('invisible'); }, 300);
-        if (lastFocusedElement) lastFocusedElement.focus();
-        if (lastFocusedElement) lastFocusedElement.focus();
-        setTimeout(() => { if (!isOpen) menu?.classList.add('invisible'); }, 300);
-
         if (lastFocusedElement) {
           lastFocusedElement.focus();
         }
 
         setTimeout(() => {
-          if (!isOpen) menu?.classList.add('invisible');
+          if (!isOpen) menu.classList.add('invisible');
         }, 300);
       }
     };
@@ -139,7 +124,7 @@ import { CONFIG } from '../data/config';
     const handleKeydown = (e: KeyboardEvent) => {
       if (!isOpen) return;
       if (e.key === 'Escape') {
-        toggleMenu();
+        toggleMenu(true);
         toggle?.focus();
       }
       if (e.key === 'Tab') {
@@ -156,67 +141,6 @@ import { CONFIG } from '../data/config';
       }
     };
 
-    const handleScroll = () => {
-      if (!progress) return;
-      const height = document.documentElement.scrollHeight - window.innerHeight;
-      if (height > 0) {
-        const scrolled = (window.scrollY / height);
-        progress.style.transform = `scaleX(${scrolled})`;
-      } else {
-        progress.style.transform = 'scaleX(0)';
-      }
-    const closeOnLinkClick = () => {
-    const closeOnLinkClick = () => { if (isOpen) toggleMenu(); };
-    const handleLinkClick = () => {
-      if (isOpen) toggleMenu();
-    };
-
-    toggle?.addEventListener('click', toggleMenu);
-    mobileLinks.forEach(link => link.addEventListener('click', closeOnLinkClick));
-    document.addEventListener('keydown', handleKeydown);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-
-    // WhatsApp Redirect Feedback
-    const handleCtaClick = (e: MouseEvent) => {
-      const cta = e.currentTarget as HTMLElement;
-      const originalText = cta.textContent;
-      cta.textContent = 'Redirigiendo...';
-      cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-      setTimeout(() => {
-        cta.textContent = originalText;
-        cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-        if (cta) {
-          cta.textContent = originalText;
-          cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-        }
-      }, 3000);
-    };
-
-    navCta?.addEventListener('click', handleCtaClick as EventListener);
-    mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
-
-    // ScrollSpy
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    const updateProgress = () => {
-      if (!progressBar) return;
-      const winScroll = document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      progressBar.style.transform = `scaleX(${height > 0 ? winScroll / height : 0})`;
-    };
-
-    toggle?.addEventListener('click', toggleMenu);
-    mobileLinks.forEach(link => link.addEventListener('click', handleLinkClick));
-    document.addEventListener('keydown', handleKeydown);
-    navCta?.addEventListener('click', handleCtaClick as EventListener);
-    mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
-
-    navCta?.addEventListener('click', handleCtaClick as EventListener);
-    mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
-
-    // Reading Progress
     const updateProgress = () => {
       if (!progressBar) return;
       const winScroll = document.documentElement.scrollTop;
@@ -228,22 +152,6 @@ import { CONFIG } from '../data/config';
       }
     };
 
-      progressBar.style.transform = `scaleX(${height > 0 ? winScroll / height : 0})`;
-    };
-
-      const scrolled = height > 0 ? winScroll / height : 0;
-      progressBar.style.transform = `scaleX(${scrolled})`;
-    };
-
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      progressBar.style.transform = `scaleX(${height > 0 ? winScroll / height : 0})`;
-    };
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    updateProgress();
-
-    // ScrollSpy
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -261,111 +169,47 @@ import { CONFIG } from '../data/config';
       });
     }, { rootMargin: '-30% 0px -70% 0px' });
 
-    sections.forEach(section => observer.observe(section));
+    const handleCtaClick = (e: MouseEvent) => {
+      const cta = e.currentTarget as HTMLElement;
+      const textSpan = cta.querySelector('span');
+      if (!textSpan) return;
 
-    return () => {
-      toggle?.removeEventListener('click', toggleMenu);
+      const originalText = textSpan.textContent;
+      textSpan.textContent = 'Redirigiendo...';
+      cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
-    // Attach Listeners
-    toggle?.addEventListener('click', toggleMenu);
-    mobileLinks.forEach(link => link.addEventListener('click', handleLinkClick));
-    document.addEventListener('keydown', handleKeydown);
-    navCta?.addEventListener('click', handleCtaClick as EventListener);
-    mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    sections.forEach(section => observer.observe(section));
-
-    // Initial calls
-
-    toggle?.addEventListener('click', toggleMenu);
-    mobileLinks.forEach(link => link.addEventListener('click', handleLinkClick));
-    document.addEventListener('keydown', handleKeydown);
-    navCta?.addEventListener('click', handleCtaClick as EventListener);
-    mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    sections.forEach(section => observer.observe(section));
-
-    updateProgress();
-
+      setTimeout(() => {
+        if (textSpan) textSpan.textContent = originalText;
+        if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+      }, 3000);
     };
 
-    const observer = new IntersectionObserver(observerCallback, { rootMargin: '-30% 0px -70% 0px' });
-    sections.forEach(section => observer.observe(section));
-
-    toggle?.addEventListener('click', toggleMenu);
-    mobileLinks.forEach(link => link.addEventListener('click', () => { if (isOpen) toggleMenu(); }));
+    toggle?.addEventListener('click', () => toggleMenu());
+    mobileLinks.forEach(link => link.addEventListener('click', () => toggleMenu(true)));
     document.addEventListener('keydown', handleKeydown);
+    window.addEventListener('scroll', updateProgress, { passive: true });
     navCta?.addEventListener('click', handleCtaClick as EventListener);
     mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
-    window.addEventListener('scroll', updateProgress, { passive: true });
+    sections.forEach(section => observer.observe(section));
+
     updateProgress();
 
     return () => {
-      toggle?.removeEventListener('click', toggleMenu);
+      toggle?.removeEventListener('click', () => toggleMenu());
       document.removeEventListener('keydown', handleKeydown);
       window.removeEventListener('scroll', updateProgress);
-    }, { rootMargin: '-30% 0px -70% 0px' });
-    sections.forEach(section => observer.observe(section));
-
-    // Reading Progress
-    const updateProgress = () => {
-      if (!progressBar) return;
-      const winScroll = document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      if (height > 0) {
-        const scrolled = winScroll / height;
-        progressBar.style.transform = `scaleX(${scrolled})`;
-      } else {
-        progressBar.style.transform = 'scaleX(0)';
-      }
-    };
-
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    updateProgress();
-
-    // Cleanup function
-    return () => {
-      toggle?.removeEventListener('click', toggleMenu);
-      mobileLinks.forEach(link => link.removeEventListener('click', closeOnLinkClick));
-      document.removeEventListener('keydown', handleKeydown);
-      window.removeEventListener('scroll', handleScroll);
-      observer.disconnect();
-      toggle?.removeEventListener('click', toggleMenu);
       navCta?.removeEventListener('click', handleCtaClick as EventListener);
       mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
-    };
-  }
-
-  let cleanup = initNav();
-      navCta?.removeEventListener('click', handleCtaClick as EventListener);
-      mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
-      window.removeEventListener('scroll', updateProgress);
       observer.disconnect();
       document.body.style.overflow = '';
-      window.removeEventListener('scroll', updateProgress);
     };
   }
 
   let cleanupNav: (() => void) | undefined;
   cleanupNav = initNav();
-  let cleanup: (() => void) | undefined;
-
-  document.addEventListener('DOMContentLoaded', () => {
-    cleanup = initNav();
-  });
-
-  document.addEventListener('DOMContentLoaded', () => { cleanup = initNav(); });
-
-  // Initial load
-  cleanup = initNav();
 
   document.addEventListener('astro:after-swap', () => {
     if (cleanupNav) cleanupNav();
     cleanupNav = initNav();
   });
-
-  // Also call immediately to handle initial load without DOMContentLoaded if needed
-  if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    cleanup = initNav();
-  }
 </script>
