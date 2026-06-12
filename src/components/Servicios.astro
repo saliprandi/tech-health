@@ -123,14 +123,59 @@ const modalData = CONFIG.servicios.map(servicio => ({
     };
 
     const initServicios = () => {
+    function initServicios() {
       const cards = document.querySelectorAll('.service-card');
       const backdrop = document.getElementById('service-modal-backdrop');
       const modal = document.getElementById('service-modal');
       const modalContent = document.getElementById('modal-content');
       const closeBtn = document.getElementById('close-modal');
 
-      if (!cards.length || !backdrop || !modal || !modalContent || !closeBtn) return () => {};
+      if (!cards.length || !backdrop || !modal || !modalContent || !closeBtn) return;
 
+      let isModalOpen = false;
+      let lastFocusedElement = null;
+      let focusableElements = [];
+
+      const escapeHtml = (unsafe) => {
+        if (typeof unsafe !== 'string') return '';
+        return unsafe
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      };
+
+      const getIconSvg = (iconName) => {
+        return `<use href="#icon-${escapeHtml(iconName)}" />`;
+        return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+      };
+
+      const closeModal = () => {
+        if (!isModalOpen) return;
+        isModalOpen = false;
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+        modal.classList.remove('scale-100', 'opacity-100');
+        document.body.style.overflow = '';
+        if (lastFocusedElement) lastFocusedElement.focus();
+        setTimeout(() => {
+          if (!isModalOpen) {
+            modalContent.innerHTML = '';
+            backdrop.classList.add('invisible');
+            modal.classList.add('invisible');
+          }
+        }, 400);
+      };
+
+      const updateFocusableElements = () => {
+        focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+          .filter(el => el.tagName !== 'SVG' && el.tagName !== 'USE' && !el.hasAttribute('disabled'));
+      };
+
+      const openModal = (index) => {
+        const servicio = modalData[index];
+        if (!servicio) return;
       const closeModal = () => {
         if (!isModalOpen) return;
         isModalOpen = false;
@@ -153,24 +198,28 @@ const modalData = CONFIG.servicios.map(servicio => ({
         }, 400);
       };
 
-      const updateFocusableElements = () => {
-        focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
-          .filter(el => {
-            const tagName = el.tagName.toUpperCase();
-            return tagName !== 'SVG' && tagName !== 'USE' && !el.hasAttribute('disabled');
-          });
-      };
-
       const openModal = (index) => {
         const servicio = modalData[index];
         if (!servicio) return;
 
         lastFocusedElement = document.activeElement;
-
         const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ' + servicio.titulo)}`;
 
         modalContent.innerHTML = `
           <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
+            <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><use href="#icon-${escapeHtml(servicio.icono)}" /></svg>
+          </div>
+          <h3 id="modal-title" class="font-heading font-extrabold text-[28px] text-navy mb-4 leading-tight">${escapeHtml(servicio.titulo)}</h3>
+          <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
+          <ul class="flex flex-col gap-4 mb-10">
+            ${servicio.items.map(item => `<li class="flex items-start gap-4 font-body text-[15px] text-text-soft"><span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>${escapeHtml(item)}</li>`).join('')}
+          </ul>
+          <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
+            <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-sm" id="modal-cta">
+              <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
+              <span id="modal-cta-text">Consultar por este servicio</span>
+            </a>
+            <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2">Cerrar</button>
             <svg class="w-8 h-8" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
               ${getIconSvg(servicio.icono)}
             </svg>
@@ -205,19 +254,60 @@ const modalData = CONFIG.servicios.map(servicio => ({
         modal.classList.add('scale-100', 'opacity-100');
         document.body.style.overflow = 'hidden';
         isModalOpen = true;
-
         updateFocusableElements();
+        setTimeout(() => { (document.getElementById('modal-cta') || closeBtn).focus(); }, 100);
+      };
 
-        setTimeout(() => {
-          const cta = document.getElementById('modal-cta');
-          if (cta) cta.focus();
-          else closeBtn.focus();
-        }, 100);
+      const handleKeydown = (e) => {
+        if (!isModalOpen) return;
+
+        if (e.key === 'Escape') {
+          closeModal();
+        }
+
+        if (e.key === 'Tab') {
+          if (focusableElements.length === 0) return;
+          const first = focusableElements[0];
+          const last = focusableElements[focusableElements.length - 1];
+
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      };
+
+      cards.forEach(card => {
+        card.addEventListener('click', () => openModal(parseInt(card.getAttribute('data-index'))));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openModal(parseInt(card.getAttribute('data-index')));
+          }
+        });
+      });
+
+      backdrop.addEventListener('click', closeModal);
+      closeBtn.addEventListener('click', closeModal);
+
+      modalContent.addEventListener('click', (e) => {
+        if (e.target.closest('#modal-close-secondary')) closeModal();
+
+        const cta = e.target.closest('#modal-cta');
+        if (e.key === 'Escape') closeModal();
+        if (e.key === 'Tab') {
+          const first = focusableElements[0];
+          const last = focusableElements[focusableElements.length - 1];
+          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
       };
 
       const handleCardClick = (e) => {
-        const card = e.currentTarget;
-        const index = card.getAttribute('data-index');
+        const index = e.currentTarget.getAttribute('data-index');
         if (index !== null) openModal(parseInt(index));
       };
 
@@ -226,24 +316,21 @@ const modalData = CONFIG.servicios.map(servicio => ({
           e.preventDefault();
           const card = e.currentTarget;
           const index = card.getAttribute('data-index');
+          handleCardClick(e);
+          const index = e.currentTarget.getAttribute('data-index');
           if (index !== null) openModal(parseInt(index));
         }
       };
 
-      cards.forEach(card => {
-        card.addEventListener('click', handleCardClick);
-        card.addEventListener('keydown', handleCardKeydown);
-      });
-
-      backdrop.addEventListener('click', closeModal);
-      closeBtn.addEventListener('click', closeModal);
-
       const handleModalContentClick = (e) => {
+        if (e.target.closest('#modal-close-secondary')) closeModal();
+        const cta = e.target.closest('#modal-cta');
         const target = e.target;
         if (!target) return;
 
         if (target.closest('#modal-close-secondary')) {
           closeModal();
+          return;
         }
 
         const cta = target.closest('#modal-cta');
@@ -255,12 +342,31 @@ const modalData = CONFIG.servicios.map(servicio => ({
           cta.classList.add('opacity-70', 'pointer-events-none');
 
           setTimeout(() => {
+        if (cta && ctaText) {
+          const originalText = ctaText.textContent;
+          ctaText.textContent = 'Redirigiendo...';
+          cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          setTimeout(() => {
+            if (ctaText) ctaText.textContent = originalText;
+            if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          }, 3000);
+        }
+      });
             ctaText.textContent = originalText;
-            cta.classList.remove('opacity-70', 'pointer-events-none');
+            cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           }, 3000);
         }
       };
 
+      cards.forEach(card => {
+        card.addEventListener('click', handleCardClick);
+        card.addEventListener('keydown', handleCardKeydown);
+      });
+
+      backdrop.addEventListener('click', closeModal);
+      closeBtn.addEventListener('click', closeModal);
+      modalContent.addEventListener('click', handleModalContentClick);
+      document.addEventListener('keydown', handleKeydown);
       modalContent.addEventListener('click', handleModalContentClick);
 
       const handleGlobalKeydown = (e) => {
@@ -268,14 +374,13 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
         if (e.key === 'Escape') {
           closeModal();
+          return;
         }
 
         if (e.key === 'Tab') {
           if (focusableElements.length === 0) return;
-
           const first = focusableElements[0];
           const last = focusableElements[focusableElements.length - 1];
-
           if (e.shiftKey) {
             if (document.activeElement === first) {
               e.preventDefault();
@@ -290,7 +395,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
         }
       };
 
-      document.addEventListener('keydown', handleGlobalKeydown);
+      document.addEventListener('keydown', handleKeydown);
 
       return () => {
         cards.forEach(card => {
@@ -300,11 +405,17 @@ const modalData = CONFIG.servicios.map(servicio => ({
         backdrop.removeEventListener('click', closeModal);
         closeBtn.removeEventListener('click', closeModal);
         modalContent.removeEventListener('click', handleModalContentClick);
-        document.removeEventListener('keydown', handleGlobalKeydown);
+        document.removeEventListener('keydown', handleKeydown);
       };
     };
 
     let cleanup = initServicios();
+    }
+
+    let cleanup = initServicios();
+    let cleanup;
+    document.addEventListener('DOMContentLoaded', () => { cleanup = initServicios(); });
+    cleanup = initServicios();
 
     document.addEventListener('astro:after-swap', () => {
       if (cleanup) cleanup();

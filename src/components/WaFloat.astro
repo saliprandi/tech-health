@@ -31,6 +31,7 @@ import { CONFIG } from '../data/config';
     const tooltipText = document.getElementById('wa-tooltip-text');
     const btn = document.getElementById('wa-float-btn');
 
+    if (!tooltip || !tooltipText || !btn) return;
     if (!tooltip || !tooltipText || !btn) return () => {};
 
     const showTooltip = () => {
@@ -49,6 +50,7 @@ import { CONFIG } from '../data/config';
     };
 
     const initialTimeout = setTimeout(showTooltip, 5000);
+    const initialTimer = setTimeout(showTooltip, 5000);
     let feedbackTimer: ReturnType<typeof setTimeout> | null = null;
     let restoreTextTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -63,6 +65,20 @@ import { CONFIG } from '../data/config';
         btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         hideTooltip();
         restoreTextTimer = setTimeout(() => {
+      const originalText = tooltipText.textContent;
+      tooltipText.textContent = '¡Redirigiendo!';
+      showTooltip();
+      btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+      setTimeout(() => {
+
+      if (feedbackTimer) clearTimeout(feedbackTimer);
+      if (restoreTextTimer) clearTimeout(restoreTextTimer);
+
+      setTimeout(() => {
+        if (btn) btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        hideTooltip();
+        setTimeout(() => {
+          if (tooltipText) tooltipText.textContent = originalText;
           tooltipText.textContent = originalText;
         }, 500);
       }, 3000);
@@ -74,14 +90,31 @@ import { CONFIG } from '../data/config';
       clearTimeout(initialTimeout);
       if (feedbackTimer) clearTimeout(feedbackTimer);
       if (restoreTextTimer) clearTimeout(restoreTextTimer);
+      clearTimeout(initialTimer);
       btn.removeEventListener('click', handleBtnClick);
     };
   }
 
   let cleanup = initWaFloat();
+  let cleanup: (() => void) | undefined;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    cleanup = initWaFloat();
+  });
+
+
+  let cleanup: (() => void) | undefined;
+  document.addEventListener('DOMContentLoaded', () => { cleanup = initWaFloat(); });
+
+  let cleanup: (() => void) | undefined;
+  cleanup = initWaFloat();
 
   document.addEventListener('astro:after-swap', () => {
     if (cleanup) cleanup();
     cleanup = initWaFloat();
   });
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    cleanup = initWaFloat();
+  }
 </script>
