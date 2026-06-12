@@ -141,6 +141,8 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
   cleanup = initHero();
 
   document.addEventListener('astro:after-swap', () => {
+
+  document.addEventListener('astro:after-swap', () => {
   let cleanupHero: (() => void) | undefined;
   cleanupHero = initHero();
   let cleanupHero = initHero();

@@ -101,6 +101,11 @@ import { CONFIG } from '../data/config';
     if (cleanup) cleanup();
     cleanup = initWaFloat();
   });
+
+  document.addEventListener('astro:after-swap', () => {
+    if (cleanup) cleanup();
+    cleanup = initWaFloat();
+  });
   (function() {
     function initWaFloat() {
       const tooltip = document.getElementById('wa-tooltip');
