@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Icons from '../components/Icons.astro';
+import { CONFIG } from '../data/config';
 
 interface Props {
 	title?: string;
@@ -45,7 +46,33 @@ const { title = "TechHealth Medical Engineering | TÃ©cnicos en Electromedicina â
 		<!-- Google Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@700;800;900&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+
+		<!-- JSON-LD Structured Data -->
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "LocalBusiness",
+			"name": CONFIG.empresa.nombre + " " + CONFIG.empresa.subtitulo,
+			"description": CONFIG.empresa.descripcion,
+			"url": "https://techhealth.com.ar/",
+			"telephone": "+" + CONFIG.contacto.whatsapp,
+			"image": "https://techhealth.com.ar/logo-name.svg",
+			"address": {
+				"@type": "PostalAddress",
+				"streetAddress": CONFIG.contacto.direccion,
+				"addressLocality": CONFIG.contacto.ciudad_completa,
+				"addressCountry": "AR"
+			},
+			"openingHoursSpecification": [
+				{
+					"@type": "OpeningHoursSpecification",
+					"dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+					"opens": "09:00",
+					"closes": "18:00"
+				}
+			],
+			"sameAs": Object.values(CONFIG.redes).filter(Boolean)
+		})} />
 	</head>
 	<body>
 		<Icons />
