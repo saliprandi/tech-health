@@ -80,3 +80,7 @@ Importante!!! Quiero todos los pr en español
 ## 2025-02-15 - [A11y: Gestión de foco en navegación móvil]
 **Aprendizaje:** Los menús de navegación móvil requieren una gestión de foco rigurosa para ser verdaderamente accesibles. Al abrir el menú, el foco debe moverse inmediatamente al primer elemento interactivo. Un "focus trap" debe activarse para evitar que el usuario tabule fuera del menú hacia el contenido principal oculto.
 **Acción:** Implementar siempre trampas de foco (`focus trap`) y enfoque inicial automático en componentes de navegación móvil, asegurando que el cierre (vía tecla Escape o click fuera) restaure el foco al disparador original.
+
+## 2025-06-11 - [UX: Indicador de ubicación con feedback visual]
+**Aprendizaje:** Usar un indicador de pulso (`animate-ping`) proporciona una señal visual sutil de "actividad" o "presencia local" que refuerza la confianza del usuario en servicios regionales.
+**Acción:** Implementar estados de animación sutiles para badges de ubicación y acompañarlos de `aria-label` descriptivos para no perder accesibilidad en elementos puramente visuales.
