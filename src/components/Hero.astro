@@ -134,6 +134,10 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
 
   let cleanup: (() => void) | undefined;
 
+  // Initial load
+  cleanup = initHero();
+
+  // Re-init on navigation (View Transitions)
   document.addEventListener('DOMContentLoaded', () => {
     cleanup = initHero();
   });

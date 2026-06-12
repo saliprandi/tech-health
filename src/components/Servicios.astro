@@ -320,6 +320,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
       const handleCardKeydown = (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
+          const index = e.currentTarget.getAttribute('data-index');
+          if (index !== null) openModal(parseInt(index));
           handleCardAction(e);
         }
       };
@@ -453,7 +455,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
         document.body.style.overflow = '';
         document.removeEventListener('keydown', handleKeydown);
       };
-    };
+    }
 
     let cleanup = initServicios();
     }

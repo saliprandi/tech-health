@@ -129,6 +129,12 @@ import { CONFIG } from '../data/config';
       setTimeout(() => {
 
       if (feedbackTimer) clearTimeout(feedbackTimer);
+      feedbackTimer = setTimeout(() => {
+        btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        hideTooltip();
+
+        if (restoreTextTimer) clearTimeout(restoreTextTimer);
+        restoreTextTimer = setTimeout(() => {
       if (restoreTextTimer) clearTimeout(restoreTextTimer);
 
       setTimeout(() => {
@@ -152,6 +158,12 @@ import { CONFIG } from '../data/config';
     };
   }
 
+  let cleanup: (() => void) | undefined;
+
+  // Initial load
+  cleanup = initWaFloat();
+
+  // Re-init on navigation (View Transitions)
   let cleanup = initWaFloat();
   let cleanup: (() => void) | undefined;
 

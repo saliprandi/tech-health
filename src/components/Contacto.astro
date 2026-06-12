@@ -225,6 +225,8 @@ import { CONFIG } from '../data/config';
       const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
       const day = tucumanTime.getDay();
       const hour = tucumanTime.getHours();
+
+      // Mon-Fri 9:00 - 18:00
       const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
 
       if (isOpen) {
@@ -299,6 +301,7 @@ import { CONFIG } from '../data/config';
       }
     };
 
+    if (textarea) {
       if (textarea && counter) {
         textarea.addEventListener('input', handleInput);
         handleInput();
@@ -355,6 +358,10 @@ import { CONFIG } from '../data/config';
     const copyLabel = document.getElementById('copy-text');
     const copyIconUse = document.getElementById('copy-icon-use');
 
+    const handleCopyClick = () => {
+      if (!copyLabel || !copyIconUse || !copyBtn) return;
+      const originalText = copyLabel.textContent;
+      const originalIcon = copyIconUse.getAttribute('href');
     const handleCopy = () => {
       if (!copyBtn || !copyLabel || !copyIconUse) return;
       const originalText = copyLabel.textContent;
@@ -371,6 +378,11 @@ import { CONFIG } from '../data/config';
           copyLabel.textContent = originalText;
           copyIconUse.setAttribute('href', originalIcon || '#icon-copy');
           copyBtn.classList.remove('text-blue');
+        }, 2500);
+      });
+    };
+
+    copyBtn?.addEventListener('click', handleCopyClick);
           if (announcement) announcement.textContent = '';
         }, 2500);
       });
@@ -393,6 +405,23 @@ import { CONFIG } from '../data/config';
       const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
       const desc = (document.getElementById('f-desc') as HTMLTextAreaElement)?.value.trim() || 'Sin detalles adicionales';
 
+    const handleFormSubmit = (e: Event) => {
+      e.preventDefault();
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const nombre = (document.getElementById('f-nombre') as HTMLInputElement)?.value.trim() || 'No especificado';
+      const tel = (document.getElementById('f-tel') as HTMLInputElement)?.value.trim() || 'No especificado';
+      const servicioel = document.getElementById('f-servicio') as HTMLSelectElement | null;
+      const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
+      const desc = (document.getElementById('f-desc') as HTMLTextAreaElement)?.value.trim() || 'Sin detalles adicionales';
+
+      if (btn && btnText) {
+        const originalBtnText = btnText.textContent;
+        btnText.textContent = 'Redirigiendo...';
       const originalBtnText = btnText.textContent;
       btnText.textContent = 'Redirigiendo...';
       btn.disabled = true;
@@ -494,6 +523,10 @@ import { CONFIG } from '../data/config';
           btn.disabled = false;
           btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }, 3000);
+      }
+    };
+
+    form.addEventListener('submit', handleFormSubmit);
       });
     }
 
@@ -505,8 +538,12 @@ import { CONFIG } from '../data/config';
 
     form.addEventListener('submit', handleSubmit);
 
+    // Cleanup
     return () => {
       clearInterval(statusInterval);
+      if (textarea) textarea.removeEventListener('input', updateCounter);
+      copyBtn?.removeEventListener('click', handleCopyClick);
+      form.removeEventListener('submit', handleFormSubmit);
       textarea?.removeEventListener('input', updateCounter);
       copyBtn?.removeEventListener('click', handleCopyClick);
       form.removeEventListener('submit', handleFormSubmit);
@@ -523,6 +560,7 @@ import { CONFIG } from '../data/config';
 
   let cleanup: (() => void) | undefined;
 
+  // Initial load
   document.addEventListener('DOMContentLoaded', () => {
     cleanup = initContacto();
   });
