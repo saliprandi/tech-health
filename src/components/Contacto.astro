@@ -8,12 +8,8 @@ import { CONFIG } from '../data/config';
       <div>
         <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Contacto</div>
         <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-4">Estamos aquí para ayudarle</h2>
+        <div id="status-badge" class="hidden inline-flex items-center gap-1.5 font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500 mb-4"></div>
         <div class="flex flex-col gap-6">
-          <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border">
-            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor"><use href="#icon-phone" /></svg>
-
-          <!-- WhatsApp -->
           <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
               <svg class="w-5 h-5 group-hover:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -60,100 +56,56 @@ import { CONFIG } from '../data/config';
 </section>
 
 <script>
-  function initContacto() {
-    const f = document.getElementById('contact-form') as HTMLFormElement | null;
-    const desc = document.getElementById('f-desc') as HTMLTextAreaElement | null;
-    const counter = document.getElementById('char-counter');
-    if (!f) return;
-    const w = f.dataset.whatsapp;
-
-    const onInput = () => {
-      if (desc && counter) {
-        counter.textContent = `${desc.value.length} / 500`;
-      }
-    };
-
-    const handleSub = (e: Event) => {
-      e.preventDefault();
-      const n = (document.getElementById('f-nombre') as HTMLInputElement).value;
-      const t = (document.getElementById('f-tel') as HTMLInputElement).value;
-      const m = (document.getElementById('f-desc') as HTMLTextAreaElement).value;
-      window.open(`https://wa.me/${w}?text=${encodeURIComponent('Nombre: ' + n + '\nTel: ' + t + '\nMsg: ' + m)}`, '_blank', 'noopener,noreferrer');
-    };
-
-    f.addEventListener('submit', handleSub);
-    desc?.addEventListener('input', onInput);
-
-    const cp = document.getElementById('copy-address');
-    const onCp = () => {
-      navigator.clipboard.writeText(document.getElementById('address-text')?.textContent || '').then(() => {
-        const ct = document.getElementById('copy-text');
-        if (ct) {
-          const old = ct.textContent;
-          ct.textContent = '¡Copiado!';
-          setTimeout(() => { if (ct) ct.textContent = old; }, 2000);
-        }
-      });
-    };
-    cp?.addEventListener('click', onCp);
-
-    return () => {
-      f.removeEventListener('submit', handleSub);
-      desc?.removeEventListener('input', onInput);
-      cp?.removeEventListener('click', onCp);
-    };
-  }
-
-  let cleanC = initContacto();
-  document.addEventListener('astro:after-swap', () => { cleanC?.(); cleanC = initContacto(); });
   (function() {
     function initContacto() {
       const form = document.getElementById('contact-form') as HTMLFormElement | null;
-      if (!form) return () => {};
-
-      const whatsappNumber = form.getAttribute('data-whatsapp') || '';
-      const badge = document.getElementById('status-badge');
-      const textarea = document.getElementById('f-desc') as HTMLTextAreaElement | null;
+      const desc = document.getElementById('f-desc') as HTMLTextAreaElement | null;
       const counter = document.getElementById('char-counter');
       const copyBtn = document.getElementById('copy-address');
-      const addressText = document.getElementById('address-text')?.textContent || '';
-      const copyLabel = document.getElementById('copy-text');
+      const copyText = document.getElementById('copy-text');
       const copyIconUse = document.getElementById('copy-icon-use');
-      const announcement = document.getElementById('copy-announcement');
+      const addressEl = document.getElementById('address-text');
       const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
-      const submitBtnText = document.getElementById('f-submit-text');
 
-      // Business Hours Status Badge Logic
+      if (!form) return () => {};
+      const whatsappNumber = form.dataset.whatsapp || '';
+
+      // Business Hours Status Badge (UTC-3 Tucumán)
+      const badge = document.getElementById('status-badge');
       let statusInterval: ReturnType<typeof setInterval> | null = null;
 
       const updateStatusBadge = () => {
         if (!badge) return;
         const now = new Date();
-        const tucumanTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
-        const day = tucumanTime.getDay();
-        const hour = tucumanTime.getHours();
-
+        let tucumanDate: Date;
+        try {
+          const tucumanTimeStr = now.toLocaleString('en-US', { timeZone: 'America/Argentina/Tucuman', hour12: false });
+          tucumanDate = new Date(tucumanTimeStr);
+        } catch {
+          tucumanDate = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
+        }
+        const day = tucumanDate.getDay();
+        const hour = tucumanDate.getHours();
         const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
 
         if (isOpen) {
           badge.innerHTML = '<span class="relative flex h-2 w-2" aria-hidden="true"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora';
-          badge.className = 'inline-flex items-center gap-1.5 font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500 bg-emerald-100 text-emerald-800';
+          badge.className = 'inline-flex items-center gap-1.5 font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500 mb-4 bg-emerald-100 text-emerald-800';
         } else {
           badge.textContent = 'Cerrado';
-          badge.className = 'inline-flex items-center gap-1.5 font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500 bg-gray-100 text-gray-800';
+          badge.className = 'inline-flex items-center gap-1.5 font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500 mb-4 bg-gray-100 text-gray-800';
         }
-        badge.classList.remove('hidden');
       };
 
       updateStatusBadge();
       statusInterval = setInterval(updateStatusBadge, 60000);
 
-      // Character Counter Logic
+      // Character Counter
       const updateCounter = () => {
-        if (!textarea || !counter) return;
-        const length = textarea.value.length;
-        counter.textContent = `${length} / 500`;
-        if (length >= 450) {
+        if (!desc || !counter) return;
+        const len = desc.value.length;
+        counter.textContent = `${len} / 500`;
+        if (len >= 450) {
           counter.classList.add('text-blue-light');
           counter.classList.remove('text-white/40');
         } else {
@@ -161,79 +113,73 @@ import { CONFIG } from '../data/config';
           counter.classList.add('text-white/40');
         }
       };
-
-      textarea?.addEventListener('input', updateCounter);
+      desc?.addEventListener('input', updateCounter);
       updateCounter();
 
-      // Copy Address Logic
+      // Copy Address
       const handleCopy = () => {
-        if (!copyLabel || !copyIconUse || !copyBtn) return;
-        const originalText = copyLabel.textContent;
+        if (!copyBtn || !copyText || !copyIconUse || !addressEl) return;
+        const originalText = copyText.textContent || 'Copiar';
         const originalIcon = copyIconUse.getAttribute('href') || '#icon-copy';
-
-        navigator.clipboard.writeText(addressText).then(() => {
-          copyLabel.textContent = '¡Copiado!';
+        navigator.clipboard.writeText(addressEl.textContent || '').then(() => {
+          copyText.textContent = '¡Copiado!';
           copyIconUse.setAttribute('href', '#icon-check');
           copyBtn.classList.add('text-blue');
-          if (announcement) announcement.textContent = 'Dirección copiada al portapapeles';
-
           setTimeout(() => {
-            copyLabel.textContent = originalText;
+            copyText.textContent = originalText;
             copyIconUse.setAttribute('href', originalIcon);
             copyBtn.classList.remove('text-blue');
-            if (announcement) announcement.textContent = '';
           }, 2500);
         });
       };
-
       copyBtn?.addEventListener('click', handleCopy);
 
-      // Form Submit Logic
+      // Form Submit with clipboard fallback
       const handleSubmit = (e: Event) => {
         e.preventDefault();
         if (!form.checkValidity()) {
           form.reportValidity();
           return;
         }
+        const nombre = (document.getElementById('f-nombre') as HTMLInputElement)?.value.trim() || '';
+        const tel = (document.getElementById('f-tel') as HTMLInputElement)?.value.trim() || '';
+        const mensaje = (document.getElementById('f-desc') as HTMLTextAreaElement)?.value.trim() || '';
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Mensaje:* ${mensaje}`;
+        const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(rawMessage)}`;
 
-        const nombre = (document.getElementById('f-nombre') as HTMLInputElement)?.value.trim() || 'No especificado';
-        const tel = (document.getElementById('f-tel') as HTMLInputElement)?.value.trim() || 'No especificado';
-        const servicioel = document.getElementById('f-servicio') as HTMLSelectElement | null;
-        const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
-        const desc = (document.getElementById('f-desc') as HTMLTextAreaElement)?.value.trim() || 'Sin detalles adicionales';
-
-        if (submitBtn && submitBtnText) {
-          const originalBtnText = submitBtnText.textContent;
-          submitBtnText.textContent = 'Redirigiendo...';
+        if (submitBtn) {
+          const originalBtnText = submitBtn.textContent;
+          submitBtn.textContent = 'Redirigiendo...';
           submitBtn.disabled = true;
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-
-          const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Detalle:* ${desc}`;
-          const encodedMessage = encodeURIComponent(rawMessage);
-          const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-
-          window.open(url, '_blank', 'noopener,noreferrer');
-
           setTimeout(() => {
-            submitBtnText.textContent = originalBtnText;
+            submitBtn.textContent = originalBtnText;
             submitBtn.disabled = false;
             submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           }, 3000);
         }
-      };
 
+        const win = window.open(url, '_blank', 'noopener,noreferrer');
+        const blocked = !win || win.closed || typeof win.closed === 'undefined';
+        if (blocked) {
+          navigator.clipboard.writeText(rawMessage).then(() => {
+            window.alert('No se pudo abrir WhatsApp. El mensaje fue copiado al portapapeles. Abrí WhatsApp y pegalo para enviarlo.');
+          }).catch(() => {
+            window.alert('No se pudo abrir WhatsApp. Por favor copiá el mensaje manualmente.');
+          });
+        }
+      };
       form.addEventListener('submit', handleSubmit);
 
       return () => {
         if (statusInterval) clearInterval(statusInterval);
-        textarea?.removeEventListener('input', updateCounter);
+        desc?.removeEventListener('input', updateCounter);
         copyBtn?.removeEventListener('click', handleCopy);
         form.removeEventListener('submit', handleSubmit);
       };
     }
 
-    let cleanup: (() => void) | undefined;
-    cleanup = initContacto();
+    let cleanup = initContacto();
     document.addEventListener('astro:after-swap', () => {
       if (cleanup) cleanup();
       cleanup = initContacto();
