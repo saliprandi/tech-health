@@ -79,7 +79,7 @@ import { CONFIG } from '../data/config';
         const now = new Date();
         let tucumanDate: Date;
         try {
-          const tucumanTimeStr = now.toLocaleString('en-US', { timeZone: 'America/Argentina/Tucuman', hour12: false });
+          const tucumanTimeStr = now.toLocaleString('en-CA', { timeZone: 'America/Argentina/Tucuman', hour12: false });
           tucumanDate = new Date(tucumanTimeStr);
         } catch {
           tucumanDate = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
@@ -159,15 +159,13 @@ import { CONFIG } from '../data/config';
           }, 3000);
         }
 
-        const win = window.open(url, '_blank', 'noopener,noreferrer');
-        const blocked = !win || win.closed || typeof win.closed === 'undefined';
-        if (blocked) {
-          navigator.clipboard.writeText(rawMessage).then(() => {
-            window.alert('No se pudo abrir WhatsApp. El mensaje fue copiado al portapapeles. Abrí WhatsApp y pegalo para enviarlo.');
-          }).catch(() => {
-            window.alert('No se pudo abrir WhatsApp. Por favor copiá el mensaje manualmente.');
-          });
-        }
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
       };
       form.addEventListener('submit', handleSubmit);
 

@@ -173,14 +173,30 @@ const modalData = CONFIG.servicios.map(servicio => ({
       };
 
       const handleModalContentClick = (e) => {
-        if (e.target.closest('#modal-close-secondary')) closeModal();
+        if (e.target.closest('#modal-close-secondary')) {
+          closeModal();
+          return;
+        }
 
         const cta = e.target.closest('#modal-cta');
         const ctaText = document.getElementById('modal-cta-text');
         if (cta && ctaText) {
+          e.preventDefault();
           const originalText = ctaText.textContent;
           ctaText.textContent = 'Redirigiendo...';
           cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+          const href = cta.getAttribute('href');
+          if (href) {
+            const a = document.createElement('a');
+            a.href = href;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          }
+
           setTimeout(() => {
             if (ctaText) ctaText.textContent = originalText;
             if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');

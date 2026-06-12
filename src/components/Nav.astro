@@ -148,15 +148,28 @@ import { CONFIG } from '../data/config';
       const handleToggleClick = () => toggleMenu();
 
       const handleCtaClick = (e: MouseEvent) => {
+        e.preventDefault();
         const cta = e.currentTarget as HTMLElement;
-        const originalText = cta.textContent;
-        cta.textContent = 'Redirigiendo...';
+        const span = cta.querySelector('span');
+        if (!span) return;
+        const originalText = span.textContent;
+        span.textContent = 'Redirigiendo...';
         cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+        const href = cta.getAttribute('href');
+        if (href) {
+          const a = document.createElement('a');
+          a.href = href;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }
+
         setTimeout(() => {
-          if (cta) {
-            cta.textContent = originalText;
-            cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-          }
+          if (span) span.textContent = originalText;
+          if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }, 3000);
       };
 
