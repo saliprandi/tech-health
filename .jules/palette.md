@@ -102,3 +102,7 @@ Importante!!! Quiero todos los pr en español
 ## 2025-06-20 - [A11y: Accesibilidad de tarjetas de servicio y modales]
 **Aprendizaje:** En este repositorio, los componentes Astro presentaban una alta redundancia y corrupción estructural en sus scripts, lo que rompía tanto la accesibilidad como el build. La implementación de un focus trap robusto y la restauración del foco al cerrar modales es vital cuando se usan View Transitions, ya que el estado del DOM puede volverse inconsistente si no se maneja una limpieza adecuada de event listeners.
 **Acción:** Al refactorizar componentes interactivos, priorizar la consolidación de la lógica de inicialización en una única función que devuelva un cleanup, y asegurar que el soporte de teclado (Enter/Space) esté integrado desde el inicio en elementos con roles interactivos.
+
+## 2025-06-25 - Accesibilidad en formularios y feedback de portapapeles
+**Aprendizaje:** Los inputs que dependen solo de placeholders para contexto visual necesitan atributos 'aria-label' para ser accesibles. Además, las acciones de "copiar al portapapeles" requieren una región 'aria-live="polite"' para comunicar el éxito de la operación a usuarios de lectores de pantalla, complementando el feedback visual.
+**Acción:** Implementar siempre 'aria-label' en campos de formulario sin etiquetas visibles y usar un elemento 'sr-only' con 'aria-live' para anuncios de estado asíncronos.

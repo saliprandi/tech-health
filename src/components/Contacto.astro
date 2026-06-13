@@ -33,6 +33,7 @@ import { CONFIG } from '../data/config';
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"><use id="copy-icon-use" href="#icon-copy" /></svg>
                   <span id="copy-text">Copiar</span>
                 </button>
+                <div id="copy-announcement" class="sr-only" aria-live="polite"></div>
               </div>
             </div>
           </div>
@@ -41,10 +42,10 @@ import { CONFIG } from '../data/config';
       <div>
         <div class="bg-navy rounded-card p-8 md:p-11 shadow-hero-card">
           <form id="contact-form" class="flex flex-col gap-5" data-whatsapp={CONFIG.contacto.whatsapp}>
-            <input type="text" id="f-nombre" name="nombre" required placeholder="Nombre completo" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
-            <input type="tel" id="f-tel" name="telefono" required placeholder="Teléfono / WhatsApp" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
+            <input type="text" id="f-nombre" name="nombre" required placeholder="Nombre completo" aria-label="Nombre completo" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
+            <input type="tel" id="f-tel" name="telefono" required placeholder="Teléfono / WhatsApp" aria-label="Teléfono o WhatsApp" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
             <div class="relative">
-              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="Mensaje..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none"></textarea>
+              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="Mensaje..." aria-label="Tu mensaje o consulta" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none"></textarea>
               <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body">0 / 500</div>
             </div>
             <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98]">Enviar por WhatsApp</button>
@@ -118,6 +119,7 @@ import { CONFIG } from '../data/config';
 
       // Copy Address
       const handleCopy = () => {
+        const announcement = document.getElementById('copy-announcement');
         if (!copyBtn || !copyText || !copyIconUse || !addressEl) return;
         const originalText = copyText.textContent || 'Copiar';
         const originalIcon = copyIconUse.getAttribute('href') || '#icon-copy';
@@ -125,10 +127,13 @@ import { CONFIG } from '../data/config';
           copyText.textContent = '¡Copiado!';
           copyIconUse.setAttribute('href', '#icon-check');
           copyBtn.classList.add('text-blue');
+          if (announcement) announcement.textContent = 'Dirección copiada al portapapeles';
+
           setTimeout(() => {
             copyText.textContent = originalText;
             copyIconUse.setAttribute('href', originalIcon);
             copyBtn.classList.remove('text-blue');
+            if (announcement) announcement.textContent = '';
           }, 2500);
         });
       };
