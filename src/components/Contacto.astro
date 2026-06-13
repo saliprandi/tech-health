@@ -53,10 +53,8 @@ import { CONFIG } from '../data/config';
       <div>
         <div class="bg-navy rounded-card p-8 md:p-11 shadow-hero-card">
           <form id="contact-form" class="flex flex-col gap-5" data-whatsapp={CONFIG.contacto.whatsapp}>
-            <input type="text" id="f-nombre" name="nombre" required maxlength="100" placeholder="Nombre completo" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
-            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-()]*" placeholder="Teléfono / WhatsApp" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
-            <input type="text" id="f-nombre" name="nombre" required placeholder="Nombre completo" aria-label="Nombre completo" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
-            <input type="tel" id="f-tel" name="telefono" required placeholder="Teléfono / WhatsApp" aria-label="Teléfono o WhatsApp" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
+            <input type="text" id="f-nombre" name="nombre" required maxlength="100" placeholder="Nombre completo" aria-label="Nombre completo" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
+            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-()]*" placeholder="Teléfono / WhatsApp" aria-label="Teléfono o WhatsApp" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
             <div class="flex flex-col gap-1.5">
               <label for="f-servicio" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Tipo de servicio</label>
               <div class="relative">
