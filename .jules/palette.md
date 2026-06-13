@@ -102,3 +102,7 @@ Importante!!! Quiero todos los pr en español
 ## 2025-06-20 - [A11y: Accesibilidad de tarjetas de servicio y modales]
 **Aprendizaje:** En este repositorio, los componentes Astro presentaban una alta redundancia y corrupción estructural en sus scripts, lo que rompía tanto la accesibilidad como el build. La implementación de un focus trap robusto y la restauración del foco al cerrar modales es vital cuando se usan View Transitions, ya que el estado del DOM puede volverse inconsistente si no se maneja una limpieza adecuada de event listeners.
 **Acción:** Al refactorizar componentes interactivos, priorizar la consolidación de la lógica de inicialización en una única función que devuelva un cleanup, y asegurar que el soporte de teclado (Enter/Space) esté integrado desde el inicio en elementos con roles interactivos.
+
+## 2025-06-25 - [A11y: Feedback programático en interacciones de formulario]
+**Aprendizaje:** Las mejoras visuales de micro-UX (como cambiar el texto de un botón a "Redirigiendo..." o un ícono a un check de éxito) deben acompañarse de feedback programático para ser inclusivas. Usar `aria-live` para anuncios de portapapeles y `aria-busy` para estados de carga asegura que los usuarios de lectores de pantalla perciban los cambios de estado que de otro modo serían puramente visuales.
+**Acción:** Siempre emparejar estados visuales temporales con atributos ARIA semánticos y regiones live para garantizar una experiencia equitativa.
