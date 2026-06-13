@@ -104,4 +104,27 @@ export const CONFIG = {
     { numero: "29", label: "Años de experiencia familiar en electrónica" },
     { numero: "24h", label: "Tiempo de respuesta para urgencias" },
   ],
+
+  faqs: [
+    {
+      pregunta: "¿Qué tipo de garantía ofrecen en sus reparaciones?",
+      respuesta: "Todas nuestras reparaciones cuentan con una garantía técnica de 90 días sobre el trabajo realizado y los componentes reemplazados, asegurando la tranquilidad de su institución.",
+    },
+    {
+      pregunta: "¿Atienden urgencias fuera del horario comercial?",
+      respuesta: "Sí, contamos con un servicio de respuesta rápida para equipos críticos. Puede comunicarse a nuestro WhatsApp de guardia para coordinar una intervención prioritaria.",
+    },
+    {
+      pregunta: "¿Realizan el mantenimiento en la clínica o retiran el equipo?",
+      respuesta: "Dependiendo de la complejidad. Realizamos mantenimientos preventivos y diagnósticos iniciales in-situ. Para reparaciones de placas o intervenciones mayores, contamos con un laboratorio especializado para asegurar un entorno controlado.",
+    },
+    {
+      pregunta: "¿Emiten informes técnicos para auditorías?",
+      respuesta: "Absolutamente. Cada intervención, ya sea preventiva o correctiva, se entrega con un informe técnico detallado que incluye las tareas realizadas y el estado final del equipo, apto para auditorías de salud.",
+    },
+    {
+      pregunta: "¿Qué cobertura geográfica tienen?",
+      respuesta: "Nuestra base operativa está en San Miguel de Tucumán, pero brindamos cobertura técnica en toda la provincia y zonas de influencia en el NOA, coordinando desplazamientos programados.",
+    },
+  ],
 };
