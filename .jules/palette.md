@@ -102,3 +102,7 @@ Importante!!! Quiero todos los pr en español
 ## 2025-06-20 - [A11y: Accesibilidad de tarjetas de servicio y modales]
 **Aprendizaje:** En este repositorio, los componentes Astro presentaban una alta redundancia y corrupción estructural en sus scripts, lo que rompía tanto la accesibilidad como el build. La implementación de un focus trap robusto y la restauración del foco al cerrar modales es vital cuando se usan View Transitions, ya que el estado del DOM puede volverse inconsistente si no se maneja una limpieza adecuada de event listeners.
 **Acción:** Al refactorizar componentes interactivos, priorizar la consolidación de la lógica de inicialización en una única función que devuelva un cleanup, y asegurar que el soporte de teclado (Enter/Space) esté integrado desde el inicio en elementos con roles interactivos.
+
+## 2025-06-25 - [A11y: Feedback de portapapeles y estados async]
+**Learning:** Proporcionar feedback visual de "Copiado" es excelente, pero insuficiente para usuarios de lectores de pantalla. El uso de una región `aria-live="polite"` dedicada asegura que el éxito de la acción sea comunicado verbalmente. Además, el uso de `aria-busy="true"` en botones durante estados de carga o redirección comunica correctamente que una acción está en proceso.
+**Acción:** Siempre incluir regiones `aria-live` para confirmaciones de acciones de "un solo click" (como copiar) y usar `aria-busy` para gestionar la expectativa de espera en procesos asíncronos.
