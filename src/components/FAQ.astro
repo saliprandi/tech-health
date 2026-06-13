@@ -1,0 +1,121 @@
+---
+import { CONFIG } from '../data/config';
+---
+
+<section id="faq" class="bg-white section-padding">
+  <div class="container-custom">
+
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-12">
+        <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Preguntas Frecuentes</div>
+        <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-4">
+          Dudas comunes sobre nuestro servicio
+        </h2>
+        <p class="font-body text-[16px] text-text-soft">
+          Encuentre respuestas rápidas a las consultas habituales de nuestros clientes corporativos e institucionales.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4">
+        {CONFIG.faqs.map((faq, index) => (
+          <div class="faq-item group border border-border rounded-[16px] bg-off-white overflow-hidden transition-all duration-300">
+            <button
+              class="faq-trigger w-full flex items-center justify-between p-6 text-left focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-inset outline-none"
+              aria-expanded="false"
+              aria-controls={`faq-answer-${index}`}
+              id={`faq-question-${index}`}
+            >
+              <span class="font-heading font-bold text-[17px] text-navy pr-8 group-hover:text-blue transition-colors">
+                {faq.pregunta}
+              </span>
+              <div class="faq-icon w-6 h-6 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <use href="#icon-chevron-down" />
+                </svg>
+              </div>
+            </button>
+
+            <div
+              id={`faq-answer-${index}`}
+              class="faq-answer-container invisible h-0 opacity-0 transition-all duration-300 ease-in-out"
+              role="region"
+              aria-labelledby={`faq-question-${index}`}
+            >
+              <div class="px-6 pb-6 font-body text-[15px] text-text-soft leading-relaxed border-t border-border/50 pt-4">
+                {faq.respuesta}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  (function() {
+    function initFAQ() {
+      const items = document.querySelectorAll('.faq-item');
+      if (!items.length) return () => {};
+
+      const handleToggle = (e: Event) => {
+        const trigger = e.currentTarget as HTMLButtonElement;
+        const item = trigger.closest('.faq-item');
+        const container = item?.querySelector('.faq-answer-container') as HTMLElement;
+        const icon = item?.querySelector('.faq-icon');
+        const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+
+        // Close others
+        items.forEach(otherItem => {
+          if (otherItem !== item) {
+            const otherTrigger = otherItem.querySelector('.faq-trigger');
+            const otherContainer = otherItem.querySelector('.faq-answer-container') as HTMLElement;
+            const otherIcon = otherItem.querySelector('.faq-icon');
+
+            otherTrigger?.setAttribute('aria-expanded', 'false');
+            otherIcon?.classList.remove('rotate-180');
+            if (otherContainer) {
+              otherContainer.style.height = '0';
+              otherContainer.classList.add('invisible', 'opacity-0');
+              otherContainer.classList.remove('pb-6'); // Avoid extra padding when closed
+            }
+          }
+        });
+
+        // Toggle current
+        trigger.setAttribute('aria-expanded', (!isExpanded).toString());
+        icon?.classList.toggle('rotate-180', !isExpanded);
+
+        if (container) {
+          if (!isExpanded) {
+            container.classList.remove('invisible', 'opacity-0');
+            const height = container.scrollHeight;
+            container.style.height = `${height}px`;
+          } else {
+            container.style.height = '0';
+            container.classList.add('invisible', 'opacity-0');
+          }
+        }
+      };
+
+      items.forEach(item => {
+        const trigger = item.querySelector('.faq-trigger');
+        trigger?.addEventListener('click', handleToggle);
+      });
+
+      return () => {
+        items.forEach(item => {
+          const trigger = item.querySelector('.faq-trigger');
+          trigger?.removeEventListener('click', handleToggle);
+        });
+      };
+    }
+
+    let cleanup = initFAQ();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initFAQ();
+    });
+  })();
+</script>
