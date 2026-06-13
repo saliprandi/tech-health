@@ -33,6 +33,10 @@ import { CONFIG } from '../data/config';
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"><use id="copy-icon-use" href="#icon-copy" /></svg>
                   <span id="copy-text">Copiar</span>
                 </button>
+                <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors" aria-label={`Ver ${CONFIG.contacto.direccion} en Google Maps`}>
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"><use href="#icon-external" /></svg>
+                  <span>Ver en Maps</span>
+                </a>
               </div>
             </div>
           </div>
@@ -41,11 +45,11 @@ import { CONFIG } from '../data/config';
       <div>
         <div class="bg-navy rounded-card p-8 md:p-11 shadow-hero-card">
           <form id="contact-form" class="flex flex-col gap-5" data-whatsapp={CONFIG.contacto.whatsapp}>
-            <input type="text" id="f-nombre" name="nombre" required placeholder="Nombre completo" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
-            <input type="tel" id="f-tel" name="telefono" required placeholder="Teléfono / WhatsApp" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
+            <input type="text" id="f-nombre" name="nombre" required placeholder="Nombre completo" aria-label="Nombre completo" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
+            <input type="tel" id="f-tel" name="telefono" required placeholder="Teléfono / WhatsApp" aria-label="Teléfono o WhatsApp" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
             <div class="relative">
-              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="Mensaje..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none"></textarea>
-              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body">0 / 500</div>
+              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="Mensaje..." aria-label="Mensaje" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none"></textarea>
+              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/60 font-body transition-colors duration-300">0 / 500</div>
             </div>
             <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98]">Enviar por WhatsApp</button>
           </form>
@@ -107,10 +111,10 @@ import { CONFIG } from '../data/config';
         counter.textContent = `${len} / 500`;
         if (len >= 450) {
           counter.classList.add('text-blue-light');
-          counter.classList.remove('text-white/40');
+          counter.classList.remove('text-white/60');
         } else {
           counter.classList.remove('text-blue-light');
-          counter.classList.add('text-white/40');
+          counter.classList.add('text-white/60');
         }
       };
       desc?.addEventListener('input', updateCounter);
