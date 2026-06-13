@@ -181,6 +181,12 @@ import { CONFIG } from '../data/config';
         });
       };
       copyBtn?.addEventListener('click', handleCopy);
+      copyBtn?.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleCopy();
+        }
+      });
 
       // Form Submit
       const handleSubmit = (e: Event) => {

@@ -85,12 +85,16 @@ import { CONFIG } from '../data/config';
       };
 
       btn.addEventListener('click', handleBtnClick as EventListener);
+      btn.addEventListener('focus', showTooltip);
+      btn.addEventListener('blur', hideTooltip);
 
       return () => {
         if (initialTimeout) clearTimeout(initialTimeout);
         if (feedbackTimer) clearTimeout(feedbackTimer);
         if (restoreTimer) clearTimeout(restoreTimer);
         btn.removeEventListener('click', handleBtnClick);
+        btn.removeEventListener('focus', showTooltip);
+        btn.removeEventListener('blur', hideTooltip);
       };
     }
 
