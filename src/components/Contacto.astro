@@ -36,6 +36,18 @@ import { CONFIG } from '../data/config';
               </div>
             </div>
           </div>
+          <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border">
+            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor"><use href="#icon-clock" /></svg>
+            </div>
+            <div class="flex-grow">
+              <div class="flex items-center gap-3 mb-1">
+                <div class="font-heading font-bold text-[16px] text-navy">Horario de atención</div>
+                <div id="status-badge" class="hidden px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"></div>
+              </div>
+              <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.horario}</div>
+            </div>
+          </div>
         </div>
       </div>
       <div>
@@ -43,6 +55,18 @@ import { CONFIG } from '../data/config';
           <form id="contact-form" class="flex flex-col gap-5" data-whatsapp={CONFIG.contacto.whatsapp}>
             <input type="text" id="f-nombre" name="nombre" required placeholder="Nombre completo" aria-label="Nombre completo" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
             <input type="tel" id="f-tel" name="telefono" required placeholder="Teléfono / WhatsApp" aria-label="Teléfono o WhatsApp" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
+            <div class="flex flex-col gap-1.5">
+              <label for="f-servicio" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Tipo de servicio</label>
+              <div class="relative">
+                <select id="f-servicio" name="servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors w-full appearance-none pr-10">
+                  <option value="Consulta general" class="bg-navy text-white">Consulta general</option>
+                  <option value="Mantenimiento preventivo" class="bg-navy text-white">Mantenimiento preventivo</option>
+                  <option value="Reparación / Mantenimiento correctivo" class="bg-navy text-white">Reparación / Mantenimiento correctivo</option>
+                  <option value="Revisión de placa electrónica" class="bg-navy text-white">Revisión de placa electrónica</option>
+                </select>
+                <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </div>
+            </div>
             <div class="relative">
               <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="Mensaje..." aria-label="Mensaje" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none"></textarea>
               <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body">0 / 500</div>
@@ -76,6 +100,36 @@ import { CONFIG } from '../data/config';
 
       if (!form) return () => {};
       const whatsappNumber = form.dataset.whatsapp || '';
+
+      // Business Hours Status Badge (UTC-3 Tucumán)
+      const badge = document.getElementById('status-badge');
+      let statusInterval: ReturnType<typeof setInterval> | null = null;
+
+      const updateStatusBadge = () => {
+        if (!badge) return;
+        const now = new Date();
+        let tucumanDate: Date;
+        try {
+          const tucumanTimeStr = now.toLocaleString('en-CA', { timeZone: 'America/Argentina/Tucuman', hour12: false });
+          tucumanDate = new Date(tucumanTimeStr);
+        } catch {
+          tucumanDate = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
+        }
+        const day = tucumanDate.getDay();
+        const hour = tucumanDate.getHours();
+        const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
+
+        if (isOpen) {
+          badge.innerHTML = '<span class="relative flex h-2 w-2" aria-hidden="true"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora';
+          badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800';
+        } else {
+          badge.textContent = 'Cerrado';
+          badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gray-100 text-gray-800';
+        }
+      };
+
+      updateStatusBadge();
+      statusInterval = setInterval(updateStatusBadge, 60000);
 
       // Character Counter
       const updateCounter = () => {
@@ -122,8 +176,10 @@ import { CONFIG } from '../data/config';
         }
         const nombre = (document.getElementById('f-nombre') as HTMLInputElement)?.value.trim() || '';
         const tel = (document.getElementById('f-tel') as HTMLInputElement)?.value.trim() || '';
+        const servicioel = document.getElementById('f-servicio') as HTMLSelectElement | null;
+        const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
         const mensaje = (document.getElementById('f-desc') as HTMLTextAreaElement)?.value.trim() || '';
-        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Mensaje:* ${mensaje}`;
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
         const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(rawMessage)}`;
 
         if (submitBtn && submitBtnText) {
@@ -153,6 +209,7 @@ import { CONFIG } from '../data/config';
       form.addEventListener('submit', handleSubmit);
 
       return () => {
+        if (statusInterval) clearInterval(statusInterval);
         desc?.removeEventListener('input', updateCounter);
         copyBtn?.removeEventListener('click', handleCopy);
         form.removeEventListener('submit', handleSubmit);
