@@ -33,6 +33,7 @@ import { CONFIG } from '../data/config';
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"><use id="copy-icon-use" href="#icon-copy" /></svg>
                   <span id="copy-text">Copiar</span>
                 </button>
+                <div id="copy-announcement" class="sr-only" aria-live="polite"></div>
               </div>
             </div>
           </div>
@@ -41,13 +42,18 @@ import { CONFIG } from '../data/config';
       <div>
         <div class="bg-navy rounded-card p-8 md:p-11 shadow-hero-card">
           <form id="contact-form" class="flex flex-col gap-5" data-whatsapp={CONFIG.contacto.whatsapp}>
-            <input type="text" id="f-nombre" name="nombre" required placeholder="Nombre completo" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
-            <input type="tel" id="f-tel" name="telefono" required placeholder="Teléfono / WhatsApp" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
+            <input type="text" id="f-nombre" name="nombre" required placeholder="Nombre completo" aria-label="Nombre completo" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
+            <input type="tel" id="f-tel" name="telefono" required placeholder="Teléfono / WhatsApp" aria-label="Teléfono o WhatsApp" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
             <div class="relative">
-              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="Mensaje..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none"></textarea>
+              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="Mensaje..." aria-label="Mensaje" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none"></textarea>
               <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body">0 / 500</div>
             </div>
-            <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98]">Enviar por WhatsApp</button>
+            <button type="submit" id="f-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2">
+              <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat" aria-hidden="true">
+                <use href="#icon-whatsapp" />
+              </svg>
+              <span id="f-submit-text">Enviar por WhatsApp</span>
+            </button>
           </form>
         </div>
       </div>
@@ -63,9 +69,11 @@ import { CONFIG } from '../data/config';
       const counter = document.getElementById('char-counter');
       const copyBtn = document.getElementById('copy-address');
       const copyText = document.getElementById('copy-text');
+      const copyAnnouncement = document.getElementById('copy-announcement');
       const copyIconUse = document.getElementById('copy-icon-use');
       const addressEl = document.getElementById('address-text');
       const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
+      const submitBtnText = document.getElementById('f-submit-text');
 
       if (!form) return () => {};
       const whatsappNumber = form.dataset.whatsapp || '';
@@ -123,10 +131,12 @@ import { CONFIG } from '../data/config';
         const originalIcon = copyIconUse.getAttribute('href') || '#icon-copy';
         navigator.clipboard.writeText(addressEl.textContent || '').then(() => {
           copyText.textContent = '¡Copiado!';
+          if (copyAnnouncement) copyAnnouncement.textContent = 'Dirección copiada al portapapeles';
           copyIconUse.setAttribute('href', '#icon-check');
           copyBtn.classList.add('text-blue');
           setTimeout(() => {
             copyText.textContent = originalText;
+            if (copyAnnouncement) copyAnnouncement.textContent = '';
             copyIconUse.setAttribute('href', originalIcon);
             copyBtn.classList.remove('text-blue');
           }, 2500);
@@ -147,13 +157,13 @@ import { CONFIG } from '../data/config';
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Mensaje:* ${mensaje}`;
         const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(rawMessage)}`;
 
-        if (submitBtn) {
-          const originalBtnText = submitBtn.textContent;
-          submitBtn.textContent = 'Redirigiendo...';
+        if (submitBtn && submitBtnText) {
+          const originalBtnText = submitBtnText.textContent;
+          submitBtnText.textContent = 'Redirigiendo...';
           submitBtn.disabled = true;
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           setTimeout(() => {
-            submitBtn.textContent = originalBtnText;
+            submitBtnText.textContent = originalBtnText;
             submitBtn.disabled = false;
             submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           }, 3000);
