@@ -12,17 +12,15 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
 <section id="servicios" class="bg-white section-padding">
   <div class="container-custom">
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-      <div class="max-w-xl">
-        <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Servicios</div>
-        <h2 class="font-heading font-extrabold text-[clamp(32px,4vw,44px)] leading-[1.2] text-navy">
-          Soluciones técnicas integrales
-        </h2>
-      </div>
-      <p class="font-body text-[16px] text-text-soft max-w-md md:text-right pb-2">
-        Aseguramos la máxima disponibilidad y precisión de su equipamiento médico.
-      </p>
+    <div class="max-w-xl mb-4">
+      <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Servicios</div>
+      <h2 class="font-heading font-extrabold text-[clamp(32px,4vw,44px)] leading-[1.2] text-navy">
+        Soluciones técnicas integrales
+      </h2>
     </div>
+    <p class="font-body text-[16px] text-text-soft max-w-2xl mb-12">
+      Aseguramos la máxima disponibilidad y precisión de su equipamiento médico.
+    </p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {CONFIG.servicios.map((servicio, index) => (

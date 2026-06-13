@@ -53,6 +53,10 @@ Importante!!! Quiero todos los pr en español
 **Aprendizaje:** Implementar el bloqueo de desplazamiento del fondo (`overflow: hidden`) cuando el menú móvil está abierto previene la desorientación del usuario. Además, guardar el `lastFocusedElement` y restaurarlo al cerrar el menú asegura que los usuarios de teclado mantengan su contexto de navegación, evitando que el foco se pierda al final del documento.
 **Acción:** Siempre implementar bloqueo de scroll y restauración de foco al desarrollar componentes de navegación móvil o modales interactivos.
 
+## 2025-02-15 - [A11y: Feedback programático para acciones de portapapeles]
+**Learning:** Las interacciones de "copiar al portapapeles" que solo proporcionan feedback visual (cambio de ícono o texto) son invisibles para usuarios de lectores de pantalla. Implementar una región `aria-live="polite"` oculta permite anunciar el éxito de la operación de forma no intrusiva.
+**Action:** Siempre incluir un elemento con `aria-live="polite"` y la clase `sr-only` para anunciar estados de confirmación en acciones que no disparan cambios estructurales en el DOM o navegación.
+
 ## 2026-06-05 - [UX: Verbosidad de contador de caracteres]
 **Aprendizaje:** Agregar `aria-live="polite"` a un contador de caracteres en vivo puede causar que los lectores de pantalla anuncien el conteo en cada pulsación de tecla, lo cual frecuentemente se percibe como "ruidoso" o distractor.
 **Acción:** Para textareas estándar, preferir un contador de caracteres solo visual a menos que exista un requerimiento específico de accesibilidad para anuncios de conteo en tiempo real, o implementar lógica para anunciar solo en intervalos específicos (ej., cada 50 caracteres) o al acercarse al límite.
@@ -102,3 +106,7 @@ Importante!!! Quiero todos los pr en español
 ## 2025-06-20 - [A11y: Accesibilidad de tarjetas de servicio y modales]
 **Aprendizaje:** En este repositorio, los componentes Astro presentaban una alta redundancia y corrupción estructural en sus scripts, lo que rompía tanto la accesibilidad como el build. La implementación de un focus trap robusto y la restauración del foco al cerrar modales es vital cuando se usan View Transitions, ya que el estado del DOM puede volverse inconsistente si no se maneja una limpieza adecuada de event listeners.
 **Acción:** Al refactorizar componentes interactivos, priorizar la consolidación de la lógica de inicialización en una única función que devuelva un cleanup, y asegurar que el soporte de teclado (Enter/Space) esté integrado desde el inicio en elementos con roles interactivos.
+
+## 2025-06-21 - [UX: Feedback de portapapeles accesible]
+**Aprendizaje:** El feedback visual de "¡Copiado!" es excelente para usuarios videntes, pero es invisible para usuarios de lectores de pantalla. Implementar una región `aria-live="polite"` (clase `sr-only`) que se actualice dinámicamente permite que la confirmación de la acción sea inclusiva sin alterar el diseño visual.
+**Acción:** Siempre acompañar interacciones de "copiar al portapapeles" con un anuncio `aria-live` dedicado para asegurar que el éxito de la operación sea comunicado a todos los usuarios.
