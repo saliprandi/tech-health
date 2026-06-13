@@ -23,3 +23,8 @@
 **Vulnerability:** XSS potencial por inyección de contenido dinámico no saneado mediante `innerHTML`.
 **Learning:** La corrupción estructural en componentes Astro facilita la evasión de medidas de seguridad si el saneamiento (como `escapeHtml`) no se aplica de manera uniforme en todos los bloques de código concurrentes. Refactorizar para consolidar la lógica interactiva es un prerrequisito para garantizar la integridad de la seguridad.
 **Prevention:** Enmascarar todo contenido dinámico inyectado vía `innerHTML` con una función de escape robusta y asegurar que la inicialización de scripts maneje correctamente los eventos de navegación de Astro (`astro:after-swap`) para evitar duplicación de listeners.
+
+## 2026-06-15 - [Refuerzo de seguridad: Validación de entradas y prevención de inyección en JSON-LD]
+**Vulnerability:** Riesgo de XSS por inyección de scripts en bloques de datos estructurados (JSON-LD) y falta de validación en formularios.
+**Learning:** El uso de `JSON.stringify` con `set:html` en Astro permite que caracteres como `<` rompan el contexto del script. Asimismo, la falta de límites de longitud en entradas facilita ataques de denegación de servicio local o desbordamientos visuales.
+**Prevention:** Escapar siempre el carácter `<` en salidas JSON inyectadas en HTML y aplicar atributos `maxlength` y `pattern` en todos los inputs públicos.
