@@ -72,7 +72,7 @@ const { title = "TechHealth Medical Engineering | TÃ©cnicos en Electromedicina â
 				}
 			],
 			"sameAs": Object.values(CONFIG.redes).filter(Boolean)
-		})} />
+		}).replace(/</g, '\\u003c')} />
 	</head>
 	<body>
 		<Icons />
