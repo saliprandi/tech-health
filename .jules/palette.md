@@ -106,3 +106,7 @@ Importante!!! Quiero todos los pr en español
 ## 2025-06-20 - [A11y: Accesibilidad de tarjetas de servicio y modales]
 **Aprendizaje:** En este repositorio, los componentes Astro presentaban una alta redundancia y corrupción estructural en sus scripts, lo que rompía tanto la accesibilidad como el build. La implementación de un focus trap robusto y la restauración del foco al cerrar modales es vital cuando se usan View Transitions, ya que el estado del DOM puede volverse inconsistente si no se maneja una limpieza adecuada de event listeners.
 **Acción:** Al refactorizar componentes interactivos, priorizar la consolidación de la lógica de inicialización en una única función que devuelva un cleanup, y asegurar que el soporte de teclado (Enter/Space) esté integrado desde el inicio en elementos con roles interactivos.
+
+## 2025-06-21 - [UX: Feedback de portapapeles accesible]
+**Aprendizaje:** El feedback visual de "¡Copiado!" es excelente para usuarios videntes, pero es invisible para usuarios de lectores de pantalla. Implementar una región `aria-live="polite"` (clase `sr-only`) que se actualice dinámicamente permite que la confirmación de la acción sea inclusiva sin alterar el diseño visual.
+**Acción:** Siempre acompañar interacciones de "copiar al portapapeles" con un anuncio `aria-live` dedicado para asegurar que el éxito de la operación sea comunicado a todos los usuarios.

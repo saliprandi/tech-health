@@ -58,6 +58,10 @@ import { CONFIG } from '../data/config';
   .nav-link-active {
     @apply text-blue !important;
   }
+
+  #reading-progress {
+    will-change: transform;
+  }
 </style>
 
 <script>
@@ -75,8 +79,14 @@ import { CONFIG } from '../data/config';
 
       let isOpen = false;
       let lastFocusedElement: HTMLElement | null = null;
+      let scrollHeight = 0;
+      let ticking = false;
 
       if (!toggle || !menu || !progressBar) return () => {};
+
+      const updateScrollHeight = () => {
+        scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      };
 
       const toggleMenu = (forceClose = false) => {
         if (forceClose) isOpen = false;
@@ -135,10 +145,17 @@ import { CONFIG } from '../data/config';
       };
 
       const updateProgress = () => {
-        const winScroll = document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = height > 0 ? winScroll / height : 0;
+        const winScroll = window.scrollY || document.documentElement.scrollTop;
+        const scrolled = scrollHeight > 0 ? winScroll / scrollHeight : 0;
         progressBar.style.transform = `scaleX(${scrolled})`;
+        ticking = false;
+      };
+
+      const onScroll = () => {
+        if (!ticking) {
+          window.requestAnimationFrame(updateProgress);
+          ticking = true;
+        }
       };
 
       const handleLinkClick = () => {
@@ -195,9 +212,11 @@ import { CONFIG } from '../data/config';
       document.addEventListener('keydown', handleKeydown);
       navCta?.addEventListener('click', handleCtaClick as EventListener);
       mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
-      window.addEventListener('scroll', updateProgress, { passive: true });
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', updateScrollHeight, { passive: true });
       sections.forEach(section => observer.observe(section));
 
+      updateScrollHeight();
       updateProgress();
 
       return () => {
@@ -206,7 +225,8 @@ import { CONFIG } from '../data/config';
         document.removeEventListener('keydown', handleKeydown);
         navCta?.removeEventListener('click', handleCtaClick as EventListener);
         mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
-        window.removeEventListener('scroll', updateProgress);
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', updateScrollHeight);
         observer.disconnect();
         document.body.style.overflow = '';
       };
