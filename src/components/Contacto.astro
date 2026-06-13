@@ -10,6 +10,7 @@ import { CONFIG } from '../data/config';
         <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-4">Estamos aquí para ayudarle</h2>
         <div id="status-badge" class="hidden inline-flex items-center gap-1.5 font-body font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors duration-500 mb-4"></div>
         <div class="flex flex-col gap-6">
+          <div id="copy-announcement" class="sr-only" aria-live="polite"></div>
           <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
               <svg class="w-5 h-5 group-hover:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -41,10 +42,10 @@ import { CONFIG } from '../data/config';
       <div>
         <div class="bg-navy rounded-card p-8 md:p-11 shadow-hero-card">
           <form id="contact-form" class="flex flex-col gap-5" data-whatsapp={CONFIG.contacto.whatsapp}>
-            <input type="text" id="f-nombre" name="nombre" required placeholder="Nombre completo" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
-            <input type="tel" id="f-tel" name="telefono" required placeholder="Teléfono / WhatsApp" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
+            <input type="text" id="f-nombre" name="nombre" required aria-label="Nombre completo" placeholder="Nombre completo" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
+            <input type="tel" id="f-tel" name="telefono" required aria-label="Teléfono o WhatsApp" placeholder="Teléfono / WhatsApp" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full" />
             <div class="relative">
-              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="Mensaje..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none"></textarea>
+              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" aria-label="Mensaje" aria-describedby="char-counter" placeholder="Mensaje..." class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none"></textarea>
               <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body">0 / 500</div>
             </div>
             <button type="submit" id="f-submit" class="w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98]">Enviar por WhatsApp</button>
@@ -64,6 +65,7 @@ import { CONFIG } from '../data/config';
       const copyBtn = document.getElementById('copy-address');
       const copyText = document.getElementById('copy-text');
       const copyIconUse = document.getElementById('copy-icon-use');
+      const copyAnnouncement = document.getElementById('copy-announcement');
       const addressEl = document.getElementById('address-text');
       const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
 
@@ -125,10 +127,12 @@ import { CONFIG } from '../data/config';
           copyText.textContent = '¡Copiado!';
           copyIconUse.setAttribute('href', '#icon-check');
           copyBtn.classList.add('text-blue');
+          if (copyAnnouncement) copyAnnouncement.textContent = 'Dirección copiada al portapapeles';
           setTimeout(() => {
             copyText.textContent = originalText;
             copyIconUse.setAttribute('href', originalIcon);
             copyBtn.classList.remove('text-blue');
+            if (copyAnnouncement) copyAnnouncement.textContent = '';
           }, 2500);
         });
       };
@@ -151,10 +155,14 @@ import { CONFIG } from '../data/config';
           const originalBtnText = submitBtn.textContent;
           submitBtn.textContent = 'Redirigiendo...';
           submitBtn.disabled = true;
+          submitBtn.setAttribute('aria-busy', 'true');
+          submitBtn.setAttribute('aria-disabled', 'true');
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           setTimeout(() => {
             submitBtn.textContent = originalBtnText;
             submitBtn.disabled = false;
+            submitBtn.removeAttribute('aria-busy');
+            submitBtn.removeAttribute('aria-disabled');
             submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           }, 3000);
         }
