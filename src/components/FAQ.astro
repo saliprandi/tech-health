@@ -37,7 +37,7 @@ import { CONFIG } from '../data/config';
 
             <div
               id={`faq-answer-${index}`}
-              class="faq-answer-container invisible h-0 opacity-0 transition-all duration-300 ease-in-out"
+              class="faq-answer-container invisible h-0 opacity-0 transition-all duration-300 ease-in-out overflow-hidden"
               role="region"
               aria-labelledby={`faq-question-${index}`}
             >
@@ -75,10 +75,14 @@ import { CONFIG } from '../data/config';
 
             otherTrigger?.setAttribute('aria-expanded', 'false');
             otherIcon?.classList.remove('rotate-180');
-            if (otherContainer) {
+            if (otherContainer && !otherContainer.classList.contains('invisible')) {
               otherContainer.style.height = '0';
-              otherContainer.classList.add('invisible', 'opacity-0');
-              otherContainer.classList.remove('pb-6'); // Avoid extra padding when closed
+              otherContainer.classList.add('opacity-0');
+              setTimeout(() => {
+                if (otherTrigger?.getAttribute('aria-expanded') === 'false') {
+                  otherContainer.classList.add('invisible');
+                }
+              }, 350);
             }
           }
         });
@@ -94,7 +98,12 @@ import { CONFIG } from '../data/config';
             container.style.height = `${height}px`;
           } else {
             container.style.height = '0';
-            container.classList.add('invisible', 'opacity-0');
+            container.classList.add('opacity-0');
+            setTimeout(() => {
+              if (trigger.getAttribute('aria-expanded') === 'false') {
+                container.classList.add('invisible');
+              }
+            }, 350);
           }
         }
       };

@@ -110,3 +110,7 @@ Importante!!! Quiero todos los pr en español
 ## 2025-06-21 - [UX: Feedback de portapapeles accesible]
 **Aprendizaje:** El feedback visual de "¡Copiado!" es excelente para usuarios videntes, pero es invisible para usuarios de lectores de pantalla. Implementar una región `aria-live="polite"` (clase `sr-only`) que se actualice dinámicamente permite que la confirmación de la acción sea inclusiva sin alterar el diseño visual.
 **Acción:** Siempre acompañar interacciones de "copiar al portapapeles" con un anuncio `aria-live` dedicado para asegurar que el éxito de la operación sea comunicado a todos los usuarios.
+
+## 2025-06-22 - [UX: Consistencia en transiciones de FAQ]
+**Aprendizaje:** Al implementar acordeones (FAQ), el uso de la clase `invisible` de Tailwind corta la transición de opacidad y altura si se aplica inmediatamente al cerrar. Retrasar esta clase (aprox. 350ms) asegura que la animación se complete visualmente, proporcionando una sensación de fluidez y "premiumness".
+**Acción:** Siempre sincronizar el ciclo de vida de la visibilidad (clase `invisible`) con la duración de las transiciones CSS en elementos que colapsan.
