@@ -25,7 +25,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]" data-modal-data={JSON.stringify(modalData)} data-whatsapp={CONFIG.contacto.whatsapp}>
       {CONFIG.servicios.map((servicio, index) => (
         <div
-          class="service-card group relative bg-off-white border border-transparent rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover cursor-pointer focus-visible:ring-2 focus-visible:ring-blue"
+          class="service-card group relative bg-off-white border border-transparent rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover focus-visible:shadow-card-hover focus-visible:-translate-y-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-blue"
           data-index={index}
           tabindex="0"
           role="button"

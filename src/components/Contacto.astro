@@ -21,34 +21,25 @@ import { CONFIG } from '../data/config';
               <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.whatsapp_display}</div>
             </div>
           </a>
+
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px]" aria-label={`Ver en Google Maps: ${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}></a>
             <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 pointer-events-none transition-transform group-hover:scale-110">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true"><use href="#icon-map-pin" /></svg>
             </div>
-            <div class="relative z-10 flex-grow pointer-events-none">
-              <div class="font-heading font-bold text-[16px] text-navy mb-1">Laboratorio</div>
-              <div id="address-text" class="font-body text-[14px] text-text-soft">{CONFIG.contacto.direccion}, {CONFIG.contacto.ciudad_completa}</div>
-              <div class="flex items-center gap-3 mt-2 pointer-events-auto">
+            <div class="relative z-10 flex-grow">
+              <div class="font-heading font-bold text-[16px] text-navy mb-1 pointer-events-none">Laboratorio</div>
+              <div id="address-text" class="font-body text-[14px] text-text-soft pointer-events-none">{CONFIG.contacto.direccion}, {CONFIG.contacto.ciudad_completa}</div>
+              <div class="flex items-center gap-3 mt-2">
                 <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar dirección al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-icon-use" href="#icon-copy" /></svg>
-                  <span id="copy-text" class="pointer-events-none">Copiar</span>
-            <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0" aria-label="Ver en Google Maps"></a>
-            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 relative z-10">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor"><use href="#icon-map-pin" /></svg>
-            </div>
-            <div class="flex-grow relative z-10">
-              <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="font-heading font-bold text-[16px] text-navy mb-1 block hover:text-blue transition-colors">Laboratorio</a>
-              <div id="address-text" class="font-body text-[14px] text-text-soft">{CONFIG.contacto.direccion}, {CONFIG.contacto.ciudad_completa}</div>
-              <div class="flex items-center gap-3 mt-2">
-                <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer" aria-label="Copiar dirección al portapapeles">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"><use id="copy-icon-use" href="#icon-copy" /></svg>
                   <span id="copy-text">Copiar</span>
                 </button>
                 <div id="copy-announcement" class="sr-only" aria-live="polite"></div>
               </div>
             </div>
           </div>
+
           <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0">
               <svg class="w-5 h-5" fill="none" stroke="currentColor"><use href="#icon-clock" /></svg>
@@ -145,9 +136,11 @@ import { CONFIG } from '../data/config';
         if (isOpen) {
           badge.innerHTML = '<span class="relative flex h-2 w-2" aria-hidden="true"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora';
           badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800';
+          badge.classList.remove('hidden');
         } else {
           badge.textContent = 'Cerrado';
           badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gray-100 text-gray-800';
+          badge.classList.remove('hidden');
         }
       };
 
