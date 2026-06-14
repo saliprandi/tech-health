@@ -91,8 +91,25 @@ import { CONFIG } from '../data/config';
 
       initialTimeout = setTimeout(showTooltip, 5000);
 
+      const cancelInitialTimeout = () => {
+        if (initialTimeout) {
+          clearTimeout(initialTimeout);
+          initialTimeout = null;
+        }
+      };
+
+      const handleInteractionStart = () => {
+        cancelInitialTimeout();
+        showTooltip();
+      };
+
+      const handleInteractionEnd = () => {
+        hideTooltip();
+      };
+
       const handleBtnClick = (e: MouseEvent) => {
         e.preventDefault();
+        cancelInitialTimeout();
         clearInitial();
         isRedirecting = true;
         const originalText = tooltipText.textContent || '¡Hola! ¿En qué podemos ayudarte?';
@@ -129,6 +146,10 @@ import { CONFIG } from '../data/config';
       };
 
       btn.addEventListener('click', handleBtnClick as EventListener);
+      btn.addEventListener('mouseenter', handleInteractionStart);
+      btn.addEventListener('mouseleave', handleInteractionEnd);
+      btn.addEventListener('focus', handleInteractionStart);
+      btn.addEventListener('blur', handleInteractionEnd);
       btn.addEventListener('mouseenter', handleMouseEnter);
       btn.addEventListener('mouseleave', handleMouseLeave);
       btn.addEventListener('focus', handleFocus);
@@ -144,6 +165,10 @@ import { CONFIG } from '../data/config';
         if (restoreTimer) clearTimeout(restoreTimer);
         if (transitionTimer) clearTimeout(transitionTimer);
         btn.removeEventListener('click', handleBtnClick);
+        btn.removeEventListener('mouseenter', handleInteractionStart);
+        btn.removeEventListener('mouseleave', handleInteractionEnd);
+        btn.removeEventListener('focus', handleInteractionStart);
+        btn.removeEventListener('blur', handleInteractionEnd);
         btn.removeEventListener('mouseenter', handleMouseEnter);
         btn.removeEventListener('mouseleave', handleMouseLeave);
         btn.removeEventListener('focus', handleFocus);
