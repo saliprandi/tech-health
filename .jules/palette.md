@@ -110,3 +110,7 @@ Importante!!! Quiero todos los pr en español
 ## 2025-06-21 - [UX: Feedback de portapapeles accesible]
 **Aprendizaje:** El feedback visual de "¡Copiado!" es excelente para usuarios videntes, pero es invisible para usuarios de lectores de pantalla. Implementar una región `aria-live="polite"` (clase `sr-only`) que se actualice dinámicamente permite que la confirmación de la acción sea inclusiva sin alterar el diseño visual.
 **Acción:** Siempre acompañar interacciones de "copiar al portapapeles" con un anuncio `aria-live` dedicado para asegurar que el éxito de la operación sea comunicado a todos los usuarios.
+
+## 2026-06-03 - [UX: Persistencia de feedback en estados de redirección]
+**Aprendizaje:** Al implementar feedback de "Redirigiendo..." en tooltips interactivos (como el botón flotante de WhatsApp), los eventos de `blur` o `mouseleave` pueden ocultar el tooltip prematuramente, dejando al usuario sin confirmación visual de su acción.
+**Acción:** Utilizar una variable de estado (ej. `isRedirecting`) para bloquear la lógica de ocultación del tooltip mientras el proceso de redirección o su timer de feedback estén activos, asegurando que el mensaje de éxito sea visible independientemente de la posición del cursor o el foco.

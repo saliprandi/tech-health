@@ -37,13 +37,15 @@ import { CONFIG } from '../data/config';
       let initialTimeout: ReturnType<typeof setTimeout> | null = null;
       let feedbackTimer: ReturnType<typeof setTimeout> | null = null;
       let restoreTimer: ReturnType<typeof setTimeout> | null = null;
+      let isRedirecting = false;
 
       const showTooltip = () => {
         tooltip.classList.remove('opacity-0', 'translate-y-2', 'invisible');
         tooltip.classList.add('opacity-100', 'translate-y-0');
       };
 
-      const hideTooltip = () => {
+      const hideTooltip = (force = false) => {
+        if (isRedirecting && !force) return;
         tooltip.classList.add('opacity-0', 'translate-y-2');
         tooltip.classList.remove('opacity-100', 'translate-y-0');
         setTimeout(() => {
@@ -53,10 +55,37 @@ import { CONFIG } from '../data/config';
         }, 500);
       };
 
+      const clearInitial = () => {
+        if (initialTimeout) {
+          clearTimeout(initialTimeout);
+          initialTimeout = null;
+        }
+      };
+
+      const handleMouseEnter = () => {
+        clearInitial();
+        showTooltip();
+      };
+
+      const handleMouseLeave = () => {
+        hideTooltip();
+      };
+
+      const handleFocus = () => {
+        clearInitial();
+        showTooltip();
+      };
+
+      const handleBlur = () => {
+        hideTooltip();
+      };
+
       initialTimeout = setTimeout(showTooltip, 5000);
 
       const handleBtnClick = (e: MouseEvent) => {
         e.preventDefault();
+        clearInitial();
+        isRedirecting = true;
         const originalText = tooltipText.textContent || '¡Hola! ¿En qué podemos ayudarte?';
         tooltipText.textContent = '¡Redirigiendo!';
         showTooltip();
@@ -75,8 +104,9 @@ import { CONFIG } from '../data/config';
 
         if (feedbackTimer) clearTimeout(feedbackTimer);
         feedbackTimer = setTimeout(() => {
+          isRedirecting = false;
           btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-          hideTooltip();
+          hideTooltip(true);
           if (restoreTimer) clearTimeout(restoreTimer);
           restoreTimer = setTimeout(() => {
             tooltipText.textContent = originalText;
@@ -85,12 +115,20 @@ import { CONFIG } from '../data/config';
       };
 
       btn.addEventListener('click', handleBtnClick as EventListener);
+      btn.addEventListener('mouseenter', handleMouseEnter);
+      btn.addEventListener('mouseleave', handleMouseLeave);
+      btn.addEventListener('focus', handleFocus);
+      btn.addEventListener('blur', handleBlur);
 
       return () => {
         if (initialTimeout) clearTimeout(initialTimeout);
         if (feedbackTimer) clearTimeout(feedbackTimer);
         if (restoreTimer) clearTimeout(restoreTimer);
         btn.removeEventListener('click', handleBtnClick);
+        btn.removeEventListener('mouseenter', handleMouseEnter);
+        btn.removeEventListener('mouseleave', handleMouseLeave);
+        btn.removeEventListener('focus', handleFocus);
+        btn.removeEventListener('blur', handleBlur);
       };
     }
 
