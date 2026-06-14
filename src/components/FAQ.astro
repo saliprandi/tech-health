@@ -2,7 +2,7 @@
 import { CONFIG } from '../data/config';
 ---
 
-<section id="faq" class="bg-white section-padding">
+<section id="faq" class="bg-white section-padding content-visibility-auto">
   <div class="container-custom">
 
     <div class="max-w-3xl mx-auto">
@@ -37,7 +37,7 @@ import { CONFIG } from '../data/config';
 
             <div
               id={`faq-answer-${index}`}
-              class="faq-answer-container invisible h-0 opacity-0 transition-all duration-300 ease-in-out"
+              class="faq-answer-container invisible h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out"
               role="region"
               aria-labelledby={`faq-question-${index}`}
             >
@@ -59,6 +59,27 @@ import { CONFIG } from '../data/config';
       const items = document.querySelectorAll('.faq-item');
       if (!items.length) return () => {};
 
+      const transitionTimers = new Map<HTMLElement, ReturnType<typeof setTimeout>>();
+
+      const closeContainer = (container: HTMLElement) => {
+        if (!container) return;
+
+        // Clear existing timer for this container
+        if (transitionTimers.has(container)) {
+          clearTimeout(transitionTimers.get(container));
+        }
+
+        container.style.height = '0';
+        container.classList.add('opacity-0');
+
+        const timer = setTimeout(() => {
+          container.classList.add('invisible');
+          transitionTimers.delete(container);
+        }, 350);
+
+        transitionTimers.set(container, timer);
+      };
+
       const handleToggle = (e: Event) => {
         const trigger = e.currentTarget as HTMLButtonElement;
         const item = trigger.closest('.faq-item');
@@ -73,12 +94,10 @@ import { CONFIG } from '../data/config';
             const otherContainer = otherItem.querySelector('.faq-answer-container') as HTMLElement;
             const otherIcon = otherItem.querySelector('.faq-icon');
 
-            otherTrigger?.setAttribute('aria-expanded', 'false');
-            otherIcon?.classList.remove('rotate-180');
-            if (otherContainer) {
-              otherContainer.style.height = '0';
-              otherContainer.classList.add('invisible', 'opacity-0');
-              otherContainer.classList.remove('pb-6'); // Avoid extra padding when closed
+            if (otherTrigger?.getAttribute('aria-expanded') === 'true') {
+              otherTrigger?.setAttribute('aria-expanded', 'false');
+              otherIcon?.classList.remove('rotate-180');
+              if (otherContainer) closeContainer(otherContainer);
             }
           }
         });
@@ -88,13 +107,20 @@ import { CONFIG } from '../data/config';
         icon?.classList.toggle('rotate-180', !isExpanded);
 
         if (container) {
+          if (transitionTimers.has(container)) {
+            clearTimeout(transitionTimers.get(container));
+            transitionTimers.delete(container);
+          }
+
           if (!isExpanded) {
-            container.classList.remove('invisible', 'opacity-0');
+            container.classList.remove('invisible');
+            // Force reflow
+            void container.offsetHeight;
+            container.classList.remove('opacity-0');
             const height = container.scrollHeight;
             container.style.height = `${height}px`;
           } else {
-            container.style.height = '0';
-            container.classList.add('invisible', 'opacity-0');
+            closeContainer(container);
           }
         }
       };
@@ -105,6 +131,8 @@ import { CONFIG } from '../data/config';
       });
 
       return () => {
+        transitionTimers.forEach(timer => clearTimeout(timer));
+        transitionTimers.clear();
         items.forEach(item => {
           const trigger = item.querySelector('.faq-trigger');
           trigger?.removeEventListener('click', handleToggle);

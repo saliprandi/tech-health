@@ -22,7 +22,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
       Aseguramos la máxima disponibilidad y precisión de su equipamiento médico.
     </p>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]" data-modal-data={JSON.stringify(modalData)} data-whatsapp={CONFIG.contacto.whatsapp}>
       {CONFIG.servicios.map((servicio, index) => (
         <div
           class="service-card group relative bg-off-white border border-transparent rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover cursor-pointer focus-visible:ring-2 focus-visible:ring-blue"
@@ -72,9 +72,9 @@ const modalData = CONFIG.servicios.map(servicio => ({
   </div>
 </section>
 
-<script is:inline define:vars={{ modalData, whatsappNumber: CONFIG.contacto.whatsapp }}>
+<script>
   (function() {
-    const escapeHtml = (unsafe) => {
+    const escapeHtml = (unsafe: string) => {
       if (typeof unsafe !== 'string') return '';
       return unsafe
         .replace(/&/g, "&amp;")
@@ -87,24 +87,29 @@ const modalData = CONFIG.servicios.map(servicio => ({
     };
 
     function initServicios() {
+      const grid = document.querySelector('#servicios .grid');
       const cards = document.querySelectorAll('.service-card');
       const backdrop = document.getElementById('service-modal-backdrop');
       const modal = document.getElementById('service-modal');
       const modalContent = document.getElementById('modal-content');
       const closeBtn = document.getElementById('close-modal');
 
-      if (!cards.length || !backdrop || !modal || !modalContent || !closeBtn) return () => {};
+      if (!grid || !cards.length || !backdrop || !modal || !modalContent || !closeBtn) return () => {};
+
+      const modalDataRaw = (grid as HTMLElement).dataset.modalData;
+      const whatsappNumber = (grid as HTMLElement).dataset.whatsapp;
+      const modalData = modalDataRaw ? JSON.parse(modalDataRaw) : [];
 
       let isModalOpen = false;
-      let lastFocusedElement = null;
-      let focusableElements = [];
+      let lastFocusedElement: HTMLElement | null = null;
+      let focusableElements: HTMLElement[] = [];
 
       const updateFocusableElements = () => {
         focusableElements = Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
           .filter(el => {
              const tag = el.tagName.toLowerCase();
              return tag !== 'svg' && tag !== 'use' && !el.hasAttribute('disabled');
-          });
+          }) as HTMLElement[];
       };
 
       const closeModal = () => {
@@ -127,11 +132,11 @@ const modalData = CONFIG.servicios.map(servicio => ({
         }, 400);
       };
 
-      const openModal = (index) => {
+      const openModal = (index: number) => {
         const servicio = modalData[index];
         if (!servicio) return;
 
-        lastFocusedElement = document.activeElement;
+        lastFocusedElement = document.activeElement as HTMLElement;
         const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ' + servicio.titulo)}`;
 
         modalContent.innerHTML = `
@@ -143,7 +148,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
           <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
           <ul class="flex flex-col gap-4 mb-10">
-            ${servicio.items.map(item => `<li class="flex items-start gap-4 font-body text-[15px] text-text-soft"><span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>${escapeHtml(item)}</li>`).join('')}
+            ${servicio.items.map((item: string) => `<li class="flex items-start gap-4 font-body text-[15px] text-text-soft"><span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>${escapeHtml(item)}</li>`).join('')}
           </ul>
           <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
             <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta">
@@ -166,19 +171,20 @@ const modalData = CONFIG.servicios.map(servicio => ({
         }, 100);
       };
 
-      const handleCardAction = (e) => {
-        const card = e.currentTarget;
+      const handleCardAction = (e: Event) => {
+        const card = e.currentTarget as HTMLElement;
         const index = card.getAttribute('data-index');
         if (index !== null) openModal(parseInt(index));
       };
 
-      const handleModalContentClick = (e) => {
-        if (e.target.closest('#modal-close-secondary')) {
+      const handleModalContentClick = (e: MouseEvent) => {
+        const target = e.target as HTMLElement;
+        if (target.closest('#modal-close-secondary')) {
           closeModal();
           return;
         }
 
-        const cta = e.target.closest('#modal-cta');
+        const cta = target.closest('#modal-cta') as HTMLAnchorElement;
         const ctaText = document.getElementById('modal-cta-text');
         if (cta && ctaText) {
           e.preventDefault();
@@ -204,7 +210,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
         }
       };
 
-      const handleGlobalKeydown = (e) => {
+      const handleGlobalKeydown = (e: KeyboardEvent) => {
         if (!isModalOpen) return;
 
         if (e.key === 'Escape') {
@@ -233,7 +239,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
       cards.forEach(card => {
         card.addEventListener('click', handleCardAction);
         card.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
+          const ke = e as KeyboardEvent;
+          if (ke.key === 'Enter' || ke.key === ' ') {
             e.preventDefault();
             handleCardAction(e);
           }
@@ -242,7 +249,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
       backdrop.addEventListener('click', closeModal);
       closeBtn.addEventListener('click', closeModal);
-      modalContent.addEventListener('click', handleModalContentClick);
+      modalContent.addEventListener('click', handleModalContentClick as EventListener);
       document.addEventListener('keydown', handleGlobalKeydown);
 
       return () => {
@@ -251,7 +258,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
         });
         backdrop.removeEventListener('click', closeModal);
         closeBtn.removeEventListener('click', closeModal);
-        modalContent.removeEventListener('click', handleModalContentClick);
+        modalContent.removeEventListener('click', handleModalContentClick as EventListener);
         document.removeEventListener('keydown', handleGlobalKeydown);
         document.body.style.overflow = '';
       };
