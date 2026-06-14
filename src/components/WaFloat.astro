@@ -49,6 +49,8 @@ import { CONFIG } from '../data/config';
         tooltip.classList.add('opacity-100', 'translate-y-0');
       };
 
+      const hideTooltip = (force = false) => {
+        if (isRedirecting && !force) return;
       const hideTooltip = () => {
         if (isRedirecting) return;
         tooltip.classList.add('opacity-0', 'translate-y-2');
@@ -67,6 +69,24 @@ import { CONFIG } from '../data/config';
           clearTimeout(initialTimeout);
           initialTimeout = null;
         }
+      };
+
+      const handleMouseEnter = () => {
+        clearInitial();
+        showTooltip();
+      };
+
+      const handleMouseLeave = () => {
+        hideTooltip();
+      };
+
+      const handleFocus = () => {
+        clearInitial();
+        showTooltip();
+      };
+
+      const handleBlur = () => {
+        hideTooltip();
       };
 
       initialTimeout = setTimeout(showTooltip, 5000);
@@ -95,7 +115,7 @@ import { CONFIG } from '../data/config';
         feedbackTimer = setTimeout(() => {
           isRedirecting = false;
           btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-          hideTooltip();
+          hideTooltip(true);
           if (restoreTimer) clearTimeout(restoreTimer);
           restoreTimer = setTimeout(() => {
             tooltipText.textContent = originalText;
@@ -109,6 +129,10 @@ import { CONFIG } from '../data/config';
       };
 
       btn.addEventListener('click', handleBtnClick as EventListener);
+      btn.addEventListener('mouseenter', handleMouseEnter);
+      btn.addEventListener('mouseleave', handleMouseLeave);
+      btn.addEventListener('focus', handleFocus);
+      btn.addEventListener('blur', handleBlur);
       btn.addEventListener('mouseenter', handleManualShow);
       btn.addEventListener('mouseleave', hideTooltip);
       btn.addEventListener('focus', handleManualShow);
@@ -120,6 +144,10 @@ import { CONFIG } from '../data/config';
         if (restoreTimer) clearTimeout(restoreTimer);
         if (transitionTimer) clearTimeout(transitionTimer);
         btn.removeEventListener('click', handleBtnClick);
+        btn.removeEventListener('mouseenter', handleMouseEnter);
+        btn.removeEventListener('mouseleave', handleMouseLeave);
+        btn.removeEventListener('focus', handleFocus);
+        btn.removeEventListener('blur', handleBlur);
         btn.removeEventListener('mouseenter', handleManualShow);
         btn.removeEventListener('mouseleave', hideTooltip);
         btn.removeEventListener('focus', handleManualShow);
