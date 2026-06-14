@@ -37,26 +37,44 @@ import { CONFIG } from '../data/config';
       let initialTimeout: ReturnType<typeof setTimeout> | null = null;
       let feedbackTimer: ReturnType<typeof setTimeout> | null = null;
       let restoreTimer: ReturnType<typeof setTimeout> | null = null;
+      let transitionTimer: ReturnType<typeof setTimeout> | null = null;
+      let isRedirecting = false;
 
       const showTooltip = () => {
+        if (transitionTimer) {
+          clearTimeout(transitionTimer);
+          transitionTimer = null;
+        }
         tooltip.classList.remove('opacity-0', 'translate-y-2', 'invisible');
         tooltip.classList.add('opacity-100', 'translate-y-0');
       };
 
       const hideTooltip = () => {
+        if (isRedirecting) return;
         tooltip.classList.add('opacity-0', 'translate-y-2');
         tooltip.classList.remove('opacity-100', 'translate-y-0');
-        setTimeout(() => {
+        if (transitionTimer) clearTimeout(transitionTimer);
+        transitionTimer = setTimeout(() => {
           if (tooltip.classList.contains('opacity-0')) {
             tooltip.classList.add('invisible');
           }
+          transitionTimer = null;
         }, 500);
+      };
+
+      const clearInitial = () => {
+        if (initialTimeout) {
+          clearTimeout(initialTimeout);
+          initialTimeout = null;
+        }
       };
 
       initialTimeout = setTimeout(showTooltip, 5000);
 
       const handleBtnClick = (e: MouseEvent) => {
         e.preventDefault();
+        clearInitial();
+        isRedirecting = true;
         const originalText = tooltipText.textContent || '¡Hola! ¿En qué podemos ayudarte?';
         tooltipText.textContent = '¡Redirigiendo!';
         showTooltip();
@@ -75,6 +93,7 @@ import { CONFIG } from '../data/config';
 
         if (feedbackTimer) clearTimeout(feedbackTimer);
         feedbackTimer = setTimeout(() => {
+          isRedirecting = false;
           btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           hideTooltip();
           if (restoreTimer) clearTimeout(restoreTimer);
@@ -84,13 +103,27 @@ import { CONFIG } from '../data/config';
         }, 3000);
       };
 
+      const handleManualShow = () => {
+        clearInitial();
+        showTooltip();
+      };
+
       btn.addEventListener('click', handleBtnClick as EventListener);
+      btn.addEventListener('mouseenter', handleManualShow);
+      btn.addEventListener('mouseleave', hideTooltip);
+      btn.addEventListener('focus', handleManualShow);
+      btn.addEventListener('blur', hideTooltip);
 
       return () => {
-        if (initialTimeout) clearTimeout(initialTimeout);
+        clearInitial();
         if (feedbackTimer) clearTimeout(feedbackTimer);
         if (restoreTimer) clearTimeout(restoreTimer);
+        if (transitionTimer) clearTimeout(transitionTimer);
         btn.removeEventListener('click', handleBtnClick);
+        btn.removeEventListener('mouseenter', handleManualShow);
+        btn.removeEventListener('mouseleave', hideTooltip);
+        btn.removeEventListener('focus', handleManualShow);
+        btn.removeEventListener('blur', hideTooltip);
       };
     }
 
