@@ -37,21 +37,30 @@ import { CONFIG } from '../data/config';
       let initialTimeout: ReturnType<typeof setTimeout> | null = null;
       let feedbackTimer: ReturnType<typeof setTimeout> | null = null;
       let restoreTimer: ReturnType<typeof setTimeout> | null = null;
+      let transitionTimer: ReturnType<typeof setTimeout> | null = null;
       let isRedirecting = false;
 
       const showTooltip = () => {
+        if (transitionTimer) {
+          clearTimeout(transitionTimer);
+          transitionTimer = null;
+        }
         tooltip.classList.remove('opacity-0', 'translate-y-2', 'invisible');
         tooltip.classList.add('opacity-100', 'translate-y-0');
       };
 
       const hideTooltip = (force = false) => {
         if (isRedirecting && !force) return;
+      const hideTooltip = () => {
+        if (isRedirecting) return;
         tooltip.classList.add('opacity-0', 'translate-y-2');
         tooltip.classList.remove('opacity-100', 'translate-y-0');
-        setTimeout(() => {
+        if (transitionTimer) clearTimeout(transitionTimer);
+        transitionTimer = setTimeout(() => {
           if (tooltip.classList.contains('opacity-0')) {
             tooltip.classList.add('invisible');
           }
+          transitionTimer = null;
         }, 500);
       };
 
@@ -114,21 +123,35 @@ import { CONFIG } from '../data/config';
         }, 3000);
       };
 
+      const handleManualShow = () => {
+        clearInitial();
+        showTooltip();
+      };
+
       btn.addEventListener('click', handleBtnClick as EventListener);
       btn.addEventListener('mouseenter', handleMouseEnter);
       btn.addEventListener('mouseleave', handleMouseLeave);
       btn.addEventListener('focus', handleFocus);
       btn.addEventListener('blur', handleBlur);
+      btn.addEventListener('mouseenter', handleManualShow);
+      btn.addEventListener('mouseleave', hideTooltip);
+      btn.addEventListener('focus', handleManualShow);
+      btn.addEventListener('blur', hideTooltip);
 
       return () => {
-        if (initialTimeout) clearTimeout(initialTimeout);
+        clearInitial();
         if (feedbackTimer) clearTimeout(feedbackTimer);
         if (restoreTimer) clearTimeout(restoreTimer);
+        if (transitionTimer) clearTimeout(transitionTimer);
         btn.removeEventListener('click', handleBtnClick);
         btn.removeEventListener('mouseenter', handleMouseEnter);
         btn.removeEventListener('mouseleave', handleMouseLeave);
         btn.removeEventListener('focus', handleFocus);
         btn.removeEventListener('blur', handleBlur);
+        btn.removeEventListener('mouseenter', handleManualShow);
+        btn.removeEventListener('mouseleave', hideTooltip);
+        btn.removeEventListener('focus', handleManualShow);
+        btn.removeEventListener('blur', hideTooltip);
       };
     }
 
