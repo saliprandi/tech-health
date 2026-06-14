@@ -55,8 +55,25 @@ import { CONFIG } from '../data/config';
 
       initialTimeout = setTimeout(showTooltip, 5000);
 
+      const cancelInitialTimeout = () => {
+        if (initialTimeout) {
+          clearTimeout(initialTimeout);
+          initialTimeout = null;
+        }
+      };
+
+      const handleInteractionStart = () => {
+        cancelInitialTimeout();
+        showTooltip();
+      };
+
+      const handleInteractionEnd = () => {
+        hideTooltip();
+      };
+
       const handleBtnClick = (e: MouseEvent) => {
         e.preventDefault();
+        cancelInitialTimeout();
         const originalText = tooltipText.textContent || '¡Hola! ¿En qué podemos ayudarte?';
         tooltipText.textContent = '¡Redirigiendo!';
         showTooltip();
@@ -85,12 +102,20 @@ import { CONFIG } from '../data/config';
       };
 
       btn.addEventListener('click', handleBtnClick as EventListener);
+      btn.addEventListener('mouseenter', handleInteractionStart);
+      btn.addEventListener('mouseleave', handleInteractionEnd);
+      btn.addEventListener('focus', handleInteractionStart);
+      btn.addEventListener('blur', handleInteractionEnd);
 
       return () => {
         if (initialTimeout) clearTimeout(initialTimeout);
         if (feedbackTimer) clearTimeout(feedbackTimer);
         if (restoreTimer) clearTimeout(restoreTimer);
         btn.removeEventListener('click', handleBtnClick);
+        btn.removeEventListener('mouseenter', handleInteractionStart);
+        btn.removeEventListener('mouseleave', handleInteractionEnd);
+        btn.removeEventListener('focus', handleInteractionStart);
+        btn.removeEventListener('blur', handleInteractionEnd);
       };
     }
 
