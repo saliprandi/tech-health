@@ -21,22 +21,23 @@ import { CONFIG } from '../data/config';
               <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.whatsapp_display}</div>
             </div>
           </a>
-          <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border">
-            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0">
+          <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border relative">
+            <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0" aria-label="Abrir en Google Maps"></a>
+            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 z-10 pointer-events-none">
               <svg class="w-5 h-5" fill="none" stroke="currentColor"><use href="#icon-map-pin" /></svg>
             </div>
-            <div class="flex-grow">
+            <div class="flex-grow z-10 pointer-events-none">
               <div class="font-heading font-bold text-[16px] text-navy mb-1">Laboratorio</div>
               <div id="address-text" class="font-body text-[14px] text-text-soft">{CONFIG.contacto.direccion}, {CONFIG.contacto.ciudad_completa}</div>
               <div class="flex items-center gap-3 mt-2">
-                <span id="copy-address" role="button" tabindex="0" class="flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer" aria-label="Copiar dirección al portapapeles">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"><use id="copy-icon-use" href="#icon-copy" /></svg>
+                <button type="button" id="copy-address" class="relative flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer z-20 pointer-events-auto appearance-none" aria-label="Copiar dirección al portapapeles">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-icon-use" href="#icon-copy" /></svg>
                   <span id="copy-text">Copiar</span>
-                </span>
+                </button>
                 <div id="copy-announcement" class="sr-only" aria-live="polite"></div>
               </div>
             </div>
-          </a>
+          </div>
           <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0">
               <svg class="w-5 h-5" fill="none" stroke="currentColor"><use href="#icon-clock" /></svg>
@@ -159,28 +160,54 @@ import { CONFIG } from '../data/config';
       updateCounter();
 
       // Copy Address
-      const handleCopy = () => {
+      const handleCopy = (e?: Event) => {
+        if (e) {
+           e.stopPropagation();
+        }
         if (!copyBtn || !copyText || !copyIconUse || !addressEl) return;
-        if (!navigator.clipboard) return;
 
+        const textToCopy = addressEl.textContent || '';
         const originalText = copyText.textContent || 'Copiar';
         const originalIcon = copyIconUse.getAttribute('href') || '#icon-copy';
-        navigator.clipboard.writeText(addressEl.textContent || '').then(() => {
+
+        const showSuccess = () => {
           copyText.textContent = '¡Copiado!';
           copyIconUse.setAttribute('href', '#icon-check');
           copyBtn.classList.add('text-blue');
           if (copyAnnouncement) copyAnnouncement.textContent = 'Dirección copiada al portapapeles';
           setTimeout(() => {
-            copyText.textContent = originalText;
-            copyIconUse.setAttribute('href', originalIcon);
-            copyBtn.classList.remove('text-blue');
+            if (copyText) copyText.textContent = originalText;
+            if (copyIconUse) copyIconUse.setAttribute('href', originalIcon);
+            if (copyBtn) copyBtn.classList.remove('text-blue');
             if (copyAnnouncement) copyAnnouncement.textContent = '';
           }, 2500);
-        }).catch(err => {
-          console.error('Error copying to clipboard: ', err);
-        });
+        };
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(textToCopy).then(showSuccess).catch(err => {
+            console.error('Error copying to clipboard: ', err);
+          });
+        } else {
+          // Fallback for non-secure contexts or older browsers
+          try {
+            const textArea = document.createElement("textarea");
+            textArea.value = textToCopy;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            textArea.style.top = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            const successful = document.execCommand('copy');
+            document.body.removeChild(textArea);
+            if (successful) showSuccess();
+          } catch (err) {
+            console.error('Fallback copy failed', err);
+          }
+        }
       };
-      copyBtn?.addEventListener('click', handleCopy);
+
+      copyBtn?.addEventListener('click', handleCopy as EventListener);
 
       // Form Submit
       const handleSubmit = (e: Event) => {
@@ -226,7 +253,7 @@ import { CONFIG } from '../data/config';
       return () => {
         if (statusInterval) clearInterval(statusInterval);
         desc?.removeEventListener('input', updateCounter);
-        copyBtn?.removeEventListener('click', handleCopy);
+        copyBtn?.removeEventListener('click', handleCopy as EventListener);
         form.removeEventListener('submit', handleSubmit);
       };
     }

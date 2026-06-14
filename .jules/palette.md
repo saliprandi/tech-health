@@ -57,6 +57,10 @@ Importante!!! Quiero todos los pr en español
 **Learning:** Las interacciones de "copiar al portapapeles" que solo proporcionan feedback visual (cambio de ícono o texto) son invisibles para usuarios de lectores de pantalla. Implementar una región `aria-live="polite"` oculta permite anunciar el éxito de la operación de forma no intrusiva.
 **Action:** Siempre incluir un elemento con `aria-live="polite"` y la clase `sr-only` para anunciar estados de confirmación en acciones que no disparan cambios estructurales en el DOM o navegación.
 
+## 2025-06-25 - [UX: Aislamiento de interacciones anidadas]
+**Learning:** Al anidar elementos interactivos (como un botón de copiar dentro de una tarjeta con un enlace a Google Maps), el uso de `pointer-events-none` en contenedores de texto es vital para permitir que el clic pase al enlace padre sin obstrucciones. Sin embargo, los elementos hijos interactivos deben re-habilitar `pointer-events-auto` y usar `e.stopPropagation()` para funcionar de forma aislada.
+**Action:** Implementar el patrón de "enlace absoluto invisible" (`z-0`) para la acción principal de la tarjeta y usar `pointer-events-none` en el contenido informativo, asegurando que los controles específicos (botones) tengan `pointer-events-auto` y `z-index` superior.
+
 ## 2026-06-05 - [UX: Verbosidad de contador de caracteres]
 **Aprendizaje:** Agregar `aria-live="polite"` a un contador de caracteres en vivo puede causar que los lectores de pantalla anuncien el conteo en cada pulsación de tecla, lo cual frecuentemente se percibe como "ruidoso" o distractor.
 **Acción:** Para textareas estándar, preferir un contador de caracteres solo visual a menos que exista un requerimiento específico de accesibilidad para anuncios de conteo en tiempo real, o implementar lógica para anunciar solo en intervalos específicos (ej., cada 50 caracteres) o al acercarse al límite.
