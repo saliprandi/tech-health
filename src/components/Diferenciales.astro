@@ -1,0 +1,35 @@
+---
+import { CONFIG } from '../data/config';
+---
+
+<section id="diferenciales" class="bg-off-white section-padding">
+  <div class="container-custom">
+
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Diferenciales</div>
+      <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] leading-[1.2] text-navy mb-4">
+        ¿Por qué confiar en TechHealth?
+      </h2>
+      <p class="font-body text-[16px] text-text-soft">
+        Combinamos precisión técnica de vanguardia con un sólido compromiso profesional para garantizar la continuidad de su servicio de salud.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {CONFIG.diferenciales.map((item) => (
+        <div class="group bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover transition-all duration-300">
+          <div class="w-14 h-14 rounded-2xl bg-blue-pale text-blue flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-8 h-8 group-hover:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <use href={`#icon-${item.icono}`} />
+            </svg>
+          </div>
+          <h3 class="font-heading font-bold text-[18px] text-navy mb-3">{item.titulo}</h3>
+          <p class="font-body font-light text-[14px] text-text-soft leading-relaxed">
+            {item.descripcion}
+          </p>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>

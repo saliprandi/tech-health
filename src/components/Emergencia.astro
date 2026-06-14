@@ -1,0 +1,91 @@
+---
+import { CONFIG } from '../data/config';
+
+const { emergencia, contacto } = CONFIG;
+---
+
+<section id="emergencia" class="py-10 px-[5%]">
+  <div class="container-custom">
+    <div class="relative bg-navy rounded-[24px] p-8 md:p-12 overflow-hidden shadow-xl">
+      <!-- Decorative element -->
+      <div class="absolute -right-20 -top-20 w-64 h-64 bg-blue/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+        <div class="max-w-2xl text-center lg:text-left">
+          <div class="inline-flex items-center gap-2 bg-white/10 text-blue-light font-heading font-bold text-[11px] uppercase tracking-widest py-1.5 px-4 rounded-full mb-4">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-light opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-light"></span>
+            </span>
+            Atención prioritaria
+          </div>
+          <h2 class="font-heading font-extrabold text-[28px] md:text-[34px] text-white mb-4 leading-tight">
+            {emergencia.titulo}
+          </h2>
+          <p class="font-body text-white/70 text-[16px] md:text-[18px] font-light">
+            {emergencia.mensaje}
+          </p>
+        </div>
+
+        <div class="flex-shrink-0 w-full lg:w-auto">
+          <a
+            id="emergencia-cta"
+            href={`https://wa.me/${contacto.whatsapp}?text=${encodeURIComponent('SOPORTE DE EMERGENCIA: Necesito asistencia inmediata para un equipo crítico.')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-primary w-full lg:w-auto bg-white text-navy hover:bg-blue-pale hover:text-blue flex items-center justify-center gap-3 border-none group"
+          >
+            <svg class="w-6 h-6 fill-current group-hover:animate-heartbeat" aria-hidden="true">
+              <use href="#icon-whatsapp" />
+            </svg>
+            <span id="emergencia-cta-text">{emergencia.cta}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    function initEmergencia() {
+      const cta = document.getElementById('emergencia-cta');
+      const ctaText = document.getElementById('emergencia-cta-text');
+      if (!cta || !ctaText) return () => {};
+
+      const handleCtaClick = (e: MouseEvent) => {
+        e.preventDefault();
+        const originalText = ctaText.textContent;
+        ctaText.textContent = 'Redirigiendo...';
+        cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+        const href = cta.getAttribute('href');
+        if (href) {
+          const a = document.createElement('a');
+          a.href = href;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }
+
+        setTimeout(() => {
+          if (ctaText) ctaText.textContent = originalText;
+          if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        }, 3000);
+      };
+
+      cta.addEventListener('click', handleCtaClick as EventListener);
+      return () => {
+        cta.removeEventListener('click', handleCtaClick);
+      };
+    }
+
+    let cleanup = initEmergencia();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initEmergencia();
+    });
+  })();
+</script>

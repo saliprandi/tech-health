@@ -127,4 +127,33 @@ export const CONFIG = {
       respuesta: "Nuestra base operativa está en San Miguel de Tucumán, pero brindamos cobertura técnica en toda la provincia y zonas de influencia en el NOA, coordinando desplazamientos programados.",
     },
   ],
+
+  diferenciales: [
+    {
+      icono: "shield-check",
+      titulo: "Garantía de Calidad",
+      descripcion: "Respaldamos cada intervención con 90 días de garantía técnica y soporte post-reparación.",
+    },
+    {
+      icono: "microscope",
+      titulo: "Laboratorio Especializado",
+      descripcion: "Contamos con instrumental de alta precisión en San Miguel de Tucumán para diagnósticos a nivel de componente.",
+    },
+    {
+      icono: "file-text",
+      titulo: "Informes de Auditoría",
+      descripcion: "Documentación técnica detallada de cada servicio, cumpliendo con normativas de trazabilidad para instituciones de salud.",
+    },
+    {
+      icono: "users",
+      titulo: "Atención B2B Directa",
+      descripcion: "Comunicación fluida y profesional con directivos y jefes de área técnica sin intermediarios.",
+    },
+  ],
+
+  emergencia: {
+    titulo: "Soporte de Emergencia 24h",
+    mensaje: "¿Tiene un equipo crítico fuera de servicio? Brindamos respuesta inmediata para urgencias médicas en Tucumán y el NOA.",
+    cta: "Contactar Guardia",
+  },
 };
