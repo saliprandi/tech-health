@@ -10,17 +10,25 @@ import { CONFIG } from '../data/config';
         <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Contacto</div>
         <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-6">Estamos aquí para ayudarle</h2>
         <div class="flex flex-col gap-4">
-          <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
-            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
+            <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px]" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
+            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 pointer-events-none transition-transform group-hover:scale-110">
               <svg class="w-5 h-5 group-hover:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-phone" />
               </svg>
             </div>
-            <div>
+            <div class="relative z-10 flex-grow pointer-events-none">
               <div class="font-heading font-bold text-[16px] text-navy mb-1">WhatsApp / Teléfono</div>
-              <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.whatsapp_display}</div>
+              <div id="phone-text" class="font-body text-[14px] text-text-soft">{CONFIG.contacto.whatsapp_display}</div>
+              <div class="flex items-center gap-3 mt-2 pointer-events-auto">
+                <button type="button" id="copy-phone" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar teléfono al portapapeles">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-phone-icon-use" href="#icon-copy" /></svg>
+                  <span id="copy-phone-text" class="pointer-events-none">Copiar</span>
+                </button>
+                <div id="copy-phone-announcement" class="sr-only" aria-live="polite"></div>
+              </div>
             </div>
-          </a>
+          </div>
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px]" aria-label={`Ver en Google Maps: ${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}></a>
             <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 pointer-events-none transition-transform group-hover:scale-110">
@@ -33,17 +41,6 @@ import { CONFIG } from '../data/config';
                 <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar dirección al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-icon-use" href="#icon-copy" /></svg>
                   <span id="copy-text" class="pointer-events-none">Copiar</span>
-            <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0" aria-label="Ver en Google Maps"></a>
-            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 relative z-10">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor"><use href="#icon-map-pin" /></svg>
-            </div>
-            <div class="flex-grow relative z-10">
-              <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="font-heading font-bold text-[16px] text-navy mb-1 block hover:text-blue transition-colors">Laboratorio</a>
-              <div id="address-text" class="font-body text-[14px] text-text-soft">{CONFIG.contacto.direccion}, {CONFIG.contacto.ciudad_completa}</div>
-              <div class="flex items-center gap-3 mt-2">
-                <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer" aria-label="Copiar dirección al portapapeles">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"><use id="copy-icon-use" href="#icon-copy" /></svg>
-                  <span id="copy-text">Copiar</span>
                 </button>
                 <div id="copy-announcement" class="sr-only" aria-live="polite"></div>
               </div>
@@ -118,6 +115,12 @@ import { CONFIG } from '../data/config';
       const copyAnnouncement = document.getElementById('copy-announcement');
       const copyIconUse = document.getElementById('copy-icon-use');
       const addressEl = document.getElementById('address-text');
+
+      const copyPhoneBtn = document.getElementById('copy-phone');
+      const copyPhoneText = document.getElementById('copy-phone-text');
+      const copyPhoneAnnouncement = document.getElementById('copy-phone-announcement');
+      const copyPhoneIconUse = document.getElementById('copy-phone-icon-use');
+      const phoneEl = document.getElementById('phone-text');
       const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
       const submitBtnText = document.getElementById('f-submit-text');
 
@@ -194,6 +197,34 @@ import { CONFIG } from '../data/config';
       };
       copyBtn?.addEventListener('click', handleCopy);
 
+      // Copy Phone
+      const handleCopyPhone = (e: MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!copyPhoneBtn || !copyPhoneText || !copyPhoneIconUse || !phoneEl) return;
+        if (!navigator.clipboard) return;
+
+        const originalText = copyPhoneText.textContent || 'Copiar';
+        const originalIcon = copyPhoneIconUse.getAttribute('href') || '#icon-copy';
+        const cleanPhone = phoneEl.textContent?.replace(/\s/g, '') || '';
+
+        navigator.clipboard.writeText(cleanPhone).then(() => {
+          copyPhoneText.textContent = '¡Copiado!';
+          copyPhoneIconUse.setAttribute('href', '#icon-check');
+          copyPhoneBtn.classList.add('text-blue');
+          if (copyPhoneAnnouncement) copyPhoneAnnouncement.textContent = 'Teléfono copiado al portapapeles';
+          setTimeout(() => {
+            copyPhoneText.textContent = originalText;
+            copyPhoneIconUse.setAttribute('href', originalIcon);
+            copyPhoneBtn.classList.remove('text-blue');
+            if (copyPhoneAnnouncement) copyPhoneAnnouncement.textContent = '';
+          }, 2500);
+        }).catch(err => {
+          console.error('Error copying phone: ', err);
+        });
+      };
+      copyPhoneBtn?.addEventListener('click', handleCopyPhone as EventListener);
+
       // Form Submit
       const handleSubmit = (e: Event) => {
         e.preventDefault();
@@ -239,6 +270,7 @@ import { CONFIG } from '../data/config';
         if (statusInterval) clearInterval(statusInterval);
         desc?.removeEventListener('input', updateCounter);
         copyBtn?.removeEventListener('click', handleCopy);
+        copyPhoneBtn?.removeEventListener('click', handleCopyPhone as EventListener);
         form.removeEventListener('submit', handleSubmit);
       };
     }
