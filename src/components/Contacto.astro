@@ -28,6 +28,8 @@ import { CONFIG } from '../data/config';
                 </button>
               </div>
             </div>
+          </a>
+
           </div>
 
           <!-- Address Card -->
@@ -42,6 +44,7 @@ import { CONFIG } from '../data/config';
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
                 <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar dirección al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-icon-use" href="#icon-copy" /></svg>
+                  <span id="copy-text" class="pointer-events-none">Copiar</span>
                   <span id="copy-text">Copiar</span>
                 </button>
               </div>
@@ -69,13 +72,18 @@ import { CONFIG } from '../data/config';
       <!-- Columna derecha: Formulario -->
       <div class="bg-navy rounded-card p-8 md:p-10 shadow-hero-card">
         <form id="contact-form" class="flex flex-col gap-5" data-whatsapp={CONFIG.contacto.whatsapp}>
+          <!-- Honeypot -->
+          <div class="hidden" aria-hidden="true">
+            <input type="text" name="website" id="f-website" tabindex="-1" autocomplete="off" />
+          </div>
+
           <div class="flex flex-col gap-1.5">
             <label for="f-nombre" class="font-body font-medium text-[13px] text-white/80">Nombre completo</label>
-            <input type="text" id="f-nombre" name="nombre" required maxlength="100" placeholder="Ej: Juan Pérez" aria-label="Nombre completo" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30" />
+            <input type="text" id="f-nombre" name="nombre" required maxlength="100" placeholder="Ej: Juan Pérez" aria-label="Nombre completo" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40" />
           </div>
           <div class="flex flex-col gap-1.5">
             <label for="f-tel" class="font-body font-medium text-[13px] text-white/80">Teléfono / WhatsApp</label>
-            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-()]*" placeholder="Ej: +54 9 381 1234567" aria-label="Teléfono o WhatsApp" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30" />
+            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-()]*" placeholder="Ej: +54 9 381 1234567" aria-label="Teléfono o WhatsApp" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40" />
           </div>
           <div class="flex flex-col gap-1.5">
             <label for="f-servicio" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Tipo de servicio</label>
@@ -92,7 +100,7 @@ import { CONFIG } from '../data/config';
           <div class="flex flex-col gap-1.5">
             <label for="f-desc" class="font-body font-medium text-[13px] text-white/80">Mensaje</label>
             <div class="relative">
-              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="" aria-label="Mensaje" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none placeholder:text-white/30"></textarea>
+              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="" aria-label="Mensaje" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40"></textarea>
               <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body">0 / 500</div>
             </div>
           </div>
@@ -102,7 +110,7 @@ import { CONFIG } from '../data/config';
             <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off" />
           </div>
           <p class="font-body text-[12px] text-white/50 text-center">El mensaje te redirigirá a WhatsApp</p>
-          <button type="submit" id="f-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2">
+          <button type="submit" id="f-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-blue/40">
             <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat" aria-hidden="true">
               <use href="#icon-whatsapp" />
             </svg>
@@ -175,6 +183,29 @@ import { CONFIG } from '../data/config';
       desc?.addEventListener('input', updateCounter);
       updateCounter();
 
+      // Copy Address
+      const handleCopy = () => {
+        if (!copyBtn || !copyText || !copyIconUse || !addressEl) return;
+        if (!navigator.clipboard) return;
+
+        const originalText = copyText.textContent || 'Copiar';
+        const originalIcon = copyIconUse.getAttribute('href') || '#icon-copy';
+
+        navigator.clipboard.writeText(addressEl.textContent || '').then(() => {
+          copyText.textContent = '¡Copiado!';
+          copyIconUse.setAttribute('href', '#icon-check');
+          copyBtn.classList.add('text-blue');
+          if (copyAnnouncement) copyAnnouncement.textContent = 'Dirección copiada al portapapeles';
+
+          setTimeout(() => {
+            copyText.textContent = originalText;
+            copyIconUse.setAttribute('href', originalIcon);
+            copyBtn.classList.remove('text-blue');
+            if (copyAnnouncement) copyAnnouncement.textContent = '';
+          }, 2500);
+        }).catch(err => {
+          console.error('Error copying to clipboard: ', err);
+        });
       // Generic Copy Helper
       const setupCopy = (btnId: string, textId: string, iconId: string, contentId: string, announcementMsg: string) => {
         const btn = document.getElementById(btnId);
@@ -216,6 +247,7 @@ import { CONFIG } from '../data/config';
       // Form Submit
       const handleSubmit = (e: Event) => {
         e.preventDefault();
+
         const formData = new FormData(form);
         if (formData.get('website')) return; // Honeypot check
 
@@ -224,6 +256,11 @@ import { CONFIG } from '../data/config';
           return;
         }
 
+        const nombre = (document.getElementById('f-nombre') as HTMLInputElement)?.value.trim() || '';
+        const tel = (document.getElementById('f-tel') as HTMLInputElement)?.value.trim() || '';
+        const servicioel = document.getElementById('f-servicio') as HTMLSelectElement | null;
+        const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
+        const mensaje = (document.getElementById('f-desc') as HTMLTextAreaElement)?.value.trim() || '';
         const nombre = (formData.get('nombre') as string).trim();
         const tel = (formData.get('telefono') as string).trim();
         const servicio = formData.get('servicio') as string;
@@ -239,12 +276,15 @@ import { CONFIG } from '../data/config';
           submitBtn.setAttribute('aria-busy', 'true');
           submitBtn.setAttribute('aria-disabled', 'true');
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
           setTimeout(() => {
-            submitBtnText.textContent = originalBtnText;
-            submitBtn.disabled = false;
-            submitBtn.removeAttribute('aria-busy');
-            submitBtn.removeAttribute('aria-disabled');
-            submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+            if (submitBtnText) submitBtnText.textContent = originalBtnText;
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.removeAttribute('aria-busy');
+              submitBtn.removeAttribute('aria-disabled');
+              submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+            }
           }, 3000);
         }
 
