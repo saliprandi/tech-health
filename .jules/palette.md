@@ -117,3 +117,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-14 - [UX: Aislamiento de interacciones y selección de texto]
 **Learning:** Al implementar tarjetas clicables que contienen elementos interactivos hijos (ej. botón de copiar), usar un link absoluto con `inset-0` es efectivo pero puede bloquear la selección de texto si se aplica `pointer-events-none` de forma indiscriminada. El patrón refinado consiste en envolver el texto crítico en sus propios tags semánticos (como un `<a>` para títulos) para preservar la capacidad del navegador de permitir la selección y el clic, mientras el link de fondo cubre las áreas "vacías".
 **Action:** Evitar `pointer-events-none` en contenedores de texto dentro de tarjetas interactivas. Usar una combinación de links internos para texto y links absolutos de fondo para el área de la tarjeta, asegurando que los botones de utilidad tengan el `z-index` más alto para operar independientemente.
+
+## 2025-06-25 - [UX: Consistencia en acciones de portapapeles]
+**Learning:** Proporcionar una experiencia de "copiar al portapapeles" consistente para todos los datos de contacto clave (dirección, teléfono) refuerza la utilidad del sitio. Usar un helper de inicialización que gestione el feedback visual y los anuncios aria-live asegura que la mejora sea accesible y fácil de mantener.
+**Action:** Implementar siempre funciones de utilidad para acciones repetitivas de UI que requieran coordinación de estados (iconos, texto, accesibilidad) para garantizar coherencia en todo el sitio.

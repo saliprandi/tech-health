@@ -15,7 +15,7 @@ import { CONFIG } from '../data/config';
     href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`}
     target="_blank"
     rel="noopener noreferrer"
-    class="group w-[58px] h-[58px] bg-[#25D366] rounded-full flex items-center justify-center text-white hover:scale-[1.08] transition-transform duration-300 shadow-lg pointer-events-auto"
+    class="group w-[58px] h-[58px] bg-[#25D366] rounded-full flex items-center justify-center text-white hover:scale-[1.08] focus-visible:scale-[1.08] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#25D366] transition-all duration-300 shadow-lg pointer-events-auto outline-none"
     style="box-shadow: 0 4px 20px rgba(37,211,102,0.5);"
     aria-label="Contactar por WhatsApp"
   >
@@ -51,8 +51,10 @@ import { CONFIG } from '../data/config';
 
       const hideTooltip = (force = false) => {
         if (isRedirecting && !force) return;
+
         tooltip.classList.add('opacity-0', 'translate-y-2');
         tooltip.classList.remove('opacity-100', 'translate-y-0');
+
         if (transitionTimer) clearTimeout(transitionTimer);
         transitionTimer = setTimeout(() => {
           if (tooltip.classList.contains('opacity-0')) {
@@ -82,15 +84,24 @@ import { CONFIG } from '../data/config';
         e.preventDefault();
         cancelInitialTimeout();
         isRedirecting = true;
+
         const originalText = tooltipText.textContent || '¡Hola! ¿En qué podemos ayudarte?';
         tooltipText.textContent = '¡Redirigiendo!';
         showTooltip();
+
         btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = btn.getAttribute('href');
         if (href) {
+          // Sanitize WhatsApp URL before redirection
+          const url = new URL(href);
+          const phone = url.pathname.split('/').pop() || '';
+          const sanitizedPhone = phone.replace(/\D/g, '');
+          const text = url.searchParams.get('text') || '';
+          const sanitizedHref = `https://wa.me/${sanitizedPhone}${text ? '?text=' + encodeURIComponent(text) : ''}`;
+
           const a = document.createElement('a');
-          a.href = href;
+          a.href = sanitizedHref;
           a.target = '_blank';
           a.rel = 'noopener noreferrer';
           document.body.appendChild(a);
@@ -103,6 +114,7 @@ import { CONFIG } from '../data/config';
           isRedirecting = false;
           btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           hideTooltip(true);
+
           if (restoreTimer) clearTimeout(restoreTimer);
           restoreTimer = setTimeout(() => {
             tooltipText.textContent = originalText;
@@ -123,6 +135,7 @@ import { CONFIG } from '../data/config';
         if (feedbackTimer) clearTimeout(feedbackTimer);
         if (restoreTimer) clearTimeout(restoreTimer);
         if (transitionTimer) clearTimeout(transitionTimer);
+
         btn.removeEventListener('click', handleBtnClick as EventListener);
         btn.removeEventListener('mouseenter', handleInteractionStart);
         btn.removeEventListener('mouseleave', handleInteractionEnd);
