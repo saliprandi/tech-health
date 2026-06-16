@@ -36,10 +36,11 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       <!-- Buttons -->
       <div class="flex flex-wrap items-center gap-4 mt-2">
         <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="btn-primary gap-2 group">
-          <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat" aria-hidden="true">
+          <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
             <use href="#icon-whatsapp" />
           </svg>
           <span id="hero-cta-text">Solicitar servicio</span>
+          <span id="hero-cta-announcement" class="sr-only" aria-live="polite"></span>
         </a>
         <a href="#servicios" class="btn-secondary">
           Ver servicios
@@ -86,12 +87,14 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
     function initHero() {
       const heroCta = document.getElementById('hero-cta');
       const heroCtaText = document.getElementById('hero-cta-text');
+      const heroCtaAnnouncement = document.getElementById('hero-cta-announcement');
       if (!heroCta || !heroCtaText) return () => {};
 
       const handleCtaClick = (e: MouseEvent) => {
         e.preventDefault();
         const originalText = heroCtaText.textContent;
         heroCtaText.textContent = 'Redirigiendo...';
+        if (heroCtaAnnouncement) heroCtaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = heroCta.getAttribute('href');
@@ -107,6 +110,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
 
         setTimeout(() => {
           if (heroCtaText) heroCtaText.textContent = originalText;
+          if (heroCtaAnnouncement) heroCtaAnnouncement.textContent = '';
           if (heroCta) heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }, 3000);
       };

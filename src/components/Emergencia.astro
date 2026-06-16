@@ -35,10 +35,11 @@ const { emergencia, contacto } = CONFIG;
             rel="noopener noreferrer"
             class="btn-primary w-full lg:w-auto bg-white text-navy hover:bg-blue-pale hover:text-blue flex items-center justify-center gap-3 border-none group"
           >
-            <svg class="w-6 h-6 fill-current group-hover:animate-heartbeat" aria-hidden="true">
+            <svg class="w-6 h-6 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
               <use href="#icon-whatsapp" />
             </svg>
             <span id="emergencia-cta-text">{emergencia.cta}</span>
+            <span id="emergencia-cta-announcement" class="sr-only" aria-live="polite"></span>
           </a>
         </div>
       </div>
@@ -51,12 +52,14 @@ const { emergencia, contacto } = CONFIG;
     function initEmergencia() {
       const cta = document.getElementById('emergencia-cta');
       const ctaText = document.getElementById('emergencia-cta-text');
+      const ctaAnnouncement = document.getElementById('emergencia-cta-announcement');
       if (!cta || !ctaText) return () => {};
 
       const handleCtaClick = (e: MouseEvent) => {
         e.preventDefault();
         const originalText = ctaText.textContent;
         ctaText.textContent = 'Redirigiendo...';
+        if (ctaAnnouncement) ctaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = cta.getAttribute('href');
@@ -72,6 +75,7 @@ const { emergencia, contacto } = CONFIG;
 
         setTimeout(() => {
           if (ctaText) ctaText.textContent = originalText;
+          if (ctaAnnouncement) ctaAnnouncement.textContent = '';
           if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }, 3000);
       };
