@@ -64,7 +64,7 @@
 
   .content-visibility-auto {
     content-visibility: auto;
-    contain-intrinsic-size: 1px 1000px; /* Mejora el rendimiento de renderizado en secciones fuera de pantalla */
+    contain-intrinsic-size: auto 1000px; /* Mejora el rendimiento y reduce layout shifts al usar 'auto' */
   }
 
   .btn-primary {

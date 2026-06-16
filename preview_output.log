@@ -1,0 +1,9 @@
+
+> tech-health@0.0.1 preview /app
+> astro preview
+
+ astro  v6.4.4 ready in 36 ms
+ astro  v6.4.4 ready in 34 ms
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+ ELIFECYCLE  Command failed with exit code 143.

@@ -20,8 +20,11 @@ import { CONFIG } from '../data/config';
 
     <!-- CTA & Mobile Toggle -->
     <div class="flex items-center gap-4">
-      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" id="nav-cta" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md">
+      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" id="nav-cta" class="hidden md:inline-flex items-center gap-2 bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md">
         <span id="nav-cta-text">Consultar por WhatsApp</span>
+        <svg class="w-3.5 h-3.5 text-white/50" fill="none" stroke="currentColor" aria-hidden="true">
+          <use href="#icon-external" />
+        </svg>
       </a>
 
       <!-- Hamburger Button -->
@@ -45,8 +48,11 @@ import { CONFIG } from '../data/config';
     <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
     <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
     <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Contacto</a>
-    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mobile-link mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]" id="mobile-nav-cta">
+    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mobile-link mt-2 flex items-center gap-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]" id="mobile-nav-cta">
       <span id="mobile-nav-cta-text">Consultar por WhatsApp</span>
+      <svg class="w-3.5 h-3.5 text-white/50" fill="none" stroke="currentColor" aria-hidden="true">
+        <use href="#icon-external" />
+      </svg>
     </a>
   </div>
 
