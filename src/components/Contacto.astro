@@ -10,21 +10,32 @@ import { CONFIG } from '../data/config';
         <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Contacto</div>
         <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-6">Estamos aquí para ayudarle</h2>
         <div class="flex flex-col gap-4">
-          <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white transition-colors border border-transparent hover:border-border">
-            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+          <!-- WhatsApp Card -->
+          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
+            <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px]" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
+            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 pointer-events-none">
               <svg class="w-5 h-5 group-hover:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-phone" />
               </svg>
             </div>
-            <div>
+            <div class="relative z-10 flex-grow pointer-events-none">
               <div class="font-heading font-bold text-[16px] text-navy mb-1">WhatsApp / Teléfono</div>
-              <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.whatsapp_display}</div>
+              <div id="phone-text" class="font-body text-[14px] text-text-soft">{CONFIG.contacto.whatsapp_display}</div>
+              <div class="flex items-center gap-3 mt-2 pointer-events-auto">
+                <button type="button" id="copy-phone" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar teléfono al portapapeles">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-phone-icon-use" href="#icon-copy" /></svg>
+                  <span id="copy-phone-text">Copiar</span>
+                </button>
+              </div>
             </div>
           </a>
 
+          </div>
+
+          <!-- Address Card -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px]" aria-label={`Ver en Google Maps: ${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}></a>
-            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 pointer-events-none transition-transform group-hover:scale-110">
+            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 pointer-events-none">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true"><use href="#icon-map-pin" /></svg>
             </div>
             <div class="relative z-10 flex-grow pointer-events-none">
@@ -34,12 +45,13 @@ import { CONFIG } from '../data/config';
                 <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar dirección al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-icon-use" href="#icon-copy" /></svg>
                   <span id="copy-text" class="pointer-events-none">Copiar</span>
+                  <span id="copy-text">Copiar</span>
                 </button>
-                <div id="copy-announcement" class="sr-only" aria-live="polite"></div>
               </div>
             </div>
           </div>
 
+          <!-- Hours Card -->
           <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true"><use href="#icon-clock" /></svg>
@@ -53,6 +65,8 @@ import { CONFIG } from '../data/config';
             </div>
           </div>
         </div>
+        <!-- Shared Announcement for Accessibility -->
+        <div id="copy-announcement" class="sr-only" aria-live="polite"></div>
       </div>
 
       <!-- Columna derecha: Formulario -->
@@ -90,6 +104,11 @@ import { CONFIG } from '../data/config';
               <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body">0 / 500</div>
             </div>
           </div>
+          <!-- Anti-spam Honeypot -->
+          <div class="hidden" aria-hidden="true">
+            <label for="f-website">Website</label>
+            <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off" />
+          </div>
           <p class="font-body text-[12px] text-white/50 text-center">El mensaje te redirigirá a WhatsApp</p>
           <button type="submit" id="f-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-blue/40">
             <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat" aria-hidden="true">
@@ -109,11 +128,7 @@ import { CONFIG } from '../data/config';
       const form = document.getElementById('contact-form') as HTMLFormElement | null;
       const desc = document.getElementById('f-desc') as HTMLTextAreaElement | null;
       const counter = document.getElementById('char-counter');
-      const copyBtn = document.getElementById('copy-address');
-      const copyText = document.getElementById('copy-text');
       const copyAnnouncement = document.getElementById('copy-announcement');
-      const copyIconUse = document.getElementById('copy-icon-use');
-      const addressEl = document.getElementById('address-text');
       const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
       const submitBtnText = document.getElementById('f-submit-text');
 
@@ -191,8 +206,43 @@ import { CONFIG } from '../data/config';
         }).catch(err => {
           console.error('Error copying to clipboard: ', err);
         });
+      // Generic Copy Helper
+      const setupCopy = (btnId: string, textId: string, iconId: string, contentId: string, announcementMsg: string) => {
+        const btn = document.getElementById(btnId);
+        const text = document.getElementById(textId);
+        const iconUse = document.getElementById(iconId);
+        const contentEl = document.getElementById(contentId);
+
+        if (!btn || !text || !iconUse || !contentEl) return;
+
+        const handleCopy = (e: Event) => {
+          e.preventDefault();
+          if (!navigator.clipboard) return;
+
+          const originalText = text.textContent || 'Copiar';
+          const originalIcon = iconUse.getAttribute('href') || '#icon-copy';
+          const contentToCopy = contentEl.textContent || '';
+
+          navigator.clipboard.writeText(contentToCopy).then(() => {
+            text.textContent = '¡Copiado!';
+            iconUse.setAttribute('href', '#icon-check');
+            btn.classList.add('text-blue');
+            if (copyAnnouncement) copyAnnouncement.textContent = announcementMsg;
+
+            setTimeout(() => {
+              text.textContent = originalText;
+              iconUse.setAttribute('href', originalIcon);
+              btn.classList.remove('text-blue');
+              if (copyAnnouncement) copyAnnouncement.textContent = '';
+            }, 2500);
+          });
+        };
+        btn.addEventListener('click', handleCopy);
+        return () => btn.removeEventListener('click', handleCopy);
       };
-      copyBtn?.addEventListener('click', handleCopy);
+
+      const cleanupCopyAddress = setupCopy('copy-address', 'copy-text', 'copy-icon-use', 'address-text', 'Dirección copiada al portapapeles');
+      const cleanupCopyPhone = setupCopy('copy-phone', 'copy-phone-text', 'copy-phone-icon-use', 'phone-text', 'Teléfono copiado al portapapeles');
 
       // Form Submit
       const handleSubmit = (e: Event) => {
@@ -211,6 +261,10 @@ import { CONFIG } from '../data/config';
         const servicioel = document.getElementById('f-servicio') as HTMLSelectElement | null;
         const servicio = servicioel ? servicioel.options[servicioel.selectedIndex].value : 'Consulta general';
         const mensaje = (document.getElementById('f-desc') as HTMLTextAreaElement)?.value.trim() || '';
+        const nombre = (formData.get('nombre') as string).trim();
+        const tel = (formData.get('telefono') as string).trim();
+        const servicio = formData.get('servicio') as string;
+        const mensaje = (formData.get('mensaje') as string).trim();
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
         const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(rawMessage)}`;
@@ -247,7 +301,8 @@ import { CONFIG } from '../data/config';
       return () => {
         if (statusInterval) clearInterval(statusInterval);
         desc?.removeEventListener('input', updateCounter);
-        copyBtn?.removeEventListener('click', handleCopy);
+        if (cleanupCopyAddress) cleanupCopyAddress();
+        if (cleanupCopyPhone) cleanupCopyPhone();
         form.removeEventListener('submit', handleSubmit);
       };
     }
