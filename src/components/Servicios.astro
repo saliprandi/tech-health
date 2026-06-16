@@ -137,7 +137,9 @@ const modalData = CONFIG.servicios.map(servicio => ({
         if (!servicio) return;
 
         lastFocusedElement = document.activeElement as HTMLElement;
-        const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ' + servicio.titulo)}`;
+        // Defense-in-depth: Ensure number is digits only
+        const cleanNumber = (whatsappNumber || '').replace(/\D/g, '');
+        const waUrl = `https://wa.me/${cleanNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ' + servicio.titulo)}`;
 
         modalContent.innerHTML = `
           <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">
