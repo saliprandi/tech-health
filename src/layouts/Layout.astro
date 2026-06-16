@@ -18,9 +18,9 @@ const { title = "TechHealth Medical Engineering | Técnicos en Electromedicina �
 		<meta name="description" content="Mantenimiento preventivo y correctivo, diagnóstico y reparación de equipos médicos de alta complejidad en San Miguel de Tucumán. TechHealth Medical Engineering." />
 		<meta name="keywords" content="electromedicina tucumán, reparación equipos médicos, mantenimiento equipos hospitalarios, técnico electromedicina tucumán" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<!-- Security Hardening: Disable base-uri to prevent base tag injection attacks -->
-		<!-- Security: base-uri 'none' prevents <base> tag injection attacks -->
-		<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self' https://wa.me; media-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; upgrade-insecure-requests;" />
+		<!-- Security Hardening: Disable base-uri and frame-ancestors to prevent injection and clickjacking attacks -->
+		<!-- Security: base-uri 'none' prevents <base> tag injection, frame-ancestors 'none' prevents clickjacking -->
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self' https://wa.me; media-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; upgrade-insecure-requests;" />
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
 		<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />

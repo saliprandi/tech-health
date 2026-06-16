@@ -366,6 +366,9 @@ import { CONFIG } from '../data/config';
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
 
+        // Defense-in-depth: Ensure number is digits only and protocol is https
+        const cleanNumber = whatsappNumber.replace(/\D/g, '');
+        const url = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(rawMessage)}`;
         // Sanitize phone number before redirection
         const sanitizedWa = whatsappNumber.replace(/\D/g, '');
         const url = `https://wa.me/${sanitizedWa}?text=${encodeURIComponent(rawMessage)}`;
