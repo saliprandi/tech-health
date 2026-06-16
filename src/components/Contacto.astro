@@ -6,6 +6,16 @@ import { CONFIG } from '../data/config';
   <div class="container-custom">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
 
+      <!-- Left Column: Contact Info -->
+      <div class="flex flex-col gap-8">
+        <div>
+          <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Contacto</div>
+          <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-6">Estamos aquí para ayudarle</h2>
+          <p class="font-body text-text-soft mb-8">
+            Comuníquese con nosotros para solicitar presupuestos, mantenimientos preventivos o asistencia técnica inmediata en Tucumán y el NOA.
+          </p>
+        </div>
+
       <!-- Columna izquierda: Info -->
       <div>
         <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Contacto</div>
@@ -76,10 +86,10 @@ import { CONFIG } from '../data/config';
         <div id="copy-announcement" class="sr-only" aria-live="polite"></div>
       </div>
 
-      <!-- Columna derecha: Formulario -->
+      <!-- Right Column: Form -->
       <div class="bg-navy rounded-card p-8 md:p-10 shadow-hero-card">
         <form id="contact-form" class="flex flex-col gap-5" data-whatsapp={CONFIG.contacto.whatsapp}>
-          <!-- Honeypot anti-spam field -->
+          <!-- Anti-spam Honeypot -->
           <div class="hidden" aria-hidden="true">
             <label for="f-website">Website</label>
             <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off" />
@@ -155,6 +165,20 @@ import { CONFIG } from '../data/config';
       if (!form) return () => {};
       const whatsappNumber = form.dataset.whatsapp || '';
 
+      // Business Hours Status (UTC-3 Tucumán)
+      let statusInterval: ReturnType<typeof setInterval> | null = null;
+      // Performance Optimization: Cache Intl instance for date formatting
+      const tucumanFormatter = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'America/Argentina/Tucuman',
+        hour12: false,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+
       // Business Hours Status Badge (UTC-3 Tucumán)
       // --- Business Hours Status ---
       let statusInterval: ReturnType<typeof setInterval> | null = null;
@@ -163,6 +187,13 @@ import { CONFIG } from '../data/config';
         const now = new Date();
         let tucumanDate: Date;
         try {
+          const parts = tucumanFormatter.formatToParts(now);
+          const getPart = (type: string) => parts.find(p => p.type === type)?.value;
+          // Construct ISO string: YYYY-MM-DDTHH:mm:ss for cross-browser compatibility (Safari)
+          const dateStr = `${getPart('year')}-${getPart('month')}-${getPart('day')}T${getPart('hour')}:${getPart('minute')}:${getPart('second')}`;
+          tucumanDate = new Date(dateStr);
+        } catch (e) {
+          // Fallback if timezone formatting fails
           // Use ISO format for better compatibility
           const tucumanTimeStr = now.toLocaleString('en-CA', { timeZone: 'America/Argentina/Tucuman', hour12: false });
           const parts = tucumanTimeStr.split(', ');
@@ -193,6 +224,12 @@ import { CONFIG } from '../data/config';
         if (!desc || !counter) return;
         const len = desc.value.length;
         counter.textContent = `${len} / 500`;
+        if (len >= 450) counter.classList.replace('text-white/40', 'text-blue-light');
+        else counter.classList.replace('text-blue-light', 'text-white/40');
+      };
+      desc?.addEventListener('input', updateCounter);
+
+      // Clipboard Helper Pattern
         counter.classList.toggle('text-blue-light', len >= 450);
         counter.classList.toggle('text-white/40', len < 450);
       };
@@ -209,6 +246,7 @@ import { CONFIG } from '../data/config';
         const iconUse = document.getElementById(iconId);
         const contentEl = document.getElementById(contentId);
 
+        if (!btn || !text || !iconUse || !contentEl) return () => {};
         if (!btn || !text || !iconUse || !contentEl) return null;
 
         const handleCopy = (e: Event) => {
@@ -217,6 +255,7 @@ import { CONFIG } from '../data/config';
 
           const originalText = text.textContent || 'Copiar';
           const originalIcon = iconUse.getAttribute('href') || '#icon-copy';
+          const contentToCopy = contentEl.textContent?.replace(/\s/g, ' ').trim() || '';
           const contentToCopy = contentEl.textContent?.trim() || '';
 
           navigator.clipboard.writeText(contentToCopy).then(() => {
@@ -316,6 +355,8 @@ import { CONFIG } from '../data/config';
       return () => {
         if (statusInterval) clearInterval(statusInterval);
         desc?.removeEventListener('input', updateCounter);
+        cleanupCopyAddress();
+        cleanupCopyPhone();
         if (cleanupCopyAddress) cleanupCopyAddress();
         if (cleanupCopyPhone) cleanupCopyPhone();
         form.removeEventListener('submit', handleSubmit);
