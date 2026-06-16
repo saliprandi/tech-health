@@ -121,3 +121,11 @@ Importante!!! Quiero todos los pr en español
 ## 2025-06-25 - [UX: Consistencia en acciones de portapapeles]
 **Learning:** Proporcionar una experiencia de "copiar al portapapeles" consistente para todos los datos de contacto clave (dirección, teléfono) refuerza la utilidad del sitio. Usar un helper de inicialización que gestione el feedback visual y los anuncios aria-live asegura que la mejora sea accesible y fácil de mantener.
 **Action:** Implementar siempre funciones de utilidad para acciones repetitivas de UI que requieran coordinación de estados (iconos, texto, accesibilidad) para garantizar coherencia en todo el sitio.
+
+## 2025-06-26 - [UX: Paridad de feedback visual en navegación por teclado]
+**Learning:** Las micro-interacciones sutiles, como la animación de latido en los iconos de WhatsApp, suelen estar vinculadas solo al hover, lo que empobrece la experiencia de los usuarios de teclado. Sincronizar estos estados mediante `group-focus-visible` garantiza que la "delicia" visual sea inclusiva.
+**Action:** Asegurar que todas las animaciones de feedback de componentes `group` incluyan `group-focus-visible:animate-*` para igualar la experiencia entre ratón y teclado.
+
+## 2025-06-26 - [A11y: Anuncios de estado en redirecciones externas]
+**Learning:** El feedback visual de "Redirigiendo..." es crucial para evitar clics repetidos, pero es inútil para usuarios de lectores de pantalla si el foco no se gestiona o no hay anuncios de texto.
+**Action:** Implementar siempre una región `aria-live="polite"` (clase `sr-only`) vinculada a CTAs de redirección que anuncie explícitamente el inicio del proceso ("Redirigiendo a WhatsApp...") para mejorar la previsibilidad de la interfaz.
