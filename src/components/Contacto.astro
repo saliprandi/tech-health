@@ -10,6 +10,7 @@ import { CONFIG } from '../data/config';
       <div>
         <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Contacto</div>
         <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-6">Estamos aquí para ayudarle</h2>
+
         <div class="flex flex-col gap-4">
 
 
@@ -28,6 +29,7 @@ import { CONFIG } from '../data/config';
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
                 <button type="button" id="copy-phone" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar teléfono al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-phone-icon-use" href="#icon-copy" /></svg>
+                  <span id="copy-phone-text">Copiar</span>
                   <span id="copy-phone-text" class="pointer-events-none">Copiar</span>
                 </button>
               </div>
@@ -47,6 +49,7 @@ import { CONFIG } from '../data/config';
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
                 <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar dirección al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-address-icon-use" href="#icon-copy" /></svg>
+                  <span id="copy-address-text">Copiar</span>
                   <span id="copy-address-text" class="pointer-events-none">Copiar</span>
                 </button>
               </div>
@@ -140,6 +143,8 @@ import { CONFIG } from '../data/config';
       const desc = document.getElementById('f-desc') as HTMLTextAreaElement | null;
       const counter = document.getElementById('char-counter');
       const copyAnnouncement = document.getElementById('copy-announcement');
+      const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
+      const submitBtnText = document.getElementById('f-submit-text');
       const badge = document.getElementById('status-badge');
       const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
       const submitBtnText = document.getElementById('f-submit-text');
@@ -194,6 +199,7 @@ import { CONFIG } from '../data/config';
       desc?.addEventListener('input', updateCounter);
       updateCounter();
 
+      // Generic Copy Helper
       // Clipboard Helper Pattern
 
       // --- Clipboard Helper ---
@@ -211,7 +217,7 @@ import { CONFIG } from '../data/config';
 
           const originalText = text.textContent || 'Copiar';
           const originalIcon = iconUse.getAttribute('href') || '#icon-copy';
-          const contentToCopy = contentEl.textContent || '';
+          const contentToCopy = contentEl.textContent?.trim() || '';
 
           navigator.clipboard.writeText(contentToCopy).then(() => {
             text.textContent = '¡Copiado!';
@@ -240,6 +246,12 @@ import { CONFIG } from '../data/config';
         e.preventDefault();
         const formData = new FormData(form);
 
+        const formData = new FormData(form);
+        const honey = formData.get('website');
+        if (honey) {
+          console.warn('Spam detected');
+          return;
+        }
         // Honeypot check
         if (formData.get('website')) return;
         if (formData.get('website')) return; // Honeypot check
@@ -249,6 +261,14 @@ import { CONFIG } from '../data/config';
           return;
         }
 
+        const nombre = (formData.get('nombre') as string | null)?.trim() || '';
+        const tel = (formData.get('telefono') as string | null)?.trim() || '';
+        const servicio = (formData.get('servicio') as string | null) || 'Consulta general';
+        const mensaje = (formData.get('mensaje') as string | null)?.trim() || '';
+
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
+
+        // Sanitize phone number before redirection
         const nombre = (formData.get('nombre') as string || '').trim();
         const tel = (formData.get('telefono') as string || '').trim();
         const servicio = formData.get('servicio') as string || 'Consulta general';
