@@ -156,4 +156,14 @@ export const CONFIG = {
     mensaje: "¿Tiene un equipo crítico fuera de servicio? Brindamos respuesta inmediata para urgencias médicas en Tucumán y el NOA.",
     cta: "Contactar Guardia",
   },
+
+  marcas: [
+    "Mindray",
+    "GE HealthCare",
+    "Philips",
+    "Nihon Kohden",
+    "Dräger",
+    "Medtronic",
+    "Siemens Healthineers",
+  ],
 };
