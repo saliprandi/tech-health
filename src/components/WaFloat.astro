@@ -88,12 +88,20 @@ import { CONFIG } from '../data/config';
         const originalText = tooltipText.textContent || '¡Hola! ¿En qué podemos ayudarte?';
         tooltipText.textContent = '¡Redirigiendo!';
         showTooltip();
+
         btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = btn.getAttribute('href');
         if (href) {
+          // Sanitize WhatsApp URL before redirection
+          const url = new URL(href);
+          const phone = url.pathname.split('/').pop() || '';
+          const sanitizedPhone = phone.replace(/\D/g, '');
+          const text = url.searchParams.get('text') || '';
+          const sanitizedHref = `https://wa.me/${sanitizedPhone}${text ? '?text=' + encodeURIComponent(text) : ''}`;
+
           const a = document.createElement('a');
-          a.href = href;
+          a.href = sanitizedHref;
           a.target = '_blank';
           a.rel = 'noopener noreferrer';
           document.body.appendChild(a);
