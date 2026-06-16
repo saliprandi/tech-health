@@ -10,6 +10,9 @@ import { CONFIG } from '../data/config';
         <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Contacto</div>
         <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-6">Estamos aquí para ayudarle</h2>
         <div class="flex flex-col gap-4">
+          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
+            <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px]" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
+            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 pointer-events-none transition-transform group-hover:scale-110">
 
           <!-- WhatsApp / Teléfono Card -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
@@ -29,6 +32,12 @@ import { CONFIG } from '../data/config';
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
                 <button type="button" id="copy-phone" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar teléfono al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-phone-icon-use" href="#icon-copy" /></svg>
+                  <span id="copy-phone-text" class="pointer-events-none">Copiar</span>
+                </button>
+                <div id="copy-phone-announcement" class="sr-only" aria-live="polite"></div>
+              </div>
+            </div>
+          </div>
                   <span id="copy-phone-text">Copiar</span>
                 </button>
               </div>
@@ -148,6 +157,14 @@ import { CONFIG } from '../data/config';
       const desc = document.getElementById('f-desc') as HTMLTextAreaElement | null;
       const counter = document.getElementById('char-counter');
       const copyAnnouncement = document.getElementById('copy-announcement');
+      const copyIconUse = document.getElementById('copy-icon-use');
+      const addressEl = document.getElementById('address-text');
+
+      const copyPhoneBtn = document.getElementById('copy-phone');
+      const copyPhoneText = document.getElementById('copy-phone-text');
+      const copyPhoneAnnouncement = document.getElementById('copy-phone-announcement');
+      const copyPhoneIconUse = document.getElementById('copy-phone-icon-use');
+      const phoneEl = document.getElementById('phone-text');
       const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
       const submitBtnText = document.getElementById('f-submit-text');
       const copyAddressBtn = document.getElementById('copy-address');
@@ -291,6 +308,34 @@ import { CONFIG } from '../data/config';
       const cleanupCopyAddress = setupCopy('copy-address', 'copy-text', 'copy-icon-use', 'address-text', 'Dirección copiada al portapapeles');
       const cleanupCopyPhone = setupCopy('copy-phone', 'copy-phone-text', 'copy-phone-icon-use', 'phone-text', 'Teléfono copiado al portapapeles');
 
+      // Copy Phone
+      const handleCopyPhone = (e: MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!copyPhoneBtn || !copyPhoneText || !copyPhoneIconUse || !phoneEl) return;
+        if (!navigator.clipboard) return;
+
+        const originalText = copyPhoneText.textContent || 'Copiar';
+        const originalIcon = copyPhoneIconUse.getAttribute('href') || '#icon-copy';
+        const cleanPhone = phoneEl.textContent?.replace(/\s/g, '') || '';
+
+        navigator.clipboard.writeText(cleanPhone).then(() => {
+          copyPhoneText.textContent = '¡Copiado!';
+          copyPhoneIconUse.setAttribute('href', '#icon-check');
+          copyPhoneBtn.classList.add('text-blue');
+          if (copyPhoneAnnouncement) copyPhoneAnnouncement.textContent = 'Teléfono copiado al portapapeles';
+          setTimeout(() => {
+            copyPhoneText.textContent = originalText;
+            copyPhoneIconUse.setAttribute('href', originalIcon);
+            copyPhoneBtn.classList.remove('text-blue');
+            if (copyPhoneAnnouncement) copyPhoneAnnouncement.textContent = '';
+          }, 2500);
+        }).catch(err => {
+          console.error('Error copying phone: ', err);
+        });
+      };
+      copyPhoneBtn?.addEventListener('click', handleCopyPhone as EventListener);
+
       // Form Submit
       const handleSubmit = (e: Event) => {
         e.preventDefault();
@@ -357,6 +402,8 @@ import { CONFIG } from '../data/config';
       return () => {
         if (statusInterval) clearInterval(statusInterval);
         desc?.removeEventListener('input', updateCounter);
+        copyBtn?.removeEventListener('click', handleCopy);
+        copyPhoneBtn?.removeEventListener('click', handleCopyPhone as EventListener);
         copyAddressBtn?.removeEventListener('click', onCopyAddress);
         copyPhoneBtn?.removeEventListener('click', onCopyPhone);
         if (cleanupCopyAddress) cleanupCopyAddress();
