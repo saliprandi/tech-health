@@ -10,6 +10,11 @@ import { CONFIG } from '../data/config';
         <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Contacto</div>
         <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-6">Estamos aquí para ayudarle</h2>
         <div class="flex flex-col gap-4">
+
+          <!-- WhatsApp / Teléfono Card -->
+          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
+            <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px]" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
+            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 pointer-events-none transition-transform group-hover:scale-110">
           <!-- WhatsApp Card -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px]" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
@@ -28,6 +33,9 @@ import { CONFIG } from '../data/config';
                 </button>
               </div>
             </div>
+          </div>
+
+          <!-- Laboratorio / Dirección Card -->
           </a>
 
           </div>
@@ -43,6 +51,8 @@ import { CONFIG } from '../data/config';
               <div id="address-text" class="font-body text-[14px] text-text-soft">{CONFIG.contacto.direccion}, {CONFIG.contacto.ciudad_completa}</div>
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
                 <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar dirección al portapapeles">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-address-icon-use" href="#icon-copy" /></svg>
+                  <span id="copy-address-text">Copiar</span>
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-icon-use" href="#icon-copy" /></svg>
                   <span id="copy-text" class="pointer-events-none">Copiar</span>
                   <span id="copy-text">Copiar</span>
@@ -51,6 +61,10 @@ import { CONFIG } from '../data/config';
             </div>
           </div>
 
+          <!-- Horario Card -->
+          <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
+            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><use href="#icon-clock" /></svg>
           <!-- Hours Card -->
           <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110">
@@ -136,6 +150,8 @@ import { CONFIG } from '../data/config';
       const copyAnnouncement = document.getElementById('copy-announcement');
       const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
       const submitBtnText = document.getElementById('f-submit-text');
+      const copyAddressBtn = document.getElementById('copy-address');
+      const copyPhoneBtn = document.getElementById('copy-phone');
 
       if (!form) return () => {};
       const whatsappNumber = form.dataset.whatsapp || '';
@@ -167,6 +183,7 @@ import { CONFIG } from '../data/config';
           badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gray-100 text-gray-800';
           badge.classList.remove('hidden');
         }
+        badge.classList.remove('hidden');
       };
 
       updateStatusBadge();
@@ -188,6 +205,23 @@ import { CONFIG } from '../data/config';
       desc?.addEventListener('input', updateCounter);
       updateCounter();
 
+      // Clipboard Helper
+      const handleClipboardCopy = (btnId: string, textId: string, iconId: string, contentId: string, announcement: string) => {
+        const btn = document.getElementById(btnId);
+        const text = document.getElementById(textId);
+        const iconUse = document.getElementById(iconId);
+        const content = document.getElementById(contentId);
+
+        if (!btn || !text || !iconUse || !content || !navigator.clipboard) return;
+
+        const originalText = text.textContent || 'Copiar';
+        const originalIcon = iconUse.getAttribute('href') || '#icon-copy';
+
+        navigator.clipboard.writeText(content.textContent || '').then(() => {
+          text.textContent = '¡Copiado!';
+          iconUse.setAttribute('href', '#icon-check');
+          btn.classList.add('text-blue');
+          if (copyAnnouncement) copyAnnouncement.textContent = announcement;
       // Copy Address
       const handleCopy = () => {
         if (!copyBtn || !copyText || !copyIconUse || !addressEl) return;
@@ -203,11 +237,19 @@ import { CONFIG } from '../data/config';
           if (copyAnnouncement) copyAnnouncement.textContent = 'Dirección copiada al portapapeles';
 
           setTimeout(() => {
-            copyText.textContent = originalText;
-            copyIconUse.setAttribute('href', originalIcon);
-            copyBtn.classList.remove('text-blue');
+            text.textContent = originalText;
+            iconUse.setAttribute('href', originalIcon);
+            btn.classList.remove('text-blue');
             if (copyAnnouncement) copyAnnouncement.textContent = '';
           }, 2500);
+        }).catch(err => console.error('Error copying to clipboard: ', err));
+      };
+
+      const onCopyAddress = () => handleClipboardCopy('copy-address', 'copy-address-text', 'copy-address-icon-use', 'address-text', 'Dirección copiada al portapapeles');
+      const onCopyPhone = () => handleClipboardCopy('copy-phone', 'copy-phone-text', 'copy-phone-icon-use', 'phone-text', 'Teléfono copiado al portapapeles');
+
+      copyAddressBtn?.addEventListener('click', onCopyAddress);
+      copyPhoneBtn?.addEventListener('click', onCopyPhone);
         }).catch(err => {
           console.error('Error copying to clipboard: ', err);
         });
@@ -315,6 +357,8 @@ import { CONFIG } from '../data/config';
       return () => {
         if (statusInterval) clearInterval(statusInterval);
         desc?.removeEventListener('input', updateCounter);
+        copyAddressBtn?.removeEventListener('click', onCopyAddress);
+        copyPhoneBtn?.removeEventListener('click', onCopyPhone);
         if (cleanupCopyAddress) cleanupCopyAddress();
         if (cleanupCopyPhone) cleanupCopyPhone();
         form.removeEventListener('submit', handleSubmit);
