@@ -33,9 +33,9 @@ const { emergencia, contacto } = CONFIG;
             href={`https://wa.me/${contacto.whatsapp}?text=${encodeURIComponent('SOPORTE DE EMERGENCIA: Necesito asistencia inmediata para un equipo crítico.')}`}
             target="_blank"
             rel="noopener noreferrer"
-            class="btn-primary w-full lg:w-auto bg-white text-navy hover:bg-blue-pale hover:text-blue flex items-center justify-center gap-3 border-none group"
+            class="btn-primary w-full lg:w-auto bg-white text-navy hover:bg-blue-pale hover:text-blue flex items-center justify-center gap-3 border-none group outline-none"
           >
-            <svg class="w-6 h-6 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
+            <svg class="w-6 h-6 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat transition-transform" aria-hidden="true">
               <use href="#icon-whatsapp" />
             </svg>
             <span id="emergencia-cta-text">{emergencia.cta}</span>

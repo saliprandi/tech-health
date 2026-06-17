@@ -35,8 +35,8 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
 
       <!-- Buttons -->
       <div class="flex flex-wrap items-center gap-4 mt-2">
-        <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="btn-primary gap-2 group">
-          <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
+        <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="btn-primary gap-2 group outline-none">
+          <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat transition-transform" aria-hidden="true">
             <use href="#icon-whatsapp" />
           </svg>
           <span id="hero-cta-text">Solicitar servicio</span>
