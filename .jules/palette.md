@@ -122,6 +122,17 @@ Importante!!! Quiero todos los pr en español
 **Learning:** Proporcionar una experiencia de "copiar al portapapeles" consistente para todos los datos de contacto clave (dirección, teléfono) refuerza la utilidad del sitio. Usar un helper de inicialización que gestione el feedback visual y los anuncios aria-live asegura que la mejora sea accesible y fácil de mantener.
 **Action:** Implementar siempre funciones de utilidad para acciones repetitivas de UI que requieran coordinación de estados (iconos, texto, accesibilidad) para garantizar coherencia en todo el sitio.
 
+## 2025-06-26 - [UX: Paridad de foco para micro-interacciones]
+**Aprendizaje:** Sincronizar las animaciones de `group-hover` (como `scale` y `animate-heartbeat`) con `group-focus-visible` asegura que los usuarios de teclado tengan una experiencia tan rica y responsiva como los usuarios de ratón.
+**Acción:** Siempre implementar `group-focus-visible` junto con `group-hover` en componentes interactivos para mantener la paridad de feedback visual.
+
+## 2025-06-26 - [A11y: Corrupción estructural y aislamiento de interacciones]
+**Aprendizaje:** La anidación incorrecta de elementos interactivos (ej. `<a>` dentro de `<a>`) rompe el árbol de accesibilidad y el comportamiento esperado del navegador. Limpiar el HTML redundante es el primer paso para una UX sólida.
+**Acción:** Auditar periódicamente la estructura de los componentes Astro para asegurar que no haya duplicaciones de IDs o anidaciones prohibidas.
+
+## 2025-06-26 - [UX: Feedback de portapapeles con escala]
+**Aprendizaje:** Agregar una transición de escala (`scale-110`) al feedback de "¡Copiado!" proporciona una confirmación visual más dinámica y satisfactoria que solo cambiar el texto.
+**Acción:** Usar transformaciones sutiles para reforzar estados de confirmación en acciones rápidas del usuario.
 ## 2025-06-26 - [UX: Paridad de feedback visual en navegación por teclado]
 **Learning:** Las micro-interacciones sutiles, como la animación de latido en los iconos de WhatsApp, suelen estar vinculadas solo al hover, lo que empobrece la experiencia de los usuarios de teclado. Sincronizar estos estados mediante `group-focus-visible` garantiza que la "delicia" visual sea inclusiva.
 **Action:** Asegurar que todas las animaciones de feedback de componentes `group` incluyan `group-focus-visible:animate-*` para igualar la experiencia entre ratón y teclado.
