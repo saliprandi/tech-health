@@ -28,3 +28,8 @@
 **Vulnerability:** Riesgo de XSS por inyección de scripts en bloques de datos estructurados (JSON-LD) y falta de validación en formularios.
 **Learning:** El uso de `JSON.stringify` con `set:html` en Astro permite que caracteres como `<` rompan el contexto del script. Asimismo, la falta de límites de longitud en entradas facilita ataques de denegación de servicio local o desbordamientos visuales.
 **Prevention:** Escapar siempre el carácter `<` en salidas JSON inyectadas en HTML y aplicar atributos `maxlength` y `pattern` en todos los inputs públicos.
+
+## 2026-06-17 - [Mitigación de vulnerabilidades en Astro y consolidación de Contacto]
+**Vulnerability:** Host header SSRF (CVE-2024-51752) y XSS en Astro < 6.4.6; inconsistencia en honeypot por corrupción de componente.
+**Learning:** Las vulnerabilidades a nivel de framework (Astro) pueden comprometer incluso sitios estáticos. La duplicación de lógica en componentes Astro no solo dificulta el mantenimiento sino que crea puntos ciegos donde las protecciones anti-spam se omiten involuntariamente.
+**Prevention:** Mantener dependencias del framework actualizadas a versiones parcheadas y utilizar `pnpm audit` de forma regular. La refactorización periódica para eliminar código muerto o duplicado es esencial para garantizar que las políticas de seguridad se apliquen uniformemente.
