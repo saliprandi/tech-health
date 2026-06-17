@@ -17,6 +17,20 @@ import { CONFIG } from '../data/config';
         </div>
 
       <!-- Columna izquierda: Info -->
+      <div class="flex flex-col gap-8">
+        <div>
+          <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Contacto</div>
+          <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-6">Estamos aquí para ayudarle</h2>
+          <p class="font-body text-[16px] text-text-soft max-w-md">
+            Póngase en contacto con nuestro equipo técnico para coordinar mantenimientos, reparaciones o consultas sobre equipamiento electromédico.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <!-- WhatsApp / Teléfono Card -->
+          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
+            <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px]" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
+            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 pointer-events-none transition-transform group-hover:scale-110">
       <div>
         <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Contacto</div>
         <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-6">Estamos aquí para ayudarle</h2>
@@ -163,6 +177,10 @@ import { CONFIG } from '../data/config';
           <div class="flex flex-col gap-1.5">
             <label for="f-desc" class="font-body font-medium text-[13px] text-white/80">Mensaje</label>
             <div class="relative">
+              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="Describa brevemente su consulta o la falla del equipo..." aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40"></textarea>
+              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body">0 / 500</div>
+            </div>
+          </div>
               <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40"></textarea>
               <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body">0 / 500</div>
             </div>
@@ -336,6 +354,11 @@ import { CONFIG } from '../data/config';
         e.preventDefault();
         const formData = new FormData(form);
 
+        // Honeypot check
+        const honey = (document.getElementById('f-website') as HTMLInputElement)?.value;
+        if (honey) return;
+
+        const formData = new FormData(form);
         const formData = new FormData(form);
         const honey = formData.get('website');
         if (honey) {
@@ -408,6 +431,8 @@ import { CONFIG } from '../data/config';
       return () => {
         if (statusInterval) clearInterval(statusInterval);
         desc?.removeEventListener('input', updateCounter);
+        cleanupCopyAddress();
+        cleanupCopyPhone();
         cleanupCopyPhone();
         cleanupCopyAddress();
         cleanupCopyAddress();
