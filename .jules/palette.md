@@ -129,3 +129,11 @@ Importante!!! Quiero todos los pr en español
 ## 2025-06-26 - [A11y: Anuncios de estado en redirecciones externas]
 **Learning:** El feedback visual de "Redirigiendo..." es crucial para evitar clics repetidos, pero es inútil para usuarios de lectores de pantalla si el foco no se gestiona o no hay anuncios de texto.
 **Action:** Implementar siempre una región `aria-live="polite"` (clase `sr-only`) vinculada a CTAs de redirección que anuncie explícitamente el inicio del proceso ("Redirigiendo a WhatsApp...") para mejorar la previsibilidad de la interfaz.
+
+## 2025-06-27 - [UX: Paridad de Foco en Elementos de Marca]
+**Learning:** Sincronizar las transformaciones de hover (como scale-105) con group-focus-visible en elementos de marca (logos) mejora la percepción de calidad y accesibilidad, asegurando que el "deleite" visual sea inclusiva para usuarios de teclado.
+**Action:** Aplicar siempre group-focus-visible a las transformaciones de escala y animaciones de iconos que ya existen para hover.
+
+## 2025-06-27 - [A11y: Integridad Estructural y Build]
+**Learning:** La corrupción estructural en componentes Astro (fragmentación de scripts y HTML duplicado) no solo rompe el build, sino que degrada la accesibilidad al crear un árbol de accesibilidad inconsistente. La limpieza quirúrgica es necesaria antes de implementar mejoras de UX.
+**Action:** Priorizar la consolidación de bloques <script> y la eliminación de duplicaciones de DOM antes de añadir nuevos atributos ARIA o clases de utilidad.
