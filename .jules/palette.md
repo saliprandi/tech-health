@@ -133,3 +133,10 @@ Importante!!! Quiero todos los pr en español
 ## 2025-06-26 - [UX: Feedback de portapapeles con escala]
 **Aprendizaje:** Agregar una transición de escala (`scale-110`) al feedback de "¡Copiado!" proporciona una confirmación visual más dinámica y satisfactoria que solo cambiar el texto.
 **Acción:** Usar transformaciones sutiles para reforzar estados de confirmación en acciones rápidas del usuario.
+## 2025-06-26 - [UX: Paridad de feedback visual en navegación por teclado]
+**Learning:** Las micro-interacciones sutiles, como la animación de latido en los iconos de WhatsApp, suelen estar vinculadas solo al hover, lo que empobrece la experiencia de los usuarios de teclado. Sincronizar estos estados mediante `group-focus-visible` garantiza que la "delicia" visual sea inclusiva.
+**Action:** Asegurar que todas las animaciones de feedback de componentes `group` incluyan `group-focus-visible:animate-*` para igualar la experiencia entre ratón y teclado.
+
+## 2025-06-26 - [A11y: Anuncios de estado en redirecciones externas]
+**Learning:** El feedback visual de "Redirigiendo..." es crucial para evitar clics repetidos, pero es inútil para usuarios de lectores de pantalla si el foco no se gestiona o no hay anuncios de texto.
+**Action:** Implementar siempre una región `aria-live="polite"` (clase `sr-only`) vinculada a CTAs de redirección que anuncie explícitamente el inicio del proceso ("Redirigiendo a WhatsApp...") para mejorar la previsibilidad de la interfaz.
