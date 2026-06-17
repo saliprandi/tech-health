@@ -28,3 +28,8 @@
 **Vulnerability:** Riesgo de XSS por inyección de scripts en bloques de datos estructurados (JSON-LD) y falta de validación en formularios.
 **Learning:** El uso de `JSON.stringify` con `set:html` en Astro permite que caracteres como `<` rompan el contexto del script. Asimismo, la falta de límites de longitud en entradas facilita ataques de denegación de servicio local o desbordamientos visuales.
 **Prevention:** Escapar siempre el carácter `<` en salidas JSON inyectadas en HTML y aplicar atributos `maxlength` y `pattern` en todos los inputs públicos.
+
+## 2025-06-18 - [Corrupción de lockfile y consolidación de seguridad en Contacto.astro]
+**Vulnerability:** Denegación de servicio (DoS) del pipeline de seguridad por corrupción de lockfile e inconsistencia en protecciones XSS/Spam por duplicación de componentes.
+**Learning:** Un `pnpm-lock.yaml` con claves duplicadas impide la ejecución de `pnpm audit` y actualizaciones de seguridad críticas. Asimismo, la corrupción estructural en `Contacto.astro` (bloques de código triplicados) fragmentaba la lógica de validación, permitiendo que algunas versiones del formulario carecieran de saneamiento de entrada o protecciones honeypot.
+**Prevention:** Validar siempre la integridad del lockfile tras fusiones de ramas. Consolidar componentes Astro corruptos en una única estructura lógica para garantizar que las políticas de seguridad (honeypot, rel="noopener", validación de tipos) se apliquen de forma uniforme y no sean eludibles.
