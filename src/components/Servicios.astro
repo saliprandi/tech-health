@@ -10,7 +10,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
 }));
 ---
 
-<section id="servicios" class="bg-white section-padding">
+<section id="servicios" class="bg-white section-padding content-visibility-auto">
   <div class="container-custom">
     <div class="max-w-xl mb-4">
       <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Servicios</div>
@@ -34,8 +34,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
         >
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-500 ease-out"></div>
 
-          <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue group-hover:scale-110 transition-transform">
-            <svg class="w-7 h-7 group-hover:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+          <div class="w-[52px] h-[52px] rounded-[12px] bg-blue-pale flex items-center justify-center mb-6 text-blue group-hover:scale-110 group-focus-visible:scale-110 transition-transform">
+            <svg class="w-7 h-7 group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
               <use href={`#icon-${servicio.icono}`} />
             </svg>
           </div>
@@ -137,7 +137,9 @@ const modalData = CONFIG.servicios.map(servicio => ({
         if (!servicio) return;
 
         lastFocusedElement = document.activeElement as HTMLElement;
-        const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ' + servicio.titulo)}`;
+        // Defense-in-depth: Ensure number is digits only
+        const cleanNumber = (whatsappNumber || '').replace(/\D/g, '');
+        const waUrl = `https://wa.me/${cleanNumber}?text=${encodeURIComponent('Hola TechHealth! Me interesa el servicio de: ' + servicio.titulo)}`;
 
         modalContent.innerHTML = `
           <div class="w-14 h-14 rounded-2xl bg-blue-pale flex items-center justify-center mb-6 text-blue">

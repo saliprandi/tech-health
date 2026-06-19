@@ -6,8 +6,8 @@ import { CONFIG } from '../data/config';
   <div class="container-custom h-full px-[5%] flex items-center justify-between">
     
     <!-- Logo -->
-    <a href="#hero" class="flex items-center group" aria-label="TechHealth Home">
-      <img src="/logo-name.svg" alt="TechHealth Medical Engineering" width="228" height="56" loading="eager" decoding="async" fetchpriority="high" class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-300" />
+    <a href="#hero" class="flex items-center group outline-none" aria-label="TechHealth Home">
+      <img src="/logo-name.svg" alt="TechHealth Medical Engineering" width="228" height="56" loading="eager" decoding="async" fetchpriority="high" class="h-[56px] w-auto drop-shadow-sm group-hover:scale-105 group-focus-visible:scale-105 transition-transform duration-300" />
     </a>
 
     <!-- Desktop Links -->
@@ -20,8 +20,11 @@ import { CONFIG } from '../data/config';
 
     <!-- CTA & Mobile Toggle -->
     <div class="flex items-center gap-4">
-      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" id="nav-cta" class="hidden md:inline-flex bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md">
+      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" id="nav-cta" class="hidden md:inline-flex items-center gap-2 bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md">
         <span id="nav-cta-text">Consultar por WhatsApp</span>
+        <svg class="w-3.5 h-3.5 text-white/50" fill="none" stroke="currentColor" aria-hidden="true">
+          <use href="#icon-external" />
+        </svg>
       </a>
 
       <!-- Hamburger Button -->
@@ -45,8 +48,11 @@ import { CONFIG } from '../data/config';
     <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
     <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
     <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Contacto</a>
-    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mobile-link mt-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]" id="mobile-nav-cta">
+    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mobile-link mt-2 flex items-center gap-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]" id="mobile-nav-cta">
       <span id="mobile-nav-cta-text">Consultar por WhatsApp</span>
+      <svg class="w-3.5 h-3.5 text-white/50" fill="none" stroke="currentColor" aria-hidden="true">
+        <use href="#icon-external" />
+      </svg>
     </a>
   </div>
 
@@ -190,28 +196,33 @@ import { CONFIG } from '../data/config';
         }, 3000);
       };
 
-      // Optimization: Cache link elements in a Map for O(1) lookup during intersection
+      // Performance Optimization: Cache link elements in a Map for O(1) lookup during intersection.
+      // This avoids re-scanning the DOM or iterating through all links on every scroll/intersection event.
       const linkMap = new Map<string, Element>();
       navLinks.forEach(link => {
         const href = link.getAttribute('href');
         if (href) linkMap.set(href, link);
       });
 
+      let currentActiveLink: Element | null = null;
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             const id = entry.target.getAttribute('id');
             const targetHref = `#${id}`;
+            const activeLink = linkMap.get(targetHref);
 
-            linkMap.forEach((link, href) => {
-              if (href === targetHref) {
-                link.classList.add('nav-link-active');
-                link.setAttribute('aria-current', 'location');
-              } else {
-                link.classList.remove('nav-link-active');
-                link.removeAttribute('aria-current');
+            // Optimization: Only update DOM if the active section has actually changed.
+            // Reduces O(N) link iterations to O(1) direct lookup and targeted class toggling.
+            if (activeLink && activeLink !== currentActiveLink) {
+              if (currentActiveLink) {
+                currentActiveLink.classList.remove('nav-link-active');
+                currentActiveLink.removeAttribute('aria-current');
               }
-            });
+              activeLink.classList.add('nav-link-active');
+              activeLink.setAttribute('aria-current', 'location');
+              currentActiveLink = activeLink;
+            }
           }
         });
       }, { rootMargin: '-30% 0px -70% 0px' });
