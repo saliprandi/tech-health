@@ -274,22 +274,12 @@ import { CONFIG } from '../data/config';
       const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
       const submitBtnText = document.getElementById('f-submit-text');
       const badge = document.getElementById('status-badge');
-      const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
-      const submitBtnText = document.getElementById('f-submit-text');
-      const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
-      const submitBtnText = document.getElementById('f-submit-text');
-      const badge = document.getElementById('status-badge');
 
       if (!form) return () => {};
       const whatsappNumber = form.dataset.whatsapp || '';
 
-      // 1. Business Hours Status Badge
+      // --- Business Hours Status (UTC-3 Tucumán) ---
       let statusInterval: ReturnType<typeof setInterval> | null = null;
-      // Business Hours Status Badge (UTC-3 Tucumán)
-      let statusInterval: ReturnType<typeof setInterval> | null = null;
-      // Business Hours Status (UTC-3 Tucumán)
-      let statusInterval: ReturnType<typeof setInterval> | null = null;
-      // Performance Optimization: Cache Intl instance for date formatting
       const tucumanFormatter = new Intl.DateTimeFormat('en-CA', {
         timeZone: 'America/Argentina/Tucuman',
         hour12: false,
@@ -301,37 +291,15 @@ import { CONFIG } from '../data/config';
         second: '2-digit'
       });
 
-      // Business Hours Status Badge (UTC-3 Tucumán)
-      // --- Business Hours Status ---
-      let statusInterval: ReturnType<typeof setInterval> | null = null;
       const updateStatusBadge = () => {
         if (!badge) return;
         const now = new Date();
         let tucumanDate: Date;
         try {
-          // Robust ISO-like parsing for cross-browser compatibility (Safari fix)
-          const formatter = new Intl.DateTimeFormat('en-US', {
-            timeZone: 'America/Argentina/Tucuman',
-            year: 'numeric', month: '2-digit', day: '2-digit',
-            hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-          });
-          const parts = formatter.formatToParts(now);
-          const p: any = {};
-          parts.forEach(part => p[part.type] = part.value);
-          tucumanDate = new Date(`${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`);
           const parts = tucumanFormatter.formatToParts(now);
           const getPart = (type: string) => parts.find(p => p.type === type)?.value;
-          // Construct ISO string: YYYY-MM-DDTHH:mm:ss for cross-browser compatibility (Safari)
           const dateStr = `${getPart('year')}-${getPart('month')}-${getPart('day')}T${getPart('hour')}:${getPart('minute')}:${getPart('second')}`;
           tucumanDate = new Date(dateStr);
-        } catch (e) {
-          // Fallback if timezone formatting fails
-          // Use ISO format for better compatibility
-          const tucumanTimeStr = now.toLocaleString('en-CA', { timeZone: 'America/Argentina/Tucuman', hour12: false });
-          const parts = tucumanTimeStr.split(', ');
-          const datePart = parts[0];
-          const timePart = parts[1] || '00:00:00';
-          tucumanDate = new Date(`${datePart}T${timePart}`);
         } catch {
           tucumanDate = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
         }
@@ -340,6 +308,7 @@ import { CONFIG } from '../data/config';
         const hour = tucumanDate.getHours();
         const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
 
+        badge.classList.remove('hidden');
         if (isOpen) {
           badge.innerHTML = '<span class="relative flex h-2 w-2" aria-hidden="true"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora';
           badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800';
@@ -351,33 +320,16 @@ import { CONFIG } from '../data/config';
       updateStatusBadge();
       statusInterval = setInterval(updateStatusBadge, 60000);
 
-      // 2. Character Counter
       // --- Character Counter ---
       const updateCounter = () => {
         if (!desc || !counter) return;
         const len = desc.value.length;
         counter.textContent = `${len} / 500`;
-        counter.className = `absolute bottom-3 right-3 text-[10px] font-body transition-colors ${len >= 450 ? 'text-blue-light' : 'text-white/40'}`;
-      };
-      desc?.addEventListener('input', updateCounter);
-
-      // 3. Clipboard Helper
-        if (len >= 450) counter.classList.replace('text-white/40', 'text-blue-light');
-        else counter.classList.replace('text-blue-light', 'text-white/40');
-      };
-      desc?.addEventListener('input', updateCounter);
-
-      // Generic Clipboard Helper
-      // Clipboard Helper
-      // Clipboard Helper Pattern
         counter.classList.toggle('text-blue-light', len >= 450);
         counter.classList.toggle('text-white/40', len < 450);
       };
       desc?.addEventListener('input', updateCounter);
       updateCounter();
-
-      // Generic Copy Helper
-      // Clipboard Helper Pattern
 
       // --- Clipboard Helper ---
       const setupCopy = (btnId: string, textId: string, iconId: string, contentId: string, announcementMsg: string) => {
@@ -387,7 +339,6 @@ import { CONFIG } from '../data/config';
         const contentEl = document.getElementById(contentId);
 
         if (!btn || !text || !iconUse || !contentEl) return () => {};
-        if (!btn || !text || !iconUse || !contentEl) return null;
 
         const handleCopy = (e: Event) => {
           e.preventDefault();
@@ -396,11 +347,8 @@ import { CONFIG } from '../data/config';
 
           const originalText = text.textContent || 'Copiar';
           const originalIcon = iconUse.getAttribute('href') || '#icon-copy';
-          const contentToCopy = (contentEl.textContent || '').replace(/\s+/g, ' ').trim();
-          let contentToCopy = contentEl.textContent || '';
+          let contentToCopy = contentEl.textContent?.trim() || '';
           if (btnId === 'copy-phone') contentToCopy = contentToCopy.replace(/\s/g, '');
-          const contentToCopy = contentEl.textContent?.replace(/\s/g, ' ').trim() || '';
-          const contentToCopy = contentEl.textContent?.trim() || '';
 
           navigator.clipboard.writeText(contentToCopy).then(() => {
             text.textContent = '¡Copiado!';
@@ -423,67 +371,24 @@ import { CONFIG } from '../data/config';
       const cleanupCopyPhone = setupCopy('copy-phone', 'copy-phone-text', 'copy-phone-icon-use', 'phone-text', 'Teléfono copiado al portapapeles');
       const cleanupCopyAddress = setupCopy('copy-address', 'copy-address-text', 'copy-address-icon-use', 'address-text', 'Dirección copiada al portapapeles');
 
-      // 4. Form Submission
-      const handleSubmit = (e: Event) => {
-        e.preventDefault();
-        const formData = new FormData(form);
-
-        // Honeypot check
-        if (formData.get('website')) return;
-      const cleanupCopyAddress = setupCopy('copy-address', 'copy-address-text', 'copy-address-icon-use', 'address-text', 'Dirección copiada al portapapeles');
-      const cleanupCopyPhone = setupCopy('copy-phone', 'copy-phone-text', 'copy-phone-icon-use', 'phone-text', 'Teléfono copiado al portapapeles');
-      const cleanupCopyPhone = setupCopy('copy-phone', 'copy-phone-text', 'copy-phone-icon-use', 'phone-text', 'Teléfono copiado al portapapeles');
-      const cleanupCopyAddress = setupCopy('copy-address', 'copy-address-text', 'copy-address-icon-use', 'address-text', 'Dirección copiada al portapapeles');
-      const cleanupCopyAddress = setupCopy('copy-address', 'copy-address-text', 'copy-address-icon-use', 'address-text', 'Dirección copiada al portapapeles');
-      const cleanupCopyPhone = setupCopy('copy-phone', 'copy-phone-text', 'copy-phone-icon-use', 'phone-text', 'Teléfono copiado al portapapeles');
-
-      // Form Submit
       // --- Form Submission ---
       const handleSubmit = (e: Event) => {
         e.preventDefault();
         const formData = new FormData(form);
-        if (formData.get('website')) return;
-
-        // Honeypot check
-        const honey = (document.getElementById('f-website') as HTMLInputElement)?.value;
-        if (honey) return;
-
-        const formData = new FormData(form);
-        const formData = new FormData(form);
         const honey = formData.get('website');
-        if (honey) {
-          console.warn('Spam detected');
-          return;
-        }
-        // Honeypot check
-        if (formData.get('website')) return;
-        if (formData.get('website')) return; // Honeypot check
+        if (honey) return;
 
         if (!form.checkValidity()) {
           form.reportValidity();
           return;
         }
 
-        const nombre = (formData.get('nombre') as string | null)?.trim() || '';
-        const tel = (formData.get('telefono') as string | null)?.trim() || '';
-        const servicio = (formData.get('servicio') as string | null) || 'Consulta general';
-        const mensaje = (formData.get('mensaje') as string | null)?.trim() || '';
-
-        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
-
-        // Sanitize phone number before redirection
         const nombre = (formData.get('nombre') as string || '').trim();
         const tel = (formData.get('telefono') as string || '').trim();
         const servicio = formData.get('servicio') as string || 'Consulta general';
         const mensaje = (formData.get('mensaje') as string || '').trim();
-        const nombre = (formData.get('nombre') as string).trim();
-        const tel = (formData.get('telefono') as string).trim();
-        const servicio = formData.get('servicio') as string;
-        const mensaje = (formData.get('mensaje') as string).trim();
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
-
-        // Sanitize phone number before redirection
         const sanitizedWa = whatsappNumber.replace(/\D/g, '');
         const url = `https://wa.me/${sanitizedWa}?text=${encodeURIComponent(rawMessage)}`;
 
@@ -493,6 +398,7 @@ import { CONFIG } from '../data/config';
           submitBtn.disabled = true;
           submitBtn.setAttribute('aria-busy', 'true');
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
           setTimeout(() => {
             if (submitBtnText) submitBtnText.textContent = originalBtnText;
             if (submitBtn) {
@@ -500,10 +406,6 @@ import { CONFIG } from '../data/config';
               submitBtn.removeAttribute('aria-busy');
               submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
             }
-            submitBtnText.textContent = originalBtnText;
-            submitBtn.disabled = false;
-            submitBtn.removeAttribute('aria-busy');
-            submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           }, 3000);
         }
 
@@ -522,14 +424,6 @@ import { CONFIG } from '../data/config';
         desc?.removeEventListener('input', updateCounter);
         cleanupCopyPhone();
         cleanupCopyAddress();
-        cleanupCopyAddress();
-        cleanupCopyPhone();
-        cleanupCopyPhone();
-        cleanupCopyAddress();
-        cleanupCopyAddress();
-        cleanupCopyPhone();
-        if (cleanupCopyAddress) cleanupCopyAddress();
-        if (cleanupCopyPhone) cleanupCopyPhone();
         form.removeEventListener('submit', handleSubmit);
       };
     }
