@@ -66,4 +66,25 @@ test.describe('FAQ UX Verification', () => {
     await expect(answers.nth(0)).toHaveClass(/invisible/);
     await expect(answers.nth(1)).not.toHaveClass(/invisible/);
   });
+
+  test('FAQ items have interactive hover and focus styles for accessibility', async ({ page }) => {
+    const faqItem = page.locator('.faq-item').first();
+    const trigger = faqItem.locator('.faq-trigger');
+    const icon = faqItem.locator('.faq-icon');
+    const question = faqItem.locator('span');
+
+    // Verify initial state
+    await expect(faqItem).toHaveClass(/bg-off-white/);
+
+    // Hover state
+    await faqItem.hover();
+    await expect(faqItem).toHaveClass(/hover:bg-white/);
+    await expect(faqItem).toHaveClass(/hover:shadow-card-hover/);
+
+    // Focus state (keyboard)
+    await trigger.focus();
+    await expect(faqItem).toHaveClass(/focus-within:bg-white/);
+    await expect(question).toHaveClass(/group-focus-visible:text-blue/);
+    await expect(icon).toHaveClass(/group-focus-visible:scale-110/);
+  });
 });
