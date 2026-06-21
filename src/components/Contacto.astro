@@ -7,9 +7,14 @@ import { CONFIG } from '../data/config';
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
 
       <!-- Columna izquierda: Info -->
-      <div>
-        <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Contacto</div>
-        <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-6">Estamos aquí para ayudarle</h2>
+      <div class="flex flex-col gap-8">
+        <div>
+          <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Contacto</div>
+          <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-6">Estamos aquí para ayudarle</h2>
+          <p class="font-body text-[16px] text-text-soft max-w-md">
+            Póngase en contacto con nuestro equipo técnico para coordinar mantenimientos, reparaciones o consultas sobre equipamiento electromédico en Tucumán y el NOA.
+          </p>
+        </div>
 
         <div class="flex flex-col gap-4">
           <!-- WhatsApp Card -->
@@ -17,128 +22,36 @@ import { CONFIG } from '../data/config';
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none group-focus-visible:ring-2 group-focus-visible:ring-blue group-focus-visible:ring-inset" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
             <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110 pointer-events-none">
               <svg class="w-5 h-5 group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-
-        <div class="flex flex-col gap-4">
-
-          <!-- WhatsApp Card -->
-          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
-            <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] focus-visible:ring-2 focus-visible:ring-blue/40 focus-visible:outline-none" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
-
-      <!-- Left Column: Contact Info -->
-      <div class="flex flex-col gap-8">
-        <div>
-          <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Contacto</div>
-          <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-6">Estamos aquí para ayudarle</h2>
-          <p class="font-body text-text-soft mb-8">
-            Comuníquese con nosotros para solicitar presupuestos, mantenimientos preventivos o asistencia técnica inmediata en Tucumán y el NOA.
-          </p>
-        </div>
-
-      <!-- Columna izquierda: Info -->
-      <div class="flex flex-col gap-8">
-        <div>
-          <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Contacto</div>
-          <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-6">Estamos aquí para ayudarle</h2>
-          <p class="font-body text-[16px] text-text-soft max-w-md">
-            Póngase en contacto con nuestro equipo técnico para coordinar mantenimientos, reparaciones o consultas sobre equipamiento electromédico.
-          </p>
-        </div>
-
-        <div class="flex flex-col gap-4">
-          <!-- WhatsApp / Teléfono Card -->
-          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
-            <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px]" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
-            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 pointer-events-none transition-transform group-hover:scale-110">
-      <div>
-        <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Contacto</div>
-        <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-6">Estamos aquí para ayudarle</h2>
-
-        <div class="flex flex-col gap-4">
-          <!-- WhatsApp / Teléfono Card -->
-          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
-            <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px]" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
-
-
-        <div class="flex flex-col gap-4">
-
-          <!-- WhatsApp Card -->
-          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
-            <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px]" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
-            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110">
-
-        <div class="flex flex-col gap-4">
-          <!-- WhatsApp Card -->
-          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
-            <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px]" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
-            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 pointer-events-none">
-              <svg class="w-5 h-5 group-hover:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-phone" />
               </svg>
             </div>
-
-            <div class="relative z-10 flex-grow pointer-events-none">
-              <div class="font-heading font-bold text-[16px] text-navy mb-1">WhatsApp / Teléfono</div>
-              <div id="phone-text" class="font-body text-[14px] text-text-soft">{CONFIG.contacto.whatsapp_display}</div>
-
             <div class="relative z-10 flex-grow">
               <div class="font-heading font-bold text-[16px] text-navy mb-1">WhatsApp / Teléfono</div>
-              <div id="phone-text" class="font-body text-[14px] text-text-soft select-text">{CONFIG.contacto.whatsapp_display}</div>
-              <div class="flex items-center gap-3 mt-2 pointer-events-auto">
-                <button type="button" id="copy-phone" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar teléfono al portapapeles">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-phone-icon-use" href="#icon-copy" /></svg>
               <div id="phone-text" class="font-body text-[14px] text-text-soft select-text pointer-events-auto">{CONFIG.contacto.whatsapp_display}</div>
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
                 <button type="button" id="copy-phone" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm" aria-label="Copiar teléfono al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-phone-icon-use" href="#icon-copy" /></svg>
                   <span id="copy-phone-text">Copiar</span>
-                  <span id="copy-phone-text" class="pointer-events-none">Copiar</span>
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- Laboratorio Card -->
-          <!-- Laboratorio / Dirección Card -->
-          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
-            <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] focus-visible:ring-2 focus-visible:ring-blue/40 focus-visible:outline-none" aria-label={`Ver en Google Maps: ${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}></a>
-
-            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 pointer-events-none">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true">
-              <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <use href="#icon-map-pin" />
-              </svg>
-            </div>
-
-            <div class="relative z-10 flex-grow pointer-events-none">
-              <div class="flex items-center gap-2 mb-1">
-                <div class="font-heading font-bold text-[16px] text-navy">Laboratorio</div>
-                <svg class="w-3 h-3 text-blue/40" fill="none" stroke="currentColor" aria-hidden="true">
-                  <use href="#icon-external" />
-                </svg>
-              </div>
-              <div id="address-text" class="font-body text-[14px] text-text-soft">{CONFIG.contacto.direccion}, {CONFIG.contacto.ciudad_completa}</div>
-
-          <!-- Address Card -->
           <!-- Laboratorio / Dirección Card -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none group-focus-visible:ring-2 group-focus-visible:ring-blue group-focus-visible:ring-inset" aria-label={`Ver en Google Maps: ${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}></a>
             <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110 pointer-events-none">
-            <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px]" aria-label={`Ver en Google Maps: ${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}></a>
-            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true"><use href="#icon-map-pin" /></svg>
+              <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <use href="#icon-map-pin" />
+              </svg>
             </div>
             <div class="relative z-10 flex-grow">
               <div class="font-heading font-bold text-[16px] text-navy mb-1">Laboratorio</div>
-              <div id="address-text" class="font-body text-[14px] text-text-soft select-text">{CONFIG.contacto.direccion}, {CONFIG.contacto.ciudad_completa}</div>
-              <div class="flex items-center gap-3 mt-2 pointer-events-auto">
-                <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar dirección al portapapeles">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-address-icon-use" href="#icon-copy" /></svg>
               <div id="address-text" class="font-body text-[14px] text-text-soft select-text pointer-events-auto">{CONFIG.contacto.direccion}, {CONFIG.contacto.ciudad_completa}</div>
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
                 <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm" aria-label="Copiar dirección al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-address-icon-use" href="#icon-copy" /></svg>
                   <span id="copy-address-text">Copiar</span>
-                  <span id="copy-address-text" class="pointer-events-none">Copiar</span>
                 </button>
               </div>
             </div>
@@ -146,14 +59,7 @@ import { CONFIG } from '../data/config';
 
           <!-- Horario Card -->
           <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
-            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true">
-          <!-- Hours Card -->
-          <!-- Horario Card -->
-          <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true"><use href="#icon-clock" /></svg>
-            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110">
               <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-clock" />
               </svg>
@@ -166,7 +72,6 @@ import { CONFIG } from '../data/config';
               <div class="font-body text-[14px] text-text-soft">{CONFIG.contacto.horario}</div>
             </div>
           </div>
-
         </div>
 
         <!-- Shared Announcement for Accessibility -->
@@ -176,10 +81,6 @@ import { CONFIG } from '../data/config';
       <!-- Right Column: Form -->
       <div class="bg-navy rounded-card p-8 md:p-10 shadow-hero-card">
         <form id="contact-form" class="flex flex-col gap-5" data-whatsapp={CONFIG.contacto.whatsapp}>
-          <!-- Honeypot -->
-          <div class="hidden" aria-hidden="true">
-            <label for="f-website">Website</label>
-            <input type="text" name="website" id="f-website" tabindex="-1" autocomplete="off" />
           <!-- Anti-spam Honeypot -->
           <div class="hidden" aria-hidden="true">
             <label for="f-website">Website</label>
@@ -188,13 +89,11 @@ import { CONFIG } from '../data/config';
 
           <div class="flex flex-col gap-1.5">
             <label for="f-nombre" class="font-body font-medium text-[13px] text-white/80">Nombre completo</label>
-            <input type="text" id="f-nombre" name="nombre" required maxlength="100" placeholder="Ej: Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40" />
             <input type="text" id="f-nombre" name="nombre" required maxlength="100" placeholder="Ej: Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
           </div>
 
           <div class="flex flex-col gap-1.5">
             <label for="f-tel" class="font-body font-medium text-[13px] text-white/80">Teléfono / WhatsApp</label>
-            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-()]*" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40" />
             <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-()]*" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
           </div>
 
@@ -202,14 +101,12 @@ import { CONFIG } from '../data/config';
             <label for="f-servicio" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Tipo de servicio</label>
             <div class="relative">
               <select id="f-servicio" name="servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue/40 transition-colors w-full appearance-none pr-10">
-              <select id="f-servicio" name="servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus:border-blue-light focus-visible:ring-2 focus-visible:ring-blue transition-colors w-full appearance-none pr-10">
                 <option value="Consulta general" class="bg-navy text-white">Consulta general</option>
                 <option value="Mantenimiento preventivo" class="bg-navy text-white">Mantenimiento preventivo</option>
                 <option value="Reparación / Mantenimiento correctivo" class="bg-navy text-white">Reparación / Mantenimiento correctivo</option>
                 <option value="Revisión de placa electrónica" class="bg-navy text-white">Revisión de placa electrónica</option>
               </select>
-              <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-              <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
               </svg>
             </div>
@@ -218,34 +115,8 @@ import { CONFIG } from '../data/config';
           <div class="flex flex-col gap-1.5">
             <label for="f-desc" class="font-body font-medium text-[13px] text-white/80">Mensaje</label>
             <div class="relative">
-              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="¿En qué podemos ayudarle?" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40"></textarea>
-              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body" aria-hidden="true">0 / 500</div>
-            </div>
-          </div>
-
-          <p class="font-body text-[12px] text-white/50 text-center">El mensaje le redirigirá a WhatsApp</p>
-              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40"></textarea>
-              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body">0 / 500</div>
-            </div>
-          </div>
-
-          <p class="font-body text-[12px] text-white/50 text-center">El mensaje te redirigirá a WhatsApp</p>
-
-          <button type="submit" id="f-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-blue/40">
-              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="Describa brevemente su consulta o la falla del equipo..." aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40"></textarea>
-              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body">0 / 500</div>
-            </div>
-          </div>
-              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40"></textarea>
-              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body">0 / 500</div>
-            </div>
-          </div>
-              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="¿En qué podemos ayudarle?" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40"></textarea>
-              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body">0 / 500</div>
-            </div>
-          </div>
               <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="Escriba su consulta aquí..." aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none"></textarea>
-              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body" aria-hidden="true">0 / 500</div>
+              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body">0 / 500</div>
             </div>
           </div>
 
@@ -266,6 +137,18 @@ import { CONFIG } from '../data/config';
 
 <script>
   (function() {
+    // Performance Optimization: Cache Intl instance for date formatting
+    const tucumanFormatter = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'America/Argentina/Tucuman',
+      hour12: false,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+
     function initContacto() {
       const form = document.getElementById('contact-form') as HTMLFormElement | null;
       const desc = document.getElementById('f-desc') as HTMLTextAreaElement | null;
@@ -274,34 +157,10 @@ import { CONFIG } from '../data/config';
       const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
       const submitBtnText = document.getElementById('f-submit-text');
       const badge = document.getElementById('status-badge');
-      const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
-      const submitBtnText = document.getElementById('f-submit-text');
-      const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
-      const submitBtnText = document.getElementById('f-submit-text');
-      const badge = document.getElementById('status-badge');
 
       if (!form) return () => {};
       const whatsappNumber = form.dataset.whatsapp || '';
 
-      // 1. Business Hours Status Badge
-      let statusInterval: ReturnType<typeof setInterval> | null = null;
-      // Business Hours Status Badge (UTC-3 Tucumán)
-      let statusInterval: ReturnType<typeof setInterval> | null = null;
-      // Business Hours Status (UTC-3 Tucumán)
-      let statusInterval: ReturnType<typeof setInterval> | null = null;
-      // Performance Optimization: Cache Intl instance for date formatting
-      const tucumanFormatter = new Intl.DateTimeFormat('en-CA', {
-        timeZone: 'America/Argentina/Tucuman',
-        hour12: false,
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      });
-
-      // Business Hours Status Badge (UTC-3 Tucumán)
       // --- Business Hours Status ---
       let statusInterval: ReturnType<typeof setInterval> | null = null;
       const updateStatusBadge = () => {
@@ -309,16 +168,6 @@ import { CONFIG } from '../data/config';
         const now = new Date();
         let tucumanDate: Date;
         try {
-          // Robust ISO-like parsing for cross-browser compatibility (Safari fix)
-          const formatter = new Intl.DateTimeFormat('en-US', {
-            timeZone: 'America/Argentina/Tucuman',
-            year: 'numeric', month: '2-digit', day: '2-digit',
-            hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-          });
-          const parts = formatter.formatToParts(now);
-          const p: any = {};
-          parts.forEach(part => p[part.type] = part.value);
-          tucumanDate = new Date(`${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`);
           const parts = tucumanFormatter.formatToParts(now);
           const getPart = (type: string) => parts.find(p => p.type === type)?.value;
           // Construct ISO string: YYYY-MM-DDTHH:mm:ss for cross-browser compatibility (Safari)
@@ -326,13 +175,6 @@ import { CONFIG } from '../data/config';
           tucumanDate = new Date(dateStr);
         } catch (e) {
           // Fallback if timezone formatting fails
-          // Use ISO format for better compatibility
-          const tucumanTimeStr = now.toLocaleString('en-CA', { timeZone: 'America/Argentina/Tucuman', hour12: false });
-          const parts = tucumanTimeStr.split(', ');
-          const datePart = parts[0];
-          const timePart = parts[1] || '00:00:00';
-          tucumanDate = new Date(`${datePart}T${timePart}`);
-        } catch {
           tucumanDate = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
         }
 
@@ -340,6 +182,7 @@ import { CONFIG } from '../data/config';
         const hour = tucumanDate.getHours();
         const isOpen = day >= 1 && day <= 5 && hour >= 9 && hour < 18;
 
+        badge.classList.remove('hidden');
         if (isOpen) {
           badge.innerHTML = '<span class="relative flex h-2 w-2" aria-hidden="true"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora';
           badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800';
@@ -351,33 +194,16 @@ import { CONFIG } from '../data/config';
       updateStatusBadge();
       statusInterval = setInterval(updateStatusBadge, 60000);
 
-      // 2. Character Counter
       // --- Character Counter ---
       const updateCounter = () => {
         if (!desc || !counter) return;
         const len = desc.value.length;
         counter.textContent = `${len} / 500`;
-        counter.className = `absolute bottom-3 right-3 text-[10px] font-body transition-colors ${len >= 450 ? 'text-blue-light' : 'text-white/40'}`;
-      };
-      desc?.addEventListener('input', updateCounter);
-
-      // 3. Clipboard Helper
-        if (len >= 450) counter.classList.replace('text-white/40', 'text-blue-light');
-        else counter.classList.replace('text-blue-light', 'text-white/40');
-      };
-      desc?.addEventListener('input', updateCounter);
-
-      // Generic Clipboard Helper
-      // Clipboard Helper
-      // Clipboard Helper Pattern
         counter.classList.toggle('text-blue-light', len >= 450);
         counter.classList.toggle('text-white/40', len < 450);
       };
       desc?.addEventListener('input', updateCounter);
       updateCounter();
-
-      // Generic Copy Helper
-      // Clipboard Helper Pattern
 
       // --- Clipboard Helper ---
       const setupCopy = (btnId: string, textId: string, iconId: string, contentId: string, announcementMsg: string) => {
@@ -386,20 +212,14 @@ import { CONFIG } from '../data/config';
         const iconUse = document.getElementById(iconId);
         const contentEl = document.getElementById(contentId);
 
-        if (!btn || !text || !iconUse || !contentEl) return () => {};
         if (!btn || !text || !iconUse || !contentEl) return null;
 
         const handleCopy = (e: Event) => {
           e.preventDefault();
-          e.stopPropagation();
           if (!navigator.clipboard) return;
 
           const originalText = text.textContent || 'Copiar';
           const originalIcon = iconUse.getAttribute('href') || '#icon-copy';
-          const contentToCopy = (contentEl.textContent || '').replace(/\s+/g, ' ').trim();
-          let contentToCopy = contentEl.textContent || '';
-          if (btnId === 'copy-phone') contentToCopy = contentToCopy.replace(/\s/g, '');
-          const contentToCopy = contentEl.textContent?.replace(/\s/g, ' ').trim() || '';
           const contentToCopy = contentEl.textContent?.trim() || '';
 
           navigator.clipboard.writeText(contentToCopy).then(() => {
@@ -423,67 +243,25 @@ import { CONFIG } from '../data/config';
       const cleanupCopyPhone = setupCopy('copy-phone', 'copy-phone-text', 'copy-phone-icon-use', 'phone-text', 'Teléfono copiado al portapapeles');
       const cleanupCopyAddress = setupCopy('copy-address', 'copy-address-text', 'copy-address-icon-use', 'address-text', 'Dirección copiada al portapapeles');
 
-      // 4. Form Submission
-      const handleSubmit = (e: Event) => {
-        e.preventDefault();
-        const formData = new FormData(form);
-
-        // Honeypot check
-        if (formData.get('website')) return;
-      const cleanupCopyAddress = setupCopy('copy-address', 'copy-address-text', 'copy-address-icon-use', 'address-text', 'Dirección copiada al portapapeles');
-      const cleanupCopyPhone = setupCopy('copy-phone', 'copy-phone-text', 'copy-phone-icon-use', 'phone-text', 'Teléfono copiado al portapapeles');
-      const cleanupCopyPhone = setupCopy('copy-phone', 'copy-phone-text', 'copy-phone-icon-use', 'phone-text', 'Teléfono copiado al portapapeles');
-      const cleanupCopyAddress = setupCopy('copy-address', 'copy-address-text', 'copy-address-icon-use', 'address-text', 'Dirección copiada al portapapeles');
-      const cleanupCopyAddress = setupCopy('copy-address', 'copy-address-text', 'copy-address-icon-use', 'address-text', 'Dirección copiada al portapapeles');
-      const cleanupCopyPhone = setupCopy('copy-phone', 'copy-phone-text', 'copy-phone-icon-use', 'phone-text', 'Teléfono copiado al portapapeles');
-
-      // Form Submit
       // --- Form Submission ---
       const handleSubmit = (e: Event) => {
         e.preventDefault();
         const formData = new FormData(form);
-        if (formData.get('website')) return;
 
         // Honeypot check
-        const honey = (document.getElementById('f-website') as HTMLInputElement)?.value;
-        if (honey) return;
-
-        const formData = new FormData(form);
-        const formData = new FormData(form);
-        const honey = formData.get('website');
-        if (honey) {
-          console.warn('Spam detected');
-          return;
-        }
-        // Honeypot check
         if (formData.get('website')) return;
-        if (formData.get('website')) return; // Honeypot check
 
         if (!form.checkValidity()) {
           form.reportValidity();
           return;
         }
 
-        const nombre = (formData.get('nombre') as string | null)?.trim() || '';
-        const tel = (formData.get('telefono') as string | null)?.trim() || '';
-        const servicio = (formData.get('servicio') as string | null) || 'Consulta general';
-        const mensaje = (formData.get('mensaje') as string | null)?.trim() || '';
-
-        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
-
-        // Sanitize phone number before redirection
         const nombre = (formData.get('nombre') as string || '').trim();
         const tel = (formData.get('telefono') as string || '').trim();
         const servicio = formData.get('servicio') as string || 'Consulta general';
         const mensaje = (formData.get('mensaje') as string || '').trim();
-        const nombre = (formData.get('nombre') as string).trim();
-        const tel = (formData.get('telefono') as string).trim();
-        const servicio = formData.get('servicio') as string;
-        const mensaje = (formData.get('mensaje') as string).trim();
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
-
-        // Sanitize phone number before redirection
         const sanitizedWa = whatsappNumber.replace(/\D/g, '');
         const url = `https://wa.me/${sanitizedWa}?text=${encodeURIComponent(rawMessage)}`;
 
@@ -493,6 +271,7 @@ import { CONFIG } from '../data/config';
           submitBtn.disabled = true;
           submitBtn.setAttribute('aria-busy', 'true');
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
           setTimeout(() => {
             if (submitBtnText) submitBtnText.textContent = originalBtnText;
             if (submitBtn) {
@@ -500,10 +279,6 @@ import { CONFIG } from '../data/config';
               submitBtn.removeAttribute('aria-busy');
               submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
             }
-            submitBtnText.textContent = originalBtnText;
-            submitBtn.disabled = false;
-            submitBtn.removeAttribute('aria-busy');
-            submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           }, 3000);
         }
 
@@ -520,16 +295,8 @@ import { CONFIG } from '../data/config';
       return () => {
         if (statusInterval) clearInterval(statusInterval);
         desc?.removeEventListener('input', updateCounter);
-        cleanupCopyPhone();
-        cleanupCopyAddress();
-        cleanupCopyAddress();
-        cleanupCopyPhone();
-        cleanupCopyPhone();
-        cleanupCopyAddress();
-        cleanupCopyAddress();
-        cleanupCopyPhone();
-        if (cleanupCopyAddress) cleanupCopyAddress();
         if (cleanupCopyPhone) cleanupCopyPhone();
+        if (cleanupCopyAddress) cleanupCopyAddress();
         form.removeEventListener('submit', handleSubmit);
       };
     }
