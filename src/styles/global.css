@@ -89,7 +89,8 @@
     padding: 12px 28px;
   }
 
-  .btn-secondary:hover {
+  .btn-secondary:hover,
+  .btn-secondary:focus-visible {
     border-color: var(--navy);
     background-color: rgba(18, 51, 106, 0.03);
     transform: translateY(-2px);
