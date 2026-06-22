@@ -57,13 +57,16 @@ import { CONFIG } from '../data/config';
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
                 <button type="button" id="copy-phone" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm" aria-label="Copiar teléfono al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-phone-icon-use" href="#icon-copy" /></svg>
-                  <span id="copy-phone-text">Copiar</span>
                   <span id="copy-phone-text" class="pointer-events-none">Copiar</span>
                 </button>
               </div>
             </div>
           </div>
 
+          <!-- Laboratorio Card -->
+          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
+            <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none group-focus-visible:ring-2 group-focus-visible:ring-blue group-focus-visible:ring-inset" aria-label={`Ver en Google Maps: ${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}></a>
+            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110 pointer-events-none">
           <!-- Laboratorio / Dirección Card -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none group-focus-visible:ring-2 group-focus-visible:ring-blue group-focus-visible:ring-inset" aria-label={`Ver en Google Maps: ${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}></a>
@@ -84,6 +87,7 @@ import { CONFIG } from '../data/config';
                 <use href="#icon-map-pin" />
               </svg>
             </div>
+
             <div class="relative z-10 flex-grow">
             <div class="relative z-10 flex-grow pointer-events-none">
               <div class="font-heading font-bold text-[16px] text-navy mb-1">Laboratorio</div>
@@ -93,7 +97,6 @@ import { CONFIG } from '../data/config';
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
                 <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm" aria-label="Copiar dirección al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-address-icon-use" href="#icon-copy" /></svg>
-                  <span id="copy-address-text">Copiar</span>
                   <span id="copy-address-text" class="pointer-events-none">Copiar</span>
                 </button>
               </div>
@@ -247,9 +250,11 @@ import { CONFIG } from '../data/config';
         if (isOpen) {
           badge.innerHTML = '<span class="relative flex h-2 w-2" aria-hidden="true"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora';
           badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800';
+          badge.classList.remove('hidden');
         } else {
           badge.textContent = 'Cerrado';
           badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gray-100 text-gray-800';
+          badge.classList.remove('hidden');
         }
         badge.classList.remove('hidden');
       };
@@ -314,6 +319,7 @@ import { CONFIG } from '../data/config';
       const handleSubmit = (e: Event) => {
         e.preventDefault();
         const formData = new FormData(form);
+        if (formData.get('website')) return; // Honeypot
 
         // Honeypot check
 
@@ -328,6 +334,12 @@ import { CONFIG } from '../data/config';
           return;
         }
 
+        const nombre = (formData.get('nombre') as string)?.trim() || '';
+        const tel = (formData.get('telefono') as string)?.trim() || '';
+        const servicio = (formData.get('servicio') as string) || 'Consulta general';
+        const mensaje = (formData.get('mensaje') as string)?.trim() || '';
+
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
         const nombre = (formData.get('nombre') as string | null)?.trim() || '';
         const tel = (formData.get('telefono') as string | null)?.trim() || '';
         const servicio = (formData.get('servicio') as string | null) || 'Consulta general';

@@ -3274,6 +3274,8 @@ snapshots:
     dependencies:
       baseline-browser-mapping: 2.10.38
       caniuse-lite: 1.0.30001799
+      electron-to-chromium: 1.5.375
+      node-releases: 2.0.47
       electron-to-chromium: 1.5.376
       node-releases: 2.0.48
       update-browserslist-db: 1.2.3(browserslist@4.28.2)
