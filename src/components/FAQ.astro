@@ -18,9 +18,11 @@ import { CONFIG } from '../data/config';
 
       <div class="flex flex-col gap-4">
         {CONFIG.faqs.map((faq, index) => (
+          <div class="faq-item group border border-border rounded-[16px] bg-off-white overflow-hidden transition-all duration-300 hover:bg-white focus-within:bg-white hover:shadow-card-hover">
+          <div class="faq-item group border border-border rounded-[16px] bg-off-white hover:bg-white focus-within:bg-white overflow-hidden transition-all duration-300 hover:shadow-card-hover focus-within:shadow-card-hover">
           <div class="faq-item group border border-border rounded-[16px] bg-off-white overflow-hidden transition-all duration-300 hover:bg-white focus-within:bg-white hover:shadow-card-hover focus-within:shadow-card-hover">
             <button
-              class="faq-trigger w-full flex items-center justify-between p-6 text-left focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-inset outline-none"
+              class="faq-trigger group/trigger w-full flex items-center justify-between p-6 text-left focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-inset outline-none"
               aria-expanded="false"
               aria-controls={`faq-answer-${index}`}
               id={`faq-question-${index}`}
@@ -29,6 +31,14 @@ import { CONFIG } from '../data/config';
                 {faq.pregunta}
               </span>
               <div class="faq-icon w-6 h-6 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 group-focus-within:scale-110">
+              <span class="font-heading font-bold text-[17px] text-navy pr-8 group-hover:text-blue group-focus-visible/trigger:text-blue transition-colors">
+                {faq.pregunta}
+              </span>
+              <div class="faq-icon w-6 h-6 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 group-focus-visible/trigger:scale-110">
+              <span class="font-heading font-bold text-[17px] text-navy pr-8 group-hover:text-blue group-focus-visible:text-blue transition-colors">
+                {faq.pregunta}
+              </span>
+              <div class="faq-icon w-6 h-6 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 group-focus-visible:scale-110">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5">
                   <use href="#icon-chevron-down" />
                 </svg>
