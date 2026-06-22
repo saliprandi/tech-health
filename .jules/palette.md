@@ -141,6 +141,9 @@ Importante!!! Quiero todos los pr en español
 **Learning:** El feedback visual de "Redirigiendo..." es crucial para evitar clics repetidos, pero es inútil para usuarios de lectores de pantalla si el foco no se gestiona o no hay anuncios de texto.
 **Action:** Implementar siempre una región `aria-live="polite"` (clase `sr-only`) vinculada a CTAs de redirección que anuncie explícitamente el inicio del proceso ("Redirigiendo a WhatsApp...") para mejorar la previsibilidad de la interfaz.
 
+## 2025-02-17 - [UX: Consolidación de componentes corruptos]
+**Learning:** Encontrar componentes con duplicación masiva de código (HTML y Script) es una señal de fallos previos en la integración. Consolidar estos componentes en una estructura limpia y única no solo arregla el build sino que proporciona una base sólida para micro-UX consistentes.
+**Action:** Ante errores de "ya declarado", auditar el archivo completo para detectar duplicaciones estructurales y priorizar la refactorización a una única instancia de lógica.
 ## 2025-06-26 - [UX: Feedback de interacción coordinado en FAQ]
 **Learning:** En componentes interactivos de tipo acordeón, el uso de 'focus-within' junto con 'hover' en el contenedor padre permite proporcionar una respuesta visual consistente (cambio de fondo y sombras) que guía al usuario. Sincronizar estos estados con transformaciones en los hijos (escala del icono y color del texto) mediante 'group-focus-visible' asegura una paridad de experiencia para usuarios de teclado y ratón.
 **Action:** Implementar siempre estados de feedback coordinados en el contenedor padre usando 'group' y 'focus-within' para asegurar que la interactividad sea evidente y accesible para todos los métodos de entrada.
