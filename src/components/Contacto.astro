@@ -6,6 +6,7 @@ import { CONFIG } from '../data/config';
   <div class="container-custom">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
 
+      <!-- Columna izquierda: Info -->
       <!-- Left Column: Contact Info -->
       <!-- Left Column: Info -->
       <!-- Columna izquierda: Info -->
@@ -22,6 +23,8 @@ import { CONFIG } from '../data/config';
         <div class="flex flex-col gap-4">
           <!-- WhatsApp Card -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
+            <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none group-focus-visible:ring-2 group-focus-visible:ring-blue group-focus-visible:ring-inset" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
+            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110 pointer-events-none">
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none group-focus-visible:ring-2 group-focus-visible:ring-blue group-focus-visible:ring-inset" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
             <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110 pointer-events-none">
@@ -59,7 +62,6 @@ import { CONFIG } from '../data/config';
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
                 <button type="button" id="copy-phone" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm" aria-label="Copiar teléfono al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-phone-icon-use" href="#icon-copy" /></svg>
-                  <span id="copy-phone-text">Copiar</span>
                   <span id="copy-phone-text" class="pointer-events-none">Copiar</span>
                 </button>
               </div>
@@ -103,7 +105,6 @@ import { CONFIG } from '../data/config';
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
                 <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm" aria-label="Copiar dirección al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-address-icon-use" href="#icon-copy" /></svg>
-                  <span id="copy-address-text">Copiar</span>
                   <span id="copy-address-text" class="pointer-events-none">Copiar</span>
                 </button>
               </div>
@@ -157,12 +158,14 @@ import { CONFIG } from '../data/config';
           <div class="flex flex-col gap-1.5">
             <label for="f-servicio" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Tipo de servicio</label>
             <div class="relative">
+              <select id="f-servicio" name="servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue transition-colors w-full appearance-none pr-10">
               <select id="f-servicio" name="servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue/40 transition-colors w-full appearance-none pr-10">
                 <option value="Consulta general" class="bg-navy text-white">Consulta general</option>
                 <option value="Mantenimiento preventivo" class="bg-navy text-white">Mantenimiento preventivo</option>
                 <option value="Reparación / Mantenimiento correctivo" class="bg-navy text-white">Reparación / Mantenimiento correctivo</option>
                 <option value="Revisión de placa electrónica" class="bg-navy text-white">Revisión de placa electrónica</option>
               </select>
+              <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -225,6 +228,7 @@ import { CONFIG } from '../data/config';
       const whatsappNumber = form.dataset.whatsapp || '';
 
       // --- Business Hours Status ---
+      let statusInterval: ReturnType<typeof setInterval> | null = null;
       // Performance Optimization: Cache Intl instance
       let statusInterval: ReturnType<typeof setInterval> | null = null;
 
@@ -331,6 +335,12 @@ import { CONFIG } from '../data/config';
       // --- Form Submission ---
       const handleSubmit = (e: Event) => {
         e.preventDefault();
+        const honey = (document.getElementById('f-website') as HTMLInputElement)?.value;
+        if (honey) return;
+
+      // --- Form Submission ---
+      const handleSubmit = (e: Event) => {
+        e.preventDefault();
         const formData = new FormData(form);
         if (formData.get('website')) return;
 
@@ -356,6 +366,7 @@ import { CONFIG } from '../data/config';
           return;
         }
 
+        const formData = new FormData(form);
         const nombre = (formData.get('nombre') as string)?.trim() || '';
         const tel = (formData.get('telefono') as string)?.trim() || '';
         const servicio = (formData.get('servicio') as string) || 'Consulta general';
@@ -368,8 +379,10 @@ import { CONFIG } from '../data/config';
         const mensaje = (formData.get('mensaje') as string | null)?.trim() || '';
         const nombre = (formData.get('nombre') as string || '').trim();
         const tel = (formData.get('telefono') as string || '').trim();
-        const servicio = formData.get('servicio') as string || 'Consulta general';
+        const servicio = (formData.get('servicio') as string || 'Consulta general');
         const mensaje = (formData.get('mensaje') as string || '').trim();
+
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
 
@@ -417,6 +430,8 @@ import { CONFIG } from '../data/config';
       return () => {
         if (statusInterval) clearInterval(statusInterval);
         desc?.removeEventListener('input', updateCounter);
+        if (cleanupCopyAddress) cleanupCopyAddress();
+        if (cleanupCopyPhone) cleanupCopyPhone();
         cleanupPhone();
         cleanupAddress();
         if (cleanupCopyPhone) cleanupCopyPhone();
