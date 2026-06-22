@@ -17,7 +17,7 @@ Importante!!! Quiero todos los pr en español
 **Acción:** Siempre implementar trampas de foco y restauración al agregar modales o dropdowns.
 ## 2025-06-01 - [ScrollSpy y ARIA current]
 **Aprendizaje:** Implementar ScrollSpy no solo proporciona feedback visual sino que también es una oportunidad para mejorar la accesibilidad usando `aria-current="location"` en el link activo. Usar `IntersectionObserver` con un `rootMargin` que favorece la parte superior-media del viewport asegura que la sección "activa" se sienta natural para el foco del usuario.
-**Acción:** Siempre combinar estados visuales "activos" con atributos ARIA semánticos para asegurar que la mejora de UX beneficie a todos los usuarios, incluyendo quienes usan tecnologías asistivas.
+**Acción:** Siempre combinar estados visuales "activos" con atributos ARIA semánticos para asegurar que la mejora de UX beneficia a todos los usuarios, incluyendo quienes usan tecnologías asistivas.
 ## 2025-05-15 - Modales de servicio accesibles
 **Aprendizaje:** Elementos interactivos implementados como divs (como tarjetas) deben tener role="button", tabindex="0", y listeners de teclado (Enter/Space) para ser accesibles. Los modales requieren roles de diálogo, gestión de foco (enfocar el botón de cerrar al abrir y restaurar el foco al cerrar), y soporte para la tecla Escape.
 **Acción:** Siempre implementar gestión de foco y roles ARIA al crear interacciones de modal personalizadas.
@@ -75,7 +75,7 @@ Importante!!! Quiero todos los pr en español
 **Aprendizaje:** Al inyectar contenido dinámico en modales, popular el array de elementos enfocables (`focusableElements`) dentro de un `setTimeout` puede causar race conditions si el usuario interactúa con el teclado antes de que se complete el delay.
 **Acción:** Popular siempre el array de elementos enfocables inmediatamente después de la inyección de HTML en el DOM para asegurar que el focus trap sea robusto desde el primer milisegundo de visibilidad del modal.
 ## 2025-06-10 - [UX: Bloqueo de scroll y refinamiento de componentes]
-**Aprendizaje:** Implementar bloqueo de scroll en el `body` (`overflow: hidden`) al abrir menús móviles o modales previene el "scroll secundario" que desorienta al usuario. Además, la limpieza de JSX malformado es vital para la accesibilidad, ya que etiquetas duplicadas rompen el árbol de accesibilidad (AOM).
+**Aprendizaje:** Implementar bloqueo de scroll en el `body` (`overflow: hidden`) al abrir menús móviles o modales previene the "scroll secundario" que desorienta al usuario. Además, la limpieza de JSX malformado es vital para la accesibilidad, ya que etiquetas duplicadas rompen el árbol de accesibilidad (AOM).
 **Acción:** Siempre sincronizar el estado de visibilidad de componentes superpuestos (modales, menús) con el overflow del body y validar que el JSX generado no contenga duplicaciones estructurales.
 ## 2025-06-08 - [UX: Consolidación de scripts y gestión de estado]
 **Aprendizaje:** Al refactorizar componentes Astro con scripts complejos (como modales con trampas de foco), es vital consolidar listeners de eventos para evitar fugas de memoria y comportamientos erráticos. Sin embargo, la consolidación debe preservar meticulosamente las actualizaciones de estado globales (ej., `isModalOpen`) que rigen la lógica de accesibilidad por teclado.
@@ -140,3 +140,10 @@ Importante!!! Quiero todos los pr en español
 ## 2025-06-26 - [A11y: Anuncios de estado en redirecciones externas]
 **Learning:** El feedback visual de "Redirigiendo..." es crucial para evitar clics repetidos, pero es inútil para usuarios de lectores de pantalla si el foco no se gestiona o no hay anuncios de texto.
 **Action:** Implementar siempre una región `aria-live="polite"` (clase `sr-only`) vinculada a CTAs de redirección que anuncie explícitamente el inicio del proceso ("Redirigiendo a WhatsApp...") para mejorar la previsibilidad de la interfaz.
+
+## 2025-02-17 - [UX: Consolidación de componentes corruptos]
+**Learning:** Encontrar componentes con duplicación masiva de código (HTML y Script) es una señal de fallos previos en la integración. Consolidar estos componentes en una estructura limpia y única no solo arregla el build sino que proporciona una base sólida para micro-UX consistentes.
+**Action:** Ante errores de "ya declarado", auditar el archivo completo para detectar duplicaciones estructurales y priorizar la refactorización a una única instancia de lógica.
+## 2025-06-26 - [UX: Feedback de interacción coordinado en FAQ]
+**Learning:** En componentes interactivos de tipo acordeón, el uso de 'focus-within' junto con 'hover' en el contenedor padre permite proporcionar una respuesta visual consistente (cambio de fondo y sombras) que guía al usuario. Sincronizar estos estados con transformaciones en los hijos (escala del icono y color del texto) mediante 'group-focus-visible' asegura una paridad de experiencia para usuarios de teclado y ratón.
+**Action:** Implementar siempre estados de feedback coordinados en el contenedor padre usando 'group' y 'focus-within' para asegurar que la interactividad sea evidente y accesible para todos los métodos de entrada.

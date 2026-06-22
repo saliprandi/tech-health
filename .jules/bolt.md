@@ -10,3 +10,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-15 - Optimización de lógica de scroll y consolidación de eventos
 **Aprendizaje:** El uso de `IntersectionObserver` para navegación puede volverse costoso si se itera sobre todos los enlaces en cada callback ($O(N)$). Mantener un `currentActiveLink` y usar un `Map` para lookups directos reduce la carga a $O(1)$. Además, consolidar manejadores de eventos (como en `WaFloat.astro`) reduce el número de bindings y mejora la eficiencia de memoria.
 **Acción:** Implementar siempre lookups en Map y tracking de estado previo para evitar manipulaciones de DOM innecesarias en callbacks de alta frecuencia. Consolidar eventos compartidos (hover/focus) en handlers únicos.
+
+## 2026-06-16 - Consolidación de componentes corruptos y optimización de constructores
+**Aprendizaje:** Los archivos que sufren corrupciones estructurales (duplicación masiva de bloques) no solo rompen el build por redeclaración de variables, sino que degradan el performance por ejecución redundante de intervalos y listeners. Además, instanciar objetos costosos como `Intl.DateTimeFormat` dentro de funciones de inicialización que se ejecutan en cada `astro:after-swap` genera overhead innecesario.
+**Acción:** Realizar limpiezas quirúrgicas para consolidar la lógica en una sola instancia funcional. Mover la instanciación de objetos de configuración (formatters, observers) fuera de las funciones de ciclo de vida para aprovechar el cacheo del motor de JS.
