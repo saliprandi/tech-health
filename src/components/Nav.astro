@@ -21,8 +21,12 @@ import { CONFIG } from '../data/config';
     <!-- CTA & Mobile Toggle -->
     <div class="flex items-center gap-4">
       <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" id="nav-cta" class="hidden md:inline-flex items-center gap-2 bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md">
+        <svg id="nav-cta-spinner" class="hidden animate-spin h-3.5 w-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
         <span id="nav-cta-text">Consultar por WhatsApp</span>
-        <svg class="w-3.5 h-3.5 text-white/50" fill="none" stroke="currentColor" aria-hidden="true">
+        <svg id="nav-cta-icon" class="w-3.5 h-3.5 text-white/50" fill="none" stroke="currentColor" aria-hidden="true">
           <use href="#icon-external" />
         </svg>
       </a>
@@ -41,6 +45,7 @@ import { CONFIG } from '../data/config';
       </button>
     </div>
   </div>
+  <div id="nav-announcement" class="sr-only" aria-live="polite"></div>
 
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="fixed top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99] invisible" role="navigation" aria-label="Menú móvil">
@@ -49,8 +54,12 @@ import { CONFIG } from '../data/config';
     <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
     <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Contacto</a>
     <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mobile-link mt-2 flex items-center gap-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]" id="mobile-nav-cta">
+      <svg id="mobile-nav-cta-spinner" class="hidden animate-spin h-3.5 w-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
       <span id="mobile-nav-cta-text">Consultar por WhatsApp</span>
-      <svg class="w-3.5 h-3.5 text-white/50" fill="none" stroke="currentColor" aria-hidden="true">
+      <svg id="mobile-nav-cta-icon" class="w-3.5 h-3.5 text-white/50" fill="none" stroke="currentColor" aria-hidden="true">
         <use href="#icon-external" />
       </svg>
     </a>
@@ -174,25 +183,33 @@ import { CONFIG } from '../data/config';
         e.preventDefault();
         const cta = e.currentTarget as HTMLElement;
         const span = cta.querySelector('span');
+        const spinner = cta.querySelector('.animate-spin');
+        const icon = cta.querySelector('svg:not(.animate-spin)');
+
         if (!span) return;
+
         const originalText = span.textContent;
         span.textContent = 'Redirigiendo...';
-        cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        cta.classList.add('opacity-80', 'cursor-not-allowed', 'pointer-events-none');
+        cta.setAttribute('aria-busy', 'true');
+        spinner?.classList.remove('hidden');
+        icon?.classList.add('hidden');
 
         const href = cta.getAttribute('href');
         if (href) {
-          const a = document.createElement('a');
-          a.href = href;
-          a.target = '_blank';
-          a.rel = 'noopener noreferrer';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
+          const announcement = document.getElementById('nav-announcement');
+          if (announcement) announcement.textContent = 'Redirigiendo a WhatsApp...';
+          window.open(href, '_blank', 'noopener,noreferrer');
         }
 
         setTimeout(() => {
           if (span) span.textContent = originalText;
-          if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          if (cta) {
+            cta.classList.remove('opacity-80', 'cursor-not-allowed', 'pointer-events-none');
+            cta.removeAttribute('aria-busy');
+          }
+          spinner?.classList.add('hidden');
+          icon?.classList.remove('hidden');
         }, 3000);
       };
 

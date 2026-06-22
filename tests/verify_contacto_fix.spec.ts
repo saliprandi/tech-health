@@ -66,7 +66,7 @@ test.describe('Contacto Component Fix Verification', () => {
 
     await expect(submitBtnText).toHaveText('Redirigiendo...');
     await expect(submitBtn).toBeDisabled();
-    await expect(submitBtn).toHaveClass(/opacity-70/);
+    await expect(submitBtn).toHaveClass(/opacity-80/);
   });
 
   test('screenshot capture for visual verification', async ({ page }) => {
