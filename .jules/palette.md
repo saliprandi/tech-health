@@ -141,6 +141,10 @@ Importante!!! Quiero todos los pr en español
 **Learning:** El feedback visual de "Redirigiendo..." es crucial para evitar clics repetidos, pero es inútil para usuarios de lectores de pantalla si el foco no se gestiona o no hay anuncios de texto.
 **Action:** Implementar siempre una región `aria-live="polite"` (clase `sr-only`) vinculada a CTAs de redirección que anuncie explícitamente el inicio del proceso ("Redirigiendo a WhatsApp...") para mejorar la previsibilidad de la interfaz.
 
+## 2025-02-17 - [UX: Feedback coordinado y reparación estructural en FAQ]
+**Learning:** En componentes interactivos como acordeones, la corrupción estructural (duplicación de tags) rompe la accesibilidad. Reparar esto permite implementar un feedback coordinado donde tanto el hover como el focus-visible disparan las mismas transformaciones (escala, color, sombras) en contenedores e íconos, asegurando una experiencia fluida y equitativa.
+**Action:** Al refactorizar interacciones, usar `group-focus-visible/trigger` para sincronizar estados de hijos con el foco del botón disparador, y siempre verificar la integridad del DOM para no romper el árbol de accesibilidad.
+
 ## 2025-02-17 - [UX: Consolidación de componentes corruptos]
 **Learning:** Encontrar componentes con duplicación masiva de código (HTML y Script) es una señal de fallos previos en la integración. Consolidar estos componentes en una estructura limpia y única no solo arregla el build sino que proporciona una base sólida para micro-UX consistentes.
 **Action:** Ante errores de "ya declarado", auditar el archivo completo para detectar duplicaciones estructurales y priorizar la refactorización a una única instancia de lógica.
