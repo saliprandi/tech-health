@@ -7,6 +7,7 @@ import { CONFIG } from '../data/config';
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
 
       <!-- Columna izquierda: Info -->
+      <!-- Columna izquierda: Información de contacto -->
       <div class="flex flex-col gap-8">
         <div>
           <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Contacto</div>
@@ -26,12 +27,20 @@ import { CONFIG } from '../data/config';
               </svg>
             </div>
             <div class="relative z-10 flex-grow">
+            <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none focus-visible:ring-2 focus-visible:ring-blue" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
+            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110 pointer-events-none">
+              <svg class="w-5 h-5 group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <use href="#icon-phone" />
+              </svg>
+            </div>
+            <div class="relative z-10 flex-grow pointer-events-none">
               <div class="font-heading font-bold text-[16px] text-navy mb-1">WhatsApp / Teléfono</div>
               <div id="phone-text" class="font-body text-[14px] text-text-soft select-text pointer-events-auto">{CONFIG.contacto.whatsapp_display}</div>
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
                 <button type="button" id="copy-phone" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm" aria-label="Copiar teléfono al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-phone-icon-use" href="#icon-copy" /></svg>
                   <span id="copy-phone-text">Copiar</span>
+                  <span id="copy-phone-text" class="pointer-events-none">Copiar</span>
                 </button>
               </div>
             </div>
@@ -44,12 +53,20 @@ import { CONFIG } from '../data/config';
               <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><use href="#icon-map-pin" /></svg>
             </div>
             <div class="relative z-10 flex-grow">
+            <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none focus-visible:ring-2 focus-visible:ring-blue" aria-label={`Ver en Google Maps: ${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}></a>
+            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110 pointer-events-none">
+              <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <use href="#icon-map-pin" />
+              </svg>
+            </div>
+            <div class="relative z-10 flex-grow pointer-events-none">
               <div class="font-heading font-bold text-[16px] text-navy mb-1">Laboratorio</div>
               <div id="address-text" class="font-body text-[14px] text-text-soft select-text pointer-events-auto">{CONFIG.contacto.direccion}, {CONFIG.contacto.ciudad_completa}</div>
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
                 <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm" aria-label="Copiar dirección al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-address-icon-use" href="#icon-copy" /></svg>
                   <span id="copy-address-text">Copiar</span>
+                  <span id="copy-address-text" class="pointer-events-none">Copiar</span>
                 </button>
               </div>
             </div>
@@ -58,6 +75,7 @@ import { CONFIG } from '../data/config';
           <!-- Horario Card -->
           <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110">
+            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110">
               <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-clock" />
               </svg>
@@ -75,13 +93,17 @@ import { CONFIG } from '../data/config';
         <div id="copy-announcement" class="sr-only" aria-live="polite"></div>
       </div>
 
-      <!-- Right Column: Form -->
+      <!-- Columna derecha: Formulario -->
       <div class="bg-navy rounded-card p-8 md:p-10 shadow-hero-card">
         <form id="contact-form" class="flex flex-col gap-5" data-whatsapp={CONFIG.contacto.whatsapp}>
           <!-- Anti-spam Honeypot -->
           <div class="hidden" aria-hidden="true">
             <label for="f-website">Website</label>
             <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off" />
+          <!-- Honeypot -->
+          <div class="hidden" aria-hidden="true">
+            <label for="f-website">Website</label>
+            <input type="text" name="website" id="f-website" tabindex="-1" autocomplete="off" />
           </div>
 
           <div class="flex flex-col gap-1.5">
@@ -104,6 +126,9 @@ import { CONFIG } from '../data/config';
                 <option value="Revisión de placa electrónica" class="bg-navy text-white">Revisión de placa electrónica</option>
               </select>
               <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
             </div>
           </div>
 
@@ -111,11 +136,13 @@ import { CONFIG } from '../data/config';
             <label for="f-desc" class="font-body font-medium text-[13px] text-white/80">Mensaje</label>
             <div class="relative">
               <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="Escriba su consulta aquí..." aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none"></textarea>
+              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="¿En qué podemos ayudarle?" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none"></textarea>
               <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body" aria-hidden="true">0 / 500</div>
             </div>
           </div>
 
           <p class="font-body text-[12px] text-white/50 text-center">El mensaje te redirigirá a WhatsApp</p>
+          <p class="font-body text-[12px] text-white/50 text-center">El mensaje le redirigirá a WhatsApp</p>
 
           <button type="submit" id="f-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none">
             <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat" aria-hidden="true">
@@ -202,6 +229,7 @@ import { CONFIG } from '../data/config';
         const contentEl = document.getElementById(contentId);
 
         if (!btn || !text || !iconUse || !contentEl) return null;
+        if (!btn || !text || !iconUse || !contentEl) return () => {};
 
         const handleCopy = (e: Event) => {
           e.preventDefault();
@@ -241,6 +269,8 @@ import { CONFIG } from '../data/config';
         const honey = formData.get('website');
         if (honey) return;
 
+        if (formData.get('website')) return;
+
         if (!form.checkValidity()) {
           form.reportValidity();
           return;
@@ -252,6 +282,7 @@ import { CONFIG } from '../data/config';
         const mensaje = (formData.get('mensaje') as string).trim();
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
+
         const sanitizedWa = whatsappNumber.replace(/\D/g, '');
         const url = `https://wa.me/${sanitizedWa}?text=${encodeURIComponent(rawMessage)}`;
 
@@ -260,7 +291,6 @@ import { CONFIG } from '../data/config';
           submitBtnText.textContent = 'Redirigiendo...';
           if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
           submitBtn.disabled = true;
-          submitBtn.setAttribute('aria-busy', 'true');
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
           setTimeout(() => {
@@ -268,7 +298,6 @@ import { CONFIG } from '../data/config';
             if (redirectAnnouncement) redirectAnnouncement.textContent = '';
             if (submitBtn) {
               submitBtn.disabled = false;
-              submitBtn.removeAttribute('aria-busy');
               submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
             }
           }, 3000);
@@ -289,6 +318,8 @@ import { CONFIG } from '../data/config';
         desc?.removeEventListener('input', updateCounter);
         if (cleanupCopyPhone) cleanupCopyPhone();
         if (cleanupCopyAddress) cleanupCopyAddress();
+        cleanupCopyPhone();
+        cleanupCopyAddress();
         form.removeEventListener('submit', handleSubmit);
       };
     }
