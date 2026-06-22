@@ -21,6 +21,9 @@ import { CONFIG } from '../data/config';
         </div>
 
         <div class="flex flex-col gap-4">
+          <!-- WhatsApp / Teléfono Card -->
+          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
+            <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] focus-visible:ring-2 focus-visible:ring-blue/40" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
           <!-- WhatsApp Card -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none group-focus-visible:ring-2 group-focus-visible:ring-blue group-focus-visible:ring-inset" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
@@ -58,6 +61,9 @@ import { CONFIG } from '../data/config';
               <div class="font-heading font-bold text-[16px] text-navy mb-1">WhatsApp / Teléfono</div>
               <div id="phone-text" class="font-body text-[14px] text-text-soft select-text">{CONFIG.contacto.whatsapp_display}</div>
               <div class="flex items-center gap-3 mt-2">
+                <button type="button" id="copy-phone" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm" aria-label="Copiar teléfono al portapapeles">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-phone-icon-use" href="#icon-copy" /></svg>
+                  <span id="copy-phone-text">Copiar</span>
               <div id="phone-text" class="font-body text-[14px] text-text-soft select-text pointer-events-auto">{CONFIG.contacto.whatsapp_display}</div>
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
                 <button type="button" id="copy-phone" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm" aria-label="Copiar teléfono al portapapeles">
@@ -68,6 +74,12 @@ import { CONFIG } from '../data/config';
             </div>
           </div>
 
+          <!-- Laboratorio / Dirección Card -->
+          <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
+            <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] focus-visible:ring-2 focus-visible:ring-blue/40" aria-label={`Ver en Google Maps: ${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}></a>
+            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 pointer-events-none">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true"><use href="#icon-map-pin" /></svg>
+            </div>
           <!-- Laboratorio Card -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" aria-label={`Ver en Google Maps: ${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}></a>
@@ -101,6 +113,9 @@ import { CONFIG } from '../data/config';
               <div class="font-heading font-bold text-[16px] text-navy mb-1">Laboratorio</div>
               <div id="address-text" class="font-body text-[14px] text-text-soft select-text">{CONFIG.contacto.direccion}, {CONFIG.contacto.ciudad_completa}</div>
               <div class="flex items-center gap-3 mt-2">
+                <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm" aria-label="Copiar dirección al portapapeles">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-address-icon-use" href="#icon-copy" /></svg>
+                  <span id="copy-address-text">Copiar</span>
               <div id="address-text" class="font-body text-[14px] text-text-soft select-text pointer-events-auto">{CONFIG.contacto.direccion}, {CONFIG.contacto.ciudad_completa}</div>
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
                 <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm" aria-label="Copiar dirección al portapapeles">
@@ -114,6 +129,7 @@ import { CONFIG } from '../data/config';
           <!-- Horario Card -->
           <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true"><use href="#icon-clock" /></svg>
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110">
               <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-clock" />
@@ -165,6 +181,7 @@ import { CONFIG } from '../data/config';
                 <option value="Reparación / Mantenimiento correctivo" class="bg-navy text-white">Reparación / Mantenimiento correctivo</option>
                 <option value="Revisión de placa electrónica" class="bg-navy text-white">Revisión de placa electrónica</option>
               </select>
+              <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -227,6 +244,8 @@ import { CONFIG } from '../data/config';
       if (!form) return () => {};
       const whatsappNumber = form.dataset.whatsapp || '';
 
+      // --- Business Hours Status (UTC-3 Tucumán) ---
+      let statusInterval: ReturnType<typeof setInterval> | null = null;
       // --- Business Hours Status ---
       let statusInterval: ReturnType<typeof setInterval> | null = null;
       // Performance Optimization: Cache Intl instance
@@ -389,6 +408,8 @@ import { CONFIG } from '../data/config';
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
+
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
         const nombre = (formData.get('nombre') as string).trim();
         const tel = (formData.get('telefono') as string).trim();
         const servicio = formData.get('servicio') as string;
@@ -430,6 +451,8 @@ import { CONFIG } from '../data/config';
       return () => {
         if (statusInterval) clearInterval(statusInterval);
         desc?.removeEventListener('input', updateCounter);
+        if (cleanupCopyPhone) cleanupCopyPhone();
+        if (cleanupCopyAddress) cleanupCopyAddress();
         if (cleanupCopyAddress) cleanupCopyAddress();
         if (cleanupCopyPhone) cleanupCopyPhone();
         cleanupPhone();
