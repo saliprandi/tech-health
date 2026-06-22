@@ -14,3 +14,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-16 - Consolidación de componentes corruptos y optimización de constructores
 **Aprendizaje:** Los archivos que sufren corrupciones estructurales (duplicación masiva de bloques) no solo rompen el build por redeclaración de variables, sino que degradan el performance por ejecución redundante de intervalos y listeners. Además, instanciar objetos costosos como `Intl.DateTimeFormat` dentro de funciones de inicialización que se ejecutan en cada `astro:after-swap` genera overhead innecesario.
 **Acción:** Realizar limpiezas quirúrgicas para consolidar la lógica en una sola instancia funcional. Mover la instanciación de objetos de configuración (formatters, observers) fuera de las funciones de ciclo de vida para aprovechar el cacheo del motor de JS.
+
+## 2026-06-22 - Resolución de corrupción estructural y limpieza de bundle
+**Learning:** La corrupción de componentes (duplicación de bloques) en Astro dispara el tamaño del bundle y genera fugas de memoria por listeners redundantes. Corregir esto es la optimización de mayor impacto antes de cualquier micro-ajuste. Modificar inadvertidamente el lockfile durante el desarrollo debe ser revertido con git para mantener la integridad del proyecto.
+**Action:** Realizar auditorías estructurales completas antes de optimizar. Revertir cambios en `pnpm-lock.yaml` con `git checkout` si no fueron solicitados explícitamente.
