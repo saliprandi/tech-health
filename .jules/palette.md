@@ -147,3 +147,7 @@ Importante!!! Quiero todos los pr en español
 ## 2025-06-26 - [UX: Feedback de interacción coordinado en FAQ]
 **Learning:** En componentes interactivos de tipo acordeón, el uso de 'focus-within' junto con 'hover' en el contenedor padre permite proporcionar una respuesta visual consistente (cambio de fondo y sombras) que guía al usuario. Sincronizar estos estados con transformaciones en los hijos (escala del icono y color del texto) mediante 'group-focus-visible' asegura una paridad de experiencia para usuarios de teclado y ratón.
 **Action:** Implementar siempre estados de feedback coordinados en el contenedor padre usando 'group' y 'focus-within' para asegurar que la interactividad sea evidente y accesible para todos los métodos de entrada.
+
+## 2025-02-17 - [UX: Contraste accesible y reparación estructural]
+**Learning:** La corrupción estructural en componentes (código triplicado y errores de sintaxis) es el mayor impedimento para la accesibilidad y el mantenimiento. Además, el uso de opacidades bajas (como `text-navy/25`) en logotipos o nombres de marcas puede dificultar la lectura y no cumplir con los estándares de contraste.
+**Action:** Al encontrar componentes con errores de redeclaración, realizar una limpieza quirúrgica para unificar la lógica. Aumentar la opacidad de elementos de texto secundarios (mínimo 50%) para asegurar un contraste accesible sin perder la estética minimalista.
