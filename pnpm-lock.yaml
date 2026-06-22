@@ -20,6 +20,16 @@ importers:
     dependencies:
       '@astrojs/tailwind':
         specifier: ^6.0.2
+        version: 6.0.2(astro@6.4.7(jiti@1.21.7)(rollup@4.62.0)(yaml@2.9.0))(tailwindcss@3.4.19(yaml@2.9.0))
+      astro:
+        specifier: 6.4.7
+        version: 6.4.7(jiti@1.21.7)(rollup@4.62.0)(yaml@2.9.0)
+      astro:
+        specifier: 6.4.7
+        version: 6.4.7(jiti@1.21.7)(rollup@4.62.0)(yaml@2.9.0)
+      astro:
+        specifier: 6.4.7
+        version: 6.4.7(jiti@1.21.7)(rollup@4.62.0)(yaml@2.9.0)
         version: 6.0.2(astro@6.4.4(jiti@1.21.7)(rollup@4.62.2)(yaml@2.9.0))(tailwindcss@3.4.19(yaml@2.9.0))
       astro:
         specifier: 6.4.4
@@ -784,8 +794,8 @@ packages:
     resolution: {integrity: sha512-NfJ4UzBCcQGLDlQq7nHxH+tv3kyZ0hHQqF5BO6J7tNJeP5do1llPr8dZ8zHonfhAu0PHAdMkSo+8o0wxg9lZWw==}
     engines: {node: '>=0.8'}
 
-  astro@6.4.4:
-    resolution: {integrity: sha512-hVe8tq3lqt/Dr0UyB//yUmQSlHMTU8scTiF/vQddQVahLE4TTaSdH5H0nb7OvRcwo0UmlAO8DWYar4jNaS7H+A==}
+  astro@6.4.7:
+    resolution: {integrity: sha512-5vsXx0H52u23Jpshs9tM81D03Tb3Oh2Vt2Zo0bpqjXN+njkAWjFyGjTfmWJLAcrCQd9Q+iWB1eqfhR1sZJEaUA==}
     engines: {node: '>=22.12.0', npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -1055,6 +1065,8 @@ packages:
   ecc-jsbn@0.1.2:
     resolution: {integrity: sha512-eh9O+hwRHNbG4BLTjEl3nw044CkGm5X6LoaCf7LPp7UU8Qrt47JYNi6nPX8xjW97TKGKm1ouctg0QSpZe9qrnw==}
 
+  electron-to-chromium@1.5.375:
+    resolution: {integrity: sha512-ZWP5eB4BVPW/ZYo9252hQZHZ5XavtsTgpbhcmMmRwymavC5AsLWQWBPaKMeNd2LW0KGby5HPXvj7+sr4ta5j/Q==}
   electron-to-chromium@1.5.376:
     resolution: {integrity: sha512-cUVA7/RvbFTEuw/i3obUwDTRIXojaxkResf+ibByPFxjc6XK3VNtcQXV0NSbAlJ0FMjcJGgftVVB4Qo184EXvA==}
 
@@ -1631,6 +1643,8 @@ packages:
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
 
+  nanoid@3.3.13:
+    resolution: {integrity: sha512-sPdqC6ByMVVGvF1ynvvMo0/o+oD1VX7DaHhijt1bFgjvBkHBib4t49GoNDhf2NDta4oeUNlaGbSt5K7qjZ955Q==}
   nanoid@3.3.14:
     resolution: {integrity: sha512-U9kYi5bpVMEI31yC8iw4bJJp0avcHXA0W8/wNfLfnvJYzihQo2ZRPYPvpAAd570HAcCBjCTN7vnr+v4StKl1IQ==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -2604,6 +2618,13 @@ snapshots:
     dependencies:
       prismjs: 1.30.0
 
+  '@astrojs/tailwind@6.0.2(astro@6.4.7(jiti@1.21.7)(rollup@4.62.0)(yaml@2.9.0))(tailwindcss@3.4.19(yaml@2.9.0))':
+    dependencies:
+      astro: 6.4.7(jiti@1.21.7)(rollup@4.62.0)(yaml@2.9.0)
+    dependencies:
+      astro: 6.4.7(jiti@1.21.7)(rollup@4.62.0)(yaml@2.9.0)
+    dependencies:
+      astro: 6.4.7(jiti@1.21.7)(rollup@4.62.0)(yaml@2.9.0)
   '@astrojs/tailwind@6.0.2(astro@6.4.4(jiti@1.21.7)(rollup@4.62.2)(yaml@2.9.0))(tailwindcss@3.4.19(yaml@2.9.0))':
     dependencies:
       astro: 6.4.4(jiti@1.21.7)(rollup@4.62.2)(yaml@2.9.0)
@@ -3138,6 +3159,7 @@ snapshots:
 
   assert-plus@1.0.0: {}
 
+  astro@6.4.7(jiti@1.21.7)(rollup@4.62.0)(yaml@2.9.0):
   astro@6.4.4(jiti@1.21.7)(rollup@4.62.2)(yaml@2.9.0):
     dependencies:
       '@astrojs/compiler': 4.0.0
@@ -3274,6 +3296,8 @@ snapshots:
     dependencies:
       baseline-browser-mapping: 2.10.38
       caniuse-lite: 1.0.30001799
+      electron-to-chromium: 1.5.375
+      node-releases: 2.0.47
       electron-to-chromium: 1.5.376
       node-releases: 2.0.48
       update-browserslist-db: 1.2.3(browserslist@4.28.2)
@@ -3470,6 +3494,7 @@ snapshots:
       jsbn: 0.1.1
       safer-buffer: 2.1.2
 
+  electron-to-chromium@1.5.375: {}
   electron-to-chromium@1.5.376: {}
 
   emmet@2.4.11:
@@ -4276,6 +4301,7 @@ snapshots:
       object-assign: 4.1.1
       thenify-all: 1.6.0
 
+  nanoid@3.3.13: {}
   nanoid@3.3.14: {}
 
   neotraverse@0.6.18: {}
@@ -4456,6 +4482,7 @@ snapshots:
 
   postcss@8.5.15:
     dependencies:
+      nanoid: 3.3.13
       nanoid: 3.3.14
       picocolors: 1.1.1
       source-map-js: 1.2.1
