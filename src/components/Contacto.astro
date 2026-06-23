@@ -23,6 +23,7 @@ import { CONFIG } from '../data/config';
             <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110 pointer-events-none">
               <svg class="w-5 h-5 group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-whatsapp" />
+                <use href="#icon-phone" />
               </svg>
             </div>
             <div class="relative z-10 flex-grow pointer-events-none">
@@ -59,6 +60,9 @@ import { CONFIG } from '../data/config';
           <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true"><use href="#icon-clock" /></svg>
+              <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <use href="#icon-clock" />
+              </svg>
             </div>
             <div class="flex-grow">
               <div class="flex items-center gap-2 mb-1">
@@ -154,6 +158,9 @@ import { CONFIG } from '../data/config';
 
       // --- Business Hours Status ---
       let statusInterval: ReturnType<typeof setInterval> | null = null;
+      // --- Business Hours Status (UTC-3 Tucumán) ---
+      let statusInterval: ReturnType<typeof setInterval> | null = null;
+
       const updateStatusBadge = () => {
         if (!badge) return;
         const now = new Date();
@@ -193,6 +200,8 @@ import { CONFIG } from '../data/config';
         } else if (isOpeningSoon) {
           badge.textContent = 'Abrirá pronto';
           badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800';
+          badge.innerHTML = '<span class="relative flex h-2 w-2" aria-hidden="true"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora';
+          badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800';
         } else {
           badge.textContent = 'Cerrado';
           badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gray-100 text-gray-800';
@@ -254,6 +263,7 @@ import { CONFIG } from '../data/config';
         e.preventDefault();
         const formData = new FormData(form);
         if (formData.get('website')) return; // Honeypot
+        if (formData.get('website')) return;
 
         if (!form.checkValidity()) {
           form.reportValidity();
@@ -268,6 +278,13 @@ import { CONFIG } from '../data/config';
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
         const sanitizedWa = whatsappNumber.replace(/\D/g, '');
         const url = `https://wa.me/${sanitizedWa}?text=${encodeURIComponent(rawMessage)}`;
+        const nombre = (formData.get('nombre') as string).trim();
+        const tel = (formData.get('telefono') as string).trim();
+        const servicio = formData.get('servicio') as string;
+        const mensaje = (formData.get('mensaje') as string).trim();
+
+        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
+        const url = `https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(rawMessage)}`;
 
         if (submitBtn && submitBtnText) {
           const originalText = submitBtnText.textContent;
@@ -289,6 +306,9 @@ import { CONFIG } from '../data/config';
         }
 
         window.open(url, '_blank', 'noopener,noreferrer');
+        const a = document.createElement('a');
+        a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
       };
 
       // Initialization
