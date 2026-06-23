@@ -147,3 +147,7 @@ Importante!!! Quiero todos los pr en español
 ## 2025-06-26 - [UX: Feedback de interacción coordinado en FAQ]
 **Learning:** En componentes interactivos de tipo acordeón, el uso de 'focus-within' junto con 'hover' en el contenedor padre permite proporcionar una respuesta visual consistente (cambio de fondo y sombras) que guía al usuario. Sincronizar estos estados con transformaciones en los hijos (escala del icono y color del texto) mediante 'group-focus-visible' asegura una paridad de experiencia para usuarios de teclado y ratón.
 **Action:** Implementar siempre estados de feedback coordinados en el contenedor padre usando 'group' y 'focus-within' para asegurar que la interactividad sea evidente y accesible para todos los métodos de entrada.
+
+## 2025-02-17 - [A11y: Contraste de logotipos y marcas]
+**Learning:** En secciones multimarca, usar opacidades bajas (como 25%) para logotipos puede ser estéticamente "limpio" pero falla gravemente en accesibilidad de contraste. Aumentar la opacidad base al 50% mantiene la sutileza visual mientras se cumple con los estándares mínimos de legibilidad.
+**Action:** Asegurar que las marcas o logotipos secundarios tengan al menos un 50% de opacidad sobre fondos claros para garantizar un contraste accesible.
