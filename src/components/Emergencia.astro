@@ -30,7 +30,7 @@ const { emergencia, contacto } = CONFIG;
         <div class="flex-shrink-0 w-full lg:w-auto">
           <a
             id="emergencia-cta"
-            href={`https://wa.me/${contacto.whatsapp}?text=${encodeURIComponent('SOPORTE DE EMERGENCIA: Necesito asistencia inmediata para un equipo crítico.')}`}
+            href={`https://wa.me/${contacto.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('SOPORTE DE EMERGENCIA: Necesito asistencia inmediata para un equipo crítico.')}`}
             target="_blank"
             rel="noopener noreferrer"
             class="btn-primary w-full lg:w-auto bg-white text-navy hover:bg-blue-pale hover:text-blue flex items-center justify-center gap-3 border-none group"
