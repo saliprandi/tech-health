@@ -57,6 +57,10 @@ Importante!!! Quiero todos los pr en español
 **Learning:** Las interacciones de "copiar al portapapeles" que solo proporcionan feedback visual (cambio de ícono o texto) son invisibles para usuarios de lectores de pantalla. Implementar una región `aria-live="polite"` oculta permite anunciar el éxito de la operación de forma no intrusiva.
 **Action:** Siempre incluir un elemento con `aria-live="polite"` y la clase `sr-only` para anunciar estados de confirmación en acciones que no disparan cambios estructurales en el DOM o navegación.
 
+## 2025-02-17 - [UX: Prevención de bloqueo de popups en redirecciones]
+**Learning:** Realizar redirecciones externas (`window.open`) dentro de contextos asíncronos (como `setTimeout`) es bloqueado por la mayoría de los navegadores modernos por seguridad.
+**Action:** Para proporcionar feedback visual ("Redirigiendo...") sin romper la funcionalidad, actualizar el estado de la UI de forma síncrona en el evento de clic y permitir que el enlace `<a>` actúe de forma natural, en lugar de interceptar el evento y disparar la apertura asíncronamente.
+
 ## 2026-06-05 - [UX: Verbosidad de contador de caracteres]
 **Aprendizaje:** Agregar `aria-live="polite"` a un contador de caracteres en vivo puede causar que los lectores de pantalla anuncien el conteo en cada pulsación de tecla, lo cual frecuentemente se percibe como "ruidoso" o distractor.
 **Acción:** Para textareas estándar, preferir un contador de caracteres solo visual a menos que exista un requerimiento específico de accesibilidad para anuncios de conteo en tiempo real, o implementar lógica para anunciar solo en intervalos específicos (ej., cada 50 caracteres) o al acercarse al límite.
