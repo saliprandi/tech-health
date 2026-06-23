@@ -16,7 +16,7 @@ const { title = "TechHealth Medical Engineering | Técnicos en Electromedicina �
 		<meta charset="UTF-8" />
 		<title>{title}</title>
 		<meta name="description" content="Mantenimiento preventivo y correctivo, diagnóstico y reparación de equipos médicos de alta complejidad en San Miguel de Tucumán. TechHealth Medical Engineering." />
-		<meta name="keywords" content="electromedicina tucumán, reparación equipos médicos, mantenimiento equipos hospitalarios, técnico electromedicina tucumán" />
+		<meta name="keywords" content={`electromedicina tucumán, reparación equipos médicos, mantenimiento equipos hospitalarios, técnico electromedicina tucumán, soporte multimarca, ${CONFIG.marcas.join(', ')}`} />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<!-- Security Hardening: Disable base-uri and frame-ancestors to prevent injection and clickjacking attacks -->
 		<!-- Security: base-uri 'none' prevents <base> tag injection, frame-ancestors 'none' prevents clickjacking -->
@@ -73,7 +73,8 @@ const { title = "TechHealth Medical Engineering | Técnicos en Electromedicina �
 					"closes": "18:00"
 				}
 			],
-			"sameAs": Object.values(CONFIG.redes).filter(Boolean)
+			"sameAs": Object.values(CONFIG.redes).filter(Boolean),
+			"knowsAbout": CONFIG.marcas
 		}).replace(/</g, '\\u003c')} />
 	</head>
 	<body>
