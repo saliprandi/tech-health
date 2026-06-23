@@ -147,3 +147,7 @@ Importante!!! Quiero todos los pr en español
 ## 2025-06-26 - [UX: Feedback de interacción coordinado en FAQ]
 **Learning:** En componentes interactivos de tipo acordeón, el uso de 'focus-within' junto con 'hover' en el contenedor padre permite proporcionar una respuesta visual consistente (cambio de fondo y sombras) que guía al usuario. Sincronizar estos estados con transformaciones en los hijos (escala del icono y color del texto) mediante 'group-focus-visible' asegura una paridad de experiencia para usuarios de teclado y ratón.
 **Action:** Implementar siempre estados de feedback coordinados en el contenedor padre usando 'group' y 'focus-within' para asegurar que la interactividad sea evidente y accesible para todos los métodos de entrada.
+
+## 2026-06-23 - [UX: Paridad de foco para micro-interacciones globales]
+**Aprendizaje:** Sincronizar las animaciones de hover (como elevación y sombras) con :focus-visible en clases globales (.btn-primary, .btn-secondary) asegura que los usuarios de teclado tengan una experiencia visualmente rica y consistente, eliminando la brecha de "delicia" entre ratón y teclado.
+**Acción:** Siempre implementar estados de :focus-visible que espejen las transformaciones y sombras de :hover en los componentes del sistema de diseño.
