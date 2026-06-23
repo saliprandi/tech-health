@@ -25,6 +25,10 @@ Importante!!! Quiero todos los pr en español
 **Aprendizaje:** En componentes Astro, usar elementos `div` estáticos para funcionalidades interactivas como abrir modales crea barreras de accesibilidad para usuarios de teclado y lectores de pantalla. Simplemente agregar `role="button"` y `tabindex="0"` no es suficiente; se deben agregar listeners de teclado explícitos para 'Enter' y 'Space', y la gestión de foco (mover el foco al modal y volver) es crucial para una UX completa.
 **Acción:** Asegurar siempre que cualquier elemento interactivo personalizado tenga roles ARIA apropiados, soporte de teclado y gestión de foco desde el inicio.
 
+## 2025-06-27 - [UX: Estados de transición en horario comercial]
+**Learning:** El badge de horario comercial es más útil cuando anticipa cambios. Agregar estados "Abrirá pronto" y "Cerrará pronto" (ventana de 30 min) con colores de advertencia (Amber) reduce la frustración del usuario al intentar contactar cerca del cierre.
+**Action:** Implementar lógica de proximidad horaria en badges de disponibilidad para manejar expectativas de respuesta.
+
 ## 2026-06-02 - [UX: Validación de formularios y feedback]
 **Aprendizaje:** Convertir secciones interactivas no semánticas a elementos HTML formales `<form>` proporciona validación nativa y mejor accesibilidad móvil. Proporcionar feedback visual inmediato (ej., 'Redirigiendo...') durante redirecciones externas reduce la incertidumbre del usuario y previene acciones duplicadas.
 **Acción:** Siempre usar formularios semánticos para entradas de usuario e implementar estados de carga/transición claros para acciones async o externas.
