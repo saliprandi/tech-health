@@ -20,9 +20,13 @@ import { CONFIG } from '../data/config';
 
     <!-- CTA & Mobile Toggle -->
     <div class="flex items-center gap-4">
-      <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" id="nav-cta" class="hidden md:inline-flex items-center gap-2 bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md">
-        <span id="nav-cta-text">Consultar por WhatsApp</span>
-        <svg class="w-3.5 h-3.5 text-white/50" fill="none" stroke="currentColor" aria-hidden="true">
+      <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" id="nav-cta" class="hidden md:inline-flex items-center gap-2 bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2">
+        <svg class="nav-spinner hidden w-4 h-4 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="nav-cta-text">Consultar por WhatsApp</span>
+        <svg class="nav-cta-icon w-3.5 h-3.5 text-white/50" fill="none" stroke="currentColor" aria-hidden="true">
           <use href="#icon-external" />
         </svg>
       </a>
@@ -30,7 +34,7 @@ import { CONFIG } from '../data/config';
       <!-- Hamburger Button -->
       <button
         id="menu-toggle"
-        class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 z-[101]"
+        class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 z-[101] outline-none focus-visible:ring-2 focus-visible:ring-navy rounded-sm"
         aria-label="Abrir menú"
         aria-expanded="false"
         aria-controls="mobile-menu"
@@ -48,13 +52,20 @@ import { CONFIG } from '../data/config';
     <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
     <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
     <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Contacto</a>
-    <a href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="mobile-link mt-2 flex items-center gap-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px]" id="mobile-nav-cta">
-      <span id="mobile-nav-cta-text">Consultar por WhatsApp</span>
-      <svg class="w-3.5 h-3.5 text-white/50" fill="none" stroke="currentColor" aria-hidden="true">
+    <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" class="mobile-cta-btn mt-2 flex items-center gap-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px] outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2" id="mobile-nav-cta">
+      <svg class="nav-spinner hidden w-4 h-4 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      <span class="nav-cta-text">Consultar por WhatsApp</span>
+      <svg class="nav-cta-icon w-3.5 h-3.5 text-white/50" fill="none" stroke="currentColor" aria-hidden="true">
         <use href="#icon-external" />
       </svg>
     </a>
   </div>
+
+  <!-- Redirection Announcement -->
+  <div id="nav-redirection-announcement" class="sr-only" aria-live="polite"></div>
 
   <!-- Reading Progress Bar -->
   <div id="reading-progress" class="absolute bottom-0 left-0 w-full h-[3px] bg-blue origin-left scale-x-0 pointer-events-none" aria-hidden="true"></div>
@@ -82,8 +93,10 @@ import { CONFIG } from '../data/config';
       const progressBar = document.getElementById('reading-progress');
       const sections = document.querySelectorAll('section[id]');
       const navLinks = document.querySelectorAll('.nav-link');
+      const redirectionAnnouncement = document.getElementById('nav-redirection-announcement');
 
       let isOpen = false;
+      let isRedirecting = false;
       let lastFocusedElement: HTMLElement | null = null;
       let scrollHeight = 0;
       let ticking = false;
@@ -95,6 +108,7 @@ import { CONFIG } from '../data/config';
       };
 
       const toggleMenu = (forceClose = false) => {
+        if (isRedirecting && !forceClose) return;
         if (forceClose) isOpen = false;
         else isOpen = !isOpen;
 
@@ -113,7 +127,7 @@ import { CONFIG } from '../data/config';
             spans[2].classList.add('-rotate-45', '-translate-y-[8px]');
           }
 
-          setTimeout(() => (menu.querySelector('.mobile-link') as HTMLElement)?.focus(), 150);
+          setTimeout(() => (menu.querySelector('.nav-link') as HTMLElement)?.focus(), 150);
         } else {
           menu.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
           menu.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
@@ -172,12 +186,23 @@ import { CONFIG } from '../data/config';
 
       const handleCtaClick = (e: MouseEvent) => {
         e.preventDefault();
+        isRedirecting = true;
         const cta = e.currentTarget as HTMLElement;
-        const span = cta.querySelector('span');
-        if (!span) return;
+        const span = cta.querySelector('.nav-cta-text');
+        const spinner = cta.querySelector('.nav-spinner');
+        const icon = cta.querySelector('.nav-cta-icon');
+
+        if (!span || !spinner || !icon) return;
+
         const originalText = span.textContent;
         span.textContent = 'Redirigiendo...';
+        spinner.classList.remove('hidden');
+        icon.classList.add('hidden');
         cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+        if (redirectionAnnouncement) {
+          redirectionAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
+        }
 
         const href = cta.getAttribute('href');
         if (href) {
@@ -191,13 +216,15 @@ import { CONFIG } from '../data/config';
         }
 
         setTimeout(() => {
+          isRedirecting = false;
           if (span) span.textContent = originalText;
+          if (spinner) spinner.classList.add('hidden');
+          if (icon) icon.classList.remove('hidden');
           if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          if (redirectionAnnouncement) redirectionAnnouncement.textContent = '';
         }, 3000);
       };
 
-      // Performance Optimization: Cache link elements in a Map for O(1) lookup during intersection.
-      // This avoids re-scanning the DOM or iterating through all links on every scroll/intersection event.
       const linkMap = new Map<string, Element>();
       navLinks.forEach(link => {
         const href = link.getAttribute('href');
@@ -212,8 +239,6 @@ import { CONFIG } from '../data/config';
             const targetHref = `#${id}`;
             const activeLink = linkMap.get(targetHref);
 
-            // Optimization: Only update DOM if the active section has actually changed.
-            // Reduces O(N) link iterations to O(1) direct lookup and targeted class toggling.
             if (activeLink && activeLink !== currentActiveLink) {
               if (currentActiveLink) {
                 currentActiveLink.classList.remove('nav-link-active');
