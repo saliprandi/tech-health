@@ -147,3 +147,7 @@ Importante!!! Quiero todos los pr en español
 ## 2025-06-26 - [UX: Feedback de interacción coordinado en FAQ]
 **Learning:** En componentes interactivos de tipo acordeón, el uso de 'focus-within' junto con 'hover' en el contenedor padre permite proporcionar una respuesta visual consistente (cambio de fondo y sombras) que guía al usuario. Sincronizar estos estados con transformaciones en los hijos (escala del icono y color del texto) mediante 'group-focus-visible' asegura una paridad de experiencia para usuarios de teclado y ratón.
 **Action:** Implementar siempre estados de feedback coordinados en el contenedor padre usando 'group' y 'focus-within' para asegurar que la interactividad sea evidente y accesible para todos los métodos de entrada.
+
+## 2025-02-17 - [UX: Feedback de carga con spinner y aria-busy]
+**Aprendizaje:** El uso de un spinner visual junto con `aria-busy="true"` proporciona una señal clara de procesamiento tanto para usuarios visuales como para tecnologías asistivas. Esto es crucial en redirecciones externas donde puede haber un pequeño retraso antes de que el navegador cambie de pestaña.
+**Acción:** Acompañar siempre los cambios de texto en botones de acción con indicadores visuales de progreso (spinners) y atributos de estado ARIA para una experiencia inclusiva.
