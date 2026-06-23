@@ -28,3 +28,8 @@
 **Vulnerability:** Riesgo de XSS por inyección de scripts en bloques de datos estructurados (JSON-LD) y falta de validación en formularios.
 **Learning:** El uso de `JSON.stringify` con `set:html` en Astro permite que caracteres como `<` rompan el contexto del script. Asimismo, la falta de límites de longitud en entradas facilita ataques de denegación de servicio local o desbordamientos visuales.
 **Prevention:** Escapar siempre el carácter `<` en salidas JSON inyectadas en HTML y aplicar atributos `maxlength` y `pattern` en todos los inputs públicos.
+
+## 2025-05-22 - [Corrupción estructural crítica y evasión de auditoría]
+**Vulnerability:** Evasión de auditoría de seguridad por lockfile corrupto e inconsistencia de atributos de seguridad (XSS/Tabnabbing) por duplicación masiva de componentes.
+**Learning:** La corrupción de 'pnpm-lock.yaml' con claves duplicadas bloquea las herramientas de auditoría ('pnpm audit'), dejando al proyecto vulnerable a CVEs no detectados. Asimismo, la duplicación extrema en componentes Astro (~700 líneas redundantes) fragmenta las protecciones de seguridad, donde un bloque puede estar protegido y su duplicado no.
+**Prevention:** Mantener la integridad del lockfile es una prioridad absoluta para la automatización de seguridad. Ante errores de redeclaración en Astro, priorizar la deduplicación total para garantizar que los atributos de seguridad ('rel', 'maxlength') y la sanitización de URLs se apliquen de forma uniforme.
