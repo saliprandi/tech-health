@@ -14,3 +14,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-16 - Consolidación de componentes corruptos y optimización de constructores
 **Aprendizaje:** Los archivos que sufren corrupciones estructurales (duplicación masiva de bloques) no solo rompen el build por redeclaración de variables, sino que degradan el performance por ejecución redundante de intervalos y listeners. Además, instanciar objetos costosos como `Intl.DateTimeFormat` dentro de funciones de inicialización que se ejecutan en cada `astro:after-swap` genera overhead innecesario.
 **Acción:** Realizar limpiezas quirúrgicas para consolidar la lógica en una sola instancia funcional. Mover la instanciación de objetos de configuración (formatters, observers) fuera de las funciones de ciclo de vida para aprovechar el cacheo del motor de JS.
+
+## 2026-06-17 - Optimización de formateo de fecha y reparación estructural
+**Aprendizaje:** La instanciación de `Intl.DateTimeFormat` dentro de funciones repetitivas o ciclos de inicialización genera un overhead innecesario. Extraer el formateador a un scope superior y optimizar la extracción de partes (evitando múltiples llamadas a `.find()`) mejora la eficiencia de ejecución en actualizaciones frecuentes (como badges de estado). Además, la eliminación de código duplicado masivo reduce el tamaño del bundle y el tiempo de parsing del DOM.
+**Acción:** Cachear siempre constructores de objetos costosos fuera de los paths de ejecución de alta frecuencia y utilizar iteraciones de un solo paso para la extracción de datos de arrays de partes.
