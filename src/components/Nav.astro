@@ -25,6 +25,7 @@ import { CONFIG } from '../data/config';
         <svg class="w-3.5 h-3.5 text-white/50" fill="none" stroke="currentColor" aria-hidden="true">
           <use href="#icon-external" />
         </svg>
+        <span id="nav-cta-announcement" class="sr-only" aria-live="polite"></span>
       </a>
 
       <!-- Hamburger Button -->
@@ -53,6 +54,7 @@ import { CONFIG } from '../data/config';
       <svg class="w-3.5 h-3.5 text-white/50" fill="none" stroke="currentColor" aria-hidden="true">
         <use href="#icon-external" />
       </svg>
+      <span id="mobile-nav-cta-announcement" class="sr-only" aria-live="polite"></span>
     </a>
   </div>
 
@@ -174,9 +176,12 @@ import { CONFIG } from '../data/config';
         e.preventDefault();
         const cta = e.currentTarget as HTMLElement;
         const span = cta.querySelector('span');
+        const announcement = cta.querySelector('[aria-live="polite"]');
         if (!span) return;
+
         const originalText = span.textContent;
         span.textContent = 'Redirigiendo...';
+        if (announcement) announcement.textContent = 'Redirigiendo a WhatsApp...';
         cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = cta.getAttribute('href');
@@ -192,6 +197,7 @@ import { CONFIG } from '../data/config';
 
         setTimeout(() => {
           if (span) span.textContent = originalText;
+          if (announcement) announcement.textContent = '';
           if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }, 3000);
       };
