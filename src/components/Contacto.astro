@@ -6,6 +6,7 @@ import { CONFIG } from '../data/config';
   <div class="container-custom">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
 
+      <!-- Columna izquierda: Info -->
       <!-- Columna izquierda: Información de contacto -->
       <div class="flex flex-col gap-8">
         <div>
@@ -17,6 +18,7 @@ import { CONFIG } from '../data/config';
         </div>
 
         <div class="flex flex-col gap-4">
+          <!-- WhatsApp / Teléfono Card -->
           <!-- WhatsApp Card -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none group-focus-visible:ring-2 group-focus-visible:ring-blue group-focus-visible:ring-inset" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
@@ -67,6 +69,7 @@ import { CONFIG } from '../data/config';
 
           <!-- Horario Card -->
           <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
+            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true"><use href="#icon-clock" /></svg>
@@ -97,11 +100,18 @@ import { CONFIG } from '../data/config';
           </div>
 
           <div class="flex flex-col gap-1.5">
+            <label for="f-nombre" class="font-body font-medium text-[13px] text-white/80">
+              Nombre completo <span class="text-blue-light" aria-hidden="true">*</span>
+            </label>
             <label for="f-nombre" class="font-body font-medium text-[13px] text-white/80">Nombre completo <span class="text-blue-light" aria-hidden="true">*</span></label>
             <input type="text" id="f-nombre" name="nombre" required maxlength="100" placeholder="Ej: Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
           </div>
 
           <div class="flex flex-col gap-1.5">
+            <label for="f-tel" class="font-body font-medium text-[13px] text-white/80">
+              Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span>
+            </label>
+            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-\(\)]*" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
             <label for="f-tel" class="font-body font-medium text-[13px] text-white/80">Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span></label>
             <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-()]*" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
           </div>
@@ -146,6 +156,7 @@ import { CONFIG } from '../data/config';
 
 <script>
   (function() {
+    // Optimization: Cache Intl instance for date formatting outside the init function
     // Performance Optimization: Cache Intl instance for date formatting outside the init function
     const tucumanFormatter = new Intl.DateTimeFormat('en-CA', {
       timeZone: 'America/Argentina/Tucuman',
@@ -197,6 +208,12 @@ import { CONFIG } from '../data/config';
         const hour = tucumanDate.getHours();
         const minutes = tucumanDate.getMinutes();
         const totalMinutes = hour * 60 + minutes;
+
+        // Monday-Friday: 09:00 (540 min) to 18:00 (1080 min)
+        const isWeekday = day >= 1 && day <= 5;
+        const openTime = 9 * 60; // 540
+        const closeTime = 18 * 60; // 1080
+        const isOpen = isWeekday && totalMinutes >= openTime && totalMinutes < closeTime;
 
         // Opening: 09:00 (540 mins), Closing: 18:00 (1080 mins)
         const openTime = 9 * 60;
@@ -271,11 +288,10 @@ import { CONFIG } from '../data/config';
             iconUse.setAttribute('href', '#icon-check');
             btn.classList.add('text-blue', 'scale-110');
             if (copyAnnouncement) copyAnnouncement.textContent = announcementMsg;
-            if (copyAnnouncement) copyAnnouncement.textContent = msg;
 
             setTimeout(() => {
               text.textContent = originalText;
-              iconUse.setAttribute('href', originalIcon || '#icon-copy');
+              iconUse.setAttribute('href', originalIcon);
               btn.classList.remove('text-blue', 'scale-110');
               if (copyAnnouncement) copyAnnouncement.textContent = '';
             }, 2000);
@@ -311,6 +327,8 @@ import { CONFIG } from '../data/config';
         const mensaje = (formData.get('mensaje') as string).trim();
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
+        const sanitizedWa = whatsappNumber.replace(/\D/g, '');
+        const url = `https://wa.me/${sanitizedWa}?text=${encodeURIComponent(rawMessage)}`;
         const url = `https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(rawMessage)}`;
 
         if (submitBtn && submitBtnText) {
