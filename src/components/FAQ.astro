@@ -64,7 +64,6 @@ import { CONFIG } from '../data/config';
       const closeContainer = (container: HTMLElement) => {
         if (!container) return;
 
-        // Clear existing timer for this container
         if (transitionTimers.has(container)) {
           clearTimeout(transitionTimers.get(container));
         }
@@ -87,7 +86,6 @@ import { CONFIG } from '../data/config';
         const icon = item?.querySelector('.faq-icon');
         const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
 
-        // Close others
         items.forEach(otherItem => {
           if (otherItem !== item) {
             const otherTrigger = otherItem.querySelector('.faq-trigger');
@@ -102,7 +100,6 @@ import { CONFIG } from '../data/config';
           }
         });
 
-        // Toggle current
         trigger.setAttribute('aria-expanded', (!isExpanded).toString());
         icon?.classList.toggle('rotate-180', !isExpanded);
 
@@ -114,7 +111,6 @@ import { CONFIG } from '../data/config';
 
           if (!isExpanded) {
             container.classList.remove('invisible');
-            // Force reflow
             void container.offsetHeight;
             container.classList.remove('opacity-0');
             const height = container.scrollHeight;
