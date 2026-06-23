@@ -147,3 +147,7 @@ Importante!!! Quiero todos los pr en español
 ## 2025-06-26 - [UX: Feedback de interacción coordinado en FAQ]
 **Learning:** En componentes interactivos de tipo acordeón, el uso de 'focus-within' junto con 'hover' en el contenedor padre permite proporcionar una respuesta visual consistente (cambio de fondo y sombras) que guía al usuario. Sincronizar estos estados con transformaciones en los hijos (escala del icono y color del texto) mediante 'group-focus-visible' asegura una paridad de experiencia para usuarios de teclado y ratón.
 **Action:** Implementar siempre estados de feedback coordinados en el contenedor padre usando 'group' y 'focus-within' para asegurar que la interactividad sea evidente y accesible para todos los métodos de entrada.
+
+## 2025-02-17 - [UX: Feedback de carga en CTAs de redirección]
+**Learning:** Proporcionar un indicador de carga visual (spinner) junto con el texto "Redirigiendo..." en botones que llevan a plataformas externas (WhatsApp) mejora significativamente la percepción de respuesta del sitio y evita clics repetidos del usuario mientras el navegador procesa la apertura de la nueva pestaña.
+**Action:** Integrar siempre un spinner SVG animado y estados de deshabilitado temporal en botones de contacto directo para una experiencia de usuario más fluida y profesional.
