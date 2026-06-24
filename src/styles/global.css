@@ -75,7 +75,8 @@
     padding: 12px 28px;
   }
 
-  .btn-primary:hover {
+  .btn-primary:hover,
+  .btn-primary:focus-visible {
     background-color: var(--navy-dark);
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(18, 51, 106, 0.15);
