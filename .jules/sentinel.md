@@ -28,3 +28,8 @@
 **Vulnerability:** Riesgo de XSS por inyección de scripts en bloques de datos estructurados (JSON-LD) y falta de validación en formularios.
 **Learning:** El uso de `JSON.stringify` con `set:html` en Astro permite que caracteres como `<` rompan el contexto del script. Asimismo, la falta de límites de longitud en entradas facilita ataques de denegación de servicio local o desbordamientos visuales.
 **Prevention:** Escapar siempre el carácter `<` en salidas JSON inyectadas en HTML y aplicar atributos `maxlength` y `pattern` en todos los inputs públicos.
+
+## 2026-06-24 - [Sanitización de enlaces externos y corrección de corrupción estructural]
+**Vulnerability:** Tabnabbing (falta de rel="noopener noreferrer"), inyección potencial por números malformados en URLs de WhatsApp y bypass de protecciones por corrupción de código.
+**Learning:** La duplicación masiva de código en componentes Astro no solo genera errores de build, sino que puede desactivar protecciones críticas como honeypots y validaciones si el script resultante es inválido. La sanitización de entradas de configuración antes de su uso en URLs dinámicas es vital para la defensa en profundidad.
+**Prevention:** Aplicar siempre `.replace(/\D/g, '')` a números de teléfono en enlaces y asegurar la integridad estructural del componente mediante `astro check` para garantizar que las medidas de seguridad del cliente se ejecuten correctamente.
