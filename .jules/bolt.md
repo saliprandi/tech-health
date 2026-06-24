@@ -18,3 +18,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-17 - Optimización de formateo de fecha y reparación estructural
 **Aprendizaje:** La instanciación de `Intl.DateTimeFormat` dentro de funciones repetitivas o ciclos de inicialización genera un overhead innecesario. Extraer el formateador a un scope superior y optimizar la extracción de partes (evitando múltiples llamadas a `.find()`) mejora la eficiencia de ejecución en actualizaciones frecuentes (como badges de estado). Además, la eliminación de código duplicado masivo reduce el tamaño del bundle y el tiempo de parsing del DOM.
 **Acción:** Cachear siempre constructores de objetos costosos fuera de los paths de ejecución de alta frecuencia y utilizar iteraciones de un solo paso para la extracción de datos de arrays de partes.
+
+## 2026-06-18 - Deduplicación estructural y optimización de scope en scripts
+**Aprendizaje:** La duplicación masiva de bloques HTML y lógica en componentes Astro no solo aumenta el tamaño del bundle, sino que degrada el performance al forzar al navegador a procesar un DOM inflado y ejecutar scripts redundantes. Además, mover instanciaciones costosas (como `Intl.DateTimeFormat`) al scope del módulo evita el churn de memoria durante las transiciones de página de Astro (`astro:after-swap`).
+**Acción:** Realizar limpiezas estructurales completas para reducir la profundidad del DOM. Cachear siempre objetos globales de configuración fuera de las funciones de inicialización del componente para maximizar la eficiencia en tiempo de ejecución.
