@@ -6,7 +6,6 @@ import { CONFIG } from '../data/config';
   <div class="container-custom">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
 
-      <!-- Columna izquierda: Info -->
       <!-- Columna izquierda: Información de contacto -->
       <div class="flex flex-col gap-8">
         <div>
@@ -18,14 +17,12 @@ import { CONFIG } from '../data/config';
         </div>
 
         <div class="flex flex-col gap-4">
-          <!-- WhatsApp / Teléfono Card -->
           <!-- WhatsApp Card -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none group-focus-visible:ring-2 group-focus-visible:ring-blue group-focus-visible:ring-inset" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
             <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110 pointer-events-none">
               <svg class="w-5 h-5 group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-whatsapp" />
-                <use href="#icon-phone" />
               </svg>
             </div>
             <div class="relative z-10 flex-grow pointer-events-none">
@@ -36,7 +33,6 @@ import { CONFIG } from '../data/config';
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true">
                     <use id="copy-phone-icon-use" href="#icon-copy" />
                   </svg>
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-phone-icon-use" href="#icon-copy" /></svg>
                   <span id="copy-phone-text" class="pointer-events-none">Copiar</span>
                 </button>
               </div>
@@ -50,7 +46,6 @@ import { CONFIG } from '../data/config';
               <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-map-pin" />
               </svg>
-              <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><use href="#icon-map-pin" /></svg>
             </div>
             <div class="relative z-10 flex-grow pointer-events-none">
               <div class="font-heading font-bold text-[16px] text-navy mb-1">Laboratorio</div>
@@ -60,7 +55,6 @@ import { CONFIG } from '../data/config';
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true">
                     <use id="copy-address-icon-use" href="#icon-copy" />
                   </svg>
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true"><use id="copy-address-icon-use" href="#icon-copy" /></svg>
                   <span id="copy-address-text" class="pointer-events-none">Copiar</span>
                 </button>
               </div>
@@ -70,9 +64,6 @@ import { CONFIG } from '../data/config';
           <!-- Horario Card -->
           <div class="group flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110">
-            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110">
-            <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true"><use href="#icon-clock" /></svg>
               <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-clock" />
               </svg>
@@ -103,7 +94,6 @@ import { CONFIG } from '../data/config';
             <label for="f-nombre" class="font-body font-medium text-[13px] text-white/80">
               Nombre completo <span class="text-blue-light" aria-hidden="true">*</span>
             </label>
-            <label for="f-nombre" class="font-body font-medium text-[13px] text-white/80">Nombre completo <span class="text-blue-light" aria-hidden="true">*</span></label>
             <input type="text" id="f-nombre" name="nombre" required maxlength="100" placeholder="Ej: Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
           </div>
 
@@ -112,8 +102,6 @@ import { CONFIG } from '../data/config';
               Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span>
             </label>
             <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-\(\)]*" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
-            <label for="f-tel" class="font-body font-medium text-[13px] text-white/80">Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span></label>
-            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-()]*" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
           </div>
 
           <div class="flex flex-col gap-1.5">
@@ -156,8 +144,6 @@ import { CONFIG } from '../data/config';
 
 <script>
   (function() {
-    // Optimization: Cache Intl instance for date formatting outside the init function
-    // Performance Optimization: Cache Intl instance for date formatting outside the init function
     const tucumanFormatter = new Intl.DateTimeFormat('en-CA', {
       timeZone: 'America/Argentina/Tucuman',
       hour12: false,
@@ -187,18 +173,11 @@ import { CONFIG } from '../data/config';
         let tucumanDate: Date;
 
         try {
-          // Optimization: Extract all parts at once
           const parts = tucumanFormatter.formatToParts(now);
           const p: Record<string, string> = {};
           for (let i = 0; i < parts.length; i++) {
             p[parts[i].type] = parts[i].value;
           }
-          // Construct ISO string for cross-browser compatibility
-          tucumanDate = new Date(`${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`);
-        } catch (e) {
-          // Fallback if timezone formatting fails
-          const p: any = {};
-          parts.forEach(part => p[part.type] = part.value);
           tucumanDate = new Date(`${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`);
         } catch {
           tucumanDate = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
@@ -209,15 +188,8 @@ import { CONFIG } from '../data/config';
         const minutes = tucumanDate.getMinutes();
         const totalMinutes = hour * 60 + minutes;
 
-        // Monday-Friday: 09:00 (540 min) to 18:00 (1080 min)
-        const isWeekday = day >= 1 && day <= 5;
-        const openTime = 9 * 60; // 540
-        const closeTime = 18 * 60; // 1080
-        const isOpen = isWeekday && totalMinutes >= openTime && totalMinutes < closeTime;
-
-        // Opening: 09:00 (540 mins), Closing: 18:00 (1080 mins)
-        const openTime = 9 * 60;
-        const closeTime = 18 * 60;
+        const openTime = 9 * 60; // 09:00
+        const closeTime = 18 * 60; // 18:00
         const isWeekday = day >= 1 && day <= 5;
         const isOpen = isWeekday && totalMinutes >= openTime && totalMinutes < closeTime;
         const isOpeningSoon = isWeekday && totalMinutes >= (openTime - 30) && totalMinutes < openTime;
@@ -235,8 +207,6 @@ import { CONFIG } from '../data/config';
         } else if (isOpeningSoon) {
           badge.textContent = 'Abrirá pronto';
           badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800';
-          badge.innerHTML = '<span class="relative flex h-2 w-2" aria-hidden="true"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora';
-          badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800';
         } else {
           badge.textContent = 'Cerrado';
           badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gray-100 text-gray-800';
@@ -249,7 +219,6 @@ import { CONFIG } from '../data/config';
         const len = desc.value.length;
         counter.textContent = `${len} / 500`;
 
-        // Micro-UX: Visual feedback for character limits
         if (len >= 450) {
           counter.classList.remove('text-white/40');
           counter.classList.add('text-red-500');
@@ -261,7 +230,6 @@ import { CONFIG } from '../data/config';
 
       // --- Clipboard Helper ---
       const setupCopy = (btnId: string, textId: string, iconId: string, contentId: string, announcementMsg: string) => {
-      const setupCopy = (btnId: string, textId: string, iconId: string, contentId: string, msg: string) => {
         const btn = document.getElementById(btnId);
         const text = document.getElementById(textId);
         const iconUse = document.getElementById(iconId);
@@ -278,10 +246,6 @@ import { CONFIG } from '../data/config';
           const originalIcon = iconUse.getAttribute('href');
           let contentToCopy = contentEl.textContent?.trim() || '';
           if (btnId === 'copy-phone') contentToCopy = contentToCopy.replace(/\s/g, '');
-          const originalText = text.textContent;
-          const originalIcon = iconUse.getAttribute('href');
-          let content = contentEl.textContent?.trim() || '';
-          if (btnId === 'copy-phone') content = content.replace(/\s/g, '');
 
           navigator.clipboard.writeText(contentToCopy).then(() => {
             text.textContent = '¡Copiado!';
@@ -291,7 +255,7 @@ import { CONFIG } from '../data/config';
 
             setTimeout(() => {
               text.textContent = originalText;
-              iconUse.setAttribute('href', originalIcon);
+              iconUse.setAttribute('href', originalIcon || '#icon-copy');
               btn.classList.remove('text-blue', 'scale-110');
               if (copyAnnouncement) copyAnnouncement.textContent = '';
             }, 2000);
@@ -305,7 +269,6 @@ import { CONFIG } from '../data/config';
       const handleSubmit = (e: Event) => {
         e.preventDefault();
         const formData = new FormData(form);
-        if (formData.get('website')) return; // Honeypot
         if (formData.get('website')) return;
 
         if (!form.checkValidity()) {
@@ -313,14 +276,6 @@ import { CONFIG } from '../data/config';
           return;
         }
 
-        const nombre = (formData.get('nombre') as string || '').trim();
-        const tel = (formData.get('telefono') as string || '').trim();
-        const servicio = (formData.get('servicio') as string || 'Consulta general');
-        const mensaje = (formData.get('mensaje') as string || '').trim();
-
-        const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
-        const sanitizedWa = whatsappNumber.replace(/\D/g, '');
-        const url = `https://wa.me/${sanitizedWa}?text=${encodeURIComponent(rawMessage)}`;
         const nombre = (formData.get('nombre') as string).trim();
         const tel = (formData.get('telefono') as string).trim();
         const servicio = formData.get('servicio') as string;
@@ -329,7 +284,6 @@ import { CONFIG } from '../data/config';
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
         const sanitizedWa = whatsappNumber.replace(/\D/g, '');
         const url = `https://wa.me/${sanitizedWa}?text=${encodeURIComponent(rawMessage)}`;
-        const url = `https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(rawMessage)}`;
 
         if (submitBtn && submitBtnText) {
           const originalText = submitBtnText.textContent;
@@ -350,7 +304,6 @@ import { CONFIG } from '../data/config';
           }, 3000);
         }
 
-        window.open(url, '_blank', 'noopener,noreferrer');
         const a = document.createElement('a');
         a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer';
         document.body.appendChild(a); a.click(); document.body.removeChild(a);
@@ -369,8 +322,6 @@ import { CONFIG } from '../data/config';
       return () => {
         if (statusInterval) clearInterval(statusInterval);
         desc?.removeEventListener('input', updateCounter);
-        cleanupCopyPhone();
-        cleanupCopyAddress();
         cleanupPhone();
         cleanupAddress();
         form.removeEventListener('submit', handleSubmit);

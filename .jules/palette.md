@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-02-17 - [UX: Reparación estructural y feedback de límites]
+**Learning:** El mantenimiento de la integridad estructural del HTML/JSX (evitar duplicación de IDs y tags) es el primer requisito para una UX accesible. Además, proporcionar señales visuales de urgencia (ej. cambiar color del contador a rojo) al acercarse a límites de caracteres previene la frustración del usuario antes de que ocurra el error.
+**Action:** Priorizar la limpieza de componentes con "deuda técnica estructural" y usar cambios de color semánticos para feedback de límites en tiempo real.
