@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-02-17 - [A11y: Accesibilidad de contadores de caracteres]
+**Learning:** Omitir 'aria-hidden="true"' en contadores de caracteres que son el objetivo de un atributo 'aria-describedby' es esencial para que los lectores de pantalla anuncien el estado del contador.
+**Action:** Al implementar contadores de caracteres asociados a un input, asegurar que el contador sea accesible para tecnologías asistivas mediante la eliminación de atributos que oculten el elemento del árbol de accesibilidad.
