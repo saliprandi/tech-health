@@ -151,3 +151,11 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-05-20 - [UX: Sincronización de estados en badges dinámicos]
+**Aprendizaje:** Al implementar badges de estado en tiempo real (ej. "Abrirá pronto"), es crítico usar una estructura de control que evite que estados transitorios sean sobrescritos por valores por defecto en el mismo ciclo de ejecución.
+**Acción:** Usar bloques if/else if/else mutuamente excluyentes o retornos tempranos para asegurar que la prioridad de los estados de aviso (amber) se preserve sobre los estados normales (emerald).
+
+## 2025-05-20 - [A11y: Accesibilidad de contadores y anuncios live]
+**Aprendizaje:** Los contadores de caracteres vinculados vía `aria-describedby` no deben llevar `aria-hidden="true"`, ya que esto impide que los lectores de pantalla accedan a la información descriptiva del campo.
+**Acción:** Validar siempre que los elementos de feedback descriptivo sean visibles para el árbol de accesibilidad si están asociados semánticamente a un input.
