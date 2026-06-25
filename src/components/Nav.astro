@@ -12,10 +12,10 @@ import { CONFIG } from '../data/config';
 
     <!-- Desktop Links -->
     <ul class="hidden md:flex items-center gap-8">
-      <li><a href="#servicios" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Servicios</a></li>
-      <li><a href="#equipos" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Equipos</a></li>
-      <li><a href="#nosotros" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Nosotros</a></li>
-      <li><a href="#contacto" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Contacto</a></li>
+      <li><a href="#servicios" class="nav-link relative font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-blue after:origin-right after:scale-x-0 hover:after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-300">Servicios</a></li>
+      <li><a href="#equipos" class="nav-link relative font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-blue after:origin-right after:scale-x-0 hover:after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-300">Equipos</a></li>
+      <li><a href="#nosotros" class="nav-link relative font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-blue after:origin-right after:scale-x-0 hover:after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-300">Nosotros</a></li>
+      <li><a href="#contacto" class="nav-link relative font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-blue after:origin-right after:scale-x-0 hover:after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-300">Contacto</a></li>
     </ul>
 
     <!-- CTA & Mobile Toggle -->
@@ -74,6 +74,10 @@ import { CONFIG } from '../data/config';
 <style>
   .nav-link-active {
     @apply text-blue !important;
+  }
+
+  .nav-link-active::after {
+    @apply scale-x-100 origin-left !important;
   }
 
   #reading-progress {
