@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-02-18 - [UX: Accesibilidad y consistencia en datos de contacto]
+**Learning:** Los datos de contacto estáticos en el footer (como números de teléfono) son oportunidades perdidas para la interacción. Convertirlos en links accionables con estados de foco claros mejora la conversión y la accesibilidad. Además, asociar contadores de caracteres con `aria-live="polite"` permite que usuarios de lectores de pantalla tengan feedback en tiempo real sin ser disruptivo.
+**Action:** Asegurar que los datos de contacto clave sean siempre interactivos y que los indicadores de estado dinámicos (contadores, badges) usen regiones aria-live apropiadas.
