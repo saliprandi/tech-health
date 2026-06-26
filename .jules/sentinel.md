@@ -28,3 +28,8 @@
 **Vulnerability:** Riesgo de XSS por inyección de scripts en bloques de datos estructurados (JSON-LD) y falta de validación en formularios.
 **Learning:** El uso de `JSON.stringify` con `set:html` en Astro permite que caracteres como `<` rompan el contexto del script. Asimismo, la falta de límites de longitud en entradas facilita ataques de denegación de servicio local o desbordamientos visuales.
 **Prevention:** Escapar siempre el carácter `<` en salidas JSON inyectadas en HTML y aplicar atributos `maxlength` y `pattern` en todos los inputs públicos.
+
+## 2026-06-18 - [Saneamiento de corrupción estructural en Contacto.astro y mitigación de ReDoS]
+**Vulnerability:** Corrupción de código con duplicación masiva, facilitando la omisión de validaciones y brechas de seguridad (XSS/Tabnabbing) por inconsistencia entre bloques duplicados. Vulnerabilidades ReDoS/SSRF en dependencias transitivas.
+**Learning:** La corrupción estructural en archivos Astro (especialmente en bloques de script) puede generar errores de redifinicón que rompen el build, pero también puede ocultar lógica de seguridad incompleta en las copias duplicadas. El uso de `pnpm.overrides` es efectivo para mitigar riesgos en dependencias profundas como `url-regex`.
+**Prevention:** Mantener una higiene estricta del DOM y scripts en componentes interactivos. Utilizar `pnpm astro check` como guardián preventivo contra la duplicación de lógica.
