@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-02-17 - [UX: Interactividad en Footer y Saneamiento de Contacto]
+**Aprendizaje:** El saneamiento de componentes con corrupción estructural (duplicados de HTML/Script) es un pre-requisito para implementar micro-UX de forma segura. En el Footer, convertir información estática de contacto en enlaces interactivos con paridad de foco/hover mejora significativamente la utilidad del sitio para usuarios recurrentes.
+**Acción:** Priorizar siempre la integridad estructural del DOM antes de añadir mejoras visuales. Implementar paridad de feedback visual en el Footer usando 'focus-visible' y transiciones de escala coordinadas.
