@@ -102,6 +102,7 @@ import { CONFIG } from '../data/config';
               Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span>
             </label>
             <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-()]*" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
+            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-\(\)]*" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
           </div>
 
           <div class="flex flex-col gap-1.5">
@@ -144,6 +145,7 @@ import { CONFIG } from '../data/config';
 
 <script>
   (function() {
+    // Performance Optimization: Cache Intl instance for date formatting
     const tucumanFormatter = new Intl.DateTimeFormat('en-CA', {
       timeZone: 'America/Argentina/Tucuman',
       hour12: false,
@@ -189,6 +191,10 @@ import { CONFIG } from '../data/config';
         const openTime = 9 * 60; // 09:00
         const closeTime = 18 * 60; // 18:00
         const isWeekday = day >= 1 && day <= 5;
+        // Monday-Friday: 09:00 (540 min) to 18:00 (1080 min)
+        const isWeekday = day >= 1 && day <= 5;
+        const openTime = 9 * 60;
+        const closeTime = 18 * 60;
         const isOpen = isWeekday && totalMinutes >= openTime && totalMinutes < closeTime;
         const isOpeningSoon = isWeekday && totalMinutes >= (openTime - 30) && totalMinutes < openTime;
         const isClosingSoon = isWeekday && totalMinutes >= (closeTime - 30) && totalMinutes < closeTime;
@@ -244,6 +250,8 @@ import { CONFIG } from '../data/config';
           const originalIcon = iconUse.getAttribute('href');
           let content = contentEl.textContent?.trim() || '';
           if (btnId === 'copy-phone') content = content.replace(/\s/g, '');
+          let contentToCopy = contentEl.textContent?.trim() || '';
+          if (btnId === 'copy-phone') contentToCopy = contentToCopy.replace(/\s/g, '');
 
           navigator.clipboard.writeText(content).then(() => {
             text.textContent = '¡Copiado!';
@@ -309,6 +317,7 @@ import { CONFIG } from '../data/config';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+        window.open(url, '_blank', 'noopener,noreferrer');
       };
 
       updateStatusBadge();
