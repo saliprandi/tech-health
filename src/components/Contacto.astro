@@ -17,6 +17,7 @@ import { CONFIG } from '../data/config';
         </div>
 
         <div class="flex flex-col gap-4">
+          <!-- WhatsApp / Teléfono Card -->
           <!-- WhatsApp Card -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
             <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none group-focus-visible:ring-2 group-focus-visible:ring-blue group-focus-visible:ring-inset" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
@@ -91,6 +92,7 @@ import { CONFIG } from '../data/config';
           </div>
 
           <div class="flex flex-col gap-1.5">
+            <label for="f-nombre" class="font-body font-medium text-[13px] text-white/80">Nombre completo <span class="text-blue-light" aria-hidden="true">*</span></label>
             <label for="f-nombre" class="font-body font-medium text-[13px] text-white/80">
               Nombre completo <span class="text-blue-light" aria-hidden="true">*</span>
             </label>
@@ -98,6 +100,7 @@ import { CONFIG } from '../data/config';
           </div>
 
           <div class="flex flex-col gap-1.5">
+            <label for="f-tel" class="font-body font-medium text-[13px] text-white/80">Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span></label>
             <label for="f-tel" class="font-body font-medium text-[13px] text-white/80">
               Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span>
             </label>
@@ -145,6 +148,7 @@ import { CONFIG } from '../data/config';
 
 <script>
   (function() {
+    // Performance Optimization: Cache Intl instance outside the lifecycle
     // Performance Optimization: Cache Intl instance for date formatting
     const tucumanFormatter = new Intl.DateTimeFormat('en-CA', {
       timeZone: 'America/Argentina/Tucuman',
@@ -166,7 +170,7 @@ import { CONFIG } from '../data/config';
       if (!form) return () => {};
       const whatsappNumber = form.dataset.whatsapp || '';
 
-      // --- Business Hours Status (UTC-3 Tucumán) ---
+      // --- Status Badge Optimization ---
       let statusInterval: ReturnType<typeof setInterval> | null = null;
 
       const updateStatusBadge = () => {
@@ -175,6 +179,12 @@ import { CONFIG } from '../data/config';
         let tucumanDate: Date;
 
         try {
+          // Optimized: Single pass parsing
+          const parts = tucumanFormatter.formatToParts(now);
+          const p: Record<string, string> = {};
+          for (const part of parts) {
+            p[part.type] = part.value;
+          }
           const parts = tucumanFormatter.formatToParts(now);
           const p: Record<string, string> = {};
           parts.forEach(part => p[part.type] = part.value);
@@ -184,9 +194,11 @@ import { CONFIG } from '../data/config';
         }
 
         const day = tucumanDate.getDay();
-        const hour = tucumanDate.getHours();
-        const minutes = tucumanDate.getMinutes();
-        const totalMinutes = hour * 60 + minutes;
+        const totalMinutes = tucumanDate.getHours() * 60 + tucumanDate.getMinutes();
+
+        const isWeekday = day >= 1 && day <= 5;
+        const openTime = 9 * 60;   // 09:00
+        const closeTime = 18 * 60; // 18:00
 
         const openTime = 9 * 60; // 09:00
         const closeTime = 18 * 60; // 18:00
@@ -203,13 +215,14 @@ import { CONFIG } from '../data/config';
         if (isOpen) {
           if (isClosingSoon) {
             badge.textContent = 'Cerrará pronto';
-            badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800';
+            badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 animate-pulse';
           } else {
-            badge.innerHTML = '<span class="relative flex h-2 w-2" aria-hidden="true"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora';
+            badge.innerHTML = '<span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora';
             badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800';
           }
         } else if (isOpeningSoon) {
           badge.textContent = 'Abrirá pronto';
+          badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 animate-pulse';
           badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800';
         } else {
           badge.textContent = 'Cerrado';
@@ -222,6 +235,12 @@ import { CONFIG } from '../data/config';
         if (!desc || !counter) return;
         const len = desc.value.length;
         counter.textContent = `${len} / 500`;
+        counter.classList.toggle('text-red-500', len >= 450);
+        counter.classList.toggle('text-white/40', len < 450);
+      };
+
+      // --- Clipboard Helper ---
+      const setupCopy = (btnId: string, textId: string, iconId: string, contentId: string, msg: string) => {
 
         if (len >= 450) {
           counter.classList.remove('text-white/40');
@@ -254,13 +273,17 @@ import { CONFIG } from '../data/config';
           if (btnId === 'copy-phone') contentToCopy = contentToCopy.replace(/\s/g, '');
 
           navigator.clipboard.writeText(content).then(() => {
+            const originalText = text.textContent;
+            const originalIcon = iconUse.getAttribute('href');
+
             text.textContent = '¡Copiado!';
             iconUse.setAttribute('href', '#icon-check');
             btn.classList.add('text-blue', 'scale-110');
-            if (copyAnnouncement) copyAnnouncement.textContent = announcementMsg;
+            if (copyAnnouncement) copyAnnouncement.textContent = msg;
 
             setTimeout(() => {
               text.textContent = originalText;
+              iconUse.setAttribute('href', originalIcon || '#icon-copy');
               iconUse.setAttribute('href', originalIcon || '');
               btn.classList.remove('text-blue', 'scale-110');
               if (copyAnnouncement) copyAnnouncement.textContent = '';
@@ -288,6 +311,7 @@ import { CONFIG } from '../data/config';
         const mensaje = (formData.get('mensaje') as string || '').trim();
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
+        const url = `https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(rawMessage)}`;
         const sanitizedWa = whatsappNumber.replace(/\D/g, '');
         const url = `https://wa.me/${sanitizedWa}?text=${encodeURIComponent(rawMessage)}`;
 
@@ -299,6 +323,7 @@ import { CONFIG } from '../data/config';
           submitBtn.setAttribute('aria-busy', 'true');
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
+          // Redirection feedback logic
           setTimeout(() => {
             if (submitBtnText) submitBtnText.textContent = originalText;
             if (redirectAnnouncement) redirectAnnouncement.textContent = '';
@@ -310,6 +335,7 @@ import { CONFIG } from '../data/config';
           }, 3000);
         }
 
+        // Actionable redirection
         const a = document.createElement('a');
         a.href = url;
         a.target = '_blank';
