@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-02-17 - [UX: Paridad de foco y accesibilidad en Footer]
+**Learning:** Sincronizar los estados de hover con `:focus-visible` en clases globales de botones (como `.btn-primary`) asegura que la experiencia estética sea inclusiva para usuarios de teclado. Además, convertir elementos de texto estáticos (como números de contacto) en enlaces interactivos con estados visuales claros mejora significativamente la utilidad directa del sitio.
+**Action:** Siempre implementar paridad de feedback visual en el sistema de diseño global y auditar el footer para asegurar que toda la información de contacto sea accionable y accesible.
