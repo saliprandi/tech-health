@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-05-18 - [A11y: Saneamiento de componentes Astro corruptos]
+**Learning:** El saneamiento de componentes con corrupción estructural masiva (IDs duplicados, scripts redundantes) es un prerrequisito para cualquier mejora de UX. En entornos de testing headless (Playwright), es crítico otorgar permisos de portapapeles ('clipboard-read', 'clipboard-write') al contexto del navegador para validar correctamente las micro-interacciones de copiado.
+**Action:** Ante archivos Astro con duplicaciones severas, priorizar el sobreescrito total del archivo con una estructura limpia y asegurar que el entorno de test soporte las APIs de navegador necesarias para la verificación.
