@@ -101,6 +101,7 @@ import { CONFIG } from '../data/config';
             <label for="f-tel" class="font-body font-medium text-[13px] text-white/80">
               Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span>
             </label>
+            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-()]*" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
             <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-\(\)]*" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
           </div>
 
@@ -123,7 +124,7 @@ import { CONFIG } from '../data/config';
             <label for="f-desc" class="font-body font-medium text-[13px] text-white/80">Mensaje</label>
             <div class="relative">
               <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="¿En qué podemos ayudarle?" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none"></textarea>
-              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body" aria-hidden="true">0 / 500</div>
+              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body">0 / 500</div>
             </div>
           </div>
 
@@ -187,6 +188,9 @@ import { CONFIG } from '../data/config';
         const minutes = tucumanDate.getMinutes();
         const totalMinutes = hour * 60 + minutes;
 
+        const openTime = 9 * 60; // 09:00
+        const closeTime = 18 * 60; // 18:00
+        const isWeekday = day >= 1 && day <= 5;
         // Monday-Friday: 09:00 (540 min) to 18:00 (1080 min)
         const isWeekday = day >= 1 && day <= 5;
         const openTime = 9 * 60;
@@ -244,10 +248,12 @@ import { CONFIG } from '../data/config';
 
           const originalText = text.textContent;
           const originalIcon = iconUse.getAttribute('href');
+          let content = contentEl.textContent?.trim() || '';
+          if (btnId === 'copy-phone') content = content.replace(/\s/g, '');
           let contentToCopy = contentEl.textContent?.trim() || '';
           if (btnId === 'copy-phone') contentToCopy = contentToCopy.replace(/\s/g, '');
 
-          navigator.clipboard.writeText(contentToCopy).then(() => {
+          navigator.clipboard.writeText(content).then(() => {
             text.textContent = '¡Copiado!';
             iconUse.setAttribute('href', '#icon-check');
             btn.classList.add('text-blue', 'scale-110');
@@ -304,10 +310,16 @@ import { CONFIG } from '../data/config';
           }, 3000);
         }
 
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
         window.open(url, '_blank', 'noopener,noreferrer');
       };
 
-      // Initialization
       updateStatusBadge();
       statusInterval = setInterval(updateStatusBadge, 60000);
       updateCounter();
