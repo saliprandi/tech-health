@@ -151,3 +151,11 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-06-26 - [UX: Feedback progresivo en contadores de caracteres]
+**Learning:** Implementar estados de advertencia intermedios (ej. color ámbar al 80% y rojo al 90%) en contadores de caracteres proporciona una guía visual más suave y menos punitiva que un cambio brusco al límite, mejorando la experiencia de escritura del usuario.
+**Action:** Usar escalas de color progresivas en inputs con límites de caracteres para informar al usuario proactivamente sobre su capacidad restante.
+
+## 2025-06-26 - [A11y: Contraste en elementos de marca secundarios]
+**Learning:** Los logos o nombres de marcas en escala de grises o con baja opacidad suelen fallar en contraste. Incrementar la opacidad base (ej. de /50 a /70) manteniendo el efecto de hover a color pleno o mayor opacidad asegura que la información sea legible para todos sin sacrificar la estética minimalista.
+**Action:** Auditar siempre el contraste de textos con opacidad reducida y asegurar que cumplan al menos con el estándar AA (4.5:1) para texto normal.
