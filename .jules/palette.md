@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-02-17 - [UX: Refactorización de Contacto y accesibilidad]
+**Aprendizaje:** La corrupción estructural masiva (duplicación de HTML y scripts) en componentes Astro requiere una refactorización total para restaurar la accesibilidad y el build. Implementar un sistema de advertencia progresivo en contadores de caracteres (amber/red) mejora la prevención de errores, y ajustar la opacidad de placeholders y etiquetas de marca asegura el cumplimiento de contrastes AA sin comprometer la estética.
+**Acción:** Priorizar la limpieza de IDs duplicados y asegurar la paridad de feedback visual en estados dinámicos (badges animados) mediante clases de Tailwind consistentes.
