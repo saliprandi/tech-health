@@ -35,8 +35,12 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
 
       <!-- Buttons -->
       <div class="flex flex-wrap items-center gap-4 mt-2">
-        <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="btn-primary gap-2 group">
-          <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
+        <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp}`} target="_blank" rel="noopener noreferrer" class="btn-primary gap-2 group outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2">
+          <svg class="nav-spinner hidden w-5 h-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <svg class="nav-cta-icon w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
             <use href="#icon-whatsapp" />
           </svg>
           <span id="hero-cta-text">Solicitar servicio</span>
@@ -93,9 +97,15 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       const handleCtaClick = (e: MouseEvent) => {
         e.preventDefault();
         const originalText = heroCtaText.textContent;
+        const spinner = heroCta.querySelector('.nav-spinner');
+        const icon = heroCta.querySelector('.nav-cta-icon');
+
         heroCtaText.textContent = 'Redirigiendo...';
         if (heroCtaAnnouncement) heroCtaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        heroCta.setAttribute('aria-busy', 'true');
+        if (spinner) spinner.classList.remove('hidden');
+        if (icon) icon.classList.add('hidden');
 
         const href = heroCta.getAttribute('href');
         if (href) {
@@ -111,7 +121,12 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         setTimeout(() => {
           if (heroCtaText) heroCtaText.textContent = originalText;
           if (heroCtaAnnouncement) heroCtaAnnouncement.textContent = '';
-          if (heroCta) heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          if (heroCta) {
+            heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+            heroCta.removeAttribute('aria-busy');
+            if (spinner) spinner.classList.add('hidden');
+            if (icon) icon.classList.remove('hidden');
+          }
         }, 3000);
       };
 

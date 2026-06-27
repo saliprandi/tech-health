@@ -33,9 +33,13 @@ const { emergencia, contacto } = CONFIG;
             href={`https://wa.me/${contacto.whatsapp}?text=${encodeURIComponent('SOPORTE DE EMERGENCIA: Necesito asistencia inmediata para un equipo crítico.')}`}
             target="_blank"
             rel="noopener noreferrer"
-            class="btn-primary w-full lg:w-auto bg-white text-navy hover:bg-blue-pale hover:text-blue flex items-center justify-center gap-3 border-none group"
+            class="btn-primary w-full lg:w-auto bg-white text-navy hover:bg-blue-pale hover:text-blue flex items-center justify-center gap-3 border-none group outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
           >
-            <svg class="w-6 h-6 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
+            <svg class="nav-spinner hidden w-6 h-6 animate-spin text-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <svg class="nav-cta-icon w-6 h-6 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
               <use href="#icon-whatsapp" />
             </svg>
             <span id="emergencia-cta-text">{emergencia.cta}</span>
@@ -58,9 +62,15 @@ const { emergencia, contacto } = CONFIG;
       const handleCtaClick = (e: MouseEvent) => {
         e.preventDefault();
         const originalText = ctaText.textContent;
+        const spinner = cta.querySelector('.nav-spinner');
+        const icon = cta.querySelector('.nav-cta-icon');
+
         ctaText.textContent = 'Redirigiendo...';
         if (ctaAnnouncement) ctaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        cta.setAttribute('aria-busy', 'true');
+        if (spinner) spinner.classList.remove('hidden');
+        if (icon) icon.classList.add('hidden');
 
         const href = cta.getAttribute('href');
         if (href) {
@@ -76,7 +86,12 @@ const { emergencia, contacto } = CONFIG;
         setTimeout(() => {
           if (ctaText) ctaText.textContent = originalText;
           if (ctaAnnouncement) ctaAnnouncement.textContent = '';
-          if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          if (cta) {
+            cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+            cta.removeAttribute('aria-busy');
+            if (spinner) spinner.classList.add('hidden');
+            if (icon) icon.classList.remove('hidden');
+          }
         }, 3000);
       };
 
