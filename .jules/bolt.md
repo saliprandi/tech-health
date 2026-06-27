@@ -18,3 +18,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-17 - Optimización de formateo de fecha y reparación estructural
 **Aprendizaje:** La instanciación de `Intl.DateTimeFormat` dentro de funciones repetitivas o ciclos de inicialización genera un overhead innecesario. Extraer el formateador a un scope superior y optimizar la extracción de partes (evitando múltiples llamadas a `.find()`) mejora la eficiencia de ejecución en actualizaciones frecuentes (como badges de estado). Además, la eliminación de código duplicado masivo reduce el tamaño del bundle y el tiempo de parsing del DOM.
 **Acción:** Cachear siempre constructores de objetos costosos fuera de los paths de ejecución de alta frecuencia y utilizar iteraciones de un solo paso para la extracción de datos de arrays de partes.
+
+## 2026-06-18 - Optimización de redirección y transiciones de estado robustas
+**Aprendizaje:** El uso de `window.open` para redirecciones directas tras feedback de UI es más eficiente que la creación dinámica de elementos ancla, reduciendo la fragmentación del DOM. Además, al alternar entre múltiples clases de estado (como colores de alerta en contadores), `classList.replace` es frágil si el estado previo es incierto; `classList.remove` de todos los estados posibles seguido de `classList.add` garantiza una UI determinista y evita fugas de estilos.
+**Acción:** Implementar `window.open` para flujos de salida y asegurar limpiezas explícitas de clases de estado antes de aplicar nuevas transiciones.
