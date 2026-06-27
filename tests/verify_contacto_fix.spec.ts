@@ -22,7 +22,7 @@ test.describe('Contacto Component Fix Verification', () => {
     await expect(statusBadges).toHaveCount(1);
 
     // 2. Test Character Counter
-    const textarea = page.locator('#f-desc');
+    const textarea = page.locator('#f-mensaje');
     await textarea.fill('Hola, necesito mantenimiento para un monitor.');
     const counterText = await charCounters.textContent();
     expect(counterText).toContain('45 / 500');
@@ -58,7 +58,7 @@ test.describe('Contacto Component Fix Verification', () => {
     // Fill required fields
     await page.locator('#f-nombre').fill('Test User');
     await page.locator('#f-tel').fill('123456789');
-    await page.locator('#f-desc').fill('Test message');
+    await page.locator('#f-mensaje').fill('Test message');
 
     // We catch the navigation/redirection if possible or just check the button state
     // Since it opens in a new tab, we just check the UI feedback

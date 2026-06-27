@@ -22,7 +22,7 @@ test.describe('Contacto UX Enhancements', () => {
   });
 
   test('should update character counter and change color at threshold', async ({ page }) => {
-    const textarea = page.locator('#f-desc');
+    const textarea = page.locator('#f-mensaje');
     const counter = page.locator('#char-counter');
 
     // Initial state
@@ -37,7 +37,14 @@ test.describe('Contacto UX Enhancements', () => {
     await textarea.fill('Testing character counter');
     await expect(counter).toHaveText('25 / 500');
 
-    // Type text near limit (450 characters)
+    // Type text near amber threshold (400 characters)
+    await textarea.fill('A'.repeat(400));
+    await expect(counter).toHaveText('400 / 500');
+    color = await counter.evaluate((el) => getComputedStyle(el).color);
+    // text-amber-400 is rgb(251, 191, 36)
+    expect(color.replace(/ /g, '')).toBe('rgb(251,191,36)');
+
+    // Type text near red threshold (450 characters)
     const longText = 'A'.repeat(450);
     await textarea.fill(longText);
     await expect(counter).toHaveText('450 / 500');
