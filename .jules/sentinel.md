@@ -4,6 +4,11 @@
 **Prevention:** Always verify `pnpm build` after any modification to Astro components. Use automated tests (`playwright`) to verify security attributes on dynamic elements that are injected via `innerHTML`.
 # Sentinel Journal - TechHealth
 
+## 2026-06-20 - [CSP Hardening and Code Integrity Restoration]
+**Vulnerability:** Clickjacking (missing frame-src 'none') and build failures due to extreme code duplication.
+**Learning:** Massive code duplication in Astro components (e.g., `Contacto.astro`) not only breaks the build but also makes security auditing impossible as logic is scattered and inconsistently applied.
+**Prevention:** Tighten CSP as a default defense-in-depth measure. Perform full-file rewrites when code duplication becomes unmanageable to ensure a single, secure source of truth.
+
 ## 2025-05-13 - Mejora de seguridad: Content Security Policy y Referrer Policy
 **Vulnerabilidad:** Headers de seguridad faltantes (CSP, Referrer-Policy).
 **Aprendizaje:** Incluso los sitios estáticos se benefician de CSP para prevenir XSS potencial si alguna vez se agregan scripts de terceros o si ocurre inyección de datos.
