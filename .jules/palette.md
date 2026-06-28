@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-02-17 - [UX: Información de contacto accionable en el pie de página]
+**Learning:** Convertir la información de contacto estática (como dirección y teléfono) en el Footer en links interactivos mejora significativamente la utilidad del sitio, permitiendo al usuario iniciar acciones (abrir mapas, chatear) desde cualquier punto. El uso de `px-1 -mx-1` permite ampliar el área de clic sin alterar el diseño visual, mejorando la accesibilidad táctil.
+**Action:** Siempre que se muestre información de contacto clave, implementarla como links accionables con etiquetas ARIA descriptivas y feedback visual de hover/foco.
