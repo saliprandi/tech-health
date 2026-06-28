@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-02-18 - [UX: Estados progresivos en contadores y accesibilidad en Footer]
+**Learning:** Implementar estados visuales progresivos (ej. color ámbar antes del rojo crítico) en contadores de caracteres mejora la guía del usuario. Convertir datos de contacto estáticos en el footer en enlaces funcionales y mejorar su paridad de foco (focus rings de alto contraste) asegura que la utilidad y accesibilidad sean consistentes en todo el sitio.
+**Action:** Usar estados de color intermedios para feedback preventivo y asegurar que cada elemento interactivo en el footer tenga feedback visual de foco y hover.
