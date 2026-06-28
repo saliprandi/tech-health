@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-02-18 - [UX: Feedback progresivo en contadores de caracteres]
+**Learning:** Implementar umbrales de color progresivos (ej. normal, advertencia en 80%, crítico en 90%) en contadores de caracteres proporciona una guía visual intuitiva que reduce la frustración del usuario al acercarse a límites estrictos.
+**Action:** Usar clases como `text-amber-400` y `text-red-500` para estados intermedios y finales en textareas limitadas, asegurando una limpieza determinista de clases previas (`classList.remove`) antes de aplicar el nuevo estado.
