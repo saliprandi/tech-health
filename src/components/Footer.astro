@@ -9,7 +9,16 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
   <div class="container-custom flex flex-col items-center">
     
     <div class="font-body font-light text-[13px] text-white/50 mb-6">
-      {CONFIG.empresa.ciudad}, {CONFIG.empresa.pais} · {CONFIG.contacto.whatsapp_display}
+      {CONFIG.empresa.ciudad}, {CONFIG.empresa.pais} ·
+      <a
+        href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-white focus-visible:ring-1 focus-visible:ring-white/20 outline-none rounded-sm transition-colors px-1 -mx-1"
+        aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}
+      >
+        {CONFIG.contacto.whatsapp_display}
+      </a>
     </div>
 
     {hasSocials && (
