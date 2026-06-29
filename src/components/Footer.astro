@@ -3,33 +3,54 @@ import { CONFIG } from '../data/config';
 
 const year = new Date().getFullYear();
 const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.redes.linkedin;
+
+// Sanitize WhatsApp for link
+const waClean = CONFIG.contacto.whatsapp.replace(/\D/g, '');
 ---
 
 <footer class="bg-navy-dark py-10 px-[5%] text-center border-t border-white/5">
   <div class="container-custom flex flex-col items-center">
     
-    <div class="font-body font-light text-[13px] text-white/50 mb-6">
-      {CONFIG.empresa.ciudad}, {CONFIG.empresa.pais} · {CONFIG.contacto.whatsapp_display}
+    <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 font-body font-light text-[13px] text-white/70 mb-6">
+      <a
+        href={CONFIG.contacto.maps_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-white focus-visible:text-white transition-colors outline-none px-1 -mx-1 focus-visible:ring-1 focus-visible:ring-white/20 rounded-sm"
+        aria-label={`Ver ubicación en Google Maps: ${CONFIG.empresa.ciudad}, ${CONFIG.empresa.pais}`}
+      >
+        {CONFIG.empresa.ciudad}, {CONFIG.empresa.pais}
+      </a>
+      <span class="hidden sm:inline text-white/20" aria-hidden="true">·</span>
+      <a
+        href={`https://wa.me/${waClean}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-white focus-visible:text-white transition-colors outline-none px-1 -mx-1 focus-visible:ring-1 focus-visible:ring-white/20 rounded-sm"
+        aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}
+      >
+        {CONFIG.contacto.whatsapp_display}
+      </a>
     </div>
 
     {hasSocials && (
       <div class="flex items-center gap-4 mb-6">
         {CONFIG.redes.instagram && (
-          <a href={CONFIG.redes.instagram} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en Instagram">
+          <a href={CONFIG.redes.instagram} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white hover:-translate-y-0.5 focus-visible:text-white focus-visible:-translate-y-0.5 transition-all duration-300 outline-none" aria-label="Seguir en Instagram">
             <svg class="w-5 h-5" fill="currentColor">
               <use href="#icon-instagram" />
             </svg>
           </a>
         )}
         {CONFIG.redes.facebook && (
-          <a href={CONFIG.redes.facebook} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en Facebook">
+          <a href={CONFIG.redes.facebook} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white hover:-translate-y-0.5 focus-visible:text-white focus-visible:-translate-y-0.5 transition-all duration-300 outline-none" aria-label="Seguir en Facebook">
             <svg class="w-5 h-5" fill="currentColor">
               <use href="#icon-facebook" />
             </svg>
           </a>
         )}
         {CONFIG.redes.linkedin && (
-          <a href={CONFIG.redes.linkedin} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en LinkedIn">
+          <a href={CONFIG.redes.linkedin} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white hover:-translate-y-0.5 focus-visible:text-white focus-visible:-translate-y-0.5 transition-all duration-300 outline-none" aria-label="Seguir en LinkedIn">
             <svg class="w-5 h-5" fill="currentColor">
               <use href="#icon-linkedin" />
             </svg>
