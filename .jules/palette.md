@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2026-06-30 - [A11y: Paridad de contraste y enlaces interactivos en Footer]
+**Learning:** Los datos de contacto en el footer (dirección, teléfono) suelen implementarse como texto estático, lo que reduce la utilidad. Convertirlos en enlaces interactivos con contraste AA (text-white/70 en lugar de white/50) y estados de foco claros mejora tanto la accesibilidad como la tasa de conversión. Sincronizar estos cambios con micro-transiciones de elevación (-translate-y-0.5) proporciona un feedback visual cohesivo.
+**Action:** Siempre implementar datos de contacto como elementos <a> accionables y asegurar que el contraste del texto secundario en fondos oscuros cumpla con los estándares WCAG AA.
