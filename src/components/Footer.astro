@@ -5,31 +5,58 @@ const year = new Date().getFullYear();
 const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.redes.linkedin;
 ---
 
-<footer class="bg-navy-dark py-10 px-[5%] text-center border-t border-white/5">
+<footer class="bg-navy-dark py-12 px-[5%] text-center border-t border-white/5">
   <div class="container-custom flex flex-col items-center">
     
-    <div class="font-body font-light text-[13px] text-white/50 mb-6">
-      {CONFIG.empresa.ciudad}, {CONFIG.empresa.pais} · {CONFIG.contacto.whatsapp_display}
+    <div class="flex flex-col sm:flex-row items-center gap-x-4 gap-y-3 mb-8">
+      <a
+        href={CONFIG.contacto.maps_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group flex items-center gap-2 px-1 -mx-1 py-0.5 font-body font-light text-[13px] text-white/70 hover:text-white focus-visible:text-white transition-all duration-300 outline-none hover:-translate-y-0.5 focus-visible:-translate-y-0.5 focus-visible:ring-1 focus-visible:ring-white/20 rounded-sm"
+        aria-label={`Ubicación: ${CONFIG.empresa.ciudad}, ${CONFIG.empresa.pais}. Abrir en Google Maps.`}
+      >
+        <svg class="w-3.5 h-3.5 text-blue-light group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="2">
+          <use href="#icon-map-pin" />
+        </svg>
+        <span>{CONFIG.empresa.ciudad}, {CONFIG.empresa.pais}</span>
+      </a>
+
+      <span class="hidden sm:block text-white/20" aria-hidden="true">|</span>
+
+      <a
+        href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        id="footer-wa-link"
+        class="group flex items-center gap-2 px-1 -mx-1 py-0.5 font-body font-light text-[13px] text-white/70 hover:text-white focus-visible:text-white transition-all duration-300 outline-none hover:-translate-y-0.5 focus-visible:-translate-y-0.5 focus-visible:ring-1 focus-visible:ring-white/20 rounded-sm"
+        aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}
+      >
+        <svg class="w-3.5 h-3.5 text-blue-light group-hover:scale-110 group-hover:animate-heartbeat transition-all" fill="none" stroke="currentColor" stroke-width="2">
+          <use href="#icon-whatsapp" />
+        </svg>
+        <span id="footer-wa-text">{CONFIG.contacto.whatsapp_display}</span>
+      </a>
     </div>
 
     {hasSocials && (
-      <div class="flex items-center gap-4 mb-6">
+      <div class="flex items-center gap-5 mb-8">
         {CONFIG.redes.instagram && (
-          <a href={CONFIG.redes.instagram} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en Instagram">
+          <a href={CONFIG.redes.instagram} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white focus-visible:text-white transition-all duration-300 outline-none hover:-translate-y-1 focus-visible:-translate-y-1" aria-label="Seguir en Instagram">
             <svg class="w-5 h-5" fill="currentColor">
               <use href="#icon-instagram" />
             </svg>
           </a>
         )}
         {CONFIG.redes.facebook && (
-          <a href={CONFIG.redes.facebook} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en Facebook">
+          <a href={CONFIG.redes.facebook} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white focus-visible:text-white transition-all duration-300 outline-none hover:-translate-y-1 focus-visible:-translate-y-1" aria-label="Seguir en Facebook">
             <svg class="w-5 h-5" fill="currentColor">
               <use href="#icon-facebook" />
             </svg>
           </a>
         )}
         {CONFIG.redes.linkedin && (
-          <a href={CONFIG.redes.linkedin} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en LinkedIn">
+          <a href={CONFIG.redes.linkedin} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white focus-visible:text-white transition-all duration-300 outline-none hover:-translate-y-1 focus-visible:-translate-y-1" aria-label="Seguir en LinkedIn">
             <svg class="w-5 h-5" fill="currentColor">
               <use href="#icon-linkedin" />
             </svg>
@@ -38,8 +65,50 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
       </div>
     )}
 
-    <div class="font-body font-light text-[12px] text-white/60">
+    <div class="font-body font-light text-[12px] text-white/40 tracking-wide">
       &copy; {year} {CONFIG.empresa.nombre} {CONFIG.empresa.subtitulo}. Todos los derechos reservados.
     </div>
+
+    <!-- Redirection Announcement for Screen Readers -->
+    <div id="footer-redirection-announcement" class="sr-only" aria-live="polite"></div>
   </div>
 </footer>
+
+<script>
+  (function() {
+    function initFooter() {
+      const waLink = document.getElementById('footer-wa-link');
+      const waText = document.getElementById('footer-wa-text');
+      const announcement = document.getElementById('footer-redirection-announcement');
+
+      if (!waLink || !waText || !announcement) return () => {};
+
+      const handleWaClick = () => {
+        // We don't preventDefault here to allow the natural link behavior,
+        // but we provide visual feedback.
+        const originalText = waText.textContent;
+        waText.textContent = 'Redirigiendo...';
+        announcement.textContent = 'Redirigiendo a WhatsApp...';
+        waLink.classList.add('opacity-70', 'pointer-events-none');
+
+        setTimeout(() => {
+          waText.textContent = originalText;
+          announcement.textContent = '';
+          waLink.classList.remove('opacity-70', 'pointer-events-none');
+        }, 3000);
+      };
+
+      waLink.addEventListener('click', handleWaClick as EventListener);
+
+      return () => {
+        waLink.removeEventListener('click', handleWaClick as EventListener);
+      };
+    }
+
+    let cleanup = initFooter();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initFooter();
+    });
+  })();
+</script>
