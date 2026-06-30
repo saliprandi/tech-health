@@ -151,3 +151,11 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2026-06-30 - [UX: Hit areas y accesibilidad en enlaces pequeños]
+**Aprendizaje:** Usar el patrón `px-1 -mx-1` en enlaces de texto pequeños (como en el Footer) permite expandir el área clicable/táctil para mejor accesibilidad (WCAG) sin alterar la alineación visual del texto respecto a otros elementos.
+**Acción:** Implementar siempre hit-areas expandidos en micro-enlaces de navegación para mejorar la usabilidad en dispositivos táctiles.
+
+## 2026-06-30 - [A11y: Corrupción estructural y paridad de feedback]
+**Aprendizaje:** La duplicación de IDs y etiquetas en componentes complejos (como Contacto.astro) rompe el árbol de accesibilidad (AOM) y causa comportamientos erráticos en lectores de pantalla. Sincronizar micro-animaciones (como pulses) con estados lógicos críticos refuerza el feedback visual de disponibilidad.
+**Acción:** Realizar auditorías de integridad estructural antes de añadir capas de micro-UX para asegurar que las mejoras de accesibilidad se asienten sobre una base semántica sólida.
