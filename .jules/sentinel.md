@@ -28,3 +28,8 @@
 **Vulnerability:** Riesgo de XSS por inyección de scripts en bloques de datos estructurados (JSON-LD) y falta de validación en formularios.
 **Learning:** El uso de `JSON.stringify` con `set:html` en Astro permite que caracteres como `<` rompan el contexto del script. Asimismo, la falta de límites de longitud en entradas facilita ataques de denegación de servicio local o desbordamientos visuales.
 **Prevention:** Escapar siempre el carácter `<` en salidas JSON inyectadas en HTML y aplicar atributos `maxlength` y `pattern` en todos los inputs públicos.
+
+## 2026-06-20 - [Integridad de formularios y mitigación de DoS mediante límites de longitud]
+**Vulnerability:** Falta de límites de longitud en campos ocultos (honeypot) y corrupción estructural que duplicaba entradas de formulario.
+**Learning:** Los campos ocultos a menudo se omiten en las revisiones de seguridad, permitiendo el envío de payloads masivos. Además, la duplicación de IDs en el DOM por corrupción de componentes rompe la integridad de los datos enviados.
+**Prevention:** Validar que *todos* los inputs, incluidos los invisibles, tengan un `maxlength` razonable. Mantener la integridad estructural mediante builds regulares y chequeos de duplicación de IDs.
