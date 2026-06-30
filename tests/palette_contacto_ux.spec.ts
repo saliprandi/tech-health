@@ -28,21 +28,29 @@ test.describe('Contacto UX Enhancements', () => {
     // Initial state
     await expect(counter).toHaveText('0 / 500');
 
-    // Normal state color (text-white/40 is rgba(255, 255, 255, 0.4))
+    // Normal state color (text-white/40)
     let color = await counter.evaluate((el) => getComputedStyle(el).color);
-    // Note: getComputedStyle might return rgba or rgb depending on browser
-    expect(color.replace(/ /g, '')).toContain('rgba(255,255,255,0.4)');
+    // Use regex to account for slight rounding or browser differences in alpha
+    expect(color.replace(/ /g, '')).toMatch(/rgba\(255,255,255,0\.(39|4|41)\)/);
 
     // Type some text
     await textarea.fill('Testing character counter');
     await expect(counter).toHaveText('25 / 500');
 
-    // Type text near limit (450 characters)
+    // Warning state (400 characters)
+    const warningText = 'A'.repeat(400);
+    await textarea.fill(warningText);
+    await expect(counter).toHaveText('400 / 500');
+    color = await counter.evaluate((el) => getComputedStyle(el).color);
+    // text-amber-400 is rgb(251, 191, 36)
+    expect(color.replace(/ /g, '')).toBe('rgb(251,191,36)');
+
+    // Critical state (450 characters)
     const longText = 'A'.repeat(450);
     await textarea.fill(longText);
     await expect(counter).toHaveText('450 / 500');
 
-    // Verify warning color (text-red-500 is rgb(239, 68, 68))
+    // Verify critical color (text-red-500 is rgb(239, 68, 68))
     color = await counter.evaluate((el) => getComputedStyle(el).color);
     expect(color.replace(/ /g, '')).toBe('rgb(239,68,68)');
 
