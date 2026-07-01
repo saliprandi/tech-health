@@ -4,6 +4,11 @@
 **Prevention:** Always verify `pnpm build` after any modification to Astro components. Use automated tests (`playwright`) to verify security attributes on dynamic elements that are injected via `innerHTML`.
 # Sentinel Journal - TechHealth
 
+## 2025-06-15 - [Refuerzo de seguridad: Endurecimiento de formularios y saneamiento de lógica]
+**Vulnerability:** Riesgo de DoS por payloads excesivos en campos ocultos (honeypot) y errores de ejecución por declaraciones duplicadas.
+**Learning:** Los campos honeypot, aunque ocultos, son vectores de ataque para inyecciones de datos masivos si no tienen límites de longitud. Además, la corrupción estructural del código (declaraciones duplicadas) puede invalidar las protecciones de seguridad en tiempo de ejecución.
+**Prevention:** Aplicar siempre `maxlength` en todos los inputs, incluidos los ocultos, y asegurar la integridad estructural del componente mediante `pnpm build`.
+
 ## 2025-05-13 - Mejora de seguridad: Content Security Policy y Referrer Policy
 **Vulnerabilidad:** Headers de seguridad faltantes (CSP, Referrer-Policy).
 **Aprendizaje:** Incluso los sitios estáticos se benefician de CSP para prevenir XSS potencial si alguna vez se agregan scripts de terceros o si ocurre inyección de datos.
