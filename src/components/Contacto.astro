@@ -93,18 +93,11 @@ import { CONFIG } from '../data/config';
 
           <div class="flex flex-col gap-1.5">
             <label for="f-nombre" class="font-body font-medium text-[13px] text-white/80">Nombre completo <span class="text-blue-light" aria-hidden="true">*</span></label>
-            <label for="f-nombre" class="font-body font-medium text-[13px] text-white/80">
-              Nombre completo <span class="text-blue-light" aria-hidden="true">*</span>
-            </label>
             <input type="text" id="f-nombre" name="nombre" required maxlength="100" placeholder="Ej: Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
           </div>
 
           <div class="flex flex-col gap-1.5">
             <label for="f-tel" class="font-body font-medium text-[13px] text-white/80">Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span></label>
-            <label for="f-tel" class="font-body font-medium text-[13px] text-white/80">
-              Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span>
-            </label>
-            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-()]*" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
             <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-\(\)]*" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
           </div>
 
@@ -185,9 +178,6 @@ import { CONFIG } from '../data/config';
           for (const part of parts) {
             p[part.type] = part.value;
           }
-          const parts = tucumanFormatter.formatToParts(now);
-          const p: Record<string, string> = {};
-          parts.forEach(part => p[part.type] = part.value);
           tucumanDate = new Date(`${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`);
         } catch {
           tucumanDate = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
@@ -200,13 +190,6 @@ import { CONFIG } from '../data/config';
         const openTime = 9 * 60;   // 09:00
         const closeTime = 18 * 60; // 18:00
 
-        const openTime = 9 * 60; // 09:00
-        const closeTime = 18 * 60; // 18:00
-        const isWeekday = day >= 1 && day <= 5;
-        // Monday-Friday: 09:00 (540 min) to 18:00 (1080 min)
-        const isWeekday = day >= 1 && day <= 5;
-        const openTime = 9 * 60;
-        const closeTime = 18 * 60;
         const isOpen = isWeekday && totalMinutes >= openTime && totalMinutes < closeTime;
         const isOpeningSoon = isWeekday && totalMinutes >= (openTime - 30) && totalMinutes < openTime;
         const isClosingSoon = isWeekday && totalMinutes >= (closeTime - 30) && totalMinutes < closeTime;
@@ -223,7 +206,6 @@ import { CONFIG } from '../data/config';
         } else if (isOpeningSoon) {
           badge.textContent = 'Abrirá pronto';
           badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 animate-pulse';
-          badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800';
         } else {
           badge.textContent = 'Cerrado';
           badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gray-100 text-gray-800';
@@ -239,19 +221,6 @@ import { CONFIG } from '../data/config';
         counter.classList.toggle('text-white/40', len < 450);
       };
 
-      // --- Clipboard Helper ---
-      const setupCopy = (btnId: string, textId: string, iconId: string, contentId: string, msg: string) => {
-
-        if (len >= 450) {
-          counter.classList.remove('text-white/40');
-          counter.classList.add('text-red-500');
-        } else {
-          counter.classList.remove('text-red-500');
-          counter.classList.add('text-white/40');
-        }
-      };
-
-      // --- Clipboard Helper ---
       const setupCopy = (btnId: string, textId: string, iconId: string, contentId: string, announcementMsg: string) => {
         const btn = document.getElementById(btnId);
         const text = document.getElementById(textId);
@@ -269,22 +238,16 @@ import { CONFIG } from '../data/config';
           const originalIcon = iconUse.getAttribute('href');
           let content = contentEl.textContent?.trim() || '';
           if (btnId === 'copy-phone') content = content.replace(/\s/g, '');
-          let contentToCopy = contentEl.textContent?.trim() || '';
-          if (btnId === 'copy-phone') contentToCopy = contentToCopy.replace(/\s/g, '');
 
           navigator.clipboard.writeText(content).then(() => {
-            const originalText = text.textContent;
-            const originalIcon = iconUse.getAttribute('href');
-
             text.textContent = '¡Copiado!';
             iconUse.setAttribute('href', '#icon-check');
             btn.classList.add('text-blue', 'scale-110');
-            if (copyAnnouncement) copyAnnouncement.textContent = msg;
+            if (copyAnnouncement) copyAnnouncement.textContent = announcementMsg;
 
             setTimeout(() => {
               text.textContent = originalText;
               iconUse.setAttribute('href', originalIcon || '#icon-copy');
-              iconUse.setAttribute('href', originalIcon || '');
               btn.classList.remove('text-blue', 'scale-110');
               if (copyAnnouncement) copyAnnouncement.textContent = '';
             }, 2000);
@@ -311,7 +274,6 @@ import { CONFIG } from '../data/config';
         const mensaje = (formData.get('mensaje') as string || '').trim();
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
-        const url = `https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(rawMessage)}`;
         const sanitizedWa = whatsappNumber.replace(/\D/g, '');
         const url = `https://wa.me/${sanitizedWa}?text=${encodeURIComponent(rawMessage)}`;
 
@@ -343,7 +305,6 @@ import { CONFIG } from '../data/config';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        window.open(url, '_blank', 'noopener,noreferrer');
       };
 
       updateStatusBadge();
