@@ -18,3 +18,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-17 - Optimización de formateo de fecha y reparación estructural
 **Aprendizaje:** La instanciación de `Intl.DateTimeFormat` dentro de funciones repetitivas o ciclos de inicialización genera un overhead innecesario. Extraer el formateador a un scope superior y optimizar la extracción de partes (evitando múltiples llamadas a `.find()`) mejora la eficiencia de ejecución en actualizaciones frecuentes (como badges de estado). Además, la eliminación de código duplicado masivo reduce el tamaño del bundle y el tiempo de parsing del DOM.
 **Acción:** Cachear siempre constructores de objetos costosos fuera de los paths de ejecución de alta frecuencia y utilizar iteraciones de un solo paso para la extracción de datos de arrays de partes.
+
+## 2026-06-18 - Gestión de procesos en segundo plano con IntersectionObserver
+**Aprendizaje:** El uso de `setInterval` para actualizaciones de UI (como badges de estado) en páginas de una sola sección genera un consumo de CPU constante incluso cuando el componente no es visible. Integrar `IntersectionObserver` para pausar y reanudar estos intervalos reduce el overhead en dispositivos móviles y mejora la eficiencia energética de la aplicación.
+**Acción:** Implementar siempre un sistema de pausa/reanudación basado en visibilidad para cualquier proceso periódico en el cliente.
