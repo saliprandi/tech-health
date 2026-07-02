@@ -22,9 +22,9 @@ export const CONFIG = {
   },
 
   redes: {
-    instagram: "",
-    facebook: "",
-    linkedin: "",
+    instagram: "https://instagram.com",
+    facebook: "https://facebook.com",
+    linkedin: "https://linkedin.com",
   },
 
   equipo: [
