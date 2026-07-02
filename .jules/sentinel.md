@@ -28,3 +28,8 @@
 **Vulnerability:** Riesgo de XSS por inyección de scripts en bloques de datos estructurados (JSON-LD) y falta de validación en formularios.
 **Learning:** El uso de `JSON.stringify` con `set:html` en Astro permite que caracteres como `<` rompan el contexto del script. Asimismo, la falta de límites de longitud en entradas facilita ataques de denegación de servicio local o desbordamientos visuales.
 **Prevention:** Escapar siempre el carácter `<` en salidas JSON inyectadas en HTML y aplicar atributos `maxlength` y `pattern` en todos los inputs públicos.
+
+## 2025-06-20 - [Hardening de formularios y saneamiento de redirecciones]
+**Vulnerability:** Riesgo de DoS por falta de límites en inputs ocultos (honeypot) y riesgo de Tabnabbing/secuestro de ventana en redirecciones dinámicas.
+**Learning:** Los campos honeypot, aunque ocultos para usuarios legítimos, son puntos de entrada para bots que pueden inyectar payloads masivos. Asimismo, las redirecciones programáticas (vía `window.open`) deben evitarse en favor de elementos ancla temporales con `rel="noopener noreferrer"` para garantizar el aislamiento del contexto de navegación.
+**Prevention:** Aplicar siempre `maxlength` en campos honeypot y consolidar las redirecciones externas en un patrón de "enlace seguro" que fuerce atributos de seguridad y saneamiento de URLs antes de la navegación.
