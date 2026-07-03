@@ -18,3 +18,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-17 - Optimización de formateo de fecha y reparación estructural
 **Aprendizaje:** La instanciación de `Intl.DateTimeFormat` dentro de funciones repetitivas o ciclos de inicialización genera un overhead innecesario. Extraer el formateador a un scope superior y optimizar la extracción de partes (evitando múltiples llamadas a `.find()`) mejora la eficiencia de ejecución en actualizaciones frecuentes (como badges de estado). Además, la eliminación de código duplicado masivo reduce el tamaño del bundle y el tiempo de parsing del DOM.
 **Acción:** Cachear siempre constructores de objetos costosos fuera de los paths de ejecución de alta frecuencia y utilizar iteraciones de un solo paso para la extracción de datos de arrays de partes.
+
+## 2025-06-18 - Eliminación de redundancias estructurales y lógica duplicada
+**Aprendizaje:** La presencia de elementos HTML duplicados (mismo ID) y bloques de script idénticos no solo degrada el rendimiento del parsing del DOM, sino que genera comportamientos erráticos en la ejecución de JavaScript y aumenta el peso del bundle innecesariamente.
+**Acción:** Realizar limpiezas estructurales profundas para asegurar que cada ID sea único y la lógica esté centralizada. Consolidar estados visuales (como clases de Tailwind) usando `.classList.toggle` para reducir la verbosidad y mejorar la eficiencia de ejecución.
