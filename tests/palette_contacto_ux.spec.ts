@@ -43,12 +43,16 @@ test.describe('Contacto UX Enhancements', () => {
     await expect(counter).toHaveText('450 / 500');
 
     // Verify warning color (text-red-500 is rgb(239, 68, 68))
+    // Wait for transition to finish
+    await page.waitForTimeout(500);
     color = await counter.evaluate((el) => getComputedStyle(el).color);
     expect(color.replace(/ /g, '')).toBe('rgb(239,68,68)');
 
     // Back to normal
     await textarea.fill('Short text');
     await expect(counter).toHaveText('10 / 500');
+    // Wait for transition to finish
+    await page.waitForTimeout(500);
     color = await counter.evaluate((el) => getComputedStyle(el).color);
     expect(color.replace(/ /g, '')).toContain('rgba(255,255,255,0.4)');
   });
