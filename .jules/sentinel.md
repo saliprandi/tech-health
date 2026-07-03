@@ -28,3 +28,8 @@
 **Vulnerability:** Riesgo de XSS por inyección de scripts en bloques de datos estructurados (JSON-LD) y falta de validación en formularios.
 **Learning:** El uso de `JSON.stringify` con `set:html` en Astro permite que caracteres como `<` rompan el contexto del script. Asimismo, la falta de límites de longitud en entradas facilita ataques de denegación de servicio local o desbordamientos visuales.
 **Prevention:** Escapar siempre el carácter `<` en salidas JSON inyectadas en HTML y aplicar atributos `maxlength` y `pattern` en todos los inputs públicos.
+
+## 2025-10-24 - [Mitigación de vulnerabilidades en dependencias y saneamiento estructural]
+**Vulnerability:** Vulnerabilidades de inyección de comandos y DoS en dependencias transitivas (nanoid, cross-spawn) y riesgo de tabnabbing en redirecciones dinámicas.
+**Learning:** La corrupción estructural en componentes Astro (código duplicado) no solo degrada el rendimiento, sino que crea "puntos ciegos" donde las medidas de seguridad (como validación de inputs) pueden no aplicarse uniformemente. Además, las redirecciones dinámicas mediante JavaScript a menudo olvidan los atributos de seguridad 'noopener' y 'noreferrer'.
+**Prevention:** Mantener 'pnpm.overrides' actualizados para dependencias críticas y consolidar siempre la lógica de manipulación del DOM para garantizar una superficie de ataque uniforme y controlada.
