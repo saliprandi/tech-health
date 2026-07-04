@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-02-17 - [A11y: Integridad estructural y paridad de feedback]
+**Aprendizaje:** La duplicación de IDs y labels en componentes Astro rompe el árbol de accesibilidad y causa comportamientos erráticos en lectores de pantalla. Además, las micro-interacciones visuales (como el escalado en hover) deben sincronizarse siempre con estados de foco (`focus-visible`) para garantizar una experiencia inclusiva.
+**Acción:** Validar siempre la unicidad de IDs en el DOM generado y aplicar sistemáticamente estilos de foco que igualen la respuesta visual del hover en todos los elementos interactivos.
