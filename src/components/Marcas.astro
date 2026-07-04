@@ -10,14 +10,18 @@ import { CONFIG } from '../data/config';
       </h3>
     </div>
 
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-y-10 gap-x-4 items-center">
+    <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-y-10 gap-x-4 items-center" role="list">
       {CONFIG.marcas.map(marca => (
-        <div class="flex items-center justify-center px-4 group" aria-label={`Especialistas en ${marca}`}>
-          <span class="font-heading font-extrabold text-[17px] text-navy/50 group-hover:text-navy transition-all duration-500 cursor-default select-none text-center leading-tight tracking-tighter transform group-hover:scale-105">
+        <li
+          class="flex items-center justify-center px-4 group outline-none focus-visible:ring-2 focus-visible:ring-blue/20 rounded-lg transition-all duration-300"
+          aria-label={`Especialistas en ${marca}`}
+          tabindex="0"
+        >
+          <span class="font-heading font-extrabold text-[17px] text-navy/50 group-hover:text-navy group-focus-visible:text-navy transition-all duration-500 cursor-default select-none text-center leading-tight tracking-tighter transform group-hover:scale-110 group-focus-visible:scale-110">
             {marca}
           </span>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   </div>
 </section>
