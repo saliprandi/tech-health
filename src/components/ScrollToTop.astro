@@ -1,0 +1,53 @@
+---
+---
+
+<button
+  id="scroll-to-top"
+  class="fixed bottom-[100px] right-[28px] z-[150] w-[48px] h-[48px] bg-white border border-border rounded-full flex items-center justify-center text-navy shadow-lg opacity-0 translate-y-4 pointer-events-none transition-all duration-500 hover:bg-off-white focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto outline-none focus-visible:ring-2 focus-visible:ring-blue group"
+  aria-label="Volver arriba"
+  type="button"
+>
+  <svg class="w-6 h-6 transition-transform group-hover:-translate-y-1 group-hover:animate-heartbeat" fill="none" stroke="currentColor" aria-hidden="true">
+    <use href="#icon-chevron-up" />
+  </svg>
+</button>
+
+<script>
+  (function() {
+    function initScrollToTop() {
+      const btn = document.getElementById('scroll-to-top');
+      if (!btn) return () => {};
+
+      const toggleVisible = () => {
+        if (window.scrollY > 400) {
+          btn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+          btn.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+        } else {
+          btn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+          btn.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+        }
+      };
+
+      const scrollToTop = () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      };
+
+      window.addEventListener('scroll', toggleVisible, { passive: true });
+      btn.addEventListener('click', scrollToTop);
+
+      return () => {
+        window.removeEventListener('scroll', toggleVisible);
+        btn.removeEventListener('click', scrollToTop);
+      };
+    }
+
+    let cleanup = initScrollToTop();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initScrollToTop();
+    });
+  })();
+</script>

@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Icons from '../components/Icons.astro';
+import ScrollToTop from '../components/ScrollToTop.astro';
 import { CONFIG } from '../data/config';
 
 interface Props {
@@ -79,5 +80,6 @@ const { title = "TechHealth Medical Engineering | TÃ©cnicos en Electromedicina â
 	<body>
 		<Icons />
 		<slot />
+		<ScrollToTop />
 	</body>
 </html>
