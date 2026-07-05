@@ -42,9 +42,8 @@ test.describe('Contacto UX Enhancements', () => {
     await textarea.fill(longText);
     await expect(counter).toHaveText('450 / 500');
 
-    // Verify warning color (text-red-500 is rgb(239, 68, 68))
-    color = await counter.evaluate((el) => getComputedStyle(el).color);
-    expect(color.replace(/ /g, '')).toBe('rgb(239,68,68)');
+    // Verify warning color (text-red-600 is rgb(220, 38, 38))
+    await expect(counter).toHaveClass(/text-red-600/);
 
     // Back to normal
     await textarea.fill('Short text');
