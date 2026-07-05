@@ -18,3 +18,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-17 - Optimización de formateo de fecha y reparación estructural
 **Aprendizaje:** La instanciación de `Intl.DateTimeFormat` dentro de funciones repetitivas o ciclos de inicialización genera un overhead innecesario. Extraer el formateador a un scope superior y optimizar la extracción de partes (evitando múltiples llamadas a `.find()`) mejora la eficiencia de ejecución en actualizaciones frecuentes (como badges de estado). Además, la eliminación de código duplicado masivo reduce el tamaño del bundle y el tiempo de parsing del DOM.
 **Acción:** Cachear siempre constructores de objetos costosos fuera de los paths de ejecución de alta frecuencia y utilizar iteraciones de un solo paso para la extracción de datos de arrays de partes.
+
+## 2026-06-18 - Reparación de corrupción estructural y optimización de Contacto.astro
+**Aprendizaje:** La duplicación de bloques de código en componentes Astro no solo aumenta el tamaño del bundle, sino que puede causar errores de compilación por redeclaración de variables (ej. 'parts', 'p'). Además, la instanciación repetida de objetos costosos como Intl.DateTimeFormat debe evitarse moviéndolos fuera del ciclo de vida de inicialización.
+**Acción:** Eliminar siempre redundancias estructurales y consolidar la lógica de cliente. Cachear formateadores y objetos de configuración a nivel de módulo para mejorar el rendimiento de ejecución.
