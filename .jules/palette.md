@@ -151,3 +151,11 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-06-27 - Semántica de listas para colecciones de marcas
+**Aprendizaje:** Usar grids de `div` para colecciones de logos informativos (como marcas aliadas) priva a los usuarios de lectores de pantalla del contexto sobre la cantidad de elementos. Cambiar a una estructura `ul/li` con `role="list"` proporciona una navegación semántica clara y anuncia el número total de ítems.
+**Acción:** Siempre estructurar colecciones de elementos repetitivos o informativos como listas semánticas para mejorar la navegabilidad en tecnologías asistivas.
+
+## 2025-06-27 - Integridad estructural y duplicación de IDs
+**Aprendizaje:** La duplicación de elementos de formulario (labels e inputs) con los mismos IDs dentro de un componente Astro (frecuentemente por errores de copiado/pegado de bloques de código) corrompe el árbol de accesibilidad y puede causar comportamientos erráticos en los scripts del lado del cliente.
+**Acción:** Auditar la estructura HTML para asegurar la unicidad de IDs y evitar la redeclaración de variables en bloques de script consolidados para mantener la estabilidad del componente.
