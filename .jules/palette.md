@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-06-27 - [A11y: Integridad estructural y paridad de deleite]
+**Aprendizaje:** La corrupción estructural (IDs duplicados y etiquetas redundantes) no solo rompe el build sino que degrada severamente la experiencia de tecnologías asistivas. Además, el "deleite" visual (como animaciones heartbeat) debe ser inclusivo; sincronizar estos efectos con `group-focus-within` asegura que los usuarios de teclado reciban el mismo feedback satisfactorio que los de ratón.
+**Acción:** Realizar auditorías de integridad estructural antes de añadir micro-UX y asegurar siempre la paridad de feedback entre estados de hover y foco.

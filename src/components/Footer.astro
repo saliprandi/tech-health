@@ -15,22 +15,22 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
     {hasSocials && (
       <div class="flex items-center gap-4 mb-6">
         {CONFIG.redes.instagram && (
-          <a href={CONFIG.redes.instagram} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en Instagram">
-            <svg class="w-5 h-5" fill="currentColor">
+          <a href={CONFIG.redes.instagram} target="_blank" rel="noopener noreferrer" class="group text-white/50 hover:text-white transition-colors outline-none focus-visible:text-white focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1" aria-label="Seguir en Instagram">
+            <svg class="w-5 h-5 group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" fill="currentColor">
               <use href="#icon-instagram" />
             </svg>
           </a>
         )}
         {CONFIG.redes.facebook && (
-          <a href={CONFIG.redes.facebook} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en Facebook">
-            <svg class="w-5 h-5" fill="currentColor">
+          <a href={CONFIG.redes.facebook} target="_blank" rel="noopener noreferrer" class="group text-white/50 hover:text-white transition-colors outline-none focus-visible:text-white focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1" aria-label="Seguir en Facebook">
+            <svg class="w-5 h-5 group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" fill="currentColor">
               <use href="#icon-facebook" />
             </svg>
           </a>
         )}
         {CONFIG.redes.linkedin && (
-          <a href={CONFIG.redes.linkedin} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en LinkedIn">
-            <svg class="w-5 h-5" fill="currentColor">
+          <a href={CONFIG.redes.linkedin} target="_blank" rel="noopener noreferrer" class="group text-white/50 hover:text-white transition-colors outline-none focus-visible:text-white focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-full p-1" aria-label="Seguir en LinkedIn">
+            <svg class="w-5 h-5 group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" fill="currentColor">
               <use href="#icon-linkedin" />
             </svg>
           </a>
