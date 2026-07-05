@@ -2,6 +2,7 @@
 **Vulnerability:** XSS (missing sanitization), Tabnabbing (missing rel attributes), and Outdated dependencies with known CVEs.
 **Learning:** The `Servicios.astro` component was severely corrupted with multiple duplicated logic blocks, which not only caused build failures but also introduced security gaps where attributes were missing in some copies but present in others.
 **Prevention:** Always verify `pnpm build` after any modification to Astro components. Use automated tests (`playwright`) to verify security attributes on dynamic elements that are injected via `innerHTML`.
+
 # Sentinel Journal - TechHealth
 
 ## 2025-05-13 - Mejora de seguridad: Content Security Policy y Referrer Policy
@@ -28,3 +29,8 @@
 **Vulnerability:** Riesgo de XSS por inyección de scripts en bloques de datos estructurados (JSON-LD) y falta de validación en formularios.
 **Learning:** El uso de `JSON.stringify` con `set:html` en Astro permite que caracteres como `<` rompan el contexto del script. Asimismo, la falta de límites de longitud en entradas facilita ataques de denegación de servicio local o desbordamientos visuales.
 **Prevention:** Escapar siempre el carácter `<` en salidas JSON inyectadas en HTML y aplicar atributos `maxlength` y `pattern` en todos los inputs públicos.
+
+## 2026-06-20 - [Mitigación de vulnerabilidades transitivas mediante pnpm overrides]
+**Vulnerability:** Vulnerabilidades de seguridad en dependencias transitivas (CVE-2024-51744 en `nanoid` y CVE-2024-21538 en `cross-spawn`).
+**Learning:** Las herramientas de construcción y dependencias de desarrollo a menudo arrastran versiones vulnerables de paquetes comunes que no se actualizan automáticamente a través del árbol de dependencias principal.
+**Prevention:** Utilizar sistemáticamente la sección `pnpm.overrides` en `package.json` para forzar versiones seguras de paquetes críticos (como `nanoid >=3.3.8` y `cross-spawn >=7.0.5`) en todo el proyecto, incluso si son dependencias profundas.
