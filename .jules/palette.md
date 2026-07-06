@@ -137,6 +137,10 @@ Importante!!! Quiero todos los pr en español
 **Learning:** Las micro-interacciones sutiles, como la animación de latido en los iconos de WhatsApp, suelen estar vinculadas solo al hover, lo que empobrece la experiencia de los usuarios de teclado. Sincronizar estos estados mediante `group-focus-visible` garantiza que la "delicia" visual sea inclusiva.
 **Action:** Asegurar que todas las animaciones de feedback de componentes `group` incluyan `group-focus-visible:animate-*` para igualar la experiencia entre ratón y teclado.
 
+## 2025-06-26 - [A11y: Indicadores de foco en temas oscuros]
+**Learning:** En pies de página con fondos oscuros (`bg-navy-dark`), los indicadores de foco predeterminados del navegador pueden tener poco contraste. Implementar anillos de foco personalizados (`focus-visible:ring-2`) con colores semitransparentes (`ring-white/20`) y bordes suaves mejora la navegabilidad por teclado sin romper la estética del diseño.
+**Action:** Utilizar siempre anillos de foco con alto contraste relativo al fondo en elementos interactivos de secciones oscuras.
+
 ## 2025-06-26 - [A11y: Anuncios de estado en redirecciones externas]
 **Learning:** El feedback visual de "Redirigiendo..." es crucial para evitar clics repetidos, pero es inútil para usuarios de lectores de pantalla si el foco no se gestiona o no hay anuncios de texto.
 **Action:** Implementar siempre una región `aria-live="polite"` (clase `sr-only`) vinculada a CTAs de redirección que anuncie explícitamente el inicio del proceso ("Redirigiendo a WhatsApp...") para mejorar la previsibilidad de la interfaz.
