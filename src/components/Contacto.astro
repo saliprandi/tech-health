@@ -92,7 +92,6 @@ import { CONFIG } from '../data/config';
           </div>
 
           <div class="flex flex-col gap-1.5">
-            <label for="f-nombre" class="font-body font-medium text-[13px] text-white/80">Nombre completo <span class="text-blue-light" aria-hidden="true">*</span></label>
             <label for="f-nombre" class="font-body font-medium text-[13px] text-white/80">
               Nombre completo <span class="text-blue-light" aria-hidden="true">*</span>
             </label>
@@ -100,12 +99,10 @@ import { CONFIG } from '../data/config';
           </div>
 
           <div class="flex flex-col gap-1.5">
-            <label for="f-tel" class="font-body font-medium text-[13px] text-white/80">Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span></label>
             <label for="f-tel" class="font-body font-medium text-[13px] text-white/80">
               Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span>
             </label>
             <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-()]*" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
-            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-\(\)]*" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
           </div>
 
           <div class="flex flex-col gap-1.5">
@@ -148,7 +145,6 @@ import { CONFIG } from '../data/config';
 
 <script>
   (function() {
-    // Performance Optimization: Cache Intl instance outside the lifecycle
     // Performance Optimization: Cache Intl instance for date formatting
     const tucumanFormatter = new Intl.DateTimeFormat('en-CA', {
       timeZone: 'America/Argentina/Tucuman',
@@ -170,7 +166,7 @@ import { CONFIG } from '../data/config';
       if (!form) return () => {};
       const whatsappNumber = form.dataset.whatsapp || '';
 
-      // --- Status Badge Optimization ---
+      // --- Status Badge ---
       let statusInterval: ReturnType<typeof setInterval> | null = null;
 
       const updateStatusBadge = () => {
@@ -180,11 +176,6 @@ import { CONFIG } from '../data/config';
 
         try {
           // Optimized: Single pass parsing
-          const parts = tucumanFormatter.formatToParts(now);
-          const p: Record<string, string> = {};
-          for (const part of parts) {
-            p[part.type] = part.value;
-          }
           const parts = tucumanFormatter.formatToParts(now);
           const p: Record<string, string> = {};
           parts.forEach(part => p[part.type] = part.value);
@@ -199,14 +190,6 @@ import { CONFIG } from '../data/config';
         const isWeekday = day >= 1 && day <= 5;
         const openTime = 9 * 60;   // 09:00
         const closeTime = 18 * 60; // 18:00
-
-        const openTime = 9 * 60; // 09:00
-        const closeTime = 18 * 60; // 18:00
-        const isWeekday = day >= 1 && day <= 5;
-        // Monday-Friday: 09:00 (540 min) to 18:00 (1080 min)
-        const isWeekday = day >= 1 && day <= 5;
-        const openTime = 9 * 60;
-        const closeTime = 18 * 60;
         const isOpen = isWeekday && totalMinutes >= openTime && totalMinutes < closeTime;
         const isOpeningSoon = isWeekday && totalMinutes >= (openTime - 30) && totalMinutes < openTime;
         const isClosingSoon = isWeekday && totalMinutes >= (closeTime - 30) && totalMinutes < closeTime;
@@ -215,14 +198,13 @@ import { CONFIG } from '../data/config';
         if (isOpen) {
           if (isClosingSoon) {
             badge.textContent = 'Cerrará pronto';
-            badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 animate-pulse';
+            badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800';
           } else {
             badge.innerHTML = '<span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Abierto ahora';
             badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800';
           }
         } else if (isOpeningSoon) {
           badge.textContent = 'Abrirá pronto';
-          badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 animate-pulse';
           badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800';
         } else {
           badge.textContent = 'Cerrado';
@@ -240,18 +222,6 @@ import { CONFIG } from '../data/config';
       };
 
       // --- Clipboard Helper ---
-      const setupCopy = (btnId: string, textId: string, iconId: string, contentId: string, msg: string) => {
-
-        if (len >= 450) {
-          counter.classList.remove('text-white/40');
-          counter.classList.add('text-red-500');
-        } else {
-          counter.classList.remove('text-red-500');
-          counter.classList.add('text-white/40');
-        }
-      };
-
-      // --- Clipboard Helper ---
       const setupCopy = (btnId: string, textId: string, iconId: string, contentId: string, announcementMsg: string) => {
         const btn = document.getElementById(btnId);
         const text = document.getElementById(textId);
@@ -265,12 +235,8 @@ import { CONFIG } from '../data/config';
           e.stopPropagation();
           if (!navigator.clipboard) return;
 
-          const originalText = text.textContent;
-          const originalIcon = iconUse.getAttribute('href');
           let content = contentEl.textContent?.trim() || '';
           if (btnId === 'copy-phone') content = content.replace(/\s/g, '');
-          let contentToCopy = contentEl.textContent?.trim() || '';
-          if (btnId === 'copy-phone') contentToCopy = contentToCopy.replace(/\s/g, '');
 
           navigator.clipboard.writeText(content).then(() => {
             const originalText = text.textContent;
@@ -279,12 +245,11 @@ import { CONFIG } from '../data/config';
             text.textContent = '¡Copiado!';
             iconUse.setAttribute('href', '#icon-check');
             btn.classList.add('text-blue', 'scale-110');
-            if (copyAnnouncement) copyAnnouncement.textContent = msg;
+            if (copyAnnouncement) copyAnnouncement.textContent = announcementMsg;
 
             setTimeout(() => {
               text.textContent = originalText;
               iconUse.setAttribute('href', originalIcon || '#icon-copy');
-              iconUse.setAttribute('href', originalIcon || '');
               btn.classList.remove('text-blue', 'scale-110');
               if (copyAnnouncement) copyAnnouncement.textContent = '';
             }, 2000);
@@ -311,7 +276,6 @@ import { CONFIG } from '../data/config';
         const mensaje = (formData.get('mensaje') as string || '').trim();
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
-        const url = `https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(rawMessage)}`;
         const sanitizedWa = whatsappNumber.replace(/\D/g, '');
         const url = `https://wa.me/${sanitizedWa}?text=${encodeURIComponent(rawMessage)}`;
 
@@ -323,7 +287,6 @@ import { CONFIG } from '../data/config';
           submitBtn.setAttribute('aria-busy', 'true');
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
-          // Redirection feedback logic
           setTimeout(() => {
             if (submitBtnText) submitBtnText.textContent = originalText;
             if (redirectAnnouncement) redirectAnnouncement.textContent = '';
@@ -335,7 +298,6 @@ import { CONFIG } from '../data/config';
           }, 3000);
         }
 
-        // Actionable redirection
         const a = document.createElement('a');
         a.href = url;
         a.target = '_blank';
@@ -343,11 +305,27 @@ import { CONFIG } from '../data/config';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        window.open(url, '_blank', 'noopener,noreferrer');
       };
 
-      updateStatusBadge();
-      statusInterval = setInterval(updateStatusBadge, 60000);
+      // --- Intersection Observer for Badge Timer ---
+      const section = document.getElementById('contacto');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            updateStatusBadge();
+            if (!statusInterval) {
+              statusInterval = setInterval(updateStatusBadge, 60000);
+            }
+          } else {
+            if (statusInterval) {
+              clearInterval(statusInterval);
+              statusInterval = null;
+            }
+          }
+        });
+      }, { threshold: 0.1 });
+
+      if (section) observer.observe(section);
       updateCounter();
       desc?.addEventListener('input', updateCounter);
 
@@ -357,6 +335,7 @@ import { CONFIG } from '../data/config';
 
       return () => {
         if (statusInterval) clearInterval(statusInterval);
+        observer.disconnect();
         desc?.removeEventListener('input', updateCounter);
         cleanupPhone();
         cleanupAddress();
