@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-02-18 - [UX: Corrupción de micro-interacciones por duplicación de código]
+**Learning:** La duplicación de código (copy-paste descontrolado) es el mayor enemigo de la accesibilidad y el micro-UX. En componentes complejos de Astro, esto genera múltiples IDs duplicados, labels que no apuntan a nada y scripts que chocan entre sí al intentar inicializar los mismos listeners.
+**Action:** Priorizar siempre la limpieza estructural del HTML antes de añadir capas de deleite visual. Un DOM semánticamente único es el requisito previo para que los anuncios `aria-live` y las trampas de foco funcionen de manera predecible.
