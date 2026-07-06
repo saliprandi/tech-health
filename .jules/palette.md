@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2026-07-06 - [A11y: Integridad estructural y duplicación de IDs]
+**Aprendizaje:** La duplicación de IDs y labels en el HTML no solo invalida el código, sino que corrompe el árbol de accesibilidad (AOM), causando que los lectores de pantalla anuncien información errónea o pierdan el foco. Además, re-declarar constantes en scripts del lado del cliente bloquea la ejecución de toda la lógica posterior.
+**Acción:** Auditar y consolidar siempre los componentes que presenten signos de corrupción estructural antes de implementar nuevas mejoras de UX, asegurando una base sólida y accesible.
