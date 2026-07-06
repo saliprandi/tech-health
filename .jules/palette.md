@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-05-15 - [Limpieza de código y A11y en Contacto]
+**Learning:** La duplicación de IDs y etiquetas en componentes Astro puede causar fallos de build silenciosos en desarrollo que se manifiestan como errores de redeclaración de símbolos en producción. Además, afecta negativamente la accesibilidad al confundir a los lectores de pantalla con múltiples etiquetas para un mismo input.
+**Action:** Siempre verificar la unicidad de IDs y evitar la duplicación de bloques de script o lógica dentro de un mismo componente. Utilizar herramientas de validación como 'astro check' para detectar estos problemas tempranamente.
