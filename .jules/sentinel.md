@@ -28,3 +28,8 @@
 **Vulnerability:** Riesgo de XSS por inyección de scripts en bloques de datos estructurados (JSON-LD) y falta de validación en formularios.
 **Learning:** El uso de `JSON.stringify` con `set:html` en Astro permite que caracteres como `<` rompan el contexto del script. Asimismo, la falta de límites de longitud en entradas facilita ataques de denegación de servicio local o desbordamientos visuales.
 **Prevention:** Escapar siempre el carácter `<` en salidas JSON inyectadas en HTML y aplicar atributos `maxlength` y `pattern` en todos los inputs públicos.
+
+## 2025-06-18 - [Prevención de regresiones funcionales por exceso de celo en seguridad]
+**Vulnerabilidad:** Corrupción estructural masiva y riesgo de XSS/Inyección por redundancia de código.
+**Aprendizaje:** Aplicar `escapeHtml` a parámetros de una URL destinados a mensajes de texto (como WhatsApp) es incorrecto y genera una regresión funcional (entidades HTML en el mensaje). Para URLs, `encodeURIComponent` es suficiente y correcto. Además, la redundancia extrema de código (triplicación de lógica) en componentes Astro facilita la introducción de inconsistencias de seguridad.
+**Prevención:** Validar siempre el contexto de destino (HTML vs Texto plano) antes de aplicar saneamiento. Priorizar la eliminación de código redundante para garantizar que las medidas de seguridad sean aplicables y verificables.
