@@ -28,3 +28,8 @@
 **Vulnerability:** Riesgo de XSS por inyección de scripts en bloques de datos estructurados (JSON-LD) y falta de validación en formularios.
 **Learning:** El uso de `JSON.stringify` con `set:html` en Astro permite que caracteres como `<` rompan el contexto del script. Asimismo, la falta de límites de longitud en entradas facilita ataques de denegación de servicio local o desbordamientos visuales.
 **Prevention:** Escapar siempre el carácter `<` en salidas JSON inyectadas en HTML y aplicar atributos `maxlength` y `pattern` en todos los inputs públicos.
+
+## 2026-06-18 - [Refuerzo de validación y saneamiento de código en Contacto]
+**Vulnerability:** Riesgo de spam y denegación de servicio visual por falta de límites de longitud mínima en formularios; riesgo de fallos de ejecución por corrupción de scripts.
+**Learning:** La duplicación de declaraciones `const` en bloques de script de Astro provoca `SyntaxError` que invalida toda la lógica interactiva del componente, incluyendo protecciones de seguridad como el honeypot. La validación `minlength` es una capa esencial de defensa en profundidad.
+**Prevention:** Auditar periódicamente la integridad estructural de los componentes críticos y asegurar que las funciones de utilidad (como `setupCopy`) sean atómicas y libres de efectos secundarios no deseados.
