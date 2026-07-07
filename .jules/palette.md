@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2026-07-07 - [UX: Integridad estructural y paridad de foco]
+**Aprendizaje:** La corrupción estructural (elementos duplicados y scripts malformados) no solo rompe el build, sino que crea experiencias confusas para tecnologías asistivas. Además, aplicar feedback de foco (`focus-within:ring-2`) a componentes no interactivos es un anti-patrón que genera "callejones sin salida" para usuarios de teclado.
+**Acción:** Priorizar la limpieza de código redundante antes de aplicar mejoras visuales. Asegurar que las micro-interacciones de foco estén reservadas estrictamente para elementos que realmente permitan una acción del usuario.
