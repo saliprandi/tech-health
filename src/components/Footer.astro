@@ -13,23 +13,23 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
     </div>
 
     {hasSocials && (
-      <div class="flex items-center gap-4 mb-6">
+      <div class="flex items-center gap-5 mb-8">
         {CONFIG.redes.instagram && (
-          <a href={CONFIG.redes.instagram} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en Instagram">
+          <a href={CONFIG.redes.instagram} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white hover:scale-110 focus-visible:scale-110 focus-visible:text-white transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-white/20 rounded-sm p-1" aria-label="Seguir en Instagram">
             <svg class="w-5 h-5" fill="currentColor">
               <use href="#icon-instagram" />
             </svg>
           </a>
         )}
         {CONFIG.redes.facebook && (
-          <a href={CONFIG.redes.facebook} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en Facebook">
+          <a href={CONFIG.redes.facebook} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white hover:scale-110 focus-visible:scale-110 focus-visible:text-white transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-white/20 rounded-sm p-1" aria-label="Seguir en Facebook">
             <svg class="w-5 h-5" fill="currentColor">
               <use href="#icon-facebook" />
             </svg>
           </a>
         )}
         {CONFIG.redes.linkedin && (
-          <a href={CONFIG.redes.linkedin} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en LinkedIn">
+          <a href={CONFIG.redes.linkedin} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white hover:scale-110 focus-visible:scale-110 focus-visible:text-white transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-white/20 rounded-sm p-1" aria-label="Seguir en LinkedIn">
             <svg class="w-5 h-5" fill="currentColor">
               <use href="#icon-linkedin" />
             </svg>
