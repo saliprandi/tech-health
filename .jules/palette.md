@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2025-07-08 - [A11y/UX: Integridad estructural en componentes Astro]
+**Aprendizaje:** La duplicación de código (HTML y Scripts) en componentes Astro no solo ensucia el repositorio, sino que provoca errores de build críticos (ej. 'symbol has already been declared') que bloquean toda la lógica del cliente y rompen el árbol de accesibilidad. Priorizar la limpieza de "componentes corruptos" es fundamental antes de aplicar mejoras de micro-UX.
+**Acción:** Realizar auditorías estructurales al detectar comportamientos erráticos en scripts y consolidar la lógica en bloques únicos y semánticos para asegurar que las mejoras de accesibilidad (como ARIA labels y focus-visible) se apliquen correctamente.

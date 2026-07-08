@@ -12,10 +12,10 @@ import { CONFIG } from '../data/config';
 
     <!-- Desktop Links -->
     <ul class="hidden md:flex items-center gap-8">
-      <li><a href="#servicios" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Servicios</a></li>
-      <li><a href="#equipos" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Equipos</a></li>
-      <li><a href="#nosotros" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Nosotros</a></li>
-      <li><a href="#contacto" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Contacto</a></li>
+      <li><a href="#servicios" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors outline-none focus-visible:ring-2 focus-visible:ring-navy/10 focus-visible:text-navy rounded-md px-2 py-1 -mx-2 -my-1">Servicios</a></li>
+      <li><a href="#equipos" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors outline-none focus-visible:ring-2 focus-visible:ring-navy/10 focus-visible:text-navy rounded-md px-2 py-1 -mx-2 -my-1">Equipos</a></li>
+      <li><a href="#nosotros" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors outline-none focus-visible:ring-2 focus-visible:ring-navy/10 focus-visible:text-navy rounded-md px-2 py-1 -mx-2 -my-1">Nosotros</a></li>
+      <li><a href="#contacto" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors outline-none focus-visible:ring-2 focus-visible:ring-navy/10 focus-visible:text-navy rounded-md px-2 py-1 -mx-2 -my-1">Contacto</a></li>
     </ul>
 
     <!-- CTA & Mobile Toggle -->
@@ -48,10 +48,10 @@ import { CONFIG } from '../data/config';
 
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="fixed top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99] invisible" role="navigation" aria-label="Menú móvil">
-    <a href="#servicios" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Servicios</a>
-    <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
-    <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
-    <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Contacto</a>
+    <a href="#servicios" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy outline-none focus-visible:text-navy focus-visible:ring-2 focus-visible:ring-navy/5 rounded-md px-4 py-1">Servicios</a>
+    <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy outline-none focus-visible:text-navy focus-visible:ring-2 focus-visible:ring-navy/5 rounded-md px-4 py-1">Equipos</a>
+    <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy outline-none focus-visible:text-navy focus-visible:ring-2 focus-visible:ring-navy/5 rounded-md px-4 py-1">Nosotros</a>
+    <a href="#contacto" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy outline-none focus-visible:text-navy focus-visible:ring-2 focus-visible:ring-navy/5 rounded-md px-4 py-1">Contacto</a>
     <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" class="mobile-cta-btn mt-2 flex items-center gap-2 bg-navy text-white font-heading font-bold text-[14px] py-[12px] px-[24px] rounded-[8px] outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2" id="mobile-nav-cta">
       <svg class="nav-spinner hidden w-4 h-4 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
