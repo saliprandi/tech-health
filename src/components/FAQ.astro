@@ -25,11 +25,11 @@ import { CONFIG } from '../data/config';
               aria-controls={`faq-answer-${index}`}
               id={`faq-question-${index}`}
             >
-              <span class="font-heading font-bold text-[17px] text-navy pr-8 group-hover:text-blue group-focus-visible:text-blue transition-colors">
+              <span class="font-heading font-bold text-[17px] text-navy pr-8 group-hover/trigger:text-blue group-focus-visible/trigger:text-blue transition-colors">
                 {faq.pregunta}
               </span>
-              <div class="faq-icon w-6 h-6 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 group-focus-visible:scale-110">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5">
+              <div class="faq-icon w-6 h-6 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover/trigger:scale-110 group-focus-visible/trigger:scale-110">
+                <svg class="w-4 h-4 group-hover/trigger:animate-heartbeat group-focus-visible/trigger:animate-heartbeat" fill="none" stroke="currentColor" stroke-width="2.5">
                   <use href="#icon-chevron-down" />
                 </svg>
               </div>
