@@ -144,6 +144,10 @@ Importante!!! Quiero todos los pr en español
 ## 2025-02-17 - [UX: Consolidación de componentes corruptos]
 **Learning:** Encontrar componentes con duplicación masiva de código (HTML y Script) es una señal de fallos previos en la integración. Consolidar estos componentes en una estructura limpia y única no solo arregla el build sino que proporciona una base sólida para micro-UX consistentes.
 **Action:** Ante errores de "ya declarado", auditar el archivo completo para detectar duplicaciones estructurales y priorizar la refactorización a una única instancia de lógica.
+
+## 2025-02-18 - [UX: Integridad estructural y estabilidad de scripts]
+**Aprendizaje:** La duplicación de elementos interactivos y etiquetas en componentes Astro no solo degrada la accesibilidad (labels huérfanos, IDs duplicados), sino que la duplicación accidental de lógica en bloques `<script>` (redeclaración de constantes) provoca un `SyntaxError` silencioso que inhabilita todo el JavaScript del cliente en el componente.
+**Acción:** Realizar auditorías de integridad estructural al refactorizar y consolidar la lógica del cliente en funciones únicas con parámetros claros para evitar colisiones de scope y asegurar una experiencia interactiva robusta.
 ## 2025-06-26 - [UX: Feedback de interacción coordinado en FAQ]
 **Learning:** En componentes interactivos de tipo acordeón, el uso de 'focus-within' junto con 'hover' en el contenedor padre permite proporcionar una respuesta visual consistente (cambio de fondo y sombras) que guía al usuario. Sincronizar estos estados con transformaciones en los hijos (escala del icono y color del texto) mediante 'group-focus-visible' asegura una paridad de experiencia para usuarios de teclado y ratón.
 **Action:** Implementar siempre estados de feedback coordinados en el contenedor padre usando 'group' y 'focus-within' para asegurar que la interactividad sea evidente y accesible para todos los métodos de entrada.
