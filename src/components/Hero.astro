@@ -99,13 +99,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
 
         const href = heroCta.getAttribute('href');
         if (href) {
-          const a = document.createElement('a');
-          a.href = href;
-          a.target = '_blank';
-          a.rel = 'noopener noreferrer';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
+          window.open(href, '_blank', 'noopener,noreferrer');
         }
 
         setTimeout(() => {
