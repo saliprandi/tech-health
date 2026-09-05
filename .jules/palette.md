@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2026-06-24 - [UX: Consistencia en jerarquía de etiquetas de formulario]
+**Aprendizaje:** Mantener un estilo y contraste unificado en todas las etiquetas (`label`) de un formulario evita saltos en la jerarquía visual que pueden distraer o sugerir erróneamente un estado diferente en los campos de entrada.
+**Acción:** Asegurar que las clases de tipografía, contraste y comportamiento de foco (`outline-none focus-visible:ring-*`) sean uniformes en todos los controles del formulario.
