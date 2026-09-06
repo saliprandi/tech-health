@@ -166,4 +166,36 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  proceso: {
+    badge: "Metodología B2B",
+    titulo: "Proceso de Servicio y Trazabilidad",
+    subtitulo: "Garantizamos la máxima seguridad operativa y cumplimiento normativo para sanatorios, clínicas y centros de diagnóstico.",
+    pasos: [
+      {
+        paso: "01",
+        titulo: "Recepción y Diagnóstico Inicial",
+        descripcion: "Evaluación in-situ o en laboratorio especializado con instrumental calibrado para identificar la causa raíz de la falla.",
+        destacado: "Evaluación sin compromiso para instituciones"
+      },
+      {
+        paso: "02",
+        titulo: "Intervención de Alta Complejidad",
+        descripcion: "Mantenimiento preventivo o reparación a nivel de componente microelectrónico utilizando repuestos de calidad médica.",
+        destacado: "Especialistas en placas electrónicas"
+      },
+      {
+        paso: "03",
+        titulo: "Control de Calidad y Calibración",
+        descripcion: "Sometemos el equipamiento a pruebas rigurosas de funcionamiento y parámetros de seguridad eléctrica bajo estándar.",
+        destacado: "Pruebas integrales de seguridad"
+      },
+      {
+        paso: "04",
+        titulo: "Informe Técnico y Garantía",
+        descripcion: "Entrega del protocolo técnico válido para auditorías de salud junto con nuestra garantía escrita de 90 días.",
+        destacado: "Certificación apta para auditorías"
+      }
+    ]
+  },
 };
