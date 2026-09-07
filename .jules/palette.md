@@ -89,7 +89,7 @@ Importante!!! Quiero todos los pr en español
 **Aprendizaje:** El uso de View Transitions en Astro requiere un patrón de inicialización que devuelva una función de limpieza. Sin esta limpieza, los listeners de eventos y los intervalos se acumulan tras cada navegación, provocando comportamientos erráticos.
 **Acción:** Implementar siempre un retorno de `cleanup()` en las funciones `init` y llamarlo antes de re-inicializar en el evento `astro:after-swap`.
 
-## 2025-06-15 - [A11y: Gestión de foco y corrupción estructural]
+## 2025-06-15 - [A11y: Gestión de foco y corrupción structural]
 **Aprendizaje:** La corrupción estructural (etiquetas duplicadas, scripts mal cerrados) rompe no solo el build sino también la accesibilidad del sitio. La consolidación de la lógica de modales y menús móviles es fundamental para que las trampas de foco funcionen de manera predecible.
 **Acción:** Priorizar la integridad sintáctica de los componentes para asegurar que los atributos ARIA y la gestión del foco se apliquen correctamente.
 
@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2026-06-24 - [A11y/UX: Tamaño táctil y paridad de foco en redes sociales del Footer]
+**Learning:** Los enlaces a redes sociales representados únicamente por íconos SVG pequeños frecuentemente carecen de un área de toque adecuada para dispositivos móviles (mínimo recomendado de 36x36px o 44x44px) y de estados de foco por teclado diferenciados. Agregar padding (`p-2`), esquinas redondeadas (`rounded-lg`), `focus-visible:ring-2` y `aria-hidden="true"` en el SVG interior garantiza tanto facilidad de uso táctil como paridad de experiencia entre usuarios de ratón y teclado sin duplicar el anuncio en lectores de pantalla.
+**Action:** Envolver siempre los íconos de redes sociales en contenedores con suficiente padding táctil, paridad de animaciones hover/focus-visible y ocultar los SVG internos para tecnologías asistivas cuando la etiqueta `aria-label` esté presente en el enlace padre.
