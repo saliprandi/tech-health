@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2026-06-24 - [A11y: Ergonomía y accesibilidad en links de redes sociales]
+**Learning:** Los íconos de redes sociales en el pie de página frecuentemente sufren de áreas de contacto reducidas (WCAG 2.5.8) y falta de indicadores de foco visibles. Añadir padding (`p-2`), feedback visual de hover/foco (`hover:scale-110 focus-visible:scale-110 hover:bg-white/10 rounded-lg`), junto con `aria-hidden="true"` en los SVGs internos, mejora drásticamente la usabilidad táctil y por teclado sin saturar el árbol de accesibilidad.
+**Action:** Aplicar siempre padding suficiente (`p-2`), clases de anillo de foco explícitas (`focus-visible:ring-2`) y ocultar SVGs decorativos internos cuando el contenedor `<a>` ya tenga un `aria-label` descriptivo.
