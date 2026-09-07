@@ -8,6 +8,17 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
 <footer class="bg-navy-dark py-10 px-[5%] text-center border-t border-white/5">
   <div class="container-custom flex flex-col items-center">
     
+    <a
+      href="#hero"
+      class="inline-flex items-center gap-2 mb-6 font-body text-[13px] text-white/60 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-lg transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-white/40 group"
+      aria-label="Volver al inicio de la página"
+    >
+      <svg class="w-4 h-4 transition-transform group-hover:-translate-y-0.5 group-focus-visible:-translate-y-0.5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+      </svg>
+      <span>Volver arriba</span>
+    </a>
+
     <div class="font-body font-light text-[13px] text-white/50 mb-6">
       {CONFIG.empresa.ciudad}, {CONFIG.empresa.pais} · {CONFIG.contacto.whatsapp_display}
     </div>
@@ -15,22 +26,22 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
     {hasSocials && (
       <div class="flex items-center gap-4 mb-6">
         {CONFIG.redes.instagram && (
-          <a href={CONFIG.redes.instagram} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en Instagram">
-            <svg class="w-5 h-5" fill="currentColor">
+          <a href={CONFIG.redes.instagram} target="_blank" rel="noopener noreferrer" class="p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-lg hover:scale-110 focus-visible:scale-110 focus-visible:ring-2 focus-visible:ring-white/40 outline-none transition-all duration-300" aria-label="Seguir en Instagram">
+            <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
               <use href="#icon-instagram" />
             </svg>
           </a>
         )}
         {CONFIG.redes.facebook && (
-          <a href={CONFIG.redes.facebook} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en Facebook">
-            <svg class="w-5 h-5" fill="currentColor">
+          <a href={CONFIG.redes.facebook} target="_blank" rel="noopener noreferrer" class="p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-lg hover:scale-110 focus-visible:scale-110 focus-visible:ring-2 focus-visible:ring-white/40 outline-none transition-all duration-300" aria-label="Seguir en Facebook">
+            <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
               <use href="#icon-facebook" />
             </svg>
           </a>
         )}
         {CONFIG.redes.linkedin && (
-          <a href={CONFIG.redes.linkedin} target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Seguir en LinkedIn">
-            <svg class="w-5 h-5" fill="currentColor">
+          <a href={CONFIG.redes.linkedin} target="_blank" rel="noopener noreferrer" class="p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-lg hover:scale-110 focus-visible:scale-110 focus-visible:ring-2 focus-visible:ring-white/40 outline-none transition-all duration-300" aria-label="Seguir en LinkedIn">
+            <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
               <use href="#icon-linkedin" />
             </svg>
           </a>
