@@ -166,4 +166,46 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora: {
+    titulo: "Estimador Plan de Mantenimiento B2B",
+    subtitulo: "Calcule la frecuencia recomendada de servicio técnico preventivo para el parque de equipos de su institución médica.",
+    tipos_equipos: [
+      { id: "soporte_vital", nombre: "Soporte Vital y Cuidados Críticos", ej: "Respiradores, Monitores multiparamétricos, Desfibriladores", frecuencia_meses: 3, criticidad: "Alta" },
+      { id: "diagnostico", nombre: "Diagnóstico e Imagenología", ej: "Ecógrafos, Electrocardiógrafos, RX portátiles", frecuencia_meses: 6, criticidad: "Media-Alta" },
+      { id: "quirofano", nombre: "Quirófano y Anestesia", ej: "Bisturís eléctricos, Bombas de infusión/jeringa", frecuencia_meses: 4, criticidad: "Alta" },
+      { id: "laboratorio_esterilizacion", nombre: "Laboratorio y Esterilización", ej: "Autoclaves, Centrífugas, Microscopios", frecuencia_meses: 6, criticidad: "Media" },
+    ]
+  },
+
+  proceso_servicio: {
+    titulo: "Flujo de Trabajo y Trazabilidad de Servicio",
+    subtitulo: "Protocolo riguroso en 4 etapas para garantizar la máxima disponibilidad operativa de su equipamiento médico.",
+    pasos: [
+      {
+        paso: "01",
+        titulo: "Recepción y Diagnóstico de Fallas",
+        descripcion: "Evaluación in-situ o en laboratorio con instrumental de calibración y análisis de microelectrónica.",
+        icono: "search"
+      },
+      {
+        paso: "02",
+        titulo: "Intervención y Reparación a Nivel Placa",
+        descripcion: "Sustitución de componentes SMD/THT defectuosos y calibración de módulos electrónicos.",
+        icono: "cpu"
+      },
+      {
+        paso: "03",
+        titulo: "Ensayos de Seguridad Eléctrica y Verificación",
+        descripcion: "Simulación de funcionamiento continuo bajo parámetros normativos para validar confiabilidad.",
+        icono: "shield-check"
+      },
+      {
+        paso: "04",
+        titulo: "Entrega e Informe Técnico de Auditoría",
+        descripcion: "Devolución del equipo respaldado por un informe técnico apto para acreditaciones institucionales.",
+        icono: "file-check"
+      }
+    ]
+  }
 };
