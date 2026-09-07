@@ -1,0 +1,42 @@
+---
+import { CONFIG } from '../data/config';
+---
+
+<section id="proceso" class="bg-white section-padding content-visibility-auto border-t border-border">
+  <div class="container-custom">
+
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Metodología de Trabajo</div>
+      <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] leading-[1.2] text-navy mb-4">
+        Nuestro Proceso de Servicio Técnico
+      </h2>
+      <p class="font-body text-[16px] text-text-soft">
+        Un flujo de trabajo transparente, riguroso y certificado diseñado para minimizar el tiempo fuera de servicio de sus equipos médicos.
+      </p>
+    </div>
+
+    <ol class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 list-none p-0">
+      {CONFIG.proceso.map((item) => (
+        <li class="relative group bg-off-white rounded-card p-8 border border-border/80 shadow-sm hover:shadow-card-hover hover:border-blue/30 transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <span class="font-heading font-black text-[28px] text-blue/30 group-hover:text-blue transition-colors duration-300">
+                {item.paso}
+              </span>
+              <div class="w-12 h-12 rounded-xl bg-blue-pale text-blue flex items-center justify-center group-hover:scale-110 transition-transform">
+                <svg class="w-6 h-6 group-hover:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                  <use href={`#icon-${item.icono}`} />
+                </svg>
+              </div>
+            </div>
+            <h3 class="font-heading font-bold text-[18px] text-navy mb-3">{item.titulo}</h3>
+            <p class="font-body font-light text-[14px] text-text-soft leading-relaxed">
+              {item.descripcion}
+            </p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+  </div>
+</section>
