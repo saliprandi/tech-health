@@ -151,3 +151,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-23 - [UX: Feedback de carga en navegación]
 **Learning:** Proporcionar feedback visual inmediato (spinners, cambio de texto) en CTAs de navegación hacia sitios externos (WhatsApp) mejora la percepción de respuesta y previene clics repetidos. Acompañar esto con anuncios aria-live asegura que la mejora sea accesible para todos.
 **Action:** Implementar siempre estados de carga y anuncios ARIA para acciones que involucren redirecciones o procesos asíncronos en componentes globales como la navegación.
+
+## 2026-06-26 - [UX: Paridad de foco en tarjetas informativas]
+**Learning:** Sincronizar las animaciones y transformaciones de hover (`group-hover:scale-110`, `group-hover:animate-heartbeat`) con estados de foco (`group-focus-within:scale-110`, `group-focus-within:animate-heartbeat`) en tarjetas de diferencias/características asegura que los usuarios de navegación por teclado reciban la misma experiencia rica e interactiva que los usuarios de mouse.
+**Action:** Usar `group-focus-within` y `hover:border-*` combinados con `focus-within:border-*` en tarjetas de características para mantener una retroalimentación visual consistente para todas las modalidades de entrada.

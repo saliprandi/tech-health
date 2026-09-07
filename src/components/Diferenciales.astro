@@ -17,9 +17,9 @@ import { CONFIG } from '../data/config';
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
       {CONFIG.diferenciales.map((item) => (
-        <div class="group bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover transition-all duration-300">
-          <div class="w-14 h-14 rounded-2xl bg-blue-pale text-blue flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-            <svg class="w-8 h-8 group-hover:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+        <div class="group bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover hover:border-blue/30 focus-within:border-blue/30 transition-all duration-300">
+          <div class="w-14 h-14 rounded-2xl bg-blue-pale text-blue flex items-center justify-center mb-6 group-hover:scale-110 group-focus-within:scale-110 transition-transform">
+            <svg class="w-8 h-8 group-hover:animate-heartbeat group-focus-within:animate-heartbeat group-focus-visible:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
               <use href={`#icon-${item.icono}`} />
             </svg>
           </div>
