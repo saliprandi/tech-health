@@ -155,3 +155,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-26 - [UX: Paridad de foco en tarjetas informativas]
 **Learning:** Sincronizar las animaciones y transformaciones de hover (`group-hover:scale-110`, `group-hover:animate-heartbeat`) con estados de foco (`group-focus-within:scale-110`, `group-focus-within:animate-heartbeat`) en tarjetas de diferencias/características asegura que los usuarios de navegación por teclado reciban la misma experiencia rica e interactiva que los usuarios de mouse.
 **Action:** Usar `group-focus-within` y `hover:border-*` combinados con `focus-within:border-*` en tarjetas de características para mantener una retroalimentación visual consistente para todas las modalidades de entrada.
+
+## 2026-06-27 - [UX: Links de contacto directo en footer]
+**Aprendizaje:** Transformar texto estático de número de teléfono en el pie de página en un enlace interactivo y accesible (`wa.me`) con un icono de canal y animación sutil elimina la fricción de contacto para usuarios que navegan hasta el final del sitio.
+**Acción:** Siempre estructurar datos de contacto del pie de página como elementos interactivos `<a>` con atributos de seguridad (`target="_blank" rel="noopener noreferrer"`), etiquetas ARIA explícitas y estados de foco visibles.
