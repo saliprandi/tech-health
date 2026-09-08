@@ -155,3 +155,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-26 - [UX: Paridad de foco en tarjetas informativas]
 **Learning:** Sincronizar las animaciones y transformaciones de hover (`group-hover:scale-110`, `group-hover:animate-heartbeat`) con estados de foco (`group-focus-within:scale-110`, `group-focus-within:animate-heartbeat`) en tarjetas de diferencias/características asegura que los usuarios de navegación por teclado reciban la misma experiencia rica e interactiva que los usuarios de mouse.
 **Action:** Usar `group-focus-within` y `hover:border-*` combinados con `focus-within:border-*` en tarjetas de características para mantener una retroalimentación visual consistente para todas las modalidades de entrada.
+
+## 2026-06-27 - [A11y: Anuncios aria-live en CTAs de modal dinámicos]
+**Aprendizaje:** Los CTAs dentro de modales inyectados dinámicamente que ofrecen retroalimentación visual de redirección ("Redirigiendo...") deben incluir una región `aria-live="polite"` (`sr-only`) para comunicar el cambio de estado a lectores de pantalla.
+**Acción:** Añadir elementos `span` con `aria-live="polite"` y la clase `sr-only` en botones/enlaces de redirección dinámica para garantizar que todos los usuarios tengan confirmación de la acción iniciada.
