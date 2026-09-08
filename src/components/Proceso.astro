@@ -17,14 +17,14 @@ import { CONFIG } from '../data/config';
 
     <ol class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 list-none p-0">
       {CONFIG.proceso.map((item) => (
-        <li class="relative group bg-off-white rounded-card p-8 border border-border/80 shadow-sm hover:shadow-card-hover hover:border-blue/30 transition-all duration-300 flex flex-col justify-between">
+        <li class="relative group bg-off-white rounded-card p-8 border border-border/80 shadow-sm hover:shadow-card-hover hover:border-blue/30 focus-within:border-blue/30 transition-all duration-300 flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-6">
-              <span class="font-heading font-black text-[28px] text-blue/30 group-hover:text-blue transition-colors duration-300">
+              <span class="font-heading font-black text-[28px] text-blue/30 group-hover:text-blue group-focus-within:text-blue group-focus-visible:text-blue transition-colors duration-300">
                 {item.paso}
               </span>
-              <div class="w-12 h-12 rounded-xl bg-blue-pale text-blue flex items-center justify-center group-hover:scale-110 transition-transform">
-                <svg class="w-6 h-6 group-hover:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <div class="w-12 h-12 rounded-xl bg-blue-pale text-blue flex items-center justify-center group-hover:scale-110 group-focus-within:scale-110 group-focus-visible:scale-110 transition-transform">
+                <svg class="w-6 h-6 group-hover:animate-heartbeat group-focus-within:animate-heartbeat group-focus-visible:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                   <use href={`#icon-${item.icono}`} />
                 </svg>
               </div>
