@@ -221,28 +221,37 @@ import { CONFIG } from '../data/config';
         }, 3000);
       };
 
-      const linkMap = new Map<string, Element>();
+      // Performance Optimization: Map each href to array of elements (desktop + mobile) for $O(1)$ lookup and atomic state updates
+      const linkMap = new Map<string, Element[]>();
       navLinks.forEach(link => {
         const href = link.getAttribute('href');
-        if (href) linkMap.set(href, link);
+        if (href) {
+          const group = linkMap.get(href) || [];
+          group.push(link);
+          linkMap.set(href, group);
+        }
       });
 
-      let currentActiveLink: Element | null = null;
+      let currentActiveLinks: Element[] = [];
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             const id = entry.target.getAttribute('id');
             const targetHref = `#${id}`;
-            const activeLink = linkMap.get(targetHref);
+            const activeLinks = linkMap.get(targetHref);
 
-            if (activeLink && activeLink !== currentActiveLink) {
-              if (currentActiveLink) {
-                currentActiveLink.classList.remove('nav-link-active');
-                currentActiveLink.removeAttribute('aria-current');
+            if (activeLinks && activeLinks !== currentActiveLinks) {
+              if (currentActiveLinks.length) {
+                currentActiveLinks.forEach(link => {
+                  link.classList.remove('nav-link-active');
+                  link.removeAttribute('aria-current');
+                });
               }
-              activeLink.classList.add('nav-link-active');
-              activeLink.setAttribute('aria-current', 'location');
-              currentActiveLink = activeLink;
+              activeLinks.forEach(link => {
+                link.classList.add('nav-link-active');
+                link.setAttribute('aria-current', 'location');
+              });
+              currentActiveLinks = activeLinks;
             }
           }
         });
