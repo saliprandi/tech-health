@@ -1,0 +1,64 @@
+---
+import { CONFIG } from '../data/config';
+---
+
+<section id="sectores" class="bg-white section-padding content-visibility-auto scroll-mt-16">
+  <div class="container-custom">
+
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Sectores y Especialidades</div>
+      <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] leading-[1.2] text-navy mb-4">
+        Soluciones adaptadas a cada tipo de institución médica
+      </h2>
+      <p class="font-body text-[16px] text-text-soft">
+        Brindamos asistencia técnica especializada con el nivel de prioridad y rigurosidad requeridos según la complejidad operativa de su centro de salud.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {CONFIG.sectores.map((sector) => (
+        <div class="group bg-off-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover hover:border-blue/30 focus-within:border-blue/30 transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-4 mb-5">
+              <div class="w-12 h-12 rounded-xl bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-focus-within:scale-110 transition-transform duration-300">
+                <svg class="w-6 h-6 group-hover:animate-heartbeat group-focus-within:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                  <use href={`#icon-${sector.icono}`} />
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-heading font-bold text-[20px] text-navy">{sector.titulo}</h3>
+                <p class="font-body font-medium text-[13px] text-blue">{sector.subtitulo}</p>
+              </div>
+            </div>
+
+            <p class="font-body text-[14px] text-text-soft leading-relaxed mb-6">
+              {sector.descripcion}
+            </p>
+
+            <div class="mb-6">
+              <span class="block font-heading font-semibold text-[13px] text-navy mb-3 uppercase tracking-wider">Equipamiento habitual:</span>
+              <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {sector.equipos.map((equipo) => (
+                  <li class="flex items-center gap-2 font-body text-[13px] text-text-soft">
+                    <svg class="w-4 h-4 text-blue flex-shrink-0" fill="none" stroke="currentColor" aria-hidden="true">
+                      <use href="#icon-check" />
+                    </svg>
+                    <span>{equipo}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-border/60">
+            <p class="font-body text-[13px] text-navy font-semibold flex items-start gap-2">
+              <span class="inline-block bg-blue/10 text-blue font-bold px-2 py-0.5 rounded text-[11px] uppercase tracking-wide flex-shrink-0 mt-0.5">Ventaja B2B</span>
+              <span>{sector.beneficio}</span>
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>

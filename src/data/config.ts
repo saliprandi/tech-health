@@ -193,4 +193,68 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  sectores: [
+    {
+      id: "clinicas",
+      icono: "shield",
+      titulo: "Clínicas y Sanatorios",
+      subtitulo: "Mantenimiento integral para centros de internación y quirófanos",
+      descripcion: "Aseguramos la disponibilidad operativa de equipamiento crítico en áreas de terapia intensiva, quirófanos y salas de internación.",
+      equipos: ["Monitores multiparamétricos", "Respiradores de CTI", "Bombas de infusión", "Bisturís electrónicos"],
+      beneficio: "Guardia técnica prioritaria 24/7 y planes de mantenimiento preventivo semestrales."
+    },
+    {
+      id: "imagenes",
+      icono: "microscope",
+      titulo: "Centros de Diagnóstico",
+      subtitulo: "Calibración y reparación de sistemas de imagen y ultrasonido",
+      descripcion: "Atención especializada para ecógrafos, sistemas de rayos X y diagnóstico por imágenes de alta resolución.",
+      equipos: ["Ecógrafos Doppler", "Sistemas de digitalización", "Monitores médicos de grado diagnóstico"],
+      beneficio: "Diagnóstico especializado de placas electrónicas para minimizar el downtime del equipo."
+    },
+    {
+      id: "laboratorios",
+      icono: "circuit",
+      titulo: "Laboratorios Clínicos",
+      subtitulo: "Precisión y estabilidad para instrumental de análisis",
+      descripcion: "Mantenimiento preventivo y correctivo para analizadores, centrífugas y sistemas térmicos de laboratorio.",
+      equipos: ["Centrífugas de laboratorio", "Microscopios biológicos", "Autoclaves y estufas", "Espectrofotómetros"],
+      beneficio: "Informes técnicos detallados aptos para acreditaciones y auditorías de calidad."
+    },
+    {
+      id: "consultorios",
+      icono: "tool",
+      titulo: "Consultorios y Centros Ambulatorios",
+      subtitulo: "Soluciones ágiles para la práctica médica diaria",
+      descripcion: "Soporte técnico directo para consultorios de especialidades, centros odontológicos y policlínicas.",
+      equipos: ["Electrocardiógrafos", "Oxímetros y tensiónómetros", "Lámparas scialíticas", "Equipos de electrofisiología"],
+      beneficio: "Asistencia in-situ en San Miguel de Tucumán con retiro programado en caso necesario."
+    }
+  ],
+
+  cobertura: {
+    titulo: "Cobertura Regional en Tucumán y el NOA",
+    subtitulo: "Presencia local estratégica para instituciones de salud de la región",
+    zonas: [
+      {
+        nombre: "San Miguel de Tucumán y Gran Tucumán",
+        badge: "Atención Inmediata",
+        tiempo: "Respuesta in-situ en menos de 4 horas",
+        detalles: "Atención directa en clínica o retiro a laboratorio central en Monteagudo 349."
+      },
+      {
+        nombre: "Interior de Tucumán (Concepción, Aguilares, Tafí del Valle)",
+        badge: "Programado 24h",
+        tiempo: "Asistencia in-situ coordinada en 24 horas",
+        detalles: "Desplazamiento técnico para inspecciones preventivas y mantenimientos correctivos."
+      },
+      {
+        nombre: "Provincias del NOA (Salta, Jujuy, Catamarca, S. del Estero)",
+        badge: "Cobertura NOA",
+        tiempo: "Coordinación de laboratorio y recepción técnica",
+        detalles: "Recepción de placas y módulos electrónicos para diagnóstico de precisión."
+      }
+    ]
+  }
 };
