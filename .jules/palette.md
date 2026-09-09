@@ -159,3 +159,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-27 - [A11y: Anuncios aria-live en CTAs de modal dinámicos]
 **Aprendizaje:** Los CTAs dentro de modales inyectados dinámicamente que ofrecen retroalimentación visual de redirección ("Redirigiendo...") deben incluir una región `aria-live="polite"` (`sr-only`) para comunicar el cambio de estado a lectores de pantalla.
 **Acción:** Añadir elementos `span` con `aria-live="polite"` y la clase `sr-only` en botones/enlaces de redirección dinámica para garantizar que todos los usuarios tengan confirmación de la acción iniciada.
+
+## 2026-06-28 - [UX: Indicador direccional interactivo en botones de desplazamiento]
+**Aprendizaje:** Los botones/enlaces secundarios de navegación interna (como "Ver servicios") comunican de forma mucho más clara su función cuando incorporan un ícono direccional (ej. chevron hacia abajo) con animación de desplazamiento en hover y focus-visible (`group-hover:translate-y-0.5 group-focus-visible:translate-y-0.5`). Esto ayuda al usuario a anticipar el desplazamiento vertical y mejora la paridad de feedback entre mouse y teclado.
+**Acción:** Acompañar siempre los enlaces de desplazamiento interno con un ícono direccional SVG (`aria-hidden="true"`) y micro-interacción de traducción en hover y focus-visible.
