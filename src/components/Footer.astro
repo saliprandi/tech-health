@@ -15,10 +15,13 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
         href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`}
         target="_blank"
         rel="noopener noreferrer"
-        class="hover:text-white focus-visible:text-white underline-offset-4 hover:underline focus-visible:underline outline-none rounded-sm transition-colors"
+        class="group inline-flex items-center gap-1.5 hover:text-white focus-visible:text-white underline-offset-4 hover:underline focus-visible:underline outline-none rounded-sm transition-colors"
         aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}
       >
-        {CONFIG.contacto.whatsapp_display}
+        <svg class="w-4 h-4 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
+          <use href="#icon-whatsapp" />
+        </svg>
+        <span>{CONFIG.contacto.whatsapp_display}</span>
       </a>
     </div>
 
