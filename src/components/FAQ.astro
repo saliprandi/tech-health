@@ -60,6 +60,7 @@ import { CONFIG } from '../data/config';
       if (!items.length) return () => {};
 
       const transitionTimers = new Map<HTMLElement, ReturnType<typeof setTimeout>>();
+      let activeTrigger: HTMLButtonElement | null = (document.querySelector('#faq .faq-trigger[aria-expanded="true"]') as HTMLButtonElement) || null;
 
       const closeContainer = (container: HTMLElement) => {
         if (!container) return;
@@ -86,19 +87,16 @@ import { CONFIG } from '../data/config';
         const icon = item?.querySelector('.faq-icon');
         const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
 
-        items.forEach(otherItem => {
-          if (otherItem !== item) {
-            const otherTrigger = otherItem.querySelector('.faq-trigger');
-            const otherContainer = otherItem.querySelector('.faq-answer-container') as HTMLElement;
-            const otherIcon = otherItem.querySelector('.faq-icon');
+        // Optimization: $O(1)$ tracking of expanded accordion item instead of $O(N)$ DOM iteration
+        if (activeTrigger && activeTrigger !== trigger) {
+          const activeItem = activeTrigger.closest('.faq-item');
+          const activeContainer = activeItem?.querySelector('.faq-answer-container') as HTMLElement;
+          const activeIcon = activeItem?.querySelector('.faq-icon');
 
-            if (otherTrigger?.getAttribute('aria-expanded') === 'true') {
-              otherTrigger?.setAttribute('aria-expanded', 'false');
-              otherIcon?.classList.remove('rotate-180');
-              if (otherContainer) closeContainer(otherContainer);
-            }
-          }
-        });
+          activeTrigger.setAttribute('aria-expanded', 'false');
+          activeIcon?.classList.remove('rotate-180');
+          if (activeContainer) closeContainer(activeContainer);
+        }
 
         trigger.setAttribute('aria-expanded', (!isExpanded).toString());
         icon?.classList.toggle('rotate-180', !isExpanded);
@@ -115,8 +113,10 @@ import { CONFIG } from '../data/config';
             container.classList.remove('opacity-0');
             const height = container.scrollHeight;
             container.style.height = `${height}px`;
+            activeTrigger = trigger;
           } else {
             closeContainer(container);
+            activeTrigger = null;
           }
         }
       };

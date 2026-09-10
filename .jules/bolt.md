@@ -22,3 +22,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-18 - Gestión de timers mediante visibilidad y cacheo de estado de DOM
 **Aprendizaje:** Los intervalos de actualización de UI (como badges de estado) consumen CPU innecesariamente si el componente no es visible o si el estado no ha cambiado. El uso de `IntersectionObserver` para activar/desactivar timers y el cacheo del último estado (`lastBadgeState`) para evitar manipulaciones de DOM redundantes optimiza drásticamente la eficiencia en el hilo principal. Además, el uso de `window.open` para redirecciones externas es más eficiente y limpio que la creación dinámica de elementos `<a>`.
 **Acción:** Implementar siempre `IntersectionObserver` para tareas en segundo plano y validar cambios de estado antes de cualquier escritura en el DOM. Preferir `window.open` con `noopener,noreferrer` para navegación externa programática.
+
+## 2026-06-19 - Optimización de acordeón mediante tracking de estado activo $O(1)$
+**Aprendizaje:** Iterar sobre todos los elementos del DOM ($O(N)$) con `querySelectorAll`/`querySelector` dentro de event handlers de componentes interactivos (como acordeones en `FAQ.astro`) genera recalculos innecesarios y repintados en el hilo principal. Mantener una referencia al elemento activo (`activeTrigger`) permite cerrar el elemento previo directamente en $O(1)$.
+**Acción:** Reemplazar iteraciones globales en eventos de usuario por referencias de estado previo para realizar actualizaciones dirigidas $O(1)$.
