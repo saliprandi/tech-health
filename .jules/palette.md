@@ -167,3 +167,7 @@ Importante!!! Quiero todos los pr en español
 ## 2026-06-29 - [UX: Paridad de feedback visual en tarjetas de listas]
 **Aprendizaje:** En listas de tarjetas con íconos o elementos dinámicos (como la cuadrícula de equipos atendidos), sincronizar la animación de pulso/heartbeat y elevación de bordes tanto para `hover` como para `focus-within` o `focus-visible` garantiza que los usuarios de teclado reciban la misma experiencia interactiva y fluida que los usuarios de ratón.
 **Acción:** Aplicar `hover:scale-[1.02] focus-within:scale-[1.02]` y `group-focus-within:animate-heartbeat` en componentes de listas interactivas para mantener la coherencia de micro-interacciones.
+
+## 2026-06-30 - [A11y: Contraste de foco en formularios sobre fondos oscuros]
+**Aprendizaje:** Los anillos de foco en formularios situados sobre contenedores oscuros (como `bg-navy`) requieren colores de alto contraste (como `focus-visible:ring-blue-light` o `focus-visible:ring-white`) con respecto al fondo para ser claramente visibles durante la navegación por teclado. Asimismo, mantener una tipografía y opacidad consistente en todas las etiquetas de formulario mejora la jerarquía visual.
+**Acción:** Usar tonos claros de la paleta para `focus-visible:ring-*` en componentes con fondos oscuros e igualar el tamaño y peso de fuente de todos los `<label>` del formulario.
