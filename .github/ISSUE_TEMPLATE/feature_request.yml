@@ -1,0 +1,37 @@
+name: Solicitud de funcionalidad
+description: Sugerir una nueva sección, feature o mejora para el sitio
+title: "[FEATURE] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por tu sugerencia. Describí la funcionalidad o mejora que te gustaría ver.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema o necesidad
+      description: ¿Qué problema resuelve o qué necesidad cubre esta funcionalidad?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solución propuesta
+      description: Describí qué te gustaría que pasara.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas consideradas
+      description: Otras soluciones que hayas considerado.
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto adicional
+      description: Cualquier otra información relevante.
+    validations:
+      required: false

@@ -1,0 +1,23 @@
+name: Consulta
+description: Hacer una pregunta sobre el proyecto o el código
+title: "[QUESTION] "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ¿Tenés una duda sobre el proyecto? Este es el lugar correcto.
+  - type: textarea
+    id: question
+    attributes:
+      label: Tu consulta
+      description: Hacé tu pregunta con todo el contexto necesario.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto
+      description: ¿Qué intentaste? ¿Qué documentación revisaste?
+    validations:
+      required: false
