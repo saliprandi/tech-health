@@ -23,6 +23,7 @@ import { CONFIG } from '../data/config';
       <use href="#icon-whatsapp" />
     </svg>
   </a>
+  <span id="wa-float-announcement" class="sr-only" aria-live="polite"></span>
 </div>
 
 <script>
@@ -31,6 +32,7 @@ import { CONFIG } from '../data/config';
       const tooltip = document.getElementById('wa-tooltip');
       const tooltipText = document.getElementById('wa-tooltip-text');
       const btn = document.getElementById('wa-float-btn');
+      const announcement = document.getElementById('wa-float-announcement');
 
       if (!tooltip || !tooltipText || !btn) return () => {};
 
@@ -87,6 +89,7 @@ import { CONFIG } from '../data/config';
 
         const originalText = tooltipText.textContent || '¡Hola! ¿En qué podemos ayudarte?';
         tooltipText.textContent = '¡Redirigiendo!';
+        if (announcement) announcement.textContent = 'Redirigiendo a WhatsApp...';
         showTooltip();
 
         btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
@@ -112,6 +115,7 @@ import { CONFIG } from '../data/config';
           if (restoreTimer) clearTimeout(restoreTimer);
           restoreTimer = setTimeout(() => {
             tooltipText.textContent = originalText;
+            if (announcement) announcement.textContent = '';
           }, 500);
         }, 3000);
       };
