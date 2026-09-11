@@ -11,10 +11,8 @@ import { CONFIG } from '../data/config';
     </a>
 
     <!-- Desktop Links -->
-    <ul class="hidden lg:flex items-center gap-6 xl:gap-8">
+    <ul class="hidden md:flex items-center gap-8">
       <li><a href="#servicios" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Servicios</a></li>
-      <li><a href="#sectores" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Sectores</a></li>
-      <li><a href="#cobertura" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Cobertura</a></li>
       <li><a href="#proceso" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Proceso</a></li>
       <li><a href="#equipos" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Equipos</a></li>
       <li><a href="#nosotros" class="nav-link font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Nosotros</a></li>
@@ -23,7 +21,7 @@ import { CONFIG } from '../data/config';
 
     <!-- CTA & Mobile Toggle -->
     <div class="flex items-center gap-4">
-      <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" id="nav-cta" class="hidden lg:inline-flex items-center gap-2 bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2">
+      <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" id="nav-cta" class="hidden md:inline-flex items-center gap-2 bg-navy text-white font-heading font-bold text-[14px] py-[10px] px-[20px] rounded-[8px] hover:bg-navy-dark transition-colors shadow-sm hover:shadow-md outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2">
         <svg class="nav-spinner hidden w-4 h-4 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -37,7 +35,7 @@ import { CONFIG } from '../data/config';
       <!-- Hamburger Button -->
       <button
         id="menu-toggle"
-        class="lg:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 z-[101] outline-none focus-visible:ring-2 focus-visible:ring-navy rounded-sm"
+        class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 z-[101] outline-none focus-visible:ring-2 focus-visible:ring-navy rounded-sm"
         aria-label="Abrir menú"
         aria-expanded="false"
         aria-controls="mobile-menu"
@@ -50,10 +48,8 @@ import { CONFIG } from '../data/config';
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="fixed top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out lg:hidden z-[99] invisible" role="navigation" aria-label="Menú móvil">
+  <div id="mobile-menu" class="fixed top-[68px] left-0 w-full bg-white border-b border-border flex flex-col items-center py-6 gap-6 shadow-card-hover opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 ease-in-out md:hidden z-[99] invisible" role="navigation" aria-label="Menú móvil">
     <a href="#servicios" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Servicios</a>
-    <a href="#sectores" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Sectores</a>
-    <a href="#cobertura" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Cobertura</a>
     <a href="#proceso" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Proceso</a>
     <a href="#equipos" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Equipos</a>
     <a href="#nosotros" class="nav-link mobile-link font-body font-medium text-[16px] text-text-soft hover:text-navy">Nosotros</a>
@@ -225,28 +221,37 @@ import { CONFIG } from '../data/config';
         }, 3000);
       };
 
-      const linkMap = new Map<string, Element>();
+      // Performance Optimization: Map each href to array of elements (desktop + mobile) for $O(1)$ lookup and atomic state updates
+      const linkMap = new Map<string, Element[]>();
       navLinks.forEach(link => {
         const href = link.getAttribute('href');
-        if (href) linkMap.set(href, link);
+        if (href) {
+          const group = linkMap.get(href) || [];
+          group.push(link);
+          linkMap.set(href, group);
+        }
       });
 
-      let currentActiveLink: Element | null = null;
+      let currentActiveLinks: Element[] = [];
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             const id = entry.target.getAttribute('id');
             const targetHref = `#${id}`;
-            const activeLink = linkMap.get(targetHref);
+            const activeLinks = linkMap.get(targetHref);
 
-            if (activeLink && activeLink !== currentActiveLink) {
-              if (currentActiveLink) {
-                currentActiveLink.classList.remove('nav-link-active');
-                currentActiveLink.removeAttribute('aria-current');
+            if (activeLinks && activeLinks !== currentActiveLinks) {
+              if (currentActiveLinks.length) {
+                currentActiveLinks.forEach(link => {
+                  link.classList.remove('nav-link-active');
+                  link.removeAttribute('aria-current');
+                });
               }
-              activeLink.classList.add('nav-link-active');
-              activeLink.setAttribute('aria-current', 'location');
-              currentActiveLink = activeLink;
+              activeLinks.forEach(link => {
+                link.classList.add('nav-link-active');
+                link.setAttribute('aria-current', 'location');
+              });
+              currentActiveLinks = activeLinks;
             }
           }
         });

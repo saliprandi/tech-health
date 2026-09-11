@@ -65,7 +65,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
   <div id="service-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[700px] z-[220] opacity-0 pointer-events-none invisible transition-all duration-400 scale-95" role="dialog" aria-modal="true">
     <div class="relative bg-white rounded-card p-10 shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
       <button id="close-modal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-off-white text-navy hover:bg-navy hover:text-white transition-colors" aria-label="Cerrar">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor"><use href="#icon-close" /></svg>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true"><use href="#icon-close" /></svg>
       </button>
       <div id="modal-content" class="pt-2 pb-2"></div>
     </div>
@@ -154,8 +154,9 @@ const modalData = CONFIG.servicios.map(servicio => ({
           </ul>
           <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
             <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-colors shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta">
-              <svg class="w-5 h-5 fill-current"><use href="#icon-whatsapp" /></svg>
+              <svg class="w-5 h-5 fill-current" aria-hidden="true"><use href="#icon-whatsapp" /></svg>
               <span id="modal-cta-text">Consultar por este servicio</span>
+              <span id="modal-cta-announcement" class="sr-only" aria-live="polite"></span>
             </a>
             <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">Cerrar</button>
           </div>
@@ -188,10 +189,12 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
         const cta = target.closest('#modal-cta') as HTMLAnchorElement;
         const ctaText = document.getElementById('modal-cta-text');
+        const ctaAnnouncement = document.getElementById('modal-cta-announcement');
         if (cta && ctaText) {
           e.preventDefault();
           const originalText = ctaText.textContent;
           ctaText.textContent = 'Redirigiendo...';
+          if (ctaAnnouncement) ctaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
           cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
           const href = cta.getAttribute('href');
@@ -201,6 +204,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
           setTimeout(() => {
             if (ctaText) ctaText.textContent = originalText;
+            if (ctaAnnouncement) ctaAnnouncement.textContent = '';
             if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           }, 3000);
         }
