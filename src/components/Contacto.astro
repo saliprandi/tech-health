@@ -299,7 +299,7 @@ import { CONFIG } from '../data/config';
       };
 
       // --- Form Submission ---
-      const handleSubmit = (e: Event) => {
+      const handleSubmit = async (e: Event) => {
         e.preventDefault();
         const formData = new FormData(form);
         if (formData.get('website')) return;
@@ -320,11 +320,28 @@ import { CONFIG } from '../data/config';
 
         if (submitBtn && submitBtnText) {
           const originalText = submitBtnText.textContent;
-          submitBtnText.textContent = 'Redirigiendo...';
-          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
+          submitBtnText.textContent = 'Enviando...';
+          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Enviando solicitud...';
           submitBtn.disabled = true;
           submitBtn.setAttribute('aria-busy', 'true');
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+          // Enviar datos al webhook de n8n (fire-and-forget, sin bloquear WhatsApp)
+          const webhookUrl = 'http://n8n.lenovo.local/webhook/techhealth-solicitud';
+          const payload = JSON.stringify({ nombre, telefono: tel, servicio, mensaje });
+          try {
+            await fetch(webhookUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: payload,
+              mode: 'no-cors',
+            });
+          } catch {
+            // Silencioso: si el webhook falla, igual abre WhatsApp
+          }
+
+          submitBtnText.textContent = 'Redirigiendo...';
+          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
 
           setTimeout(() => {
             if (submitBtnText) submitBtnText.textContent = originalText;
