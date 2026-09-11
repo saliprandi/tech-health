@@ -193,4 +193,43 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  cotizador: {
+    badge: "Estimador B2B",
+    titulo: "Calculadora de Abonos de Mantenimiento",
+    subtitulo: "Seleccione el perfil de su institución médica para estimar el plan de soporte técnico y mantenimiento preventivo ideal.",
+    tiposInstitucion: [
+      { id: "centro", nombre: "Centro Médico / Consultorios", desc: "Mantenimiento programado para equipamiento de consulta y diagnóstico primario." },
+      { id: "sanatorio", nombre: "Sanatorio / Clínica Privada", desc: "Soporte integral para quirófanos, terapia intensiva y monitoreo continuo." },
+      { id: "laboratorio", nombre: "Laboratorio / Centro Diagnóstico", desc: "Calibración y revisión de análisis clínicos, centrifugas y microscopía." },
+    ],
+    rangosEquipos: [
+      { id: "1-5", label: "1 a 5 equipos", estimacion: "Plan Inicial desde $150.000 / mes" },
+      { id: "6-15", label: "6 a 15 equipos", estimacion: "Plan Pro desde $320.000 / mes" },
+      { id: "16-30", label: "16 a 30 equipos", estimacion: "Plan Institucional desde $580.000 / mes" },
+      { id: "30+", label: "Más de 30 equipos", estimacion: "Plan Flota / Cotización a Medida" },
+    ],
+    modalidades: [
+      {
+        id: "preventivo",
+        nombre: "Mantenimiento Preventivo Programado",
+        detalles: [
+          "Inspecciones periódicas y calibración de parámetros",
+          "Informes técnicos oficiales para auditorías de salud",
+          "Prioridad de atención técnica en caso de contingencia",
+          "Descuentos preferenciales en reparación de placas",
+        ],
+      },
+      {
+        id: "integral",
+        nombre: "Abono Integral (Preventivo + Correctivo)",
+        detalles: [
+          "Todo lo incluido en el plan preventivo programado",
+          "Cobertura de mano de obra en atenciones correctivas",
+          "Respuesta de emergencia prioritaria 24h",
+          "Garantía extendida en componentes y repuestos",
+        ],
+      },
+    ],
+  },
 };
