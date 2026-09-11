@@ -156,6 +156,18 @@ Importante!!! Quiero todos los pr en español
 **Learning:** Sincronizar las animaciones y transformaciones de hover (`group-hover:scale-110`, `group-hover:animate-heartbeat`) con estados de foco (`group-focus-within:scale-110`, `group-focus-within:animate-heartbeat`) en tarjetas de diferencias/características asegura que los usuarios de navegación por teclado reciban la misma experiencia rica e interactiva que los usuarios de mouse.
 **Action:** Usar `group-focus-within` y `hover:border-*` combinados con `focus-within:border-*` en tarjetas de características para mantener una retroalimentación visual consistente para todas las modalidades de entrada.
 
-## 2026-06-27 - [UX: Links de contacto directo en footer]
-**Aprendizaje:** Transformar texto estático de número de teléfono en el pie de página en un enlace interactivo y accesible (`wa.me`) con un icono de canal y animación sutil elimina la fricción de contacto para usuarios que navegan hasta el final del sitio.
-**Acción:** Siempre estructurar datos de contacto del pie de página como elementos interactivos `<a>` con atributos de seguridad (`target="_blank" rel="noopener noreferrer"`), etiquetas ARIA explícitas y estados de foco visibles.
+## 2026-06-27 - [A11y: Anuncios aria-live en CTAs de modal dinámicos]
+**Aprendizaje:** Los CTAs dentro de modales inyectados dinámicamente que ofrecen retroalimentación visual de redirección ("Redirigiendo...") deben incluir una región `aria-live="polite"` (`sr-only`) para comunicar el cambio de estado a lectores de pantalla.
+**Acción:** Añadir elementos `span` con `aria-live="polite"` y la clase `sr-only` en botones/enlaces de redirección dinámica para garantizar que todos los usuarios tengan confirmación de la acción iniciada.
+
+## 2026-06-28 - [UX: Indicador direccional interactivo en botones de desplazamiento]
+**Aprendizaje:** Los botones/enlaces secundarios de navegación interna (como "Ver servicios") comunican de forma mucho más clara su función cuando incorporan un ícono direccional (ej. chevron hacia abajo) con animación de desplazamiento en hover y focus-visible (`group-hover:translate-y-0.5 group-focus-visible:translate-y-0.5`). Esto ayuda al usuario a anticipar el desplazamiento vertical y mejora la paridad de feedback entre mouse y teclado.
+**Acción:** Acompañar siempre los enlaces de desplazamiento interno con un ícono direccional SVG (`aria-hidden="true"`) y micro-interacción de traducción en hover y focus-visible.
+
+## 2026-06-29 - [UX: Paridad de feedback visual en tarjetas de listas]
+**Aprendizaje:** En listas de tarjetas con íconos o elementos dinámicos (como la cuadrícula de equipos atendidos), sincronizar la animación de pulso/heartbeat y elevación de bordes tanto para `hover` como para `focus-within` o `focus-visible` garantiza que los usuarios de teclado reciban la misma experiencia interactiva y fluida que los usuarios de ratón.
+**Acción:** Aplicar `hover:scale-[1.02] focus-within:scale-[1.02]` y `group-focus-within:animate-heartbeat` en componentes de listas interactivas para mantener la coherencia de micro-interacciones.
+
+## 2026-06-30 - [A11y & Micro-UX: Visibilidad de foco y scaling en botones de cierre de modal]
+**Aprendizaje:** Los botones de cierre de modal (como `#close-modal`) que carecen de anillos de foco visibles dificultan la navegación por teclado. Equiparlos con anillos de foco de alto contraste (`focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2`), transformaciones de escala en hover y foco (`hover:scale-110 focus-visible:scale-110`), y etiquetas ARIA contextuales (`aria-label="Cerrar detalles del servicio"`) proporciona claridad y accesibilidad completa.
+**Acción:** Siempre incluir anillos de foco específicos del tema, transformaciones de escala coordinadas y etiquetas ARIA descriptivas en botones de cierre en contenedores flotantes o modales.
