@@ -27,3 +27,8 @@ blob-report/
 
 # jetbrains setting folder
 .idea/
+
+# Archivos personales / ajenos al proyecto web (no commitear)
+memory.md
+plan_gadgetucuman.md
+build_flyer.ps1
