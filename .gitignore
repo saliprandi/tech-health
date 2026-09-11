@@ -32,3 +32,11 @@ blob-report/
 memory.md
 plan_gadgetucuman.md
 build_flyer.ps1
+
+# Tooling personal de IA y editor (no commitear)
+.gemini/
+.devin/
+.agents/
+.jules/
+.vscode/
+skills-lock.json

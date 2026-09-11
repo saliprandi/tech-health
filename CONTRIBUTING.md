@@ -5,7 +5,7 @@ Gracias por tu interes en contribuir a TechHealth. Este proyecto usa un sistema 
 ## Antes de empezar
 
 1. Leé [AGENTS.md](./AGENTS.md) para entender el sistema de personas (`new`, `palette`, `sentinel`, `bolt`).
-2. Cada persona tiene instrucciones especificas en `.jules/` — leelas antes de trabajar.
+2. Cada persona tiene instrucciones especificas en `.jules/` (archivos locales, no commiteados) — leelas antes de trabajar.
 3. Revisá [ADR.md](./ADR.md) para entender las decisiones arquitectonicas tomadas.
 
 ## Reglas generales
