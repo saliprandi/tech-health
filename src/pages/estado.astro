@@ -1,0 +1,354 @@
+---
+import EstadoLayout from '../layouts/EstadoLayout.astro';
+---
+
+<EstadoLayout title="Consultar Estado | TechHealth Medical Engineering">
+	<!-- Nav simplificado -->
+	<nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border">
+		<div class="container-custom h-full px-[5%] flex items-center justify-between">
+			<a href="/" class="flex items-center group" aria-label="TechHealth Home">
+				<img src="/logo-name.svg" alt="TechHealth Medical Engineering" width="228" height="56" loading="eager" decoding="async" class="h-[56px] w-auto group-hover:scale-105 transition-transform duration-300" />
+			</a>
+			<a href="/" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Volver al inicio</a>
+		</div>
+	</nav>
+
+	<!-- Hero -->
+	<section class="pt-[68px] bg-navy min-h-screen flex items-center">
+		<div class="container-custom px-[5%] py-16 max-w-2xl mx-auto w-full">
+			<div class="text-center mb-10">
+				<div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Seguimiento</div>
+				<h1 class="font-heading font-extrabold text-[clamp(28px,5vw,42px)] text-white mb-4">Consulte el estado de su reparación</h1>
+				<p class="font-body text-[16px] text-white/60 max-w-md mx-auto">
+					Ingrese su número de ticket para ver el estado actual y el historial completo de su equipo.
+				</p>
+			</div>
+
+			<!-- Formulario de búsqueda -->
+			<div class="bg-white/10 backdrop-blur-sm rounded-[16px] p-8 border border-white/10">
+				<form id="estado-form" class="flex flex-col gap-4">
+					<div class="flex flex-col gap-2">
+						<label for="ticket-input" class="font-body font-medium text-[13px] text-white/80">
+							Número de ticket <span class="text-blue-light">*</span>
+						</label>
+						<input
+							type="text"
+							id="ticket-input"
+							name="ticket_number"
+							required
+							placeholder="Ej: TH-2026-1234"
+							class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none uppercase"
+							autocomplete="off"
+						/>
+					</div>
+					<button type="submit" id="estado-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue/40">
+						<svg id="estado-spinner" class="hidden w-5 h-5 animate-spin text-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+							<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+							<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+						</svg>
+						<span id="estado-submit-text">Consultar estado</span>
+					</button>
+				</form>
+				<div id="estado-error" class="hidden mt-4 p-4 bg-red-500/20 border border-red-500/30 rounded-[8px] text-red-200 text-[14px] font-body"></div>
+			</div>
+
+			<!-- Resultado -->
+			<div id="estado-result" class="hidden mt-8">
+				<!-- Header del ticket -->
+				<div class="bg-white rounded-[16px] p-8 shadow-lg mb-6">
+					<div class="flex items-center justify-between mb-6">
+						<div>
+							<div class="font-body text-[12px] text-text-soft uppercase tracking-wider mb-1">Ticket</div>
+							<div id="result-ticket-number" class="font-heading font-extrabold text-[24px] text-navy"></div>
+						</div>
+						<div id="result-estado-badge" class="px-4 py-2 rounded-full text-[14px] font-bold"></div>
+					</div>
+
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+						<div>
+							<div class="font-body text-[12px] text-text-soft uppercase tracking-wider mb-1">Cliente</div>
+							<div id="result-nombre" class="font-body text-[16px] text-navy font-medium"></div>
+						</div>
+						<div>
+							<div class="font-body text-[12px] text-text-soft uppercase tracking-wider mb-1">Servicio</div>
+							<div id="result-servicio" class="font-body text-[16px] text-navy font-medium"></div>
+						</div>
+						<div>
+							<div class="font-body text-[12px] text-text-soft uppercase tracking-wider mb-1">Técnico</div>
+							<div id="result-tecnico" class="font-body text-[16px] text-navy font-medium"></div>
+						</div>
+						<div>
+							<div class="font-body text-[12px] text-text-soft uppercase tracking-wider mb-1">Fecha de ingreso</div>
+							<div id="result-fecha" class="font-body text-[16px] text-navy font-medium"></div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Estado actual -->
+				<div class="bg-white rounded-[16px] p-8 shadow-lg mb-6">
+					<h2 class="font-heading font-bold text-[18px] text-navy mb-4">Estado actual</h2>
+					<div class="flex items-center gap-3 mb-4">
+						<div id="result-estado-icon" class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"></div>
+						<div>
+							<div id="result-estado-titulo" class="font-heading font-bold text-[16px] text-navy"></div>
+							<div id="result-estado-desc" class="font-body text-[14px] text-text-soft"></div>
+						</div>
+					</div>
+
+					<!-- Datos del equipo si existen -->
+					<div id="result-equipo-section" class="hidden mt-6 pt-6 border-t border-border">
+						<h3 class="font-heading font-bold text-[14px] text-navy mb-3">Datos del equipo</h3>
+						<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+							<div><span class="text-text-soft text-[13px]">Equipo:</span> <span id="result-equipo" class="text-navy text-[14px] font-medium"></span></div>
+							<div><span class="text-text-soft text-[13px]">Marca:</span> <span id="result-marca" class="text-navy text-[14px] font-medium"></span></div>
+							<div><span class="text-text-soft text-[13px]">Modelo:</span> <span id="result-modelo" class="text-navy text-[14px] font-medium"></span></div>
+							<div><span class="text-text-soft text-[13px]">Serie:</span> <span id="result-serie" class="text-navy text-[14px] font-medium"></span></div>
+						</div>
+						<div id="result-diagnostico-section" class="hidden mt-3">
+							<div class="text-text-soft text-[13px] mb-1">Diagnóstico:</div>
+							<div id="result-diagnostico" class="text-navy text-[14px]"></div>
+						</div>
+						<div id="result-trabajo-section" class="hidden mt-3">
+							<div class="text-text-soft text-[13px] mb-1">Trabajo realizado:</div>
+							<div id="result-trabajo" class="text-navy text-[14px]"></div>
+						</div>
+						<div id="result-garantia-section" class="hidden mt-3">
+							<div class="text-text-soft text-[13px] mb-1">Garantía vence:</div>
+							<div id="result-garantia" class="text-navy text-[14px] font-medium"></div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Historial -->
+				<div id="result-historial-section" class="bg-white rounded-[16px] p-8 shadow-lg">
+					<h2 class="font-heading font-bold text-[18px] text-navy mb-4">Historial de cambios</h2>
+					<div id="result-historial" class="flex flex-col gap-4"></div>
+				</div>
+
+				<!-- Botón nueva consulta -->
+				<div class="text-center mt-6">
+					<button id="nueva-consulta" class="font-body font-medium text-[14px] text-white/60 hover:text-white transition-colors">
+						Consultar otro ticket
+					</button>
+				</div>
+			</div>
+		</div>
+	</section>
+</EstadoLayout>
+
+<script>
+	(function() {
+		const WEBHOOK_URL = 'http://n8n.lenovo.local/webhook/techhealth-estado';
+
+		const form = document.getElementById('estado-form') as HTMLFormElement | null;
+		const input = document.getElementById('ticket-input') as HTMLInputElement | null;
+		const submitBtn = document.getElementById('estado-submit') as HTMLButtonElement | null;
+		const submitText = document.getElementById('estado-submit-text');
+		const spinner = document.getElementById('estado-spinner');
+		const errorDiv = document.getElementById('estado-error');
+		const resultDiv = document.getElementById('estado-result');
+		const nuevaConsultaBtn = document.getElementById('nueva-consulta');
+
+		if (!form || !input || !submitBtn) return;
+
+		const estadoConfig: Record<string, { color: string; bg: string; icon: string; titulo: string }> = {
+			recepcion: { color: 'text-blue-700', bg: 'bg-blue-100', icon: 'M20 7L9 18l-5-5', titulo: 'Recepción' },
+			diagnostico: { color: 'text-purple-700', bg: 'bg-purple-100', icon: 'M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z', titulo: 'Diagnóstico' },
+			intervencion: { color: 'text-amber-700', bg: 'bg-amber-100', icon: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 003.018 1.18c1.27-1.27 3.277.832 2.008 2.102a1.724 1.724 0 001.18 3.018c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.18 3.018c1.27 1.27-.832 3.277-2.102 2.008a1.724 1.724 0 00-3.018 1.18c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-3.018-1.18c-1.27 1.27-3.277-.832-2.008-2.102a1.724 1.724 0 00-1.18-3.018c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.18-3.018c-1.27-1.27.832-3.277 2.102-2.008a1.724 1.724 0 003.018-1.18z', titulo: 'Intervención' },
+			certificacion: { color: 'text-emerald-700', bg: 'bg-emerald-100', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', titulo: 'Certificación' },
+			cerrado: { color: 'text-green-700', bg: 'bg-green-100', icon: 'M5 13l4 4L19 7', titulo: 'Listo para retirar' },
+		};
+
+		const escapeHtml = (str: string): string => {
+			const div = document.createElement('div');
+			div.textContent = str || '';
+			return div.innerHTML;
+		};
+
+		const formatDate = (dateStr: string) => {
+			try {
+				return new Date(dateStr).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+			} catch {
+				return dateStr;
+			}
+		};
+
+		const handleSubmit = async (e: Event) => {
+			e.preventDefault();
+			if (!input || !submitBtn || !submitText || !spinner) return;
+
+			const ticketNumber = input.value.trim().toUpperCase();
+			if (!ticketNumber) return;
+
+			// UI: loading
+			submitText.textContent = 'Consultando...';
+			spinner.classList.remove('hidden');
+			submitBtn.disabled = true;
+			submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+			errorDiv?.classList.add('hidden');
+			resultDiv?.classList.add('hidden');
+
+			try {
+				const res = await fetch(`${WEBHOOK_URL}?ticket_number=${encodeURIComponent(ticketNumber)}`);
+				const data = await res.json();
+
+				if (!data.success) {
+					throw new Error(data.error || 'Ticket no encontrado');
+				}
+
+				displayResult(data);
+			} catch (err) {
+				if (errorDiv) {
+					errorDiv.textContent = err instanceof Error ? err.message : 'Error al consultar el ticket';
+					errorDiv.classList.remove('hidden');
+				}
+			} finally {
+				submitText.textContent = 'Consultar estado';
+				spinner.classList.add('hidden');
+				submitBtn.disabled = false;
+				submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+			}
+		};
+
+		const displayResult = (data: any) => {
+			const ticket = data.ticket;
+			const historial = data.historial || [];
+			const cfg = estadoConfig[ticket.estado] || estadoConfig.recepcion;
+
+			// Header
+			const ticketEl = document.getElementById('result-ticket-number');
+			const badgeEl = document.getElementById('result-estado-badge');
+			if (ticketEl) ticketEl.textContent = ticket.ticket_number;
+			if (badgeEl) {
+				badgeEl.textContent = cfg.titulo;
+				badgeEl.className = `px-4 py-2 rounded-full text-[14px] font-bold ${cfg.color} ${cfg.bg}`;
+			}
+
+			// Datos
+			const set = (id: string, val: string) => {
+				const el = document.getElementById(id);
+				if (el) el.textContent = val || '-';
+			};
+			set('result-nombre', ticket.nombre);
+			set('result-servicio', ticket.servicio);
+			set('result-tecnico', ticket.tecnico || 'Sin asignar');
+			set('result-fecha', formatDate(ticket.created_at));
+
+			// Estado actual
+			const iconEl = document.getElementById('result-estado-icon');
+			if (iconEl) {
+				iconEl.className = `w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${cfg.bg} ${cfg.color}`;
+				iconEl.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="${cfg.icon}"></path></svg>`;
+			}
+			const tituloEl = document.getElementById('result-estado-titulo');
+			const descEl = document.getElementById('result-estado-desc');
+			if (tituloEl) tituloEl.textContent = cfg.titulo;
+			if (descEl) descEl.textContent = ticket.estado_descripcion || '';
+
+			// Equipo
+			const equipoSection = document.getElementById('result-equipo-section');
+			if (equipoSection) {
+				if (ticket.equipo) {
+					equipoSection.classList.remove('hidden');
+					set('result-equipo', ticket.equipo);
+					set('result-marca', ticket.marca);
+					set('result-modelo', ticket.modelo);
+					set('result-serie', ticket.serie);
+
+					const diagSection = document.getElementById('result-diagnostico-section');
+					if (diagSection) {
+						if (ticket.diagnostico) {
+							diagSection.classList.remove('hidden');
+							const diagEl = document.getElementById('result-diagnostico');
+							if (diagEl) diagEl.textContent = ticket.diagnostico;
+						} else {
+							diagSection.classList.add('hidden');
+						}
+					}
+					const trabajoSection = document.getElementById('result-trabajo-section');
+					if (trabajoSection) {
+						if (ticket.trabajo_realizado) {
+							trabajoSection.classList.remove('hidden');
+							const trabajoEl = document.getElementById('result-trabajo');
+							if (trabajoEl) trabajoEl.textContent = ticket.trabajo_realizado;
+						} else {
+							trabajoSection.classList.add('hidden');
+						}
+					}
+					const garantiaSection = document.getElementById('result-garantia-section');
+					if (garantiaSection) {
+						if (ticket.garantia_vence) {
+							garantiaSection.classList.remove('hidden');
+							const garantiaEl = document.getElementById('result-garantia');
+							if (garantiaEl) garantiaEl.textContent = formatDate(ticket.garantia_vence);
+						} else {
+							garantiaSection.classList.add('hidden');
+						}
+					}
+				} else {
+					equipoSection.classList.add('hidden');
+				}
+			}
+
+			// Historial
+			const historialEl = document.getElementById('result-historial');
+			const historialSection = document.getElementById('result-historial-section');
+			if (historialEl) {
+				if (historial.length === 0) {
+					historialEl.innerHTML = '<p class="text-text-soft text-[14px]">Sin cambios registrados</p>';
+				} else {
+					historialEl.innerHTML = historial.map((h: any) => {
+						const cfgAnt = estadoConfig[h.estado_anterior] || estadoConfig.recepcion;
+						const cfgNuevo = estadoConfig[h.estado_nuevo] || estadoConfig.recepcion;
+						const nota = h.nota ? `<div class="text-[13px] text-navy mt-1 italic">"${escapeHtml(h.nota)}"</div>` : '';
+						const tecnico = h.tecnico ? ' · ' + escapeHtml(h.tecnico) : '';
+						return `
+							<div class="flex items-start gap-3 pb-4 border-b border-border last:border-0 last:pb-0">
+								<div class="flex-shrink-0 w-8 h-8 rounded-full ${cfgNuevo.bg} ${cfgNuevo.color} flex items-center justify-center">
+									<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="${cfgNuevo.icon}"></path></svg>
+								</div>
+								<div class="flex-grow">
+									<div class="flex items-center gap-2 mb-1">
+										<span class="text-[12px] font-medium ${cfgAnt.color}">${cfgAnt.titulo}</span>
+										<svg class="w-3 h-3 text-text-soft" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+										<span class="text-[12px] font-bold ${cfgNuevo.color}">${cfgNuevo.titulo}</span>
+									</div>
+									<div class="text-[12px] text-text-soft">${escapeHtml(formatDate(h.fecha))}${tecnico}</div>
+									${nota}
+								</div>
+							</div>
+						`;
+					}).join('');
+				}
+			}
+			if (historialSection && historial.length === 0) {
+				historialSection.classList.add('hidden');
+			} else if (historialSection) {
+				historialSection.classList.remove('hidden');
+			}
+
+			// Mostrar resultado
+			resultDiv?.classList.remove('hidden');
+			resultDiv?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		};
+
+		form.addEventListener('submit', handleSubmit);
+
+		nuevaConsultaBtn?.addEventListener('click', () => {
+			resultDiv?.classList.add('hidden');
+			if (input) {
+				input.value = '';
+				input.focus();
+			}
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		});
+
+		// Auto-llenar desde URL
+		const params = new URLSearchParams(window.location.search);
+		const ticketParam = params.get('ticket');
+		if (ticketParam && input) {
+			input.value = ticketParam.toUpperCase();
+			form.requestSubmit();
+		}
+	})();
+</script>
