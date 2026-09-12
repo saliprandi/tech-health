@@ -16,7 +16,7 @@ const { title = "Consultar Estado | TechHealth Medical Engineering" } = Astro.pr
 		<title>{title}</title>
 		<meta name="description" content="Consulte el estado de su reparación con su número de ticket." />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<!-- CSP modificada para permitir conexiones a n8n -->
+		<!-- Security Hardening: Disable base-uri and limit connections to trusted endpoints -->
 		<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' http://n8n.lenovo.local; form-action 'self' https://wa.me; media-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none';" />
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
