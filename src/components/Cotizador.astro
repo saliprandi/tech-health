@@ -1,0 +1,291 @@
+---
+import { CONFIG } from '../data/config';
+
+const { cotizador, contacto } = CONFIG;
+const phoneClean = contacto.whatsapp.replace(/\D/g, '');
+---
+
+<section id="cotizador" class="pt-28 pb-16 md:pt-36 md:pb-24 bg-navy text-white relative overflow-hidden scroll-mt-24">
+  <!-- Subtle Background Decorative Elements -->
+  <div class="absolute inset-0 opacity-10 pointer-events-none" aria-hidden="true">
+    <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-blue blur-3xl"></div>
+    <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-blue-light blur-3xl"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue/10 border border-blue-light/20 text-blue-light text-xs sm:text-sm font-semibold tracking-wide uppercase mb-4">
+        <svg class="w-4 h-4" aria-hidden="true">
+          <use href="#icon-circuit"></use>
+        </svg>
+        <span>Herramienta Interactiva B2B</span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
+        {cotizador.titulo}
+      </h2>
+      <p class="text-base sm:text-lg text-white/80 leading-relaxed">
+        {cotizador.subtitulo}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Selector Controls Panel -->
+      <div class="lg:col-span-7 bg-navy-light/60 backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-8 space-y-8 shadow-xl">
+
+        <!-- Step 1: Tipo de Institución -->
+        <div>
+          <label class="block text-sm font-semibold text-blue-light uppercase tracking-wider mb-3">
+            1. Seleccione el Tipo de Institución
+          </label>
+          <div role="group" aria-label="Tipo de Institución" class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="calc-inst-group">
+            {cotizador.tipos_institucion.map((inst, idx) => (
+              <button
+                type="button"
+                data-type="inst"
+                data-value={inst.id}
+                data-factor={inst.factor}
+                data-name={inst.nombre}
+                aria-pressed={idx === 0 ? "true" : "false"}
+                class={`p-4 text-left rounded-xl border transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-blue-light focus-visible:ring-offset-2 focus-visible:ring-offset-navy ${
+                  idx === 0
+                    ? "bg-blue/30 border-blue-light text-white shadow-md"
+                    : "bg-navy-light/40 border-white/10 text-white/80 hover:border-white/30 hover:bg-navy-light/80"
+                }`}
+              >
+                <div class="font-bold text-sm text-white mb-1">{inst.nombre}</div>
+                <div class="text-xs text-white/60 leading-snug">{inst.desc}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Step 2: Cantidad de Equipos -->
+        <div>
+          <label class="block text-sm font-semibold text-blue-light uppercase tracking-wider mb-3">
+            2. Tamaño de Parque Tecnológico
+          </label>
+          <div role="group" aria-label="Cantidad de Equipos" class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="calc-equipos-group">
+            {cotizador.rangos_equipos.map((rango, idx) => (
+              <button
+                type="button"
+                data-type="equipos"
+                data-value={rango.id}
+                data-label={rango.label}
+                aria-pressed={idx === 1 ? "true" : "false"}
+                class={`p-3.5 text-center rounded-xl border transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-blue-light focus-visible:ring-offset-2 focus-visible:ring-offset-navy ${
+                  idx === 1
+                    ? "bg-blue/30 border-blue-light text-white shadow-md"
+                    : "bg-navy-light/40 border-white/10 text-white/80 hover:border-white/30 hover:bg-navy-light/80"
+                }`}
+              >
+                <div class="font-bold text-sm text-white mb-0.5">{rango.label}</div>
+                <div class="text-[11px] text-white/60 leading-tight">{rango.desc}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Step 3: Nivel de Nivel de Criticidad -->
+        <div>
+          <label class="block text-sm font-semibold text-blue-light uppercase tracking-wider mb-3">
+            3. Esquema de Atención Requerido
+          </label>
+          <div role="group" aria-label="Esquema de Atención" class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="calc-prioridad-group">
+            {cotizador.niveles_prioridad.map((prioridad, idx) => (
+              <button
+                type="button"
+                data-type="prioridad"
+                data-value={prioridad.id}
+                data-label={prioridad.label}
+                aria-pressed={idx === 0 ? "true" : "false"}
+                class={`p-4 text-left rounded-xl border transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-blue-light focus-visible:ring-offset-2 focus-visible:ring-offset-navy ${
+                  idx === 0
+                    ? "bg-blue/30 border-blue-light text-white shadow-md"
+                    : "bg-navy-light/40 border-white/10 text-white/80 hover:border-white/30 hover:bg-navy-light/80"
+                }`}
+              >
+                <div class="font-bold text-sm text-white mb-1">{prioridad.label}</div>
+                <div class="text-xs text-white/60 leading-snug">{prioridad.desc}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Plan Recommendation Card -->
+      <div class="lg:col-span-5">
+        <div class="bg-gradient-to-b from-navy-light to-navy border border-blue-light/30 rounded-2xl p-6 sm:p-8 shadow-2xl relative">
+
+          <!-- Live Announcement for Screen Readers -->
+          <div id="calc-a11y-announcement" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+          <!-- Recommended Badge -->
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-light/10 border border-blue-light/30 text-blue-light text-xs font-semibold uppercase tracking-wider mb-4" id="plan-badge-container">
+            <svg class="w-3.5 h-3.5 text-blue-light" aria-hidden="true">
+              <use href="#icon-shield-check"></use>
+            </svg>
+            <span id="calc-plan-badge">{cotizador.planes.integral.badge}</span>
+          </div>
+
+          <h3 class="text-2xl sm:text-3xl font-bold text-white mb-2" id="calc-plan-title">
+            {cotizador.planes.integral.nombre}
+          </h3>
+
+          <div class="flex items-center gap-2 text-xs font-medium text-white/70 mb-6 bg-white/5 py-2 px-3 rounded-lg border border-white/5">
+            <svg class="w-4 h-4 text-blue-light shrink-0" aria-hidden="true">
+              <use href="#icon-clock"></use>
+            </svg>
+            <span id="calc-plan-freq">Frecuencia: {cotizador.planes.integral.frecuencia}</span>
+          </div>
+
+          <p class="text-xs font-semibold text-blue-light uppercase tracking-wider mb-3">
+            Servicios e intervenciones incluidas:
+          </p>
+
+          <ul class="space-y-3 mb-8 text-sm text-white/90" id="calc-plan-features">
+            {cotizador.planes.integral.features.map((feature) => (
+              <li class="flex items-start gap-2.5">
+                <svg class="w-4 h-4 text-blue-light mt-0.5 shrink-0" aria-hidden="true">
+                  <use href="#icon-check"></use>
+                </svg>
+                <span class="leading-snug">{feature}</span>
+              </li>
+            ))}
+          </ul>
+
+          <!-- CTA Button -->
+          <a
+            id="calc-wa-cta"
+            href={`https://wa.me/${phoneClean}?text=${encodeURIComponent('Hola TechHealth, estuve utilizando el estimador web y deseo cotizar un Plan Integral B2B para Clínica / Sanatorio con 6 a 15 equipos en Tucumán/NOA.')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group w-full inline-flex items-center justify-center gap-3 py-4 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm sm:text-base transition-all duration-300 shadow-lg hover:shadow-emerald-600/30 hover:scale-[1.02] focus-visible:scale-[1.02] outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+          >
+            <svg class="w-5 h-5 fill-current transition-transform duration-300 group-hover:scale-110" aria-hidden="true">
+              <use href="#icon-whatsapp"></use>
+            </svg>
+            <span>Solicitar Presupuesto por WhatsApp</span>
+          </a>
+
+          <p class="text-[11px] text-center text-white/50 mt-3">
+            Atención profesional directa · Cotizaciones sin compromiso en Tucumán y el NOA
+          </p>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  import { CONFIG } from '../data/config';
+
+  const PLAN_DATA = CONFIG.cotizador.planes;
+  const PHONE_CLEAN = CONFIG.contacto.whatsapp.replace(/\D/g, '');
+
+  let currentInst = 'clinica';
+  let currentInstName = 'Clínica / Sanatorio';
+  let currentEquipos = '6-15';
+  let currentEquiposLabel = '6 a 15 equipos';
+  let currentPrioridad = 'programado';
+
+  function determinePlan(inst: string, equipos: string, prioridad: string) {
+    if (prioridad === 'critico' || (equipos === '30+' && inst === 'clinica')) {
+      return PLAN_DATA.critico;
+    }
+    if (['6-15', '16-30', '30+'].includes(equipos) || inst === 'clinica') {
+      return PLAN_DATA.integral;
+    }
+    return PLAN_DATA.esencial;
+  }
+
+  function updateCalculatorUI() {
+    const activePlan = determinePlan(currentInst, currentEquipos, currentPrioridad);
+
+    const badgeEl = document.getElementById('calc-plan-badge');
+    const titleEl = document.getElementById('calc-plan-title');
+    const freqEl = document.getElementById('calc-plan-freq');
+    const featuresEl = document.getElementById('calc-plan-features');
+    const ctaEl = document.getElementById('calc-wa-cta') as HTMLAnchorElement | null;
+    const a11yEl = document.getElementById('calc-a11y-announcement');
+
+    if (badgeEl) badgeEl.textContent = activePlan.badge;
+    if (titleEl) titleEl.textContent = activePlan.nombre;
+    if (freqEl) freqEl.textContent = `Frecuencia: ${activePlan.frecuencia}`;
+
+    if (featuresEl) {
+      featuresEl.innerHTML = '';
+      activePlan.features.forEach((feat) => {
+        const li = document.createElement('li');
+        li.className = 'flex items-start gap-2.5';
+
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', 'w-4 h-4 text-blue-light mt-0.5 shrink-0');
+        svg.setAttribute('aria-hidden', 'true');
+
+        const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        use.setAttribute('href', '#icon-check');
+        svg.appendChild(use);
+
+        const span = document.createElement('span');
+        span.className = 'leading-snug';
+        span.textContent = feat;
+
+        li.appendChild(svg);
+        li.appendChild(span);
+        featuresEl.appendChild(li);
+      });
+    }
+
+    if (ctaEl) {
+      const msg = `Hola TechHealth, estuve utilizando el estimador web y deseo cotizar un ${activePlan.nombre} para ${currentInstName} con ${currentEquiposLabel} en Tucumán/NOA.`;
+      ctaEl.href = `https://wa.me/${PHONE_CLEAN}?text=${encodeURIComponent(msg)}`;
+    }
+
+    if (a11yEl) {
+      a11yEl.textContent = `Plan recomendado actualizado: ${activePlan.nombre}.`;
+    }
+  }
+
+  function setupGroupListeners(groupId: string, callback: (btn: HTMLButtonElement) => void) {
+    const group = document.getElementById(groupId);
+    if (!group) return;
+
+    const buttons = group.querySelectorAll<HTMLButtonElement>('button[data-type]');
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        buttons.forEach((b) => {
+          b.setAttribute('aria-pressed', 'false');
+          b.classList.remove('bg-blue/30', 'border-blue-light', 'text-white', 'shadow-md');
+          b.classList.add('bg-navy-light/40', 'border-white/10', 'text-white/80');
+        });
+
+        btn.setAttribute('aria-pressed', 'true');
+        btn.classList.remove('bg-navy-light/40', 'border-white/10', 'text-white/80');
+        btn.classList.add('bg-blue/30', 'border-blue-light', 'text-white', 'shadow-md');
+
+        callback(btn);
+        updateCalculatorUI();
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setupGroupListeners('calc-inst-group', (btn) => {
+      currentInst = btn.dataset.value || 'clinica';
+      currentInstName = btn.dataset.name || 'Clínica / Sanatorio';
+    });
+
+    setupGroupListeners('calc-equipos-group', (btn) => {
+      currentEquipos = btn.dataset.value || '6-15';
+      currentEquiposLabel = btn.dataset.label || '6 a 15 equipos';
+    });
+
+    setupGroupListeners('calc-prioridad-group', (btn) => {
+      currentPrioridad = btn.dataset.value || 'programado';
+    });
+  });
+</script>
