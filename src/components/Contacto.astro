@@ -137,6 +137,29 @@ import { CONFIG } from '../data/config';
           </button>
           <div id="redirect-announcement" class="sr-only" aria-live="polite"></div>
         </form>
+
+        <!-- Confirmación de ticket generado -->
+        <div id="ticket-confirmation" class="hidden mt-5 p-4 bg-blue-pale border border-blue/20 rounded-[8px]">
+          <div class="flex items-start gap-3">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue text-white flex items-center justify-center">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div class="flex-grow">
+              <div class="font-heading font-bold text-[14px] text-navy mb-1">Solicitud recibida</div>
+              <div class="font-body text-[13px] text-text-soft mb-2">
+                Su ticket es <span id="ticket-confirmation-number" class="font-bold text-navy"></span>. Guarde este número para consultar el estado de su reparación.
+              </div>
+              <a id="ticket-confirmation-link" href="/estado" class="inline-flex items-center gap-1.5 font-body font-medium text-[13px] text-blue hover:text-navy focus-visible:text-navy underline-offset-4 hover:underline focus-visible:underline outline-none rounded-sm focus-visible:ring-2 focus-visible:ring-blue/40 transition-all">
+                <span>Ver estado de mi reparación</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -299,7 +322,7 @@ import { CONFIG } from '../data/config';
       };
 
       // --- Form Submission ---
-      const handleSubmit = (e: Event) => {
+      const handleSubmit = async (e: Event) => {
         e.preventDefault();
         const formData = new FormData(form);
         if (formData.get('website')) return;
@@ -320,11 +343,45 @@ import { CONFIG } from '../data/config';
 
         if (submitBtn && submitBtnText) {
           const originalText = submitBtnText.textContent;
-          submitBtnText.textContent = 'Redirigiendo...';
-          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
+          submitBtnText.textContent = 'Enviando...';
+          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Enviando solicitud...';
           submitBtn.disabled = true;
           submitBtn.setAttribute('aria-busy', 'true');
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+          // Enviar datos al webhook de n8n y capturar el ticket generado
+          const webhookUrl = 'http://n8n.lenovo.local/webhook/techhealth-solicitud';
+          const payload = JSON.stringify({ nombre, telefono: tel, servicio, mensaje });
+          let ticketNumber: string | null = null;
+          try {
+            const res = await fetch(webhookUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: payload,
+            });
+            const data = await res.json();
+            if (data && data.ticket_number) {
+              ticketNumber = data.ticket_number;
+            }
+          } catch {
+            // Silencioso: si el webhook falla, igual abre WhatsApp
+          }
+
+          submitBtnText.textContent = 'Redirigiendo...';
+          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
+
+          // Mostrar el ticket generado si llegó
+          if (ticketNumber) {
+            const ticketBanner = document.getElementById('ticket-confirmation');
+            const ticketLink = document.getElementById('ticket-confirmation-link');
+            const ticketNumEl = document.getElementById('ticket-confirmation-number');
+            if (ticketBanner && ticketLink && ticketNumEl) {
+              ticketNumEl.textContent = ticketNumber;
+              ticketLink.setAttribute('href', `/estado?ticket=${encodeURIComponent(ticketNumber)}`);
+              ticketBanner.classList.remove('hidden');
+              ticketBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          }
 
           setTimeout(() => {
             if (submitBtnText) submitBtnText.textContent = originalText;

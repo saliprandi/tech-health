@@ -23,6 +23,17 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
         </svg>
         <span>{CONFIG.contacto.whatsapp_display}</span>
       </a>
+      <span aria-hidden="true">·</span>
+      <a
+        href="/estado"
+        class="inline-flex items-center gap-1.5 hover:text-white focus-visible:text-white underline-offset-4 hover:underline focus-visible:underline outline-none rounded-sm focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark transition-all"
+        aria-label="Seguimiento de reparaciones"
+      >
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <span>Seguimiento de reparaciones</span>
+      </a>
     </div>
 
     {hasSocials && (

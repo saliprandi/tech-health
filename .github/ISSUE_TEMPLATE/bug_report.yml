@@ -1,0 +1,62 @@
+name: Reporte de bug
+description: Reportar un problema o error en el sitio web
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por reportar el bug. Completá los siguientes campos para que podamos reproducirlo y solucionarlo.
+  - type: textarea
+    id: description
+    attributes:
+      label: Descripción del bug
+      description: Una descripción clara de qué es el problema.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pasos para reproducir
+      description: Pasos para reproducir el comportamiento.
+      placeholder: |
+        1. Ir a '...'
+        2. Hacer click en '...'
+        3. Ver error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamiento esperado
+      description: Qué esperabas que pasara.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Comportamiento actual
+      description: Qué pasó en su lugar.
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Navegador
+      placeholder: Ej: Chrome 130, Firefox 131, Safari 18
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Sistema operativo
+      placeholder: Ej: Windows 11, macOS 15, Android 14
+    validations:
+      required: false
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Capturas de pantalla
+      description: Si aplica, agregá capturas que ayuden a entender el problema.
+    validations:
+      required: false

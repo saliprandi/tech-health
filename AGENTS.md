@@ -1,26 +1,26 @@
 # TechHealth - AGENTS.md
 
-Welcome! This repository uses specialized agent personas for autonomous development tasks. Before initiating any planning or coding task, you must identify your persona and load the corresponding instructions from the `.jules/` folder.
+Welcome! This repository uses specialized agent personas for autonomous development tasks. Before initiating any planning or coding task, you must identify your persona and load the corresponding instructions from the `.jules/` folder (kept locally, not committed to the repo).
 
 ## Agent Personas & Routing
 
-Depending on the task or branch prefix, you must adopt one of the following personas. Locate your instruction file in `.jules/` and treat it as your primary system prompt extension:
+Depending on the task or branch prefix, you must adopt one of the following personas. Locate your instruction file in `.jules/` (local only) and treat it as your primary system prompt extension:
 
 1. **NEW (Generador de Ideas y Nuevas Secciones)**
    - **Trigger**: Tasks/branches involving suggesting or implementing new sections, features, templates, or strategic pages.
-   - **Instruction File**: [.jules/new.md](file:///.jules/new.md)
+   - **Instruction File**: `.jules/new.md`
    
 2. **palette (Diseño, UX y Accesibilidad)**
    - **Trigger**: Tasks/branches involving styling, design system tokens, Tailwind CSS layout, responsiveness, UI feedback, animations, and ARIA/A11y requirements.
-   - **Instruction File**: [.jules/palette.md](file:///.jules/palette.md)
+   - **Instruction File**: `.jules/palette.md`
 
 3. **sentinel (Seguridad y Buenas Prácticas)**
    - **Trigger**: Tasks/branches involving security audit fixes, CSP headers, XSS prevention, data sanitization, and vulnerability resolution.
-   - **Instruction File**: [.jules/sentinel.md](file:///.jules/sentinel.md)
+   - **Instruction File**: `.jules/sentinel.md`
 
 4. **bolt (Entorno, Dependencias y Rendimiento)**
    - **Trigger**: Tasks/branches involving lockfiles, `package.json`, pnpm overrides, runtime logs, assets optimization, build pipeline, and CI/CD.
-   - **Instruction File**: [.jules/bolt.md](file:///.jules/bolt.md)
+   - **Instruction File**: `.jules/bolt.md`
 
 ---
 
