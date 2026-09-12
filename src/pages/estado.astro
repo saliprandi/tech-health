@@ -37,11 +37,11 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 							name="ticket_number"
 							required
 							placeholder="Ej: TH-2026-1234"
-							class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none uppercase"
+							class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none uppercase"
 							autocomplete="off"
 						/>
 					</div>
-					<button type="submit" id="estado-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue/40">
+					<button type="submit" id="estado-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-light">
 						<svg id="estado-spinner" class="hidden w-5 h-5 animate-spin text-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
 							<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
 							<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -49,11 +49,11 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 						<span id="estado-submit-text">Consultar estado</span>
 					</button>
 				</form>
-				<div id="estado-error" class="hidden mt-4 p-4 bg-red-500/20 border border-red-500/30 rounded-[8px] text-red-200 text-[14px] font-body"></div>
+				<div id="estado-error" role="alert" aria-live="assertive" class="hidden mt-4 p-4 bg-red-500/20 border border-red-500/30 rounded-[8px] text-red-200 text-[14px] font-body"></div>
 			</div>
 
 			<!-- Resultado -->
-			<div id="estado-result" class="hidden mt-8">
+			<div id="estado-result" role="status" aria-live="polite" class="hidden mt-8">
 				<!-- Header del ticket -->
 				<div class="bg-white rounded-[16px] p-8 shadow-lg mb-6">
 					<div class="flex items-center justify-between mb-6">
@@ -127,7 +127,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 
 				<!-- Botón nueva consulta -->
 				<div class="text-center mt-6">
-					<button id="nueva-consulta" class="font-body font-medium text-[14px] text-white/60 hover:text-white transition-colors">
+					<button type="button" id="nueva-consulta" class="font-body font-medium text-[14px] text-white/60 hover:text-white transition-colors outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy rounded-md px-3 py-1">
 						Consultar otro ticket
 					</button>
 				</div>
@@ -184,6 +184,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			submitText.textContent = 'Consultando...';
 			spinner.classList.remove('hidden');
 			submitBtn.disabled = true;
+			submitBtn.setAttribute('aria-busy', 'true');
 			submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
 			errorDiv?.classList.add('hidden');
 			resultDiv?.classList.add('hidden');
@@ -206,6 +207,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 				submitText.textContent = 'Consultar estado';
 				spinner.classList.add('hidden');
 				submitBtn.disabled = false;
+				submitBtn.removeAttribute('aria-busy');
 				submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
 			}
 		};
