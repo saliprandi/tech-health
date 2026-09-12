@@ -36,6 +36,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 							id="ticket-input"
 							name="ticket_number"
 							required
+							maxlength="30"
 							placeholder="Ej: TH-2026-1234"
 							class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none uppercase"
 							autocomplete="off"
@@ -178,7 +179,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			if (!input || !submitBtn || !submitText || !spinner) return;
 
 			const ticketNumber = input.value.trim().toUpperCase();
-			if (!ticketNumber) return;
+			if (!ticketNumber || ticketNumber.length > 30) return;
 
 			// UI: loading
 			submitText.textContent = 'Consultando...';
