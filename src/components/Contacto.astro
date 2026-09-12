@@ -139,7 +139,7 @@ import { CONFIG } from '../data/config';
         </form>
 
         <!-- Confirmación de ticket generado -->
-        <div id="ticket-confirmation" class="hidden mt-5 p-4 bg-blue-pale border border-blue/20 rounded-[8px]">
+        <div id="ticket-confirmation" role="region" aria-live="polite" aria-label="Confirmación de ticket de solicitud" class="hidden mt-5 p-4 bg-blue-pale border border-blue/20 rounded-[8px]">
           <div class="flex items-start gap-3">
             <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue text-white flex items-center justify-center">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -148,8 +148,14 @@ import { CONFIG } from '../data/config';
             </div>
             <div class="flex-grow">
               <div class="font-heading font-bold text-[14px] text-navy mb-1">Solicitud recibida</div>
-              <div class="font-body text-[13px] text-text-soft mb-2">
-                Su ticket es <span id="ticket-confirmation-number" class="font-bold text-navy"></span>. Guarde este número para consultar el estado de su reparación.
+              <div class="font-body text-[13px] text-text-soft mb-2 flex items-center flex-wrap gap-1">
+                <span>Su ticket es <span id="ticket-confirmation-number" class="font-bold text-navy"></span>.</span>
+                <button type="button" id="copy-ticket" class="inline-flex items-center gap-1 px-1.5 py-0.5 text-[11px] font-medium text-text-soft hover:text-blue focus-visible:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar número de ticket al portapapeles">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" aria-hidden="true">
+                    <use id="copy-ticket-icon-use" href="#icon-copy" />
+                  </svg>
+                  <span id="copy-ticket-text" class="pointer-events-none">Copiar</span>
+                </button>
               </div>
               <a id="ticket-confirmation-link" href="/estado" class="inline-flex items-center gap-1.5 font-body font-medium text-[13px] text-blue hover:text-navy focus-visible:text-navy underline-offset-4 hover:underline focus-visible:underline outline-none rounded-sm focus-visible:ring-2 focus-visible:ring-blue/40 transition-all">
                 <span>Ver estado de mi reparación</span>
@@ -402,6 +408,7 @@ import { CONFIG } from '../data/config';
 
       const cleanupPhone = setupCopy('copy-phone', 'copy-phone-text', 'copy-phone-icon-use', 'phone-text', 'Teléfono copiado');
       const cleanupAddress = setupCopy('copy-address', 'copy-address-text', 'copy-address-icon-use', 'address-text', 'Dirección copiada');
+      const cleanupTicket = setupCopy('copy-ticket', 'copy-ticket-text', 'copy-ticket-icon-use', 'ticket-confirmation-number', 'Número de ticket copiado');
       form.addEventListener('submit', handleSubmit);
 
       return () => {
@@ -410,6 +417,7 @@ import { CONFIG } from '../data/config';
         desc?.removeEventListener('input', updateCounter);
         cleanupPhone();
         cleanupAddress();
+        cleanupTicket();
         form.removeEventListener('submit', handleSubmit);
       };
     }
