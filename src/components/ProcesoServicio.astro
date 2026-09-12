@@ -1,0 +1,71 @@
+---
+import { CONFIG } from '../data/config';
+
+const { proceso_servicio } = CONFIG;
+---
+
+<section id="proceso" class="py-20 bg-white border-t border-border content-visibility-auto">
+  <div class="container-custom px-[5%]">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <span class="inline-block py-1 px-3 bg-navy/10 text-navy font-heading font-semibold text-xs rounded-full uppercase tracking-wider mb-3">
+        Garantía y Metodología
+      </span>
+      <h2 class="font-heading text-3xl md:text-4xl font-extrabold text-navy tracking-tight mb-4">
+        {proceso_servicio.titulo}
+      </h2>
+      <p class="font-body text-base md:text-lg text-text-soft">
+        {proceso_servicio.subtitulo}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+      {proceso_servicio.pasos.map((paso) => (
+        <div class="relative bg-gray-50 p-6 md:p-8 rounded-2xl border border-border flex flex-col justify-between group hover:border-blue transition-all duration-300 hover:-translate-y-1 hover:shadow-card">
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <span class="font-heading text-3xl font-extrabold text-blue/40 group-hover:text-blue transition-colors">
+                {paso.paso}
+              </span>
+              <div class="w-12 h-12 rounded-xl bg-navy/5 flex items-center justify-center text-navy group-hover:bg-navy group-hover:text-white transition-colors">
+                {paso.icono === 'search' && (
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                )}
+                {paso.icono === 'cpu' && (
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M3 9h2m-2 6h2m14-6h2m-2 6h2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                  </svg>
+                )}
+                {paso.icono === 'shield-check' && (
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                )}
+                {paso.icono === 'file-check' && (
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                )}
+              </div>
+            </div>
+
+            <h3 class="font-heading font-bold text-lg text-navy mb-3">
+              {paso.titulo}
+            </h3>
+            <p class="font-body text-sm text-text-soft leading-relaxed">
+              {paso.descripcion}
+            </p>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-border/60 flex items-center gap-2 text-xs text-navy/70 font-heading font-semibold">
+            <svg class="w-4 h-4 text-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Cumplimiento Protocolo ISO/ANMAT
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
