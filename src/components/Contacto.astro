@@ -94,20 +94,20 @@ import { CONFIG } from '../data/config';
             <label for="f-nombre" class="font-body font-medium text-[13px] text-white/80">
               Nombre completo <span class="text-blue-light" aria-hidden="true">*</span>
             </label>
-            <input type="text" id="f-nombre" name="nombre" required maxlength="100" autocomplete="name" placeholder="Ej: Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
+            <input type="text" id="f-nombre" name="nombre" required maxlength="100" autocomplete="name" placeholder="Ej: Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none" />
           </div>
 
           <div class="flex flex-col gap-1.5">
             <label for="f-tel" class="font-body font-medium text-[13px] text-white/80">
               Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span>
             </label>
-            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-\(\)]*" autocomplete="tel" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
+            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-\(\)]*" autocomplete="tel" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none" />
           </div>
 
           <div class="flex flex-col gap-1.5">
             <label for="f-servicio" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Tipo de servicio</label>
             <div class="relative">
-              <select id="f-servicio" name="servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue/40 transition-colors w-full appearance-none pr-10">
+              <select id="f-servicio" name="servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-light transition-colors w-full appearance-none pr-10">
                 <option value="Consulta general" class="bg-navy text-white">Consulta general</option>
                 <option value="Mantenimiento preventivo" class="bg-navy text-white">Mantenimiento preventivo</option>
                 <option value="Reparación / Mantenimiento correctivo" class="bg-navy text-white">Reparación / Mantenimiento correctivo</option>
@@ -122,14 +122,14 @@ import { CONFIG } from '../data/config';
           <div class="flex flex-col gap-1.5">
             <label for="f-desc" class="font-body font-medium text-[13px] text-white/80">Mensaje</label>
             <div class="relative">
-              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="¿En qué podemos ayudarle?" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 pb-7 pr-14 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none"></textarea>
+              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="¿En qué podemos ayudarle?" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 pb-7 pr-14 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none"></textarea>
               <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body pointer-events-none select-none">0 / 500</div>
             </div>
           </div>
 
           <p class="font-body text-[12px] text-white/50 text-center">El mensaje le redirigirá a WhatsApp</p>
 
-          <button type="submit" id="f-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none">
+          <button type="submit" id="f-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-blue-light outline-none">
             <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
               <use href="#icon-whatsapp" />
             </svg>
@@ -151,7 +151,7 @@ import { CONFIG } from '../data/config';
               <div class="font-body text-[13px] text-text-soft mb-2">
                 Su ticket es <span id="ticket-confirmation-number" class="font-bold text-navy"></span>. Guarde este número para consultar el estado de su reparación.
               </div>
-              <a id="ticket-confirmation-link" href="/estado" class="inline-flex items-center gap-1.5 font-body font-medium text-[13px] text-blue hover:text-navy focus-visible:text-navy underline-offset-4 hover:underline focus-visible:underline outline-none rounded-sm focus-visible:ring-2 focus-visible:ring-blue/40 transition-all">
+              <a id="ticket-confirmation-link" href="/estado" class="inline-flex items-center gap-1.5 font-body font-medium text-[13px] text-blue hover:text-navy focus-visible:text-navy underline-offset-4 hover:underline focus-visible:underline outline-none rounded-sm focus-visible:ring-2 focus-visible:ring-blue transition-all">
                 <span>Ver estado de mi reparación</span>
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
