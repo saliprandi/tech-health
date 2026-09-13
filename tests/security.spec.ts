@@ -53,3 +53,44 @@ test('emergency CTA link is sanitized and has rel="noopener noreferrer"', async 
   expect(rel).toContain('noreferrer');
   expect(href).toMatch(/^https:\/\/wa\.me\/\d+(\?.*)?$/);
 });
+
+test('ticket status page sanitizes XSS payloads in history response', async ({ page }) => {
+  await page.route('**/webhook/techhealth-estado*', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        success: true,
+        ticket: {
+          ticket_number: 'TH-2026-XSS',
+          nombre: 'Cliente Prueba',
+          servicio: 'Mantenimiento',
+          tecnico: '<script>alert("xss")</script>',
+          created_at: '2026-03-01T10:00:00Z',
+          estado: 'diagnostico',
+          estado_descripcion: 'En revisión'
+        },
+        historial: [
+          {
+            estado_anterior: 'recepcion',
+            estado_nuevo: 'diagnostico',
+            fecha: '2026-03-01T11:00:00Z',
+            tecnico: '<img src=x onerror=alert(1)>',
+            nota: '<script>alert("xss_nota")</script><b>Bold Note</b>'
+          }
+        ]
+      })
+    });
+  });
+
+  await page.goto('http://localhost:4321/estado');
+  await page.fill('#ticket-input', 'TH-2026-XSS');
+  await page.click('#estado-submit');
+
+  await expect(page.locator('#estado-result')).toBeVisible();
+
+  const historialHtml = await page.innerHTML('#result-historial');
+  expect(historialHtml).not.toContain('<script>');
+  expect(historialHtml).not.toContain('<img src=x');
+  expect(historialHtml).toContain('&lt;script&gt;');
+});
