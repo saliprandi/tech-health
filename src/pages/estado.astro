@@ -59,7 +59,20 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					<div class="flex items-center justify-between mb-6">
 						<div>
 							<div class="font-body text-[12px] text-text-soft uppercase tracking-wider mb-1">Ticket</div>
-							<div id="result-ticket-number" class="font-heading font-extrabold text-[24px] text-navy"></div>
+							<div class="flex items-center gap-2.5">
+								<div id="result-ticket-number" class="font-heading font-extrabold text-[24px] text-navy"></div>
+								<button
+									type="button"
+									id="copy-ticket-btn"
+									class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-off-white hover:bg-blue-pale text-text-soft hover:text-blue focus-visible:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
+									aria-label="Copiar número de ticket al portapapeles"
+								>
+									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+										<use id="copy-ticket-icon-use" href="#icon-copy" />
+									</svg>
+									<span id="copy-ticket-text" class="font-body font-medium text-[12px]">Copiar</span>
+								</button>
+							</div>
 						</div>
 						<div id="result-estado-badge" class="px-4 py-2 rounded-full text-[14px] font-bold"></div>
 					</div>
@@ -134,6 +147,8 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 						<span>Consultar otro ticket</span>
 					</button>
 				</div>
+
+				<div id="estado-copy-announcement" class="sr-only" aria-live="polite"></div>
 			</div>
 		</div>
 	</section>
@@ -336,6 +351,35 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			resultDiv?.classList.remove('hidden');
 			resultDiv?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		};
+
+		// Copiar número de ticket
+		const copyTicketBtn = document.getElementById('copy-ticket-btn');
+		const copyTicketText = document.getElementById('copy-ticket-text');
+		const copyTicketIcon = document.getElementById('copy-ticket-icon-use');
+		const copyAnnouncement = document.getElementById('estado-copy-announcement');
+
+		const handleCopyTicket = (e: Event) => {
+			e.preventDefault();
+			const ticketEl = document.getElementById('result-ticket-number');
+			const ticketNum = ticketEl?.textContent?.trim();
+			if (!ticketNum || !navigator.clipboard) return;
+
+			navigator.clipboard.writeText(ticketNum).then(() => {
+				if (copyTicketText) copyTicketText.textContent = '¡Copiado!';
+				if (copyTicketIcon) copyTicketIcon.setAttribute('href', '#icon-check');
+				copyTicketBtn?.classList.add('text-blue', 'bg-blue-pale');
+				if (copyAnnouncement) copyAnnouncement.textContent = `Número de ticket ${ticketNum} copiado al portapapeles`;
+
+				setTimeout(() => {
+					if (copyTicketText) copyTicketText.textContent = 'Copiar';
+					if (copyTicketIcon) copyTicketIcon.setAttribute('href', '#icon-copy');
+					copyTicketBtn?.classList.remove('text-blue', 'bg-blue-pale');
+					if (copyAnnouncement) copyAnnouncement.textContent = '';
+				}, 2000);
+			});
+		};
+
+		copyTicketBtn?.addEventListener('click', handleCopyTicket);
 
 		form.addEventListener('submit', handleSubmit);
 
