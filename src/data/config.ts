@@ -151,6 +151,33 @@ export const CONFIG = {
     },
   ],
 
+  proceso: [
+    {
+      paso: "01",
+      icono: "phone",
+      titulo: "Recepción y Evaluación",
+      descripcion: "Atención directa de la solicitud, triaje inicial de la falla y coordinación de inspección según urgencia.",
+    },
+    {
+      paso: "02",
+      icono: "microscope",
+      titulo: "Diagnóstico de Precisión",
+      descripcion: "Análisis in-situ o en laboratorio especializado con instrumental calibrado para identificar la causa raíz.",
+    },
+    {
+      paso: "03",
+      icono: "circuit",
+      titulo: "Intervención Técnica",
+      descripcion: "Ejecución de mantenimiento preventivo o reparación a nivel de componente utilizando repuestos certificados.",
+    },
+    {
+      paso: "04",
+      icono: "file-text",
+      titulo: "Certificación y Entrega",
+      descripcion: "Pruebas de funcionamiento, emisión de informe técnico detallado para auditorías y garantía de 90 días.",
+    },
+  ],
+
   emergencia: {
     titulo: "Soporte de Emergencia 24h",
     mensaje: "¿Tiene un equipo crítico fuera de servicio? Brindamos respuesta inmediata para urgencias médicas en Tucumán y el NOA.",

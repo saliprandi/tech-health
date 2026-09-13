@@ -39,3 +39,17 @@ test('all target="_blank" links should have rel="noopener noreferrer"', async ({
     expect(rel).toContain('noreferrer');
   }
 });
+
+test('emergency CTA link is sanitized and has rel="noopener noreferrer"', async ({ page }) => {
+  await page.goto('http://localhost:4321/', { waitUntil: 'networkidle' });
+
+  const emergenciaCta = page.locator('#emergencia-cta');
+  await expect(emergenciaCta).toBeVisible();
+
+  const href = await emergenciaCta.getAttribute('href');
+  const rel = await emergenciaCta.getAttribute('rel');
+
+  expect(rel).toContain('noopener');
+  expect(rel).toContain('noreferrer');
+  expect(href).toMatch(/^https:\/\/wa\.me\/\d+(\?.*)?$/);
+});

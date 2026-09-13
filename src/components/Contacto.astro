@@ -19,9 +19,9 @@ import { CONFIG } from '../data/config';
         <div class="flex flex-col gap-4">
           <!-- WhatsApp Card -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
-            <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none group-focus-visible:ring-2 group-focus-visible:ring-blue group-focus-visible:ring-inset" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
-            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110 pointer-events-none">
-              <svg class="w-5 h-5 group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+            <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-inset" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
+            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-within:scale-110 pointer-events-none">
+              <svg class="w-5 h-5 group-hover:animate-heartbeat group-focus-within:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-whatsapp" />
               </svg>
             </div>
@@ -29,7 +29,7 @@ import { CONFIG } from '../data/config';
               <div class="font-heading font-bold text-[16px] text-navy mb-1">WhatsApp / Teléfono</div>
               <div id="phone-text" class="font-body text-[14px] text-text-soft select-text pointer-events-auto">{CONFIG.contacto.whatsapp_display}</div>
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
-                <button type="button" id="copy-phone" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar teléfono al portapapeles">
+                <button type="button" id="copy-phone" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar teléfono al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true">
                     <use id="copy-phone-icon-use" href="#icon-copy" />
                   </svg>
@@ -41,8 +41,8 @@ import { CONFIG } from '../data/config';
 
           <!-- Laboratorio Card -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white border border-transparent hover:border-border transition-colors">
-            <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none group-focus-visible:ring-2 group-focus-visible:ring-blue group-focus-visible:ring-inset" aria-label={`Ver en Google Maps: ${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}></a>
-            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110 pointer-events-none">
+            <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-inset" aria-label={`Ver en Google Maps: ${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}></a>
+            <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-within:scale-110 pointer-events-none">
               <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-map-pin" />
               </svg>
@@ -51,7 +51,7 @@ import { CONFIG } from '../data/config';
               <div class="font-heading font-bold text-[16px] text-navy mb-1">Laboratorio</div>
               <div id="address-text" class="font-body text-[14px] text-text-soft select-text pointer-events-auto">{CONFIG.contacto.direccion}, {CONFIG.contacto.ciudad_completa}</div>
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
-                <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar dirección al portapapeles">
+                <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar dirección al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true">
                     <use id="copy-address-icon-use" href="#icon-copy" />
                   </svg>
@@ -94,20 +94,20 @@ import { CONFIG } from '../data/config';
             <label for="f-nombre" class="font-body font-medium text-[13px] text-white/80">
               Nombre completo <span class="text-blue-light" aria-hidden="true">*</span>
             </label>
-            <input type="text" id="f-nombre" name="nombre" required maxlength="100" placeholder="Ej: Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
+            <input type="text" id="f-nombre" name="nombre" required maxlength="100" autocomplete="name" placeholder="Ej: Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none" />
           </div>
 
           <div class="flex flex-col gap-1.5">
             <label for="f-tel" class="font-body font-medium text-[13px] text-white/80">
               Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span>
             </label>
-            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-\(\)]*" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none" />
+            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-\(\)]*" autocomplete="tel" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none" />
           </div>
 
           <div class="flex flex-col gap-1.5">
             <label for="f-servicio" class="font-body font-medium text-[11px] uppercase tracking-wider text-white/60">Tipo de servicio</label>
             <div class="relative">
-              <select id="f-servicio" name="servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue/40 transition-colors w-full appearance-none pr-10">
+              <select id="f-servicio" name="servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-light transition-colors w-full appearance-none pr-10">
                 <option value="Consulta general" class="bg-navy text-white">Consulta general</option>
                 <option value="Mantenimiento preventivo" class="bg-navy text-white">Mantenimiento preventivo</option>
                 <option value="Reparación / Mantenimiento correctivo" class="bg-navy text-white">Reparación / Mantenimiento correctivo</option>
@@ -122,14 +122,14 @@ import { CONFIG } from '../data/config';
           <div class="flex flex-col gap-1.5">
             <label for="f-desc" class="font-body font-medium text-[13px] text-white/80">Mensaje</label>
             <div class="relative">
-              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="¿En qué podemos ayudarle?" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none"></textarea>
-              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body">0 / 500</div>
+              <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="¿En qué podemos ayudarle?" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 pb-7 pr-14 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none"></textarea>
+              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body pointer-events-none select-none">0 / 500</div>
             </div>
           </div>
 
           <p class="font-body text-[12px] text-white/50 text-center">El mensaje le redirigirá a WhatsApp</p>
 
-          <button type="submit" id="f-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-blue/40 outline-none">
+          <button type="submit" id="f-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-blue-light outline-none">
             <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
               <use href="#icon-whatsapp" />
             </svg>
@@ -137,6 +137,29 @@ import { CONFIG } from '../data/config';
           </button>
           <div id="redirect-announcement" class="sr-only" aria-live="polite"></div>
         </form>
+
+        <!-- Confirmación de ticket generado -->
+        <div id="ticket-confirmation" class="hidden mt-5 p-4 bg-blue-pale border border-blue/20 rounded-[8px]">
+          <div class="flex items-start gap-3">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue text-white flex items-center justify-center">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div class="flex-grow">
+              <div class="font-heading font-bold text-[14px] text-navy mb-1">Solicitud recibida</div>
+              <div class="font-body text-[13px] text-text-soft mb-2">
+                Su ticket es <span id="ticket-confirmation-number" class="font-bold text-navy"></span>. Guarde este número para consultar el estado de su reparación.
+              </div>
+              <a id="ticket-confirmation-link" href="/estado" class="inline-flex items-center gap-1.5 font-body font-medium text-[13px] text-blue hover:text-navy focus-visible:text-navy underline-offset-4 hover:underline focus-visible:underline outline-none rounded-sm focus-visible:ring-2 focus-visible:ring-blue transition-all">
+                <span>Ver estado de mi reparación</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -299,7 +322,7 @@ import { CONFIG } from '../data/config';
       };
 
       // --- Form Submission ---
-      const handleSubmit = (e: Event) => {
+      const handleSubmit = async (e: Event) => {
         e.preventDefault();
         const formData = new FormData(form);
         if (formData.get('website')) return;
@@ -320,11 +343,45 @@ import { CONFIG } from '../data/config';
 
         if (submitBtn && submitBtnText) {
           const originalText = submitBtnText.textContent;
-          submitBtnText.textContent = 'Redirigiendo...';
-          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
+          submitBtnText.textContent = 'Enviando...';
+          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Enviando solicitud...';
           submitBtn.disabled = true;
           submitBtn.setAttribute('aria-busy', 'true');
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+          // Enviar datos al webhook de n8n y capturar el ticket generado
+          const webhookUrl = 'http://n8n.lenovo.local/webhook/techhealth-solicitud';
+          const payload = JSON.stringify({ nombre, telefono: tel, servicio, mensaje });
+          let ticketNumber: string | null = null;
+          try {
+            const res = await fetch(webhookUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: payload,
+            });
+            const data = await res.json();
+            if (data && data.ticket_number) {
+              ticketNumber = data.ticket_number;
+            }
+          } catch {
+            // Silencioso: si el webhook falla, igual abre WhatsApp
+          }
+
+          submitBtnText.textContent = 'Redirigiendo...';
+          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
+
+          // Mostrar el ticket generado si llegó
+          if (ticketNumber) {
+            const ticketBanner = document.getElementById('ticket-confirmation');
+            const ticketLink = document.getElementById('ticket-confirmation-link');
+            const ticketNumEl = document.getElementById('ticket-confirmation-number');
+            if (ticketBanner && ticketLink && ticketNumEl) {
+              ticketNumEl.textContent = ticketNumber;
+              ticketLink.setAttribute('href', `/estado?ticket=${encodeURIComponent(ticketNumber)}`);
+              ticketBanner.classList.remove('hidden');
+              ticketBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          }
 
           setTimeout(() => {
             if (submitBtnText) submitBtnText.textContent = originalText;
