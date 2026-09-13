@@ -29,6 +29,55 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await expect(resetBtn).toHaveClass(/focus-visible:ring-white/);
   });
 
+  test('should display copy ticket button on successful result and announce copy action', async ({ page, context }) => {
+    // Grant clipboard permissions
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+
+    // Mock successful ticket search response
+    await page.route('**/webhook/techhealth-estado*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          success: true,
+          ticket: {
+            ticket_number: 'TH-2026-1234',
+            estado: 'diagnostico',
+            nombre: 'Juan Pérez',
+            servicio: 'Mantenimiento preventivo',
+            tecnico: 'Carlos Gómez',
+            created_at: '2026-03-30T10:00:00Z',
+            estado_descripcion: 'En diagnóstico técnico'
+          },
+          historial: []
+        }),
+      });
+    });
+
+    await page.goto('http://localhost:4321/estado');
+
+    const input = page.locator('#ticket-input');
+    await input.fill('TH-2026-1234');
+
+    const submitBtn = page.locator('#estado-submit');
+    await submitBtn.click();
+
+    // Verify copy button presence, accessibility label and focus ring
+    const copyBtn = page.locator('#copy-ticket-btn');
+    await expect(copyBtn).toBeVisible();
+    await expect(copyBtn).toHaveAttribute('aria-label', 'Copiar número de ticket al portapapeles');
+    await expect(copyBtn).toHaveClass(/focus-visible:ring-blue/);
+
+    // Click copy button and verify feedback
+    const copyText = page.locator('#copy-ticket-text');
+    await copyBtn.click();
+    await expect(copyText).toHaveText('¡Copiado!');
+
+    // Verify live region announcement
+    const announcement = page.locator('#estado-copy-announcement');
+    await expect(announcement).toHaveText('Número de ticket TH-2026-1234 copiado al portapapeles');
+  });
+
   test('should handle ticket search error and set aria-live announcement', async ({ page }) => {
     // Mock failed ticket response
     await page.route('**/webhook/techhealth-estado*', async (route) => {
