@@ -1,3 +1,7 @@
 ## 2026-03-30 - Formulario de consulta asíncrono y visibilidad de foco en fondo oscuro
 **Learning:** Los formularios de consulta asíncronos sobre fondos oscuros (`bg-navy`) requieren anillos de enfoque con alto contraste (ej. `focus-visible:ring-blue-light`) e indicadores de estado dinámicos (`role="alert"` / `aria-live="assertive"` para errores, `role="status"` / `aria-live="polite"` para resultados, y `aria-busy` durante la consulta) para garantizar accesibilidad WCAG y feedback en tiempo real a lectores de pantalla.
 **Action:** Aplicar siempre anillos de foco luminosos en contenedores oscuros y equipar contenedores de error/resultado con atributos ARIA en componentes de búsqueda o consulta de tickets.
+
+## 2026-03-30 - Anuncio accesible de tickets dinámicos y acción de copiado rápido
+**Learning:** Los banners de confirmación dinámicos generados tras el envío de un formulario (como el ticket de reparación) no son anunciados por lectores de pantalla salvo que el contenedor incluya `role="region"`, `aria-live="polite"` y `aria-label`. Además, emparejar el número de ticket con un botón de copiado rápido en línea (`#copy-ticket`) con feedback visual (`¡Copiado!`) y región en directo (`aria-live="polite"`) mejora la usabilidad en dispositivos móviles y de escritorio.
+**Action:** Equipar siempre los contenedores de confirmación dinámica con atributos ARIA de región e implementar botones de copiado rápido con feedback accesible.
