@@ -4,10 +4,15 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
   test('should have accessible focus-visible rings, ARIA live regions, and button attributes', async ({ page }) => {
     await page.goto('http://localhost:4321/estado');
 
-    // 1. Check ticket input attributes and focus styling
+    // 1. Check ticket input attributes, helper text, and focus styling
     const input = page.locator('#ticket-input');
     await expect(input).toBeVisible();
+    await expect(input).toHaveAttribute('aria-describedby', 'ticket-helper');
     await expect(input).toHaveClass(/focus-visible:ring-blue-light/);
+
+    const helperText = page.locator('#ticket-helper');
+    await expect(helperText).toBeVisible();
+    await expect(helperText).toContainText('Formato: TH-AAAA-####');
 
     // 2. Check submit button focus styling
     const submitBtn = page.locator('#estado-submit');
@@ -95,5 +100,9 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     const errorContainer = page.locator('#estado-error');
     await expect(errorContainer).toBeVisible();
     await expect(errorContainer).toHaveText('Ticket no encontrado');
+
+    // Typing into input should clear error message
+    await input.pressSequentially('A');
+    await expect(errorContainer).toBeHidden();
   });
 });

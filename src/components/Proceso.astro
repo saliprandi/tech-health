@@ -56,10 +56,13 @@ import { CONFIG } from '../data/config';
             type="text"
             id="proceso-ticket-input"
             name="ticket"
+            required
+            aria-describedby="proceso-ticket-helper"
             placeholder="Ej: TH-2026-1234"
             class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full md:w-[200px] placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none uppercase"
             autocomplete="off"
           />
+          <span id="proceso-ticket-helper" class="sr-only">Formato de ticket: TH-AAAA-####</span>
           <button type="submit" id="proceso-estado-submit" class="group bg-white text-navy font-heading font-bold text-[14px] py-3 px-6 rounded-[8px] hover:bg-white/90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-light whitespace-nowrap">
             <span id="proceso-estado-submit-text">Consultar estado</span>
             <svg class="w-4 h-4 group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">

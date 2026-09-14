@@ -36,10 +36,12 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 							id="ticket-input"
 							name="ticket_number"
 							required
+							aria-describedby="ticket-helper"
 							placeholder="Ej: TH-2026-1234"
 							class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none uppercase"
 							autocomplete="off"
 						/>
+						<span id="ticket-helper" class="font-body text-[12px] text-white/50">Formato: TH-AAAA-#### (Ej: TH-2026-1234)</span>
 					</div>
 					<button type="submit" id="estado-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-light">
 						<svg id="estado-spinner" class="hidden w-5 h-5 animate-spin text-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
@@ -383,9 +385,14 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			resultDiv?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		};
 
+		input.addEventListener('input', () => {
+			errorDiv?.classList.add('hidden');
+		});
+
 		form.addEventListener('submit', handleSubmit);
 
 		nuevaConsultaBtn?.addEventListener('click', () => {
+			errorDiv?.classList.add('hidden');
 			resultDiv?.classList.add('hidden');
 			if (input) {
 				input.value = '';
