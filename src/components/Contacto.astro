@@ -356,7 +356,7 @@ import { CONFIG } from '../data/config';
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
           // Enviar datos al webhook de n8n y capturar el ticket generado
-          const webhookUrl = 'http://n8n.lenovo.local/webhook/techhealth-solicitud';
+          const webhookUrl = 'https://season-exec-grades-insulation.trycloudflare.com/webhook/techhealth-solicitud';
           const payload = JSON.stringify({ nombre, telefono: tel, servicio, mensaje });
           let ticketNumber: string | null = null;
           try {
