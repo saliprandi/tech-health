@@ -193,4 +193,44 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora_roi: {
+    titulo: "Calculadora de Ahorro Preventivo",
+    subtitulo: "Estime el costo del tiempo de inactividad de sus equipos electromédicos y el valor del mantenimiento programado.",
+    equipos: [
+      { id: "monitor", nombre: "Monitor de Signos Vitales", costoDía: 45000, costoMantenimientoAnual: 85000 },
+      { id: "ecografo", nombre: "Ecógrafo / Ultrasonido", costoDía: 180000, costoMantenimientoAnual: 240000 },
+      { id: "respirador", nombre: "Respirador / Ventilador", costoDía: 250000, costoMantenimientoAnual: 310000 },
+      { id: "bisturi", nombre: "Electrobisturí / Cauterio", costoDía: 120000, costoMantenimientoAnual: 180000 },
+      { id: "desfibrilador", nombre: "Desfibrilador / ECG", costoDía: 65000, costoMantenimientoAnual: 95000 }
+    ]
+  },
+
+  cobertura: {
+    titulo: "Cobertura Regional en el NOA",
+    subtitulo: "Servicio técnico integral con base operativa en San Miguel de Tucumán y atención en todo el Norte Argentino.",
+    zonas: [
+      {
+        provincia: "Tucumán",
+        badge: "Base Central",
+        tiempoRespuesta: "Inmediata (Urgencias 24h)",
+        modalidad: "Atención in-situ y retiro prioritario a laboratorio especializado",
+        destacado: true
+      },
+      {
+        provincia: "Salta & Jujuy",
+        badge: "Cobertura NOA Norte",
+        tiempoRespuesta: "24 a 48 hs programado",
+        modalidad: "Logística coordinada para recepción de equipos y visitas programadas",
+        destacado: false
+      },
+      {
+        provincia: "Santiago del Estero & Catamarca",
+        badge: "Cobertura NOA Sur",
+        tiempoRespuesta: "24 a 48 hs programado",
+        modalidad: "Visitas técnicas in-situ y servicio de diagnóstico en taller",
+        destacado: false
+      }
+    ]
+  }
 };

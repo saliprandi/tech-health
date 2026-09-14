@@ -1,0 +1,65 @@
+---
+import { CONFIG } from '../data/config';
+const { cobertura } = CONFIG;
+---
+
+<section id="cobertura" class="bg-off-white section-padding scroll-mt-16 content-visibility-auto">
+  <div class="container-custom">
+
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">
+        Alcance Geográfico
+      </div>
+      <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] leading-[1.2] text-navy mb-4">
+        {cobertura.titulo}
+      </h2>
+      <p class="font-body text-[16px] text-text-soft">
+        {cobertura.subtitulo}
+      </p>
+    </div>
+
+    <ul class="grid grid-cols-1 md:grid-cols-3 gap-8 list-none p-0 m-0" aria-label="Zonas de cobertura regional">
+      {cobertura.zonas.map((zona) => (
+        <li class={`group relative bg-white rounded-card p-8 border ${zona.destacado ? 'border-blue shadow-md' : 'border-border shadow-sm'} hover:shadow-card-hover focus-within:border-blue transition-all duration-300 flex flex-col justify-between`}>
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <div class="w-12 h-12 rounded-xl bg-blue-pale text-blue flex items-center justify-center group-hover:scale-110 group-focus-within:scale-110 transition-transform">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <span class={`text-[12px] font-heading font-bold uppercase tracking-wider px-3 py-1 rounded-full ${zona.destacado ? 'bg-navy text-white' : 'bg-off-white text-text-soft border border-border'}`}>
+                {zona.badge}
+              </span>
+            </div>
+
+            <h3 class="font-heading font-bold text-[20px] text-navy mb-2">
+              {zona.provincia}
+            </h3>
+
+            <div class="mb-4 flex items-center gap-2 text-sm text-blue font-heading font-semibold">
+              <svg class="w-4 h-4 text-blue" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              <span>{zona.tiempoRespuesta}</span>
+            </div>
+
+            <p class="font-body text-sm text-text-soft leading-relaxed">
+              {zona.modalidad}
+            </p>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-border flex items-center justify-between text-xs font-heading font-bold text-navy group-hover:text-blue transition-colors">
+            <span>Coordinar servicio in-situ</span>
+            <svg class="w-4 h-4 transform group-hover:translate-x-1 group-focus-within:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+  </div>
+</section>
