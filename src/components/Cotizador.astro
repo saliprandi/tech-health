@@ -5,14 +5,14 @@ const { cotizador, contacto } = CONFIG;
 const phoneClean = contacto.whatsapp.replace(/\D/g, '');
 ---
 
-<section id="cotizador" class="pt-28 pb-16 md:pt-36 md:pb-24 bg-navy text-white relative overflow-hidden scroll-mt-24">
+<section id="cotizador" class="bg-navy section-padding content-visibility-auto text-white relative overflow-hidden">
   <!-- Subtle Background Decorative Elements -->
   <div class="absolute inset-0 opacity-10 pointer-events-none" aria-hidden="true">
     <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-blue blur-3xl"></div>
     <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-blue-light blur-3xl"></div>
   </div>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+  <div class="container-custom relative z-10">
     <!-- Header -->
     <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
       <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue/10 border border-blue-light/20 text-blue-light text-xs sm:text-sm font-semibold tracking-wide uppercase mb-4">
@@ -35,10 +35,10 @@ const phoneClean = contacto.whatsapp.replace(/\D/g, '');
 
         <!-- Step 1: Tipo de Institución -->
         <div>
-          <label class="block text-sm font-semibold text-blue-light uppercase tracking-wider mb-3">
+          <div id="label-inst" class="block text-sm font-semibold text-blue-light uppercase tracking-wider mb-3">
             1. Seleccione el Tipo de Institución
-          </label>
-          <div role="group" aria-label="Tipo de Institución" class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="calc-inst-group">
+          </div>
+          <div role="group" aria-labelledby="label-inst" class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="calc-inst-group">
             {cotizador.tipos_institucion.map((inst, idx) => (
               <button
                 type="button"
@@ -62,10 +62,10 @@ const phoneClean = contacto.whatsapp.replace(/\D/g, '');
 
         <!-- Step 2: Cantidad de Equipos -->
         <div>
-          <label class="block text-sm font-semibold text-blue-light uppercase tracking-wider mb-3">
+          <div id="label-equipos" class="block text-sm font-semibold text-blue-light uppercase tracking-wider mb-3">
             2. Tamaño de Parque Tecnológico
-          </label>
-          <div role="group" aria-label="Cantidad de Equipos" class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="calc-equipos-group">
+          </div>
+          <div role="group" aria-labelledby="label-equipos" class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="calc-equipos-group">
             {cotizador.rangos_equipos.map((rango, idx) => (
               <button
                 type="button"
@@ -86,12 +86,12 @@ const phoneClean = contacto.whatsapp.replace(/\D/g, '');
           </div>
         </div>
 
-        <!-- Step 3: Nivel de Nivel de Criticidad -->
+        <!-- Step 3: Nivel de Criticidad -->
         <div>
-          <label class="block text-sm font-semibold text-blue-light uppercase tracking-wider mb-3">
+          <div id="label-prioridad" class="block text-sm font-semibold text-blue-light uppercase tracking-wider mb-3">
             3. Esquema de Atención Requerido
-          </label>
-          <div role="group" aria-label="Esquema de Atención" class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="calc-prioridad-group">
+          </div>
+          <div role="group" aria-labelledby="label-prioridad" class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="calc-prioridad-group">
             {cotizador.niveles_prioridad.map((prioridad, idx) => (
               <button
                 type="button"
