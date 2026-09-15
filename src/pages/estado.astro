@@ -6,10 +6,10 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 	<!-- Nav simplificado -->
 	<nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border">
 		<div class="container-custom h-full px-[5%] flex items-center justify-between">
-			<a href="/" class="flex items-center group" aria-label="TechHealth Home">
-				<img src="/logo-name.svg" alt="TechHealth Medical Engineering" width="228" height="56" loading="eager" decoding="async" class="h-[56px] w-auto group-hover:scale-105 transition-transform duration-300" />
+			<a href="/" class="flex items-center group outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-sm" aria-label="TechHealth Home">
+				<img src="/logo-name.svg" alt="TechHealth Medical Engineering" width="228" height="56" loading="eager" decoding="async" class="h-[56px] w-auto group-hover:scale-105 group-focus-visible:scale-105 transition-transform duration-300" />
 			</a>
-			<a href="/" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors">Volver al inicio</a>
+			<a href="/" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-sm px-2 py-1">Volver al inicio</a>
 		</div>
 	</nav>
 
@@ -36,11 +36,12 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 							id="ticket-input"
 							name="ticket_number"
 							required
-							maxlength="30"
 							placeholder="Ej: TH-2026-1234"
+							aria-describedby="ticket-input-hint"
 							class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none uppercase"
 							autocomplete="off"
 						/>
+						<p id="ticket-input-hint" class="font-body text-[12px] text-white/50">Formato: letras y números (ej. TH-2026-1234)</p>
 					</div>
 					<button type="submit" id="estado-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-light">
 						<svg id="estado-spinner" class="hidden w-5 h-5 animate-spin text-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
@@ -60,7 +61,21 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					<div class="flex items-center justify-between mb-6">
 						<div>
 							<div class="font-body text-[12px] text-text-soft uppercase tracking-wider mb-1">Ticket</div>
-							<div id="result-ticket-number" class="font-heading font-extrabold text-[24px] text-navy"></div>
+							<div class="flex items-center gap-2">
+								<div id="result-ticket-number" class="font-heading font-extrabold text-[24px] text-navy"></div>
+								<button
+									type="button"
+									id="copy-ticket-btn"
+									class="inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
+									aria-label="Copiar número de ticket al portapapeles"
+								>
+									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true">
+										<use id="copy-ticket-icon-use" href="#icon-copy" />
+									</svg>
+									<span id="copy-ticket-text" class="pointer-events-none">Copiar</span>
+								</button>
+								<div id="copy-ticket-announcement" class="sr-only" aria-live="polite"></div>
+							</div>
 						</div>
 						<div id="result-estado-badge" class="px-4 py-2 rounded-full text-[14px] font-bold"></div>
 					</div>
@@ -128,8 +143,11 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 
 				<!-- Botón nueva consulta -->
 				<div class="text-center mt-6">
-					<button type="button" id="nueva-consulta" class="font-body font-medium text-[14px] text-white/60 hover:text-white transition-colors outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy rounded-md px-3 py-1">
-						Consultar otro ticket
+					<button type="button" id="nueva-consulta" class="group inline-flex items-center gap-2 font-body font-medium text-[14px] text-white/70 hover:text-white transition-colors outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy rounded-md px-4 py-2">
+						<svg class="w-4 h-4 text-white/70 group-hover:text-white group-hover:-translate-y-0.5 group-focus-visible:-translate-y-0.5 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+						</svg>
+						<span>Consultar otro ticket</span>
 					</button>
 				</div>
 			</div>
@@ -139,7 +157,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 
 <script>
 	(function() {
-		const WEBHOOK_URL = 'http://n8n.lenovo.local/webhook/techhealth-estado';
+		const WEBHOOK_URL = 'https://season-exec-grades-insulation.trycloudflare.com/webhook/techhealth-estado';
 
 		const form = document.getElementById('estado-form') as HTMLFormElement | null;
 		const input = document.getElementById('ticket-input') as HTMLInputElement | null;
@@ -149,8 +167,34 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		const errorDiv = document.getElementById('estado-error');
 		const resultDiv = document.getElementById('estado-result');
 		const nuevaConsultaBtn = document.getElementById('nueva-consulta');
+		const copyTicketBtn = document.getElementById('copy-ticket-btn');
+		const copyTicketText = document.getElementById('copy-ticket-text');
+		const copyTicketIcon = document.getElementById('copy-ticket-icon-use');
+		const copyTicketAnnouncement = document.getElementById('copy-ticket-announcement');
 
 		if (!form || !input || !submitBtn) return;
+
+		// Copy ticket event handler
+		copyTicketBtn?.addEventListener('click', (e) => {
+			e.preventDefault();
+			const ticketEl = document.getElementById('result-ticket-number');
+			const ticketNum = ticketEl?.textContent?.trim();
+			if (!ticketNum || !navigator.clipboard) return;
+
+			navigator.clipboard.writeText(ticketNum).then(() => {
+				if (copyTicketText) copyTicketText.textContent = '¡Copiado!';
+				if (copyTicketIcon) copyTicketIcon.setAttribute('href', '#icon-check');
+				copyTicketBtn.classList.add('text-blue', 'scale-105');
+				if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = 'Número de ticket copiado al portapapeles';
+
+				setTimeout(() => {
+					if (copyTicketText) copyTicketText.textContent = 'Copiar';
+					if (copyTicketIcon) copyTicketIcon.setAttribute('href', '#icon-copy');
+					copyTicketBtn.classList.remove('text-blue', 'scale-105');
+					if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = '';
+				}, 2000);
+			});
+		});
 
 		const estadoConfig: Record<string, { color: string; bg: string; icon: string; titulo: string }> = {
 			recepcion: { color: 'text-blue-700', bg: 'bg-blue-100', icon: 'M20 7L9 18l-5-5', titulo: 'Recepción' },
@@ -160,10 +204,23 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			cerrado: { color: 'text-green-700', bg: 'bg-green-100', icon: 'M5 13l4 4L19 7', titulo: 'Listo para retirar' },
 		};
 
-		const escapeHtml = (str: string): string => {
-			const div = document.createElement('div');
-			div.textContent = str || '';
-			return div.innerHTML;
+		// Safe status lookup helper to prevent property lookup injection / prototype fallback bypass
+		const getEstadoCfg = (key: string) => {
+			return (typeof key === 'string' && Object.prototype.hasOwnProperty.call(estadoConfig, key))
+				? estadoConfig[key]
+				: estadoConfig.recepcion;
+		};
+
+		const escapeHtml = (unsafe: string): string => {
+			if (typeof unsafe !== 'string') return '';
+			return unsafe
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#039;')
+				.replace(/\//g, '&#047;')
+				.replace(/`/g, '&#096;');
 		};
 
 		const formatDate = (dateStr: string) => {
@@ -179,7 +236,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			if (!input || !submitBtn || !submitText || !spinner) return;
 
 			const ticketNumber = input.value.trim().toUpperCase();
-			if (!ticketNumber || ticketNumber.length > 30) return;
+			if (!ticketNumber) return;
 
 			// UI: loading
 			submitText.textContent = 'Consultando...';
@@ -216,7 +273,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		const displayResult = (data: any) => {
 			const ticket = data.ticket;
 			const historial = data.historial || [];
-			const cfg = estadoConfig[ticket.estado] || estadoConfig.recepcion;
+			const cfg = getEstadoCfg(ticket.estado);
 
 			// Header
 			const ticketEl = document.getElementById('result-ticket-number');
@@ -301,8 +358,8 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					historialEl.innerHTML = '<p class="text-text-soft text-[14px]">Sin cambios registrados</p>';
 				} else {
 					historialEl.innerHTML = historial.map((h: any) => {
-						const cfgAnt = estadoConfig[h.estado_anterior] || estadoConfig.recepcion;
-						const cfgNuevo = estadoConfig[h.estado_nuevo] || estadoConfig.recepcion;
+						const cfgAnt = getEstadoCfg(h.estado_anterior);
+						const cfgNuevo = getEstadoCfg(h.estado_nuevo);
 						const nota = h.nota ? `<div class="text-[13px] text-navy mt-1 italic">"${escapeHtml(h.nota)}"</div>` : '';
 						const tecnico = h.tecnico ? ' · ' + escapeHtml(h.tecnico) : '';
 						return `
@@ -337,7 +394,14 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 
 		form.addEventListener('submit', handleSubmit);
 
+		input.addEventListener('input', () => {
+			if (errorDiv && !errorDiv.classList.contains('hidden')) {
+				errorDiv.classList.add('hidden');
+			}
+		});
+
 		nuevaConsultaBtn?.addEventListener('click', () => {
+			errorDiv?.classList.add('hidden');
 			resultDiv?.classList.add('hidden');
 			if (input) {
 				input.value = '';
