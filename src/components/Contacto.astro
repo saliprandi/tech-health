@@ -349,32 +349,33 @@ import { CONFIG } from '../data/config';
 
         if (submitBtn && submitBtnText) {
           const originalText = submitBtnText.textContent;
-          submitBtnText.textContent = 'Enviando...';
-          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Enviando solicitud...';
+          submitBtnText.textContent = 'Redirigiendo...';
+          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
           submitBtn.disabled = true;
           submitBtn.setAttribute('aria-busy', 'true');
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
-          // Enviar datos al webhook de n8n y capturar el ticket generado
+          // Enviar datos al webhook de n8n con timeout para no ralentizar la respuesta visual
           const webhookUrl = 'https://season-exec-grades-insulation.trycloudflare.com/webhook/techhealth-solicitud';
           const payload = JSON.stringify({ nombre, telefono: tel, servicio, mensaje });
           let ticketNumber: string | null = null;
           try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 1500);
             const res = await fetch(webhookUrl, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: payload,
+              signal: controller.signal,
             });
+            clearTimeout(timeoutId);
             const data = await res.json();
             if (data && data.ticket_number) {
               ticketNumber = data.ticket_number;
             }
           } catch {
-            // Silencioso: si el webhook falla, igual abre WhatsApp
+            // Silencioso: si el webhook falla o expira, continua a WhatsApp sin bloquear al usuario
           }
-
-          submitBtnText.textContent = 'Redirigiendo...';
-          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
 
           // Mostrar el ticket generado si llegó
           if (ticketNumber) {
