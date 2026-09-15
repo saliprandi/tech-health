@@ -204,6 +204,13 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			cerrado: { color: 'text-green-700', bg: 'bg-green-100', icon: 'M5 13l4 4L19 7', titulo: 'Listo para retirar' },
 		};
 
+		// Safe status lookup helper to prevent property lookup injection / prototype fallback bypass
+		const getEstadoCfg = (key: string) => {
+			return (typeof key === 'string' && Object.prototype.hasOwnProperty.call(estadoConfig, key))
+				? estadoConfig[key]
+				: estadoConfig.recepcion;
+		};
+
 		const escapeHtml = (unsafe: string): string => {
 			if (typeof unsafe !== 'string') return '';
 			return unsafe
@@ -266,7 +273,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		const displayResult = (data: any) => {
 			const ticket = data.ticket;
 			const historial = data.historial || [];
-			const cfg = estadoConfig[ticket.estado] || estadoConfig.recepcion;
+			const cfg = getEstadoCfg(ticket.estado);
 
 			// Header
 			const ticketEl = document.getElementById('result-ticket-number');
@@ -351,8 +358,8 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					historialEl.innerHTML = '<p class="text-text-soft text-[14px]">Sin cambios registrados</p>';
 				} else {
 					historialEl.innerHTML = historial.map((h: any) => {
-						const cfgAnt = estadoConfig[h.estado_anterior] || estadoConfig.recepcion;
-						const cfgNuevo = estadoConfig[h.estado_nuevo] || estadoConfig.recepcion;
+						const cfgAnt = getEstadoCfg(h.estado_anterior);
+						const cfgNuevo = getEstadoCfg(h.estado_nuevo);
 						const nota = h.nota ? `<div class="text-[13px] text-navy mt-1 italic">"${escapeHtml(h.nota)}"</div>` : '';
 						const tecnico = h.tecnico ? ' · ' + escapeHtml(h.tecnico) : '';
 						return `
