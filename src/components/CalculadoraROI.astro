@@ -33,7 +33,7 @@ const { calculadora_roi, contacto } = CONFIG;
               class="w-full bg-navy border border-white/20 text-white rounded-lg p-3 text-sm focus-visible:ring-2 focus-visible:ring-blue-light outline-none cursor-pointer"
             >
               {calculadora_roi.equipos.map((equipo) => (
-                <option value={equipo.id} data-costo-dia={equipo.costoDía} data-costo-mantenimiento={equipo.costoMantenimientoAnual}>
+                <option value={equipo.id} data-costo-dia={equipo.costoDia} data-costo-mantenimiento={equipo.costoMantenimientoAnual}>
                   {equipo.nombre}
                 </option>
               ))}

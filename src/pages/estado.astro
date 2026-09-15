@@ -37,9 +37,11 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 							name="ticket_number"
 							required
 							placeholder="Ej: TH-2026-1234"
+							aria-describedby="ticket-input-hint"
 							class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none uppercase"
 							autocomplete="off"
 						/>
+						<p id="ticket-input-hint" class="font-body text-[12px] text-white/50">Formato: letras y números (ej. TH-2026-1234)</p>
 					</div>
 					<button type="submit" id="estado-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-light">
 						<svg id="estado-spinner" class="hidden w-5 h-5 animate-spin text-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
@@ -155,7 +157,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 
 <script>
 	(function() {
-		const WEBHOOK_URL = 'http://n8n.lenovo.local/webhook/techhealth-estado';
+		const WEBHOOK_URL = 'https://season-exec-grades-insulation.trycloudflare.com/webhook/techhealth-estado';
 
 		const form = document.getElementById('estado-form') as HTMLFormElement | null;
 		const input = document.getElementById('ticket-input') as HTMLInputElement | null;
@@ -385,7 +387,14 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 
 		form.addEventListener('submit', handleSubmit);
 
+		input.addEventListener('input', () => {
+			if (errorDiv && !errorDiv.classList.contains('hidden')) {
+				errorDiv.classList.add('hidden');
+			}
+		});
+
 		nuevaConsultaBtn?.addEventListener('click', () => {
+			errorDiv?.classList.add('hidden');
 			resultDiv?.classList.add('hidden');
 			if (input) {
 				input.value = '';

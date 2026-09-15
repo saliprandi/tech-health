@@ -198,11 +198,11 @@ export const CONFIG = {
     titulo: "Calculadora de Ahorro Preventivo",
     subtitulo: "Estime el costo del tiempo de inactividad de sus equipos electromédicos y el valor del mantenimiento programado.",
     equipos: [
-      { id: "monitor", nombre: "Monitor de Signos Vitales", costoDía: 45000, costoMantenimientoAnual: 85000 },
-      { id: "ecografo", nombre: "Ecógrafo / Ultrasonido", costoDía: 180000, costoMantenimientoAnual: 240000 },
-      { id: "respirador", nombre: "Respirador / Ventilador", costoDía: 250000, costoMantenimientoAnual: 310000 },
-      { id: "bisturi", nombre: "Electrobisturí / Cauterio", costoDía: 120000, costoMantenimientoAnual: 180000 },
-      { id: "desfibrilador", nombre: "Desfibrilador / ECG", costoDía: 65000, costoMantenimientoAnual: 95000 }
+      { id: "monitor", nombre: "Monitor de Signos Vitales", costoDia: 45000, costoMantenimientoAnual: 85000 },
+      { id: "ecografo", nombre: "Ecógrafo / Ultrasonido", costoDia: 180000, costoMantenimientoAnual: 240000 },
+      { id: "respirador", nombre: "Respirador / Ventilador", costoDia: 250000, costoMantenimientoAnual: 310000 },
+      { id: "bisturi", nombre: "Electrobisturí / Cauterio", costoDia: 120000, costoMantenimientoAnual: 180000 },
+      { id: "desfibrilador", nombre: "Desfibrilador / ECG", costoDia: 65000, costoMantenimientoAnual: 95000 }
     ]
   },
 
