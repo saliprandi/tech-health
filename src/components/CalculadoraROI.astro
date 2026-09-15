@@ -1,0 +1,162 @@
+---
+import { CONFIG } from '../data/config';
+const { calculadora_roi, contacto } = CONFIG;
+---
+
+<section id="calculadora-roi" class="bg-navy text-white section-padding relative overflow-hidden scroll-mt-16 content-visibility-auto">
+  <div class="absolute inset-0 opacity-5 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" aria-hidden="true"></div>
+
+  <div class="container-custom relative z-10">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="font-heading font-bold text-blue-light tracking-wide uppercase text-[12px] mb-3">
+        Calculadora B2B
+      </div>
+      <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] leading-[1.2] text-white mb-4">
+        {calculadora_roi.titulo}
+      </h2>
+      <p class="font-body text-[16px] text-white/80">
+        {calculadora_roi.subtitulo}
+      </p>
+    </div>
+
+    <div class="max-w-4xl mx-auto bg-navy-dark/90 border border-white/10 rounded-2xl p-6 md:p-10 shadow-xl backdrop-blur-sm">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+
+        <!-- Controls -->
+        <div class="space-y-6">
+          <div>
+            <label for="roi-equipo-select" class="block font-heading font-semibold text-sm text-white/90 mb-2">
+              Tipo de Equipo Electromédico:
+            </label>
+            <select
+              id="roi-equipo-select"
+              class="w-full bg-navy border border-white/20 text-white rounded-lg p-3 text-sm focus-visible:ring-2 focus-visible:ring-blue-light outline-none cursor-pointer"
+            >
+              {calculadora_roi.equipos.map((equipo) => (
+                <option value={equipo.id} data-costo-dia={equipo.costoDia} data-costo-mantenimiento={equipo.costoMantenimientoAnual}>
+                  {equipo.nombre}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <label for="roi-dias-range" class="font-heading font-semibold text-sm text-white/90">
+                Días estimados fuera de servicio por falla (al año):
+              </label>
+              <span id="roi-dias-val" class="font-heading font-bold text-blue-light text-base">5 días</span>
+            </div>
+            <input
+              type="range"
+              id="roi-dias-range"
+              min="1"
+              max="30"
+              value="5"
+              step="1"
+              aria-valuenow="5"
+              aria-valuemin="1"
+              aria-valuemax="30"
+              aria-label="Días fuera de servicio por año"
+              class="w-full accent-blue cursor-pointer h-2 bg-navy rounded-lg appearance-none focus-visible:ring-2 focus-visible:ring-blue-light outline-none"
+            />
+          </div>
+
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-xs text-white/70 leading-relaxed">
+            <p>
+              💡 <strong>Nota técnica:</strong> El costo de inactividad considera la pérdida de turnos/estudios médicos no realizados y el alquiler eventual de equipamiento de contingencia.
+            </p>
+          </div>
+        </div>
+
+        <!-- Output Panel -->
+        <div class="bg-navy border border-white/10 rounded-xl p-6 flex flex-col justify-between text-center lg:text-left space-y-6">
+          <div>
+            <span class="text-xs font-heading uppercase text-white/60 tracking-wider">Pérdida estimada por tiempo inactivo</span>
+            <div id="roi-costo-inactividad" class="font-heading font-extrabold text-3xl md:text-4xl text-red-400 mt-1">
+              $ 225.000 ARS
+            </div>
+          </div>
+
+          <div class="border-t border-white/10 pt-4">
+            <span class="text-xs font-heading uppercase text-white/60 tracking-wider">Ahorro neto con Mantenimiento Preventivo</span>
+            <div id="roi-ahorro-estimado" class="font-heading font-extrabold text-3xl md:text-4xl text-green-400 mt-1">
+              $ 140.000 ARS
+            </div>
+          </div>
+
+          <div aria-live="polite" class="sr-only" id="roi-live-announcement"></div>
+
+          <a
+            id="roi-cta-btn"
+            data-phone={contacto.whatsapp.replace(/\D/g, '')}
+            href={`https://wa.me/${contacto.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('Hola TechHealth, quisiera solicitar presupuesto de mantenimiento preventivo para mis equipos.')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-2 bg-blue hover:bg-blue-light text-white font-heading font-bold text-sm py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg focus-visible:ring-2 focus-visible:ring-white outline-none group"
+          >
+            <span>Cotizar Plan Preventivo</span>
+            <svg class="w-4 h-4 text-white/70 group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" aria-hidden="true">
+              <use href="#icon-external" />
+            </svg>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    function initCalculadora() {
+      const selectEquipo = document.getElementById('roi-equipo-select') as HTMLSelectElement | null;
+      const rangeDias = document.getElementById('roi-dias-range') as HTMLInputElement | null;
+      const valDias = document.getElementById('roi-dias-val');
+      const textInactividad = document.getElementById('roi-costo-inactividad');
+      const textAhorro = document.getElementById('roi-ahorro-estimado');
+      const liveAnnouncement = document.getElementById('roi-live-announcement');
+      const ctaBtn = document.getElementById('roi-cta-btn') as HTMLAnchorElement | null;
+
+      if (!selectEquipo || !rangeDias || !valDias || !textInactividad || !textAhorro || !ctaBtn) return;
+
+      function formatARS(num: number): string {
+        return '$ ' + Math.round(num).toLocaleString('es-AR') + ' ARS';
+      }
+
+      function calcular() {
+        if (!selectEquipo || !rangeDias || !valDias || !textInactividad || !textAhorro || !ctaBtn) return;
+
+        const selectedOption = selectEquipo.options[selectEquipo.selectedIndex];
+        const costoDia = parseFloat(selectedOption.getAttribute('data-costo-dia') || '0');
+        const costoMant = parseFloat(selectedOption.getAttribute('data-costo-mantenimiento') || '0');
+        const dias = parseInt(rangeDias.value, 10);
+
+        rangeDias.setAttribute('aria-valuenow', dias.toString());
+        valDias.textContent = `${dias} ${dias === 1 ? 'día' : 'días'}`;
+
+        const costoTotalInactividad = costoDia * dias;
+        const ahorroNeto = Math.max(0, costoTotalInactividad - costoMant);
+
+        textInactividad.textContent = formatARS(costoTotalInactividad);
+        textAhorro.textContent = formatARS(ahorroNeto);
+
+        if (liveAnnouncement) {
+          liveAnnouncement.textContent = `Pérdida estimada: ${formatARS(costoTotalInactividad)}. Ahorro estimado con mantenimiento: ${formatARS(ahorroNeto)}.`;
+        }
+
+        const equipoNombre = selectedOption.text.trim();
+        const msg = `Hola TechHealth, según la calculadora de ROI, quisiera cotizar mantenimiento preventivo para ${equipoNombre} (${dias} días inactivos estimados/año).`;
+        const phone = ctaBtn.getAttribute('data-phone') || '5493815658239';
+        ctaBtn.href = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+      }
+
+      selectEquipo.addEventListener('change', calcular);
+      rangeDias.addEventListener('input', calcular);
+      calcular();
+    }
+
+    initCalculadora();
+    document.addEventListener('astro:after-swap', initCalculadora);
+  })();
+</script>
