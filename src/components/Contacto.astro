@@ -364,6 +364,7 @@ import { CONFIG } from '../data/config';
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: payload,
+              signal: AbortSignal.timeout(4000),
             });
             const data = await res.json();
             if (data && data.ticket_number) {
