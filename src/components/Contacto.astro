@@ -306,6 +306,7 @@ import { CONFIG } from '../data/config';
 
           const originalText = text.textContent;
           const originalIcon = iconUse.getAttribute('href');
+          const originalAriaLabel = btn.getAttribute('aria-label');
           let contentToCopy = contentEl.textContent?.trim() || '';
           if (btnId === 'copy-phone') contentToCopy = contentToCopy.replace(/\s/g, '');
 
@@ -313,12 +314,18 @@ import { CONFIG } from '../data/config';
             text.textContent = '¡Copiado!';
             iconUse.setAttribute('href', '#icon-check');
             btn.classList.add('text-blue', 'scale-110');
+            btn.setAttribute('aria-label', announcementMsg);
             if (copyAnnouncement) copyAnnouncement.textContent = announcementMsg;
 
             setTimeout(() => {
               text.textContent = originalText;
               iconUse.setAttribute('href', originalIcon || '#icon-copy');
               btn.classList.remove('text-blue', 'scale-110');
+              if (originalAriaLabel) {
+                btn.setAttribute('aria-label', originalAriaLabel);
+              } else {
+                btn.removeAttribute('aria-label');
+              }
               if (copyAnnouncement) copyAnnouncement.textContent = '';
             }, 2000);
           });
