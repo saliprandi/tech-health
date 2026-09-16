@@ -184,6 +184,7 @@ import { CONFIG } from '../data/config';
     function initContacto() {
       const horarioCard = document.getElementById('horario-card');
       const form = document.getElementById('contact-form') as HTMLFormElement | null;
+      const formLoadedAt = Date.now();
       const desc = document.getElementById('f-desc') as HTMLTextAreaElement | null;
       const counter = document.getElementById('char-counter');
       const copyAnnouncement = document.getElementById('copy-announcement');
@@ -364,7 +365,15 @@ import { CONFIG } from '../data/config';
 
           // Enviar datos al webhook de n8n y capturar el ticket generado
           const webhookUrl = 'https://season-exec-grades-insulation.trycloudflare.com/webhook/techhealth-solicitud';
-          const payload = JSON.stringify({ nombre, telefono: tel, servicio, mensaje });
+          const payload = JSON.stringify({
+            nombre,
+            telefono: tel,
+            servicio,
+            mensaje,
+            website: (formData.get('website') as string || ''),
+            _t: formLoadedAt,
+            _k: btoa(String(formLoadedAt) + ':th_web_2026'),
+          });
           let ticketNumber: string | null = null;
           try {
             const res = await fetch(webhookUrl, {
