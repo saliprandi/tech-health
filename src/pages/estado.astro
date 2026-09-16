@@ -31,16 +31,28 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 						<label for="ticket-input" class="font-body font-medium text-[13px] text-white/80">
 							Número de ticket <span class="text-blue-light">*</span>
 						</label>
-						<input
-							type="text"
-							id="ticket-input"
-							name="ticket_number"
-							required
-							placeholder="Ej: TH-2026-1234"
-							aria-describedby="ticket-input-hint"
-							class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none uppercase"
-							autocomplete="off"
-						/>
+						<div class="relative w-full">
+							<input
+								type="text"
+								id="ticket-input"
+								name="ticket_number"
+								required
+								placeholder="Ej: TH-2026-1234"
+								aria-describedby="ticket-input-hint"
+								class="bg-white/10 border border-white/20 rounded-[8px] pl-4 pr-10 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none uppercase"
+								autocomplete="off"
+							/>
+							<button
+								type="button"
+								id="clear-ticket-input"
+								class="hidden absolute right-3 top-1/2 -translate-y-1/2 p-1 text-white/50 hover:text-white focus-visible:text-white rounded-md focus-visible:ring-2 focus-visible:ring-blue-light outline-none transition-colors"
+								aria-label="Limpiar número de ticket"
+							>
+								<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+								</svg>
+							</button>
+						</div>
 						<p id="ticket-input-hint" class="font-body text-[12px] text-white/50">Formato: letras y números (ej. TH-2026-1234)</p>
 					</div>
 					<button type="submit" id="estado-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-light">
@@ -161,6 +173,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 
 		const form = document.getElementById('estado-form') as HTMLFormElement | null;
 		const input = document.getElementById('ticket-input') as HTMLInputElement | null;
+		const clearInputBtn = document.getElementById('clear-ticket-input');
 		const submitBtn = document.getElementById('estado-submit') as HTMLButtonElement | null;
 		const submitText = document.getElementById('estado-submit-text');
 		const spinner = document.getElementById('estado-spinner');
@@ -173,6 +186,24 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		const copyTicketAnnouncement = document.getElementById('copy-ticket-announcement');
 
 		if (!form || !input || !submitBtn) return;
+
+		const toggleClearButton = () => {
+			if (!input || !clearInputBtn) return;
+			if (input.value.trim().length > 0) {
+				clearInputBtn.classList.remove('hidden');
+			} else {
+				clearInputBtn.classList.add('hidden');
+			}
+		};
+
+		clearInputBtn?.addEventListener('click', () => {
+			if (!input) return;
+			input.value = '';
+			toggleClearButton();
+			errorDiv?.classList.add('hidden');
+			resultDiv?.classList.add('hidden');
+			input.focus();
+		});
 
 		// Copy ticket event handler
 		copyTicketBtn?.addEventListener('click', (e) => {
@@ -235,7 +266,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			e.preventDefault();
 			if (!input || !submitBtn || !submitText || !spinner) return;
 
-			const ticketNumber = input.value.trim().toUpperCase();
+			const ticketNumber = input.value.replace(/\s+/g, '').toUpperCase();
 			if (!ticketNumber) return;
 
 			// UI: loading
@@ -387,6 +418,10 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 				historialSection.classList.remove('hidden');
 			}
 
+			// Actualizar URL para compartir/guardar en marcadores
+			const newUrl = `${window.location.pathname}?ticket=${encodeURIComponent(ticket.ticket_number)}`;
+			window.history.replaceState({ path: newUrl }, '', newUrl);
+
 			// Mostrar resultado
 			resultDiv?.classList.remove('hidden');
 			resultDiv?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -395,6 +430,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		form.addEventListener('submit', handleSubmit);
 
 		input.addEventListener('input', () => {
+			toggleClearButton();
 			if (errorDiv && !errorDiv.classList.contains('hidden')) {
 				errorDiv.classList.add('hidden');
 			}
@@ -405,8 +441,11 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			resultDiv?.classList.add('hidden');
 			if (input) {
 				input.value = '';
+				toggleClearButton();
 				input.focus();
 			}
+			const cleanUrl = window.location.pathname;
+			window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		});
 
@@ -414,7 +453,8 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		const params = new URLSearchParams(window.location.search);
 		const ticketParam = params.get('ticket');
 		if (ticketParam && input) {
-			input.value = ticketParam.toUpperCase();
+			input.value = ticketParam.replace(/\s+/g, '').toUpperCase();
+			toggleClearButton();
 			form.requestSubmit();
 		}
 	})();
