@@ -94,3 +94,21 @@ test('ticket status page sanitizes XSS payloads in history response', async ({ p
   expect(historialHtml).not.toContain('<img src=x');
   expect(historialHtml).toContain('&lt;script&gt;');
 });
+
+test('ticket status page gracefully handles 500 HTTP error response', async ({ page }) => {
+  await page.route('**/webhook/techhealth-estado*', async (route) => {
+    await route.fulfill({
+      status: 500,
+      contentType: 'text/html',
+      body: '<html><body>500 Internal Server Error</body></html>'
+    });
+  });
+
+  await page.goto('http://localhost:4321/estado');
+  await page.fill('#ticket-input', 'TH-2026-ERR');
+  await page.click('#estado-submit');
+
+  const errorDiv = page.locator('#estado-error');
+  await expect(errorDiv).toBeVisible();
+  await expect(errorDiv).toContainText('Error de servidor (500)');
+});
