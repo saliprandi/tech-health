@@ -279,17 +279,27 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			resultDiv?.classList.add('hidden');
 
 			try {
-				const res = await fetch(`${WEBHOOK_URL}?ticket_number=${encodeURIComponent(ticketNumber)}`);
+				// Security: Add AbortSignal timeout and validate response status before parsing JSON to prevent info leakage and DoS
+				const res = await fetch(`${WEBHOOK_URL}?ticket_number=${encodeURIComponent(ticketNumber)}`, {
+					signal: AbortSignal.timeout(8000)
+				});
+				if (!res.ok) {
+					throw new Error('No se pudo obtener la información del ticket. Intente nuevamente más tarde.');
+				}
 				const data = await res.json();
 
-				if (!data.success) {
-					throw new Error(data.error || 'Ticket no encontrado');
+				if (!data || !data.success) {
+					throw new Error((data && data.error) ? data.error : 'Ticket no encontrado');
 				}
 
 				displayResult(data);
 			} catch (err) {
 				if (errorDiv) {
-					errorDiv.textContent = err instanceof Error ? err.message : 'Error al consultar el ticket';
+					if (err instanceof Error && (err.name === 'TimeoutError' || err.name === 'AbortError')) {
+						errorDiv.textContent = 'La consulta excedió el tiempo de espera. Intente nuevamente.';
+					} else {
+						errorDiv.textContent = err instanceof Error ? err.message : 'Error al consultar el ticket';
+					}
 					errorDiv.classList.remove('hidden');
 				}
 			} finally {
