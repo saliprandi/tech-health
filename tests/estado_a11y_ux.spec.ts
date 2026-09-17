@@ -94,6 +94,10 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
 
     await copyBtn.click();
     await expect(page.locator('#copy-ticket-text')).toHaveText('¡Copiado!');
+    await expect(copyBtn).toHaveAttribute('aria-label', 'Número de ticket copiado al portapapeles');
+
+    await expect(page.locator('#copy-ticket-text')).toHaveText('Copiar', { timeout: 3000 });
+    await expect(copyBtn).toHaveAttribute('aria-label', 'Copiar número de ticket al portapapeles');
   });
 
   test('should handle ticket search error and set aria-live announcement', async ({ page }) => {

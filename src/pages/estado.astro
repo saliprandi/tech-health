@@ -212,16 +212,25 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			const ticketNum = ticketEl?.textContent?.trim();
 			if (!ticketNum || !navigator.clipboard) return;
 
+			const originalAriaLabel = copyTicketBtn.getAttribute('aria-label');
+			const announcementMsg = 'Número de ticket copiado al portapapeles';
+
 			navigator.clipboard.writeText(ticketNum).then(() => {
 				if (copyTicketText) copyTicketText.textContent = '¡Copiado!';
 				if (copyTicketIcon) copyTicketIcon.setAttribute('href', '#icon-check');
 				copyTicketBtn.classList.add('text-blue', 'scale-105');
-				if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = 'Número de ticket copiado al portapapeles';
+				copyTicketBtn.setAttribute('aria-label', announcementMsg);
+				if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = announcementMsg;
 
 				setTimeout(() => {
 					if (copyTicketText) copyTicketText.textContent = 'Copiar';
 					if (copyTicketIcon) copyTicketIcon.setAttribute('href', '#icon-copy');
 					copyTicketBtn.classList.remove('text-blue', 'scale-105');
+					if (originalAriaLabel) {
+						copyTicketBtn.setAttribute('aria-label', originalAriaLabel);
+					} else {
+						copyTicketBtn.removeAttribute('aria-label');
+					}
 					if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = '';
 				}, 2000);
 			});
@@ -463,7 +472,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		// Auto-llenar desde URL
 		const params = new URLSearchParams(window.location.search);
 		const ticketParam = params.get('ticket');
-		if (ticketParam && input) {
+		if (ticketParam && ticketParam.trim() && input) {
 			input.value = ticketParam.replace(/\s+/g, '').toUpperCase();
 			toggleClearButton();
 			form.requestSubmit();
