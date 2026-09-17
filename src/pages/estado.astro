@@ -73,7 +73,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					<div class="flex items-center justify-between mb-6">
 						<div>
 							<div class="font-body text-[12px] text-text-soft uppercase tracking-wider mb-1">Ticket</div>
-							<div class="flex items-center gap-2">
+							<div class="flex items-center gap-2 flex-wrap">
 								<div id="result-ticket-number" class="font-heading font-extrabold text-[24px] text-navy"></div>
 								<button
 									type="button"
@@ -85,6 +85,17 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 										<use id="copy-ticket-icon-use" href="#icon-copy" />
 									</svg>
 									<span id="copy-ticket-text" class="pointer-events-none">Copiar</span>
+								</button>
+								<button
+									type="button"
+									id="share-ticket-btn"
+									class="inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
+									aria-label="Copiar enlace directo del ticket al portapapeles"
+								>
+									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true">
+										<use id="share-ticket-icon-use" href="#icon-external" />
+									</svg>
+									<span id="share-ticket-text" class="pointer-events-none">Copiar enlace</span>
 								</button>
 								<div id="copy-ticket-announcement" class="sr-only" aria-live="polite"></div>
 							</div>
@@ -183,6 +194,9 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		const copyTicketBtn = document.getElementById('copy-ticket-btn');
 		const copyTicketText = document.getElementById('copy-ticket-text');
 		const copyTicketIcon = document.getElementById('copy-ticket-icon-use');
+		const shareTicketBtn = document.getElementById('share-ticket-btn');
+		const shareTicketText = document.getElementById('share-ticket-text');
+		const shareTicketIcon = document.getElementById('share-ticket-icon-use');
 		const copyTicketAnnouncement = document.getElementById('copy-ticket-announcement');
 
 		if (!form || !input || !submitBtn) return;
@@ -222,6 +236,29 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					if (copyTicketText) copyTicketText.textContent = 'Copiar';
 					if (copyTicketIcon) copyTicketIcon.setAttribute('href', '#icon-copy');
 					copyTicketBtn.classList.remove('text-blue', 'scale-105');
+					if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = '';
+				}, 2000);
+			});
+		});
+
+		// Copy share link event handler
+		shareTicketBtn?.addEventListener('click', (e) => {
+			e.preventDefault();
+			const ticketEl = document.getElementById('result-ticket-number');
+			const ticketNum = ticketEl?.textContent?.trim();
+			if (!ticketNum || !navigator.clipboard) return;
+
+			const shareUrl = `${window.location.origin}${window.location.pathname}?ticket=${encodeURIComponent(ticketNum)}`;
+			navigator.clipboard.writeText(shareUrl).then(() => {
+				if (shareTicketText) shareTicketText.textContent = '¡Enlace copiado!';
+				if (shareTicketIcon) shareTicketIcon.setAttribute('href', '#icon-check');
+				shareTicketBtn.classList.add('text-blue', 'scale-105');
+				if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = 'Enlace directo del ticket copiado al portapapeles';
+
+				setTimeout(() => {
+					if (shareTicketText) shareTicketText.textContent = 'Copiar enlace';
+					if (shareTicketIcon) shareTicketIcon.setAttribute('href', '#icon-external');
+					shareTicketBtn.classList.remove('text-blue', 'scale-105');
 					if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = '';
 				}, 2000);
 			});
@@ -433,9 +470,12 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			const newUrl = `${window.location.pathname}?ticket=${encodeURIComponent(ticket.ticket_number)}`;
 			window.history.replaceState({ path: newUrl }, '', newUrl);
 
-			// Mostrar resultado
+			// Mostrar resultado y enfocar para accesibilidad por teclado y lectores de pantalla
 			resultDiv?.classList.remove('hidden');
 			resultDiv?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			setTimeout(() => {
+				copyTicketBtn?.focus();
+			}, 100);
 		};
 
 		form.addEventListener('submit', handleSubmit);

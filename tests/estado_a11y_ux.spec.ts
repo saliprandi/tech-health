@@ -39,6 +39,12 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await expect(copyBtn).toHaveAttribute('aria-label', 'Copiar número de ticket al portapapeles');
     await expect(copyBtn).toHaveClass(/focus-visible:ring-blue/);
 
+    // 5b. Check ticket share link button attributes and focus styling
+    const shareBtn = page.locator('#share-ticket-btn');
+    await expect(shareBtn).toHaveAttribute('type', 'button');
+    await expect(shareBtn).toHaveAttribute('aria-label', 'Copiar enlace directo del ticket al portapapeles');
+    await expect(shareBtn).toHaveClass(/focus-visible:ring-blue/);
+
     // 6. Check quick clear button attributes, visibility toggle, and focus restoration
     const clearBtn = page.locator('#clear-ticket-input');
     await expect(clearBtn).toBeHidden();
@@ -92,8 +98,17 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     const copyBtn = page.locator('#copy-ticket-btn');
     await expect(copyBtn).toBeVisible();
 
+    // Verify focus automatically transferred to copyBtn for keyboard accessibility
+    await expect(copyBtn).toBeFocused();
+
     await copyBtn.click();
     await expect(page.locator('#copy-ticket-text')).toHaveText('¡Copiado!');
+
+    // Test share link button
+    const shareBtn = page.locator('#share-ticket-btn');
+    await expect(shareBtn).toBeVisible();
+    await shareBtn.click();
+    await expect(page.locator('#share-ticket-text')).toHaveText('¡Enlace copiado!');
   });
 
   test('should handle ticket search error and set aria-live announcement', async ({ page }) => {
