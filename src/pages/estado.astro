@@ -37,6 +37,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 								id="ticket-input"
 								name="ticket_number"
 								required
+								maxlength="30"
 								placeholder="Ej: TH-2026-1234"
 								aria-describedby="ticket-input-hint"
 								class="bg-white/10 border border-white/20 rounded-[8px] pl-4 pr-10 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none uppercase"
@@ -266,7 +267,8 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			e.preventDefault();
 			if (!input || !submitBtn || !submitText || !spinner) return;
 
-			const ticketNumber = input.value.replace(/\s+/g, '').toUpperCase();
+			// Security: Limit ticket query length to 30 characters to prevent DoS and oversized URL query parameters
+			const ticketNumber = input.value.replace(/\s+/g, '').toUpperCase().slice(0, 30);
 			if (!ticketNumber) return;
 
 			// UI: loading
@@ -464,7 +466,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		const params = new URLSearchParams(window.location.search);
 		const ticketParam = params.get('ticket');
 		if (ticketParam && input) {
-			input.value = ticketParam.replace(/\s+/g, '').toUpperCase();
+			input.value = ticketParam.replace(/\s+/g, '').toUpperCase().slice(0, 30);
 			toggleClearButton();
 			form.requestSubmit();
 		}

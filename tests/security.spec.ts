@@ -112,3 +112,36 @@ test('ticket status page gracefully handles 500 HTTP error response', async ({ p
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Error de servidor (500)');
 });
+
+test('ticket status page enforces maxlength and truncates oversized inputs', async ({ page }) => {
+  let requestedTicket = '';
+  await page.route('**/webhook/techhealth-estado*', async (route) => {
+    const url = new URL(route.request().url());
+    requestedTicket = url.searchParams.get('ticket_number') || '';
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        success: true,
+        ticket: {
+          ticket_number: requestedTicket,
+          nombre: 'Cliente Test',
+          servicio: 'Diagnostico',
+          created_at: '2026-03-01T10:00:00Z',
+          estado: 'recepcion'
+        }
+      })
+    });
+  });
+
+  await page.goto('http://localhost:4321/estado');
+  const ticketInput = page.locator('#ticket-input');
+  await expect(ticketInput).toHaveAttribute('maxlength', '30');
+
+  const oversizedTicket = 'TH-2026-' + 'A'.repeat(50);
+  await ticketInput.fill(oversizedTicket);
+  await page.click('#estado-submit');
+
+  expect(requestedTicket.length).toBeLessThanOrEqual(30);
+  expect(requestedTicket).toBe(('TH-2026-' + 'A'.repeat(50)).slice(0, 30));
+});
