@@ -1,0 +1,3 @@
+## 2026-03-30 - Tracking de estado O(1) en scripts de cliente de componentes Astro
+**Learning:** Reemplazar iteraciones O(N) por un puntero al elemento activo (`activeItem`) en manejadores de eventos fríos como acordeones o desplegables no tiene un impacto de rendimiento medible para N pequeño, pero la referencia debe mantenerse siempre encapsulada dentro de la función de inicialización del componente (`initFAQ`) para evitar compartir estado global o romper tras transiciones de navegación en Astro.
+**Action:** Mantener variables de estado encapsuladas dentro del scope de la función de inicialización y evitar optimizar bucles pequeños en rutas de interacción frías cuando no hay cuello de botella real.
