@@ -111,7 +111,11 @@ import { CONFIG } from '../data/config';
       const handleClear = () => {
         input.value = '';
         toggleClearButton();
+        if (announcement) announcement.textContent = 'Campo de número de ticket limpiado';
         input.focus();
+        setTimeout(() => {
+          if (announcement) announcement.textContent = '';
+        }, 2000);
       };
 
       const handleSubmit = (e: Event) => {
