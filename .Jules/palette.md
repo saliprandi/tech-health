@@ -13,3 +13,7 @@
 ## 2026-03-30 - Paridad micro-interactiva entre hover y focus-visible en botones principales
 **Learning:** Asignar transformaciones visuales (como `translateY(-2px)` y `box-shadow` de elevación) únicamente a `:hover` en componentes `.btn-primary` priva a los usuarios de navegación por teclado de la misma retroalimentación táctil y dinámica que experimentan los usuarios de ratón.
 **Action:** Garantizar siempre paridad funcional asignando reglas idénticas a `.btn-primary:hover` y `.btn-primary:focus-visible` en las clases utility del sistema de diseño CSS.
+
+## 2026-03-30 - Micro-interacción en selects personalizados y accesibilidad de contadores de caracteres
+**Learning:** Los elementos `<select>` personalizados envueltos en contenedores relativos se benefician de grupos con nombre Tailwind (`group/select`) con animaciones `group-focus-within/select:rotate-180` en los íconos chevron para dar paridad visual durante el enfoque por teclado. Además, los contadores de texto dentro de `<textarea>` deben contar con `aria-live="polite"` para transmitir actualizaciones dinámicas del límite a lectores de pantalla.
+**Action:** Usar grupos de Tailwind para estados de foco en controles personalizados y asegurar regiones aria-live en contadores de caracteres de formularios.
