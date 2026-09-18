@@ -1,0 +1,3 @@
+## 2026-03-30 - Carga asíncrona no bloqueante de Google Fonts y precarga de assets críticos
+**Learning:** La inclusión de hojas de estilo de Google Fonts mediante `<link rel="stylesheet">` estándar bloquea la renderización del HTML (FCP/LCP) mientras se descarga y procesa el CSS remoto.
+**Action:** Cargar Google Fonts de manera asíncrona mediante `<link rel="preload" as="style">` combinado con `<link rel="stylesheet" media="print" onload="this.media='all'">` y respaldo `<noscript>` en los layouts principales (`Layout.astro` y `EstadoLayout.astro`). Asegurar también que assets clave del header (como `/logo-name.svg`) se precarguen con `fetchpriority="high"`.
