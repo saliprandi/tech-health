@@ -184,6 +184,7 @@ import { CONFIG } from '../data/config';
     function initContacto() {
       const horarioCard = document.getElementById('horario-card');
       const form = document.getElementById('contact-form') as HTMLFormElement | null;
+      const formLoadedAt = Date.now();
       const desc = document.getElementById('f-desc') as HTMLTextAreaElement | null;
       const counter = document.getElementById('char-counter');
       const copyAnnouncement = document.getElementById('copy-announcement');
@@ -306,6 +307,7 @@ import { CONFIG } from '../data/config';
 
           const originalText = text.textContent;
           const originalIcon = iconUse.getAttribute('href');
+          const originalAriaLabel = btn.getAttribute('aria-label');
           let contentToCopy = contentEl.textContent?.trim() || '';
           if (btnId === 'copy-phone') contentToCopy = contentToCopy.replace(/\s/g, '');
 
@@ -313,12 +315,18 @@ import { CONFIG } from '../data/config';
             text.textContent = '¡Copiado!';
             iconUse.setAttribute('href', '#icon-check');
             btn.classList.add('text-blue', 'scale-110');
+            btn.setAttribute('aria-label', announcementMsg);
             if (copyAnnouncement) copyAnnouncement.textContent = announcementMsg;
 
             setTimeout(() => {
               text.textContent = originalText;
               iconUse.setAttribute('href', originalIcon || '#icon-copy');
               btn.classList.remove('text-blue', 'scale-110');
+              if (originalAriaLabel) {
+                btn.setAttribute('aria-label', originalAriaLabel);
+              } else {
+                btn.removeAttribute('aria-label');
+              }
               if (copyAnnouncement) copyAnnouncement.textContent = '';
             }, 2000);
           });
@@ -357,13 +365,22 @@ import { CONFIG } from '../data/config';
 
           // Enviar datos al webhook de n8n y capturar el ticket generado
           const webhookUrl = 'https://season-exec-grades-insulation.trycloudflare.com/webhook/techhealth-solicitud';
-          const payload = JSON.stringify({ nombre, telefono: tel, servicio, mensaje });
+          const payload = JSON.stringify({
+            nombre,
+            telefono: tel,
+            servicio,
+            mensaje,
+            website: (formData.get('website') as string || ''),
+            _t: formLoadedAt,
+            _k: btoa(String(formLoadedAt) + ':th_web_2026'),
+          });
           let ticketNumber: string | null = null;
           try {
             const res = await fetch(webhookUrl, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: payload,
+              signal: AbortSignal.timeout(4000),
             });
             const data = await res.json();
             if (data && data.ticket_number) {

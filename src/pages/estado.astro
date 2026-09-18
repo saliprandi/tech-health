@@ -31,16 +31,29 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 						<label for="ticket-input" class="font-body font-medium text-[13px] text-white/80">
 							Número de ticket <span class="text-blue-light">*</span>
 						</label>
-						<input
-							type="text"
-							id="ticket-input"
-							name="ticket_number"
-							required
-							placeholder="Ej: TH-2026-1234"
-							aria-describedby="ticket-input-hint"
-							class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none uppercase"
-							autocomplete="off"
-						/>
+						<div class="relative w-full">
+							<input
+								type="text"
+								id="ticket-input"
+								name="ticket_number"
+								required
+								maxlength="30"
+								placeholder="Ej: TH-2026-1234"
+								aria-describedby="ticket-input-hint"
+								class="bg-white/10 border border-white/20 rounded-[8px] pl-4 pr-10 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none uppercase"
+								autocomplete="off"
+							/>
+							<button
+								type="button"
+								id="clear-ticket-input"
+								class="hidden absolute right-3 top-1/2 -translate-y-1/2 p-1 text-white/50 hover:text-white focus-visible:text-white rounded-md focus-visible:ring-2 focus-visible:ring-blue-light outline-none transition-colors"
+								aria-label="Limpiar número de ticket"
+							>
+								<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+								</svg>
+							</button>
+						</div>
 						<p id="ticket-input-hint" class="font-body text-[12px] text-white/50">Formato: letras y números (ej. TH-2026-1234)</p>
 					</div>
 					<button type="submit" id="estado-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-light">
@@ -61,7 +74,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					<div class="flex items-center justify-between mb-6">
 						<div>
 							<div class="font-body text-[12px] text-text-soft uppercase tracking-wider mb-1">Ticket</div>
-							<div class="flex items-center gap-2">
+							<div class="flex items-center gap-2 flex-wrap">
 								<div id="result-ticket-number" class="font-heading font-extrabold text-[24px] text-navy"></div>
 								<button
 									type="button"
@@ -73,6 +86,17 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 										<use id="copy-ticket-icon-use" href="#icon-copy" />
 									</svg>
 									<span id="copy-ticket-text" class="pointer-events-none">Copiar</span>
+								</button>
+								<button
+									type="button"
+									id="share-ticket-btn"
+									class="inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
+									aria-label="Copiar enlace directo del ticket al portapapeles"
+								>
+									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true">
+										<use id="share-ticket-icon-use" href="#icon-external" />
+									</svg>
+									<span id="share-ticket-text" class="pointer-events-none">Copiar enlace</span>
 								</button>
 								<div id="copy-ticket-announcement" class="sr-only" aria-live="polite"></div>
 							</div>
@@ -161,6 +185,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 
 		const form = document.getElementById('estado-form') as HTMLFormElement | null;
 		const input = document.getElementById('ticket-input') as HTMLInputElement | null;
+		const clearInputBtn = document.getElementById('clear-ticket-input');
 		const submitBtn = document.getElementById('estado-submit') as HTMLButtonElement | null;
 		const submitText = document.getElementById('estado-submit-text');
 		const spinner = document.getElementById('estado-spinner');
@@ -170,9 +195,30 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		const copyTicketBtn = document.getElementById('copy-ticket-btn');
 		const copyTicketText = document.getElementById('copy-ticket-text');
 		const copyTicketIcon = document.getElementById('copy-ticket-icon-use');
+		const shareTicketBtn = document.getElementById('share-ticket-btn');
+		const shareTicketText = document.getElementById('share-ticket-text');
+		const shareTicketIcon = document.getElementById('share-ticket-icon-use');
 		const copyTicketAnnouncement = document.getElementById('copy-ticket-announcement');
 
 		if (!form || !input || !submitBtn) return;
+
+		const toggleClearButton = () => {
+			if (!input || !clearInputBtn) return;
+			if (input.value.trim().length > 0) {
+				clearInputBtn.classList.remove('hidden');
+			} else {
+				clearInputBtn.classList.add('hidden');
+			}
+		};
+
+		clearInputBtn?.addEventListener('click', () => {
+			if (!input) return;
+			input.value = '';
+			toggleClearButton();
+			errorDiv?.classList.add('hidden');
+			resultDiv?.classList.add('hidden');
+			input.focus();
+		});
 
 		// Copy ticket event handler
 		copyTicketBtn?.addEventListener('click', (e) => {
@@ -191,6 +237,29 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					if (copyTicketText) copyTicketText.textContent = 'Copiar';
 					if (copyTicketIcon) copyTicketIcon.setAttribute('href', '#icon-copy');
 					copyTicketBtn.classList.remove('text-blue', 'scale-105');
+					if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = '';
+				}, 2000);
+			});
+		});
+
+		// Copy share link event handler
+		shareTicketBtn?.addEventListener('click', (e) => {
+			e.preventDefault();
+			const ticketEl = document.getElementById('result-ticket-number');
+			const ticketNum = ticketEl?.textContent?.trim();
+			if (!ticketNum || !navigator.clipboard) return;
+
+			const shareUrl = `${window.location.origin}${window.location.pathname}?ticket=${encodeURIComponent(ticketNum)}`;
+			navigator.clipboard.writeText(shareUrl).then(() => {
+				if (shareTicketText) shareTicketText.textContent = '¡Enlace copiado!';
+				if (shareTicketIcon) shareTicketIcon.setAttribute('href', '#icon-check');
+				shareTicketBtn.classList.add('text-blue', 'scale-105');
+				if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = 'Enlace directo del ticket copiado al portapapeles';
+
+				setTimeout(() => {
+					if (shareTicketText) shareTicketText.textContent = 'Copiar enlace';
+					if (shareTicketIcon) shareTicketIcon.setAttribute('href', '#icon-external');
+					shareTicketBtn.classList.remove('text-blue', 'scale-105');
 					if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = '';
 				}, 2000);
 			});
@@ -223,9 +292,18 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 				.replace(/`/g, '&#096;');
 		};
 
+		// Performance Optimization: Cache Intl.DateTimeFormat instance to avoid recreating formatters in loops
+		const esArDateFormatter = new Intl.DateTimeFormat('es-AR', {
+			day: '2-digit',
+			month: '2-digit',
+			year: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit'
+		});
+
 		const formatDate = (dateStr: string) => {
 			try {
-				return new Date(dateStr).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+				return esArDateFormatter.format(new Date(dateStr));
 			} catch {
 				return dateStr;
 			}
@@ -235,7 +313,8 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			e.preventDefault();
 			if (!input || !submitBtn || !submitText || !spinner) return;
 
-			const ticketNumber = input.value.trim().toUpperCase();
+			// Security: Limit ticket query length to 30 characters to prevent DoS and oversized URL query parameters
+			const ticketNumber = input.value.replace(/\s+/g, '').toUpperCase().slice(0, 30);
 			if (!ticketNumber) return;
 
 			// UI: loading
@@ -248,7 +327,14 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			resultDiv?.classList.add('hidden');
 
 			try {
-				const res = await fetch(`${WEBHOOK_URL}?ticket_number=${encodeURIComponent(ticketNumber)}`);
+				const res = await fetch(`${WEBHOOK_URL}?ticket_number=${encodeURIComponent(ticketNumber)}`, {
+					signal: AbortSignal.timeout(8000),
+				});
+
+				if (!res.ok) {
+					throw new Error(`Error de servidor (${res.status}). Por favor, intente más tarde.`);
+				}
+
 				const data = await res.json();
 
 				if (!data.success) {
@@ -258,7 +344,11 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 				displayResult(data);
 			} catch (err) {
 				if (errorDiv) {
-					errorDiv.textContent = err instanceof Error ? err.message : 'Error al consultar el ticket';
+					if (err instanceof Error && (err.name === 'TimeoutError' || err.name === 'AbortError')) {
+						errorDiv.textContent = 'Tiempo de espera agotado al consultar el ticket. Por favor, intente nuevamente.';
+					} else {
+						errorDiv.textContent = err instanceof Error ? err.message : 'Error al consultar el ticket';
+					}
 					errorDiv.classList.remove('hidden');
 				}
 			} finally {
@@ -387,14 +477,22 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 				historialSection.classList.remove('hidden');
 			}
 
-			// Mostrar resultado
+			// Actualizar URL para compartir/guardar en marcadores
+			const newUrl = `${window.location.pathname}?ticket=${encodeURIComponent(ticket.ticket_number)}`;
+			window.history.replaceState({ path: newUrl }, '', newUrl);
+
+			// Mostrar resultado y enfocar para accesibilidad por teclado y lectores de pantalla
 			resultDiv?.classList.remove('hidden');
 			resultDiv?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			setTimeout(() => {
+				copyTicketBtn?.focus();
+			}, 100);
 		};
 
 		form.addEventListener('submit', handleSubmit);
 
 		input.addEventListener('input', () => {
+			toggleClearButton();
 			if (errorDiv && !errorDiv.classList.contains('hidden')) {
 				errorDiv.classList.add('hidden');
 			}
@@ -405,8 +503,11 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			resultDiv?.classList.add('hidden');
 			if (input) {
 				input.value = '';
+				toggleClearButton();
 				input.focus();
 			}
+			const cleanUrl = window.location.pathname;
+			window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		});
 
@@ -414,7 +515,8 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		const params = new URLSearchParams(window.location.search);
 		const ticketParam = params.get('ticket');
 		if (ticketParam && input) {
-			input.value = ticketParam.toUpperCase();
+			input.value = ticketParam.replace(/\s+/g, '').toUpperCase().slice(0, 30);
+			toggleClearButton();
 			form.requestSubmit();
 		}
 	})();
