@@ -24,14 +24,10 @@ const { title = "Consultar Estado | TechHealth Medical Engineering" } = Astro.pr
 		<!-- Performance Optimization: Preload primary header logo to eliminate LCP delay and layout shifts -->
 		<link rel="preload" href="/logo-name.svg" as="image" type="image/svg+xml" fetchpriority="high" />
 
-		<!-- Google Fonts Performance Optimization: Non-render-blocking asynchronous font stylesheet loading to improve FCP/LCP -->
+		<!-- Google Fonts Optimization: Preconnect origins and display=swap for fast font rendering without CSP inline-handler dependencies -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap">
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-		<noscript>
-			<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
-		</noscript>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
 	</head>
 	<body>
 		<Icons />
