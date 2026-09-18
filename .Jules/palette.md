@@ -17,3 +17,7 @@
 ## 2026-03-30 - Micro-UX de selectores y contadores accesibles en formularios
 **Learning:** En controles `<select>` personalizados, envolver la entrada con Tailwind named groups (`group/select`) y aplicar `group-focus-within/select:rotate-180` al ícono de flecha provee una respuesta táctil/visual instantánea tanto con ratón como con navegación por teclado. Asimismo, los contadores de texto dinámicos en `<textarea>` deben incorporar `aria-live="polite"` y cambiar a un tono de advertencia legible (`text-amber-400 font-semibold`) al superar el 90% de la capacidad.
 **Action:** Utilizar named groups para animaciones de foco en íconos embebidos en inputs/selects y equipar contadores de caracteres con regiones `aria-live="polite"` para garantizar feedback visual y por voz.
+
+## 2026-03-30 - Cierre intuitivo de menús de navegación móviles
+**Learning:** Los paneles de navegación móvil emergentes que bloquean el desplazamiento de la página (`overflow: hidden`) causan frustración y bloquean la interacción en escritorio si el usuario hace clic fuera del menú o redimensiona la pantalla a un ancho de escritorio (`>= 1024px`).
+**Action:** Registrar siempre un manejador de clics externos (`handleOutsideClick`) para cerrar el menú al interactuar con el fondo de la página, así como un evento de cambio de tamaño (`handleResize`) que restablezca el estado del menú y libere `document.body.style.overflow` en breakpoints de escritorio.

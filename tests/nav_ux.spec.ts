@@ -26,6 +26,41 @@ test.describe('Navigation UX', () => {
     await expect(menuToggle).toHaveAttribute('aria-expanded', 'false');
   });
 
+  test('mobile menu should close when clicking outside', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+
+    const menuToggle = page.locator('#menu-toggle');
+    const mobileMenu = page.locator('#mobile-menu');
+
+    await menuToggle.click();
+    await expect(mobileMenu).toBeVisible();
+
+    // Click outside the menu (below mobile menu container on hero section)
+    await page.mouse.click(100, 550);
+    await expect(mobileMenu).not.toBeVisible();
+    await expect(menuToggle).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  test('mobile menu should close and unlock scrolling on desktop resize', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+
+    const menuToggle = page.locator('#menu-toggle');
+    const mobileMenu = page.locator('#mobile-menu');
+
+    await menuToggle.click();
+    await expect(mobileMenu).toBeVisible();
+
+    const initialOverflow = await page.evaluate(() => document.body.style.overflow);
+    expect(initialOverflow).toBe('hidden');
+
+    // Resize viewport to desktop width (>= 1024px)
+    await page.setViewportSize({ width: 1200, height: 800 });
+
+    await expect(menuToggle).toHaveAttribute('aria-expanded', 'false');
+    const resetOverflow = await page.evaluate(() => document.body.style.overflow);
+    expect(resetOverflow).toBe('');
+  });
+
   test('reading progress bar should update on scroll', async ({ page }) => {
     const progressBar = page.locator('#reading-progress').first();
     await expect(progressBar).toBeAttached();

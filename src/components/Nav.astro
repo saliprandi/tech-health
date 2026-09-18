@@ -259,13 +259,29 @@ import { CONFIG } from '../data/config';
         });
       }, { rootMargin: '-30% 0px -70% 0px' });
 
+      const handleOutsideClick = (e: MouseEvent) => {
+        if (!isOpen) return;
+        const target = e.target as Node | null;
+        if (target && !menu.contains(target) && !toggle.contains(target)) {
+          toggleMenu(true);
+        }
+      };
+
+      const handleResize = () => {
+        updateScrollHeight();
+        if (isOpen && window.innerWidth >= 1024) {
+          toggleMenu(true);
+        }
+      };
+
       toggle.addEventListener('click', handleToggleClick);
       mobileLinks.forEach(link => link.addEventListener('click', handleLinkClick));
       document.addEventListener('keydown', handleKeydown);
+      document.addEventListener('click', handleOutsideClick);
       navCta?.addEventListener('click', handleCtaClick as EventListener);
       mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
       window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', updateScrollHeight, { passive: true });
+      window.addEventListener('resize', handleResize, { passive: true });
       sections.forEach(section => observer.observe(section));
 
       updateScrollHeight();
@@ -275,10 +291,11 @@ import { CONFIG } from '../data/config';
         toggle.removeEventListener('click', handleToggleClick);
         mobileLinks.forEach(link => link.removeEventListener('click', handleLinkClick));
         document.removeEventListener('keydown', handleKeydown);
+        document.removeEventListener('click', handleOutsideClick);
         navCta?.removeEventListener('click', handleCtaClick as EventListener);
         mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
         window.removeEventListener('scroll', onScroll);
-        window.removeEventListener('resize', updateScrollHeight);
+        window.removeEventListener('resize', handleResize);
         observer.disconnect();
         document.body.style.overflow = '';
       };
