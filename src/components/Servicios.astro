@@ -75,16 +75,21 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
 <script>
   (function() {
+    // Performance Optimization: Single-pass regex replacement avoids allocating intermediate string objects across sequential .replace() calls
+    const ESCAPE_MAP: Record<string, string> = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;',
+      '/': '&#047;',
+      '`': '&#096;',
+    };
+    const ESCAPE_REGEX = /[&<>"'\/`]/g;
+
     const escapeHtml = (unsafe: string) => {
       if (typeof unsafe !== 'string') return '';
-      return unsafe
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;")
-        .replace(/\//g, "&#047;")
-        .replace(/`/g, "&#096;");
+      return unsafe.replace(ESCAPE_REGEX, (ch) => ESCAPE_MAP[ch] || ch);
     };
 
     function initServicios() {
