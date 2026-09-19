@@ -1,0 +1,236 @@
+---
+import { CONFIG } from '../data/config';
+
+const { calculadora_roi, contacto } = CONFIG;
+---
+
+<section id="calculadora" class="bg-navy text-white section-padding relative overflow-hidden content-visibility-auto scroll-mt-16">
+  <!-- Elementos decorativos de fondo -->
+  <div class="absolute -top-32 -left-32 w-96 h-96 bg-blue/10 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-blue-light/10 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+  <div class="container-custom relative z-10">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue/20 text-blue-light font-heading font-semibold text-xs tracking-wide uppercase mb-4 border border-blue/30">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+        <span>{calculadora_roi.badge}</span>
+      </div>
+      <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] leading-[1.2] text-white mb-4">
+        {calculadora_roi.titulo}
+      </h2>
+      <p class="font-body text-[16px] text-blue-pale/80 max-w-2xl mx-auto">
+        {calculadora_roi.subtitulo}
+      </p>
+    </div>
+
+    <!-- Interface Principal de la Calculadora -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+      <!-- Columna Izquierda: Ajuste de Equipamiento -->
+      <div class="lg:col-span-7 bg-white/5 backdrop-blur-md rounded-card p-6 md:p-8 border border-white/10 flex flex-col justify-between">
+        <div>
+          <h3 class="font-heading font-bold text-lg md:text-xl text-white mb-2 flex items-center gap-2">
+            <span>Inventario Estimado de Equipamiento</span>
+          </h3>
+          <p class="font-body text-xs md:text-sm text-blue-pale/70 mb-6">
+            Ajuste la cantidad de equipos activos en su institución para calcular el impacto proyectado.
+          </p>
+
+          <div class="space-y-6">
+            {calculadora_roi.categorias.map((cat) => (
+              <div class="bg-navy-light/60 p-4 rounded-xl border border-white/5 space-y-2">
+                <div class="flex items-center justify-between gap-4">
+                  <label for={`calc-range-${cat.id}`} class="font-heading font-semibold text-sm text-white flex-1 cursor-pointer">
+                    {cat.nombre}
+                  </label>
+                  <div class="flex items-center gap-2">
+                    <button
+                      type="button"
+                      data-action="decrement"
+                      data-target={`calc-range-${cat.id}`}
+                      class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center font-bold transition-all focus-visible:ring-2 focus-visible:ring-blue-light focus-visible:ring-offset-2 focus-visible:ring-offset-navy outline-none"
+                      aria-label={`Reducir ${cat.nombre}`}
+                    >-</button>
+                    <span id={`calc-val-${cat.id}`} class="font-mono font-bold text-base text-blue-light w-8 text-center" aria-live="polite">
+                      {cat.defecto}
+                    </span>
+                    <button
+                      type="button"
+                      data-action="increment"
+                      data-target={`calc-range-${cat.id}`}
+                      class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center font-bold transition-all focus-visible:ring-2 focus-visible:ring-blue-light focus-visible:ring-offset-2 focus-visible:ring-offset-navy outline-none"
+                      aria-label={`Aumentar ${cat.nombre}`}
+                    >+</button>
+                  </div>
+                </div>
+
+                <input
+                  type="range"
+                  id={`calc-range-${cat.id}`}
+                  data-cat-id={cat.id}
+                  data-fallas-unit={cat.reduccionFallasAnual}
+                  data-horas-unit={cat.horasInactividadEvitadas}
+                  min={cat.min}
+                  max={cat.max}
+                  value={cat.defecto}
+                  class="w-full accent-blue-light cursor-pointer h-2 bg-navy-dark rounded-lg focus-visible:ring-2 focus-visible:ring-blue-light outline-none"
+                  aria-describedby={`calc-val-${cat.id}`}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-white/10 text-xs text-blue-pale/60 text-center lg:text-left">
+          * Los cálculos se basan en coeficientes promedio de fallas en equipamiento médico según normativas de electromedicina.
+        </div>
+      </div>
+
+      <!-- Columna Derecha: Proyección de Resultados & CTA -->
+      <div class="lg:col-span-5 bg-gradient-to-br from-blue-dark/90 to-navy-light/90 rounded-card p-6 md:p-8 border border-blue-light/20 flex flex-col justify-between shadow-xl relative overflow-hidden">
+        <div>
+          <h3 class="font-heading font-bold text-xl text-white mb-6 pb-3 border-b border-white/10 flex items-center gap-2">
+            <svg class="w-5 h-5 text-blue-light" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+            <span>Impacto Proyectado</span>
+          </h3>
+
+          <div class="space-y-6">
+            <div class="bg-navy/80 p-5 rounded-2xl border border-white/10">
+              <div class="text-xs uppercase font-heading font-semibold tracking-wider text-blue-light/80 mb-1">
+                Fallas críticas evitadas
+              </div>
+              <div id="calc-fallas-res" class="font-heading font-extrabold text-3xl text-white tracking-tight" aria-live="polite">
+                ~11 fallas/año
+              </div>
+              <p class="text-xs text-blue-pale/70 mt-1">
+                Prevención mediante inspecciones y calibraciones programadas.
+              </p>
+            </div>
+
+            <div class="bg-navy/80 p-5 rounded-2xl border border-white/10">
+              <div class="text-xs uppercase font-heading font-semibold tracking-wider text-blue-light/80 mb-1">
+                Inactividad técnica evitada
+              </div>
+              <div id="calc-horas-res" class="font-heading font-extrabold text-3xl text-blue-light tracking-tight" aria-live="polite">
+                ~384 horas/año
+              </div>
+              <p class="text-xs text-blue-pale/70 mt-1">
+                Mayor disponibilidad de aparatos críticos para atención al paciente.
+              </p>
+            </div>
+
+            <div class="bg-navy/80 p-5 rounded-2xl border border-white/10">
+              <div class="text-xs uppercase font-heading font-semibold tracking-wider text-blue-light/80 mb-1">
+                Extensión de Vida Útil
+              </div>
+              <div class="font-heading font-extrabold text-2xl text-emerald-400 tracking-tight">
+                +3 a 5 Años
+              </div>
+              <p class="text-xs text-blue-pale/70 mt-1">
+                Optimización de la inversión institucional en activos médicos.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 space-y-3">
+          <a
+            id="calc-whatsapp-cta"
+            href={`https://wa.me/${contacto.whatsapp}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-primary w-full py-3.5 px-6 rounded-xl font-heading font-bold text-sm text-center flex items-center justify-center gap-2 group transition-all duration-300 shadow-lg shadow-blue/30 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy outline-none"
+          >
+            <span>{calculadora_roi.cta}</span>
+            <svg class="w-4 h-4 group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </a>
+          <p class="text-center text-[11px] text-blue-pale/60">
+            Respuesta inmediata y elaboración de propuesta técnica sin compromiso.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline define:vars={{ whatsappNumber: contacto.whatsapp }}>
+  function initCalculadora() {
+    const rangeInputs = document.querySelectorAll('input[type="range"][data-cat-id]');
+    const fallasEl = document.getElementById('calc-fallas-res');
+    const horasEl = document.getElementById('calc-horas-res');
+    const ctaLink = document.getElementById('calc-whatsapp-cta');
+
+    if (!rangeInputs.length || !fallasEl || !horasEl || !ctaLink) return;
+
+    function updateCalculo() {
+      let totalFallas = 0;
+      let totalHoras = 0;
+      const equipResumen = [];
+
+      rangeInputs.forEach((input) => {
+        const catId = input.dataset.catId;
+        const val = parseInt(input.value, 10) || 0;
+        const valDisplay = document.getElementById(`calc-val-${catId}`);
+        if (valDisplay) valDisplay.textContent = val.toString();
+
+        const fallasUnit = parseFloat(input.dataset.fallasUnit || '0');
+        const horasUnit = parseFloat(input.dataset.horasUnit || '0');
+
+        totalFallas += Math.round((val * fallasUnit) * 0.85);
+        totalHoras += Math.round(val * horasUnit);
+
+        if (val > 0) {
+          const label = input.closest('div')?.querySelector('label')?.textContent?.trim() || catId;
+          equipResumen.push(`${val} ${label}`);
+        }
+      });
+
+      fallasEl.textContent = `~${totalFallas} fallas/año`;
+      horasEl.textContent = `~${totalHoras} horas/año`;
+
+      // Actualizar URL de WhatsApp con resumen
+      const resumenStr = equipResumen.join(', ') || 'Equipamiento general';
+      const msg = `Hola TechHealth, estuve calculando el plan de mantenimiento preventivo para nuestra institución. Contamos con: ${resumenStr}. Quisiera recibir una propuesta técnica a medida.`;
+      ctaLink.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`;
+    }
+
+    rangeInputs.forEach((input) => {
+      input.addEventListener('input', updateCalculo);
+    });
+
+    document.querySelectorAll('button[data-action]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        const action = btn.getAttribute('data-action');
+        if (!targetId) return;
+        const targetInput = document.getElementById(targetId);
+        if (!targetInput) return;
+
+        let currentVal = parseInt(targetInput.value, 10) || 0;
+        const min = parseInt(targetInput.min, 10) || 0;
+        const max = parseInt(targetInput.max, 10) || 100;
+
+        if (action === 'increment' && currentVal < max) {
+          targetInput.value = (currentVal + 1).toString();
+          updateCalculo();
+        } else if (action === 'decrement' && currentVal > min) {
+          targetInput.value = (currentVal - 1).toString();
+          updateCalculo();
+        }
+      });
+    });
+
+    updateCalculo();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCalculadora);
+  } else {
+    initCalculadora();
+  }
+</script>
