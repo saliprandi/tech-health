@@ -64,7 +64,7 @@ test.describe('Contacto Component Fix Verification', () => {
     // Since it opens in a new tab, we just check the UI feedback
     await submitBtn.click();
 
-    await expect(submitBtnText).toHaveText('Enviando...');
+    await expect(submitBtnText).toHaveText('Redirigiendo...');
     await expect(submitBtn).toBeDisabled();
     await expect(submitBtn).toHaveClass(/opacity-70/);
   });
