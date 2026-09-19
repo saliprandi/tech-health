@@ -193,4 +193,92 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora_roi: {
+    titulo: "Calculadora de Impacto y Ahorro B2B",
+    subtitulo: "Estime la reducción de horas fuera de servicio y el ahorro en costos de urgencia al implementar un plan preventivo en su institución.",
+    equipos: [
+      {
+        id: "monitores",
+        nombre: "Monitores de Signos Vitales",
+        horasInactividadEvitadas: 36,
+        costoEvitadoPorEquipo: 480000,
+      },
+      {
+        id: "respiradores",
+        nombre: "Respiradores y Ventiladores",
+        horasInactividadEvitadas: 60,
+        costoEvitadoPorEquipo: 950000,
+      },
+      {
+        id: "ecografos",
+        nombre: "Ecógrafos y Diagnóstico por Imagen",
+        horasInactividadEvitadas: 40,
+        costoEvitadoPorEquipo: 720000,
+      },
+      {
+        id: "electrobisturi",
+        nombre: "Electrobisturíes y Quirófano",
+        horasInactividadEvitadas: 45,
+        costoEvitadoPorEquipo: 650000,
+      },
+      {
+        id: "bombas",
+        nombre: "Bombas de Infusión y Jeringa",
+        horasInactividadEvitadas: 24,
+        costoEvitadoPorEquipo: 280000,
+      },
+    ],
+  },
+
+  planes_abonos: {
+    titulo: "Planes de Cobertura Institucional",
+    subtitulo: "Modalidades de servicio adaptadas a las exigencias operativas y regulatorias de clínicas, sanatorios y centros médicos.",
+    planes: [
+      {
+        id: "demanda",
+        nombre: "Por Demanda",
+        subtitulo: "Intervenciones puntuales y reparación rápida",
+        destacado: false,
+        badgeText: null,
+        caracteristicas: [
+          "Diagnóstico in-situ o en laboratorio especializado",
+          "Reparación electrónica a nivel de componente SMD",
+          "Garantía técnica de 90 días por trabajo realizado",
+          "Informe técnico detallado por servicio",
+        ],
+        ctaText: "Solicitar Diagnóstico",
+      },
+      {
+        id: "estandar",
+        nombre: "Abono Preventivo Estándar",
+        subtitulo: "Continuidad operativa y auditorías al día",
+        destacado: true,
+        badgeText: "Más Solicitado",
+        caracteristicas: [
+          "Mantenimientos preventivos programados periódicos",
+          "Informes de trazabilidad listos para auditorías de salud",
+          "Verificación y calibración funcional de parámetros",
+          "Descuentos preferenciales en repuestos originales",
+          "Atención prioritaria en horario comercial",
+        ],
+        ctaText: "Cotizar Plan Estándar",
+      },
+      {
+        id: "integral",
+        nombre: "Abono Integral SLA 24/7",
+        subtitulo: "Máxima prioridad para equipamiento crítico",
+        destacado: false,
+        badgeText: "Cobertura Crítica",
+        caracteristicas: [
+          "Mantenimiento preventivo + correctivo prioritario",
+          "Guardia de emergencia 24/7 con respuesta garantizada",
+          "Asignación de técnico especializado dedicado",
+          "Informes mensuales consolidables para dirección médica",
+          "Asesoría técnica continua y capacitación de uso básico",
+        ],
+        ctaText: "Cotizar Cobertura 24/7",
+      },
+    ],
+  },
 };

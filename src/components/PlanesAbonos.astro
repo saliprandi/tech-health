@@ -1,0 +1,116 @@
+---
+import { CONFIG } from '../data/config';
+
+const { planes_abonos, contacto } = CONFIG;
+---
+
+<section id="planes-abonos" class="bg-off-white section-padding content-visibility-auto">
+  <div class="container-custom">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Cobertura Institucional B2B</div>
+      <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] leading-[1.2] text-navy mb-4">
+        {planes_abonos.titulo}
+      </h2>
+      <p class="font-body text-[16px] text-text-soft">
+        {planes_abonos.subtitulo}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch" aria-label="Planes de mantenimiento electromédico">
+      {planes_abonos.planes.map((plan) => (
+        <div
+          class={`relative rounded-card p-8 flex flex-col justify-between transition-all duration-300 ${
+            plan.destacado
+              ? 'bg-navy text-white shadow-hero-card border-2 border-blue scale-[1.02] z-10'
+              : 'bg-white text-navy border border-border shadow-sm hover:shadow-card-hover hover:border-blue/30'
+          }`}
+        >
+          {plan.badgeText && (
+            <div
+              class={`absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full text-[11px] font-heading font-bold uppercase tracking-wider ${
+                plan.destacado
+                  ? 'bg-blue text-navy'
+                  : 'bg-blue-pale text-blue border border-blue/20'
+              }`}
+            >
+              {plan.badgeText}
+            </div>
+          )}
+
+          <div>
+            <div class="mb-6">
+              <h3 class={`font-heading font-extrabold text-[22px] mb-2 ${plan.destacado ? 'text-white' : 'text-navy'}`}>
+                {plan.nombre}
+              </h3>
+              <p class={`font-body text-[14px] ${plan.destacado ? 'text-white/80' : 'text-text-soft'}`}>
+                {plan.subtitulo}
+              </p>
+            </div>
+
+            <div class={`h-[1px] w-full mb-6 ${plan.destacado ? 'bg-white/15' : 'bg-border'}`}></div>
+
+            <ul class="flex flex-col gap-3.5 mb-8">
+              {plan.caracteristicas.map((item) => (
+                <li class="flex items-start gap-3">
+                  <div class={`mt-0.5 flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${plan.destacado ? 'bg-blue/20 text-blue-light' : 'bg-blue-pale text-blue'}`}>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                    </svg>
+                  </div>
+                  <span class={`font-body text-[14px] leading-snug ${plan.destacado ? 'text-white/90' : 'text-text-soft'}`}>
+                    {item}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <a
+              href={`https://wa.me/${contacto.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('Hola TechHealth! Quisiera consultar detalles e iniciar una propuesta para el plan ' + plan.nombre + '.')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={`group w-full font-heading font-bold text-[14px] py-3.5 px-5 rounded-[8px] transition-all flex items-center justify-center gap-2 outline-none focus-visible:ring-2 ${
+                plan.destacado
+                  ? 'bg-blue text-navy hover:bg-blue-light focus-visible:ring-white'
+                  : 'bg-navy text-white hover:bg-navy-dark focus-visible:ring-navy'
+              }`}
+              aria-label={`Cotizar ${plan.nombre} por WhatsApp`}
+            >
+              <svg class="w-4 h-4 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
+                <use href="#icon-whatsapp" />
+              </svg>
+              <span>{plan.ctaText}</span>
+              <svg class="w-3.5 h-3.5 text-current opacity-70 group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <use href="#icon-external" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Nota institucional sobre SLA y auditorías -->
+    <div class="mt-12 bg-white rounded-card p-6 border border-border flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
+        <div>
+          <h4 class="font-heading font-bold text-[16px] text-navy">¿Requiere un pliego o contrato corporativo a medida?</h4>
+          <p class="font-body text-[14px] text-text-soft">Diseñamos acuerdos de nivel de servicio (SLA) adaptados a la cantidad de equipamiento y normas de trazabilidad de su institución.</p>
+        </div>
+      </div>
+      <a
+        href={`https://wa.me/${contacto.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('Hola TechHealth! Necesito coordinar una reunión técnica para un contrato institucional a medida.')}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="whitespace-nowrap font-heading font-bold text-[13px] text-navy bg-off-white hover:bg-border/60 py-3 px-5 rounded-[8px] transition-colors border border-border outline-none focus-visible:ring-2 focus-visible:ring-navy"
+      >
+        Coordinar Reunión Técnica
+      </a>
+    </div>
+  </div>
+</section>
