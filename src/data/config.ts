@@ -193,4 +193,67 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  cotizador: {
+    titulo: "Estimador de Plan de Mantenimiento B2B",
+    subtitulo: "Calcule el esquema de mantenimiento preventivo y soporte ideal para su centro de salud en Tucumán y el NOA.",
+    tipos_institucion: [
+      { id: "clinica", nombre: "Clínica / Sanatorio", factor: 1.2, desc: "Soporte intensivo para área de internación y quirófanos" },
+      { id: "laboratorio", nombre: "Laboratorio Diagnóstico", factor: 1.0, desc: "Precisión y calibración periódica para diagnóstico por imagen y análisis" },
+      { id: "consultorio", nombre: "Centro / Consultorio", factor: 0.8, desc: "Mantenimiento especializado para consultorios y clínicas de especialidad" },
+    ],
+    rangos_equipos: [
+      { id: "1-5", label: "1 a 5 equipos", desc: "Monitoreo y diagnóstico puntual" },
+      { id: "6-15", label: "6 a 15 equipos", desc: "Parque tecnológico mediano" },
+      { id: "16-30", label: "16 a 30 equipos", desc: "Infraestructura médica avanzada" },
+      { id: "30+", label: "Más de 30 equipos", desc: "Gran centro hospitalario" },
+    ],
+    niveles_prioridad: [
+      { id: "programado", label: "Mantenimiento Programado", desc: "Revisiones periódicas y prevención de fallas" },
+      { id: "critico", label: "Soporte de Alta Criticidad (24/7)", desc: "Respuesta prioritaria y guardia técnica de emergencia" },
+    ],
+    planes: {
+      esencial: {
+        id: "esencial",
+        nombre: "Plan Preventivo Esencial",
+        badge: "Recomendado para consultorios y centros de pequeña escala",
+        frecuencia: "Revisiones semestrales programadas",
+        cobertura: "In-situ y Laboratorio",
+        features: [
+          "Inspección preventiva y limpieza técnica profunda",
+          "Verificación y calibración de parámetros operativos",
+          "Informe técnico detallado apto para auditorías de salud",
+          "Garantía técnica de 90 días por cada intervención",
+        ],
+      },
+      integral: {
+        id: "integral",
+        nombre: "Plan Integral B2B",
+        badge: "El más elegido por clínicas y centros de diagnóstico",
+        frecuencia: "Revisiones trimestrales continuas",
+        cobertura: "Atención prioritaria in-situ y reemplazo acelerado",
+        features: [
+          "Mantenimiento preventivo exhaustivo trimestral",
+          "Atención prioritaria ante fallas imprevistas en <24h",
+          "Descuento especial en reparación de placas a nivel de componente",
+          "Informes de trazabilidad y certificación de calibración",
+          "Soporte directo con técnicos especializados en electromedicina",
+        ],
+      },
+      critico: {
+        id: "critico",
+        nombre: "Plan Guardia Crítica 24/7",
+        badge: "Máxima prioridad para sanatorios y quirófanos",
+        frecuencia: "Mantenimiento mensual + Guardia de emergencia 24h",
+        cobertura: "Atención inmediata de urgencia 24/7",
+        features: [
+          "Mantenimiento preventivo mensual en equipos críticos de soporte vital",
+          "Guardia técnica 24/7 para imprevistos en quirófanos y terapias",
+          "Prioridad absoluta en laboratorio de microelectrónica y reparación de placas",
+          "Informes ejecutivos de estado y rendimiento para dirección médica",
+          "Garantía extendida y seguimiento post-reparación continuo",
+        ],
+      },
+    },
+  },
 };
