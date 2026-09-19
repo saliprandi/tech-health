@@ -21,3 +21,7 @@
 ## 2026-03-30 - Fallback de redirección transparente para bloqueadores de ventanas emergentes en envíos de formulario
 **Learning:** En manejadores de envíos de formularios que abren enlaces externos (ej. WhatsApp) tras procesar eventos de cliente, `window.open(url, '_blank', 'noopener,noreferrer')` puede ser bloqueado en navegadores estrictos o webviews móviles. Evaluar la referencia resultante (`const openedWin = window.open(...)`) y aplicar `if (!openedWin) window.location.href = url` garantiza la navegación sin parpadeos de pestañas en blanco ni interrupciones silenciosas de UX.
 **Action:** Usar asignación condicional `if (!openedWin) window.location.href = url` al abrir enlaces en manejadores de formularios para asegurar redundancia ante bloqueadores de popups.
+
+## 2026-03-30 - Visibilidad de foco en navegación fija sobre fondo claro
+**Learning:** Aplicar `outline-none` en elementos de navegación (como el logo o enlaces `<a>`) sin especificar utilidades `focus-visible:ring-*` elimina el indicador de enfoque por teclado por completo. Para garantizar accesibilidad WCAG 2.1 AA en barras de navegación fijas sobre fondos claros, se debe equipar los enlaces con anillos de alto contraste (`focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-sm`).
+**Action:** Asegurar que todo elemento con `outline-none` incluya siempre reglas explícitas de `focus-visible:ring-*` con colores de alto contraste acordes al fondo.
