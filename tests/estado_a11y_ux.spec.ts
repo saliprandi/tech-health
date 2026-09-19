@@ -103,12 +103,14 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
 
     await copyBtn.click();
     await expect(page.locator('#copy-ticket-text')).toHaveText('¡Copiado!');
+    await expect(copyBtn).toHaveAttribute('aria-label', 'Número de ticket copiado al portapapeles');
 
     // Test share link button
     const shareBtn = page.locator('#share-ticket-btn');
     await expect(shareBtn).toBeVisible();
     await shareBtn.click();
     await expect(page.locator('#share-ticket-text')).toHaveText('¡Enlace copiado!');
+    await expect(shareBtn).toHaveAttribute('aria-label', 'Enlace directo del ticket copiado al portapapeles');
   });
 
   test('should handle ticket search error and set aria-live announcement', async ({ page }) => {
