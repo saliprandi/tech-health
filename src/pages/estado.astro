@@ -227,16 +227,19 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			const ticketNum = ticketEl?.textContent?.trim();
 			if (!ticketNum || !navigator.clipboard) return;
 
+			const originalAriaLabel = copyTicketBtn.getAttribute('aria-label') || 'Copiar número de ticket al portapapeles';
 			navigator.clipboard.writeText(ticketNum).then(() => {
 				if (copyTicketText) copyTicketText.textContent = '¡Copiado!';
 				if (copyTicketIcon) copyTicketIcon.setAttribute('href', '#icon-check');
 				copyTicketBtn.classList.add('text-blue', 'scale-105');
+				copyTicketBtn.setAttribute('aria-label', 'Número de ticket copiado al portapapeles');
 				if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = 'Número de ticket copiado al portapapeles';
 
 				setTimeout(() => {
 					if (copyTicketText) copyTicketText.textContent = 'Copiar';
 					if (copyTicketIcon) copyTicketIcon.setAttribute('href', '#icon-copy');
 					copyTicketBtn.classList.remove('text-blue', 'scale-105');
+					copyTicketBtn.setAttribute('aria-label', originalAriaLabel);
 					if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = '';
 				}, 2000);
 			});
@@ -249,17 +252,20 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			const ticketNum = ticketEl?.textContent?.trim();
 			if (!ticketNum || !navigator.clipboard) return;
 
+			const originalAriaLabel = shareTicketBtn.getAttribute('aria-label') || 'Copiar enlace directo del ticket al portapapeles';
 			const shareUrl = `${window.location.origin}${window.location.pathname}?ticket=${encodeURIComponent(ticketNum)}`;
 			navigator.clipboard.writeText(shareUrl).then(() => {
 				if (shareTicketText) shareTicketText.textContent = '¡Enlace copiado!';
 				if (shareTicketIcon) shareTicketIcon.setAttribute('href', '#icon-check');
 				shareTicketBtn.classList.add('text-blue', 'scale-105');
+				shareTicketBtn.setAttribute('aria-label', 'Enlace directo del ticket copiado al portapapeles');
 				if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = 'Enlace directo del ticket copiado al portapapeles';
 
 				setTimeout(() => {
 					if (shareTicketText) shareTicketText.textContent = 'Copiar enlace';
 					if (shareTicketIcon) shareTicketIcon.setAttribute('href', '#icon-external');
 					shareTicketBtn.classList.remove('text-blue', 'scale-105');
+					shareTicketBtn.setAttribute('aria-label', originalAriaLabel);
 					if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = '';
 				}, 2000);
 			});
@@ -280,16 +286,21 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 				: estadoConfig.recepcion;
 		};
 
+		// Performance Optimization: Single-pass regex replacement avoids allocating intermediate string objects across sequential .replace() calls
+		const ESCAPE_MAP: Record<string, string> = {
+			'&': '&amp;',
+			'<': '&lt;',
+			'>': '&gt;',
+			'"': '&quot;',
+			"'": '&#039;',
+			'/': '&#047;',
+			'`': '&#096;',
+		};
+		const ESCAPE_REGEX = /[&<>"'\/`]/g;
+
 		const escapeHtml = (unsafe: string): string => {
 			if (typeof unsafe !== 'string') return '';
-			return unsafe
-				.replace(/&/g, '&amp;')
-				.replace(/</g, '&lt;')
-				.replace(/>/g, '&gt;')
-				.replace(/"/g, '&quot;')
-				.replace(/'/g, '&#039;')
-				.replace(/\//g, '&#047;')
-				.replace(/`/g, '&#096;');
+			return unsafe.replace(ESCAPE_REGEX, (ch) => ESCAPE_MAP[ch] || ch);
 		};
 
 		// Performance Optimization: Cache Intl.DateTimeFormat instance to avoid recreating formatters in loops

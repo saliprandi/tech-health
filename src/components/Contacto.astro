@@ -106,14 +106,14 @@ import { CONFIG } from '../data/config';
 
           <div class="flex flex-col gap-1.5">
             <label for="f-servicio" class="font-body font-medium text-[13px] text-white/80">Tipo de servicio</label>
-            <div class="relative">
-              <select id="f-servicio" name="servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-light transition-colors w-full appearance-none pr-10">
+            <div class="relative group/select">
+              <select id="f-servicio" name="servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-light transition-colors w-full appearance-none pr-10 cursor-pointer">
                 <option value="Consulta general" class="bg-navy text-white">Consulta general</option>
                 <option value="Mantenimiento preventivo" class="bg-navy text-white">Mantenimiento preventivo</option>
                 <option value="Reparación / Mantenimiento correctivo" class="bg-navy text-white">Reparación / Mantenimiento correctivo</option>
                 <option value="Revisión de placa electrónica" class="bg-navy text-white">Revisión de placa electrónica</option>
               </select>
-              <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none group-focus-within/select:rotate-180 group-focus-within/select:text-blue-light transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
               </svg>
             </div>
@@ -123,7 +123,7 @@ import { CONFIG } from '../data/config';
             <label for="f-desc" class="font-body font-medium text-[13px] text-white/80">Mensaje</label>
             <div class="relative">
               <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="¿En qué podemos ayudarle?" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 pb-7 pr-14 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none"></textarea>
-              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body pointer-events-none select-none">0 / 500</div>
+              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body pointer-events-none select-none transition-colors" aria-live="polite">0 / 500</div>
             </div>
           </div>
 
@@ -284,9 +284,9 @@ import { CONFIG } from '../data/config';
 
         if (len >= 450) {
           counter.classList.remove('text-white/40');
-          counter.classList.add('text-red-500');
+          counter.classList.add('text-amber-400', 'font-semibold');
         } else {
-          counter.classList.remove('text-red-500');
+          counter.classList.remove('text-amber-400', 'font-semibold');
           counter.classList.add('text-white/40');
         }
       };
@@ -417,7 +417,10 @@ import { CONFIG } from '../data/config';
           }, 3000);
         }
 
-        window.open(url, '_blank', 'noopener,noreferrer');
+        const openedWin = window.open(url, '_blank', 'noopener,noreferrer');
+        if (!openedWin) {
+          window.location.href = url;
+        }
       };
 
       updateCounter();
