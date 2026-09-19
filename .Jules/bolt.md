@@ -1,0 +1,3 @@
+## 2026-03-30 - Tracking Active Element State in Interactive Component Scripts
+**Learning:** In interactive client-side scripts like `src/components/FAQ.astro`, keeping a closure reference to the active element (`activeItem`) and initializing it from existing HTML state (e.g. `document.querySelector('[aria-expanded="true"]')`) allows $O(1)$ state updates when toggling elements without running $O(N)$ DOM loops or repetitive `querySelector` calls across closed items.
+**Action:** Always maintain an active element reference inside component initialization closures for accordion or tab components to eliminate redundant DOM queries and loops on user click events.
