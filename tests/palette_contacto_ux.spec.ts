@@ -40,7 +40,7 @@ test.describe('Contacto UX Enhancements', () => {
     await textarea.fill(longText);
     await expect(counter).toHaveText('450 / 500');
 
-    // Verify warning class (text-amber-400)
+    // Verify warning class (text-amber-400 for high-capacity threshold)
     await expect(counter).toHaveClass(/text-amber-400/);
 
     // Back to normal
