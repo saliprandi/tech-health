@@ -123,9 +123,11 @@ import { CONFIG } from '../data/config';
             <label for="f-desc" class="font-body font-medium text-[13px] text-white/80">Mensaje</label>
             <div class="relative">
               <textarea id="f-desc" name="mensaje" rows="3" maxlength="500" placeholder="¿En qué podemos ayudarle?" aria-describedby="char-counter" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 pb-7 pr-14 text-white w-full resize-none placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none"></textarea>
-              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body pointer-events-none select-none transition-colors" aria-live="polite">0 / 500</div>
+              <div id="char-counter" class="absolute bottom-3 right-3 text-[10px] text-white/40 font-body pointer-events-none select-none" aria-live="polite">0 / 500</div>
             </div>
           </div>
+          <!-- Safelist text-red-500 for Tailwind JIT character counter -->
+          <span class="hidden text-red-500" aria-hidden="true"></span>
 
           <p class="font-body text-[12px] text-white/50 text-center">El mensaje le redirigirá a WhatsApp</p>
 
@@ -284,9 +286,9 @@ import { CONFIG } from '../data/config';
 
         if (len >= 450) {
           counter.classList.remove('text-white/40');
-          counter.classList.add('text-amber-400', 'font-semibold');
+          counter.classList.add('text-red-500', 'font-semibold');
         } else {
-          counter.classList.remove('text-amber-400', 'font-semibold');
+          counter.classList.remove('text-red-500', 'font-semibold');
           counter.classList.add('text-white/40');
         }
       };
@@ -357,8 +359,8 @@ import { CONFIG } from '../data/config';
 
         if (submitBtn && submitBtnText) {
           const originalText = submitBtnText.textContent;
-          submitBtnText.textContent = 'Enviando...';
-          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Enviando solicitud...';
+          submitBtnText.textContent = 'Redirigiendo...';
+          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
           submitBtn.disabled = true;
           submitBtn.setAttribute('aria-busy', 'true');
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
@@ -389,9 +391,6 @@ import { CONFIG } from '../data/config';
           } catch {
             // Silencioso: si el webhook falla, igual abre WhatsApp
           }
-
-          submitBtnText.textContent = 'Redirigiendo...';
-          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
 
           // Mostrar el ticket generado si llegó
           if (ticketNumber) {

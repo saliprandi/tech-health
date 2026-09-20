@@ -1,0 +1,294 @@
+---
+import { CONFIG } from '../data/config';
+
+const { cobertura, contacto } = CONFIG;
+const cleanPhone = contacto.whatsapp.replace(/\D/g, '');
+---
+
+<section id="cobertura" class="py-20 md:py-28 bg-white relative overflow-hidden scroll-mt-16">
+  <!-- Subtle background pattern -->
+  <div class="absolute inset-0 bg-[radial-gradient(#12336A_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.03] pointer-events-none" aria-hidden="true"></div>
+
+  <div class="container-custom px-[5%] relative z-10">
+
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-14">
+      <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-navy/5 text-navy font-heading text-xs font-bold uppercase tracking-wider mb-4 border border-navy/10">
+        <svg class="w-4 h-4 text-blue" fill="none" stroke="currentColor" aria-hidden="true">
+          <use href="#icon-map-pin" />
+        </svg>
+        Presencia Regional
+      </span>
+      <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-navy tracking-tight mb-4">
+        {cobertura.titulo}
+      </h2>
+      <p class="font-body text-base sm:text-lg text-text-soft leading-relaxed">
+        {cobertura.subtitulo}
+      </p>
+    </div>
+
+    <!-- Interactive Province Tabs -->
+    <div class="max-w-5xl mx-auto">
+
+      <!-- Tablist buttons -->
+      <div
+        class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10 p-2 bg-slate-100/80 rounded-2xl border border-border"
+        role="tablist"
+        aria-label="Provincias con cobertura técnica en el NOA"
+      >
+        {cobertura.provincias.map((prov, idx) => (
+          <button
+            type="button"
+            role="tab"
+            id={`tab-${prov.id}`}
+            aria-selected={idx === 0 ? "true" : "false"}
+            aria-controls={`panel-${prov.id}`}
+            data-province-id={prov.id}
+            tabindex={idx === 0 ? 0 : -1}
+            class="cobertura-tab px-4 py-2.5 rounded-xl font-heading font-semibold text-sm transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 flex items-center gap-2 group"
+          >
+            <span>{prov.nombre}</span>
+            {idx === 0 && (
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></span>
+            )}
+          </button>
+        ))}
+      </div>
+
+      <!-- Tab Panels -->
+      <div class="relative">
+        {cobertura.provincias.map((prov, idx) => (
+          <div
+            id={`panel-${prov.id}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${prov.id}`}
+            hidden={idx !== 0}
+            class="cobertura-panel bg-slate-50 rounded-2xl p-6 sm:p-10 border border-border shadow-card transition-all duration-300"
+          >
+            <!-- Panel Header -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-border mb-8">
+              <div>
+                <span class="inline-block text-xs font-bold text-navy bg-blue/15 px-3 py-1 rounded-full mb-2">
+                  {prov.badge}
+                </span>
+                <h3 class="font-heading text-2xl sm:text-3xl font-bold text-navy">
+                  Servicio Técnico en {prov.nombre}
+                </h3>
+              </div>
+
+              <a
+                href={`https://wa.me/${cleanPhone}?text=${encodeURIComponent(`Hola TechHealth, quisiera consultar por asistencia técnica en ${prov.nombre}.`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="cobertura-wa-btn inline-flex items-center justify-center gap-2 bg-navy hover:bg-navy-dark text-white font-heading font-bold text-xs sm:text-sm py-2.5 px-5 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 shrink-0"
+              >
+                <svg class="cobertura-spinner hidden w-4 h-4 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span class="cobertura-btn-text">Consultar Guardia en {prov.nombre}</span>
+                <svg class="cobertura-btn-icon w-3.5 h-3.5 text-white/60" fill="none" stroke="currentColor" aria-hidden="true">
+                  <use href="#icon-external" />
+                </svg>
+              </a>
+            </div>
+
+            <!-- Operational Details Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+              <div class="bg-white p-4 sm:p-5 rounded-xl border border-border flex items-start gap-4">
+                <div class="p-2.5 rounded-lg bg-blue/10 text-navy shrink-0 mt-0.5">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true">
+                    <use href="#icon-clock" />
+                  </svg>
+                </div>
+                <div>
+                  <span class="block text-xs font-bold text-text-soft uppercase tracking-wider mb-0.5 font-heading">Tiempo de Respuesta</span>
+                  <span class="font-heading font-semibold text-navy text-sm sm:text-base">{prov.tiempoRespuesta}</span>
+                </div>
+              </div>
+
+              <div class="bg-white p-4 sm:p-5 rounded-xl border border-border flex items-start gap-4">
+                <div class="p-2.5 rounded-lg bg-blue/10 text-navy shrink-0 mt-0.5">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true">
+                    <use href="#icon-shield-check" />
+                  </svg>
+                </div>
+                <div>
+                  <span class="block text-xs font-bold text-text-soft uppercase tracking-wider mb-0.5 font-heading">Modalidad Operativa</span>
+                  <span class="font-heading font-semibold text-navy text-sm sm:text-base">{prov.modalidad}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cities Grid -->
+            <div class="bg-white p-5 sm:p-6 rounded-xl border border-border mb-6">
+              <h4 class="font-heading font-bold text-navy text-sm sm:text-base mb-4 flex items-center gap-2">
+                <svg class="w-4 h-4 text-blue" fill="none" stroke="currentColor" aria-hidden="true">
+                  <use href="#icon-map-pin" />
+                </svg>
+                Localidades y Ciudades Frecuentes
+              </h4>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                {prov.ciudades.map(ciudad => (
+                  <div class="flex items-center gap-2 text-xs sm:text-sm font-body text-text-dark bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">
+                    <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" aria-hidden="true">
+                      <use href="#icon-check" />
+                    </svg>
+                    <span class="truncate">{ciudad}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <!-- Highlight Feature -->
+            <div class="bg-navy text-white p-4 sm:p-5 rounded-xl flex items-center gap-3 border border-navy-light/30">
+              <div class="p-2 rounded-lg bg-blue-light/20 text-blue-light shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" aria-hidden="true">
+                  <use href="#icon-microscope" />
+                </svg>
+              </div>
+              <p class="font-body text-xs sm:text-sm text-text-light">
+                <strong class="text-white font-semibold">Ventaja B2B:</strong> {prov.destacado}
+              </p>
+            </div>
+
+          </div>
+        ))}
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Announcement Region -->
+  <div id="cobertura-announcement" class="sr-only" aria-live="polite"></div>
+</section>
+
+<style>
+  .cobertura-tab[aria-selected="true"] {
+    @apply bg-navy text-white shadow-md;
+  }
+
+  .cobertura-tab[aria-selected="false"] {
+    @apply bg-transparent text-text-soft hover:text-navy hover:bg-slate-200/60;
+  }
+</style>
+
+<script>
+  (function() {
+    function initCobertura() {
+      const container = document.getElementById('cobertura');
+      if (!container) return () => {};
+
+      const tabs = container.querySelectorAll('.cobertura-tab') as NodeListOf<HTMLButtonElement>;
+      const panels = container.querySelectorAll('.cobertura-panel') as NodeListOf<HTMLElement>;
+      const announcement = document.getElementById('cobertura-announcement');
+      const waBtns = container.querySelectorAll('.cobertura-wa-btn') as NodeListOf<HTMLAnchorElement>;
+
+      if (!tabs.length || !panels.length) return () => {};
+
+      function switchTab(targetTab: HTMLButtonElement) {
+        const targetId = targetTab.getAttribute('data-province-id');
+        if (!targetId) return;
+
+        tabs.forEach(tab => {
+          const isTarget = tab === targetTab;
+          tab.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+          tab.setAttribute('tabindex', isTarget ? '0' : '-1');
+        });
+
+        panels.forEach(panel => {
+          const isTarget = panel.id === `panel-${targetId}`;
+          panel.hidden = !isTarget;
+        });
+
+        if (announcement) {
+          const provName = targetTab.querySelector('span')?.textContent || '';
+          announcement.textContent = `Mostrando información de cobertura técnica para ${provName}`;
+        }
+      }
+
+      function handleTabClick(e: MouseEvent) {
+        switchTab(e.currentTarget as HTMLButtonElement);
+      }
+
+      function handleKeydown(e: KeyboardEvent) {
+        const currentTab = document.activeElement as HTMLButtonElement;
+        const index = Array.from(tabs).indexOf(currentTab);
+        if (index === -1) return;
+
+        let nextIndex = -1;
+        if (e.key === 'ArrowRight') {
+          nextIndex = (index + 1) % tabs.length;
+        } else if (e.key === 'ArrowLeft') {
+          nextIndex = (index - 1 + tabs.length) % tabs.length;
+        } else if (e.key === 'Home') {
+          nextIndex = 0;
+        } else if (e.key === 'End') {
+          nextIndex = tabs.length - 1;
+        }
+
+        if (nextIndex !== -1) {
+          e.preventDefault();
+          tabs[nextIndex].focus();
+          switchTab(tabs[nextIndex]);
+        }
+      }
+
+      function handleWaClick(e: MouseEvent) {
+        e.preventDefault();
+        const btn = e.currentTarget as HTMLAnchorElement;
+        const textSpan = btn.querySelector('.cobertura-btn-text');
+        const spinner = btn.querySelector('.cobertura-spinner');
+        const icon = btn.querySelector('.cobertura-btn-icon');
+
+        if (!textSpan || !spinner || !icon) return;
+
+        const origText = textSpan.textContent;
+        textSpan.textContent = 'Redirigiendo a WhatsApp...';
+        spinner.classList.remove('hidden');
+        icon.classList.add('hidden');
+        btn.classList.add('opacity-80', 'pointer-events-none');
+
+        if (announcement) announcement.textContent = 'Redirigiendo a WhatsApp...';
+
+        const href = btn.href;
+        const openedWin = window.open(href, '_blank', 'noopener,noreferrer');
+        if (!openedWin) window.location.href = href;
+
+        setTimeout(() => {
+          if (textSpan) textSpan.textContent = origText;
+          if (spinner) spinner.classList.add('hidden');
+          if (icon) icon.classList.remove('hidden');
+          if (btn) btn.classList.remove('opacity-80', 'pointer-events-none');
+          if (announcement) announcement.textContent = '';
+        }, 3000);
+      }
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', handleTabClick as EventListener);
+        tab.addEventListener('keydown', handleKeydown as EventListener);
+      });
+
+      waBtns.forEach(btn => {
+        btn.addEventListener('click', handleWaClick as EventListener);
+      });
+
+      return () => {
+        tabs.forEach(tab => {
+          tab.removeEventListener('click', handleTabClick as EventListener);
+          tab.removeEventListener('keydown', handleKeydown as EventListener);
+        });
+        waBtns.forEach(btn => {
+          btn.removeEventListener('click', handleWaClick as EventListener);
+        });
+      };
+    }
+
+    let cleanup = initCobertura();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initCobertura();
+    });
+  })();
+</script>

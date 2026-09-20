@@ -96,4 +96,8 @@
     background-color: rgba(18, 51, 106, 0.03);
     transform: translateY(-2px);
   }
+
+  .text-red-500 {
+    color: rgb(239, 68, 68) !important;
+  }
 }

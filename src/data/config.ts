@@ -193,4 +193,77 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  cotizador: {
+    titulo: "Cotizador Estimador B2B",
+    subtitulo: "Calcule una estimación orientativa para los servicios de su institución médica en pocos clics.",
+    instituciones: [
+      { id: "hospital", label: "Hospital / Sanatorio", descripcion: "Atención de alta complejidad y guardia de urgencia" },
+      { id: "clinica", label: "Clínica Privada", descripcion: "Atención ambulatoria e internación general" },
+      { id: "diagnostico", label: "Centro de Diagnóstico", descripcion: "Diagnóstico por imágenes y laboratorios" },
+      { id: "consultorio", label: "Consultorio / Laboratorio", descripcion: "Equipamiento especializado puntual" },
+    ],
+    servicios: [
+      { id: "preventivo", label: "Mantenimiento Preventivo Programado", detalle: "Inspección, limpieza, calibración e informe de auditoría" },
+      { id: "correctivo", label: "Mantenimiento Correctivo de Urgencia", detalle: "Diagnóstico prioritario y reparación de fallas críticas" },
+      { id: "placas", label: "Diagnóstico y Reparación de Placas", detalle: "Microelectrónica a nivel de componente en laboratorio" },
+    ],
+    rangosEquipos: [
+      { id: "1-3", label: "1 a 3 equipos", badge: "Atención focalizada" },
+      { id: "4-10", label: "4 a 10 equipos", badge: "Descuento por lote" },
+      { id: "11+", label: "Más de 10 equipos", badge: "Plan corporativo B2B" },
+    ],
+  },
+
+  cobertura: {
+    titulo: "Cobertura Técnica Regional NOA",
+    subtitulo: "Servicio de ingeniería en electromedicina presencial y soporte especializado en todo el Noroeste Argentino.",
+    provincias: [
+      {
+        id: "tucuman",
+        nombre: "Tucumán",
+        badge: "Base Operativa Central",
+        tiempoRespuesta: "Respuesta inmediata / Guardia 24h",
+        modalidad: "Atención in-situ y laboratorio local en San Miguel",
+        ciudades: ["San Miguel de Tucumán", "Yerba Buena", "Concepción", "Tafí Viejo", "Banda del Río Salí", "Aguilares", "Monteros"],
+        destacado: "Laboratorio de microelectrónica especializado para reparación de placas."
+      },
+      {
+        id: "salta",
+        nombre: "Salta",
+        badge: "Cobertura Frecuente",
+        tiempoRespuesta: "Visitas programadas / Guardia 24-48h",
+        modalidad: "Soporte in-situ y logística de traslado",
+        ciudades: ["Salta Capital", "San Ramón de la Nueva Orán", "Tartagal", "Metán", "Cafayate"],
+        destacado: "Coordinación logística directa para envíos urgentes de módulos y tarjetas electrónicas."
+      },
+      {
+        id: "jujuy",
+        nombre: "Jujuy",
+        badge: "Cobertura Frecuente",
+        tiempoRespuesta: "Visitas programadas / Guardia 24-48h",
+        modalidad: "Soporte in-situ y logística de traslado",
+        ciudades: ["San Salvador de Jujuy", "Palpalá", "San Pedro", "Libertador General San Martín"],
+        destacado: "Informes de auditoría técnica homologados para acreditaciones de salud."
+      },
+      {
+        id: "santiago",
+        nombre: "Santiago del Estero",
+        badge: "Zona Prioritaria",
+        tiempoRespuesta: "Visitas programadas / Guardia 24h",
+        modalidad: "Atención in-situ en corredor Tucumán - Santiago",
+        ciudades: ["Santiago del Estero Capital", "La Banda", "Termas de Río Hondo", "Frías"],
+        destacado: "Asistencia in-situ con instrumental de calibración y simulación biomédica."
+      },
+      {
+        id: "catamarca",
+        nombre: "Catamarca",
+        badge: "Zona de Cobertura",
+        tiempoRespuesta: "Visitas programadas / Logística 48h",
+        modalidad: "Soporte técnico in-situ y retiro programado",
+        ciudades: ["San Fernando del Valle de Catamarca", "Valle Viejo", "Andalgalá", "Belén"],
+        destacado: "Planes anuales de mantenimiento preventivo para clínicas e instituciones."
+      }
+    ]
+  },
 };
