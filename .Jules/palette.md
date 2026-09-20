@@ -25,3 +25,7 @@
 ## 2026-03-30 - Sincronización dinámica de atributos ARIA label en botones de copia y acción
 **Learning:** Cuando un botón de copia o acción comparte contenido (ej. `#copy-ticket-btn` y `#share-ticket-btn`), cambiar el texto visible a "¡Copiado!" o "¡Enlace copiado!" sin actualizar el atributo `aria-label` causa una discrepancia donde los lectores de pantalla continúan anunciando la instrucción original ("Copiar...").
 **Action:** Capturar siempre el `aria-label` original al activar la acción, actualizar temporalmente el `aria-label` a la confirmación (ej. "Número de ticket copiado al portapapeles") y restaurar el `aria-label` original tras el timeout de retroalimentación.
+
+## 2026-03-30 - Paridad de validación y accesibilidad en formularios de búsqueda secundarios
+**Learning:** Los campos de búsqueda rápida integrados en secciones secundarias (como la consulta de ticket en `src/components/Proceso.astro`) deben mantener paridad de validación y accesibilidad con la página principal de consulta (`src/pages/estado.astro`).
+**Action:** Equipar siempre las entradas de búsqueda rápida secundarias con restricciones de longitud (`maxlength="30"`) y regiones de texto descriptivo accesibles (`aria-describedby`) para orientar a lectores de pantalla y mitigar payloads desproporcionados.
