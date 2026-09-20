@@ -273,7 +273,7 @@ const phoneClean = contacto.whatsapp.replace(/\D/g, '');
     });
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  function initCalculator() {
     setupGroupListeners('calc-inst-group', (btn) => {
       currentInst = btn.dataset.value || 'clinica';
       currentInstName = btn.dataset.name || 'Clínica / Sanatorio';
@@ -287,5 +287,8 @@ const phoneClean = contacto.whatsapp.replace(/\D/g, '');
     setupGroupListeners('calc-prioridad-group', (btn) => {
       currentPrioridad = btn.dataset.value || 'programado';
     });
-  });
+  }
+
+  initCalculator();
+  document.addEventListener('astro:after-swap', initCalculator);
 </script>
