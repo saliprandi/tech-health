@@ -1,0 +1,184 @@
+---
+import { CONFIG } from '../data/config';
+
+const { calculadora_roi, contacto } = CONFIG;
+const defaultEquipo = calculadora_roi.equipos[0];
+---
+
+<section id="calculadora-roi" class="bg-navy text-white section-padding relative overflow-hidden content-visibility-auto">
+  <!-- Elemento de fondo decorativo -->
+  <div class="absolute -top-24 -right-24 w-96 h-96 bg-blue/10 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-pale/5 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+  <div class="container-custom relative z-10">
+    <div class="text-center max-w-3xl mx-auto mb-14">
+      <div class="font-heading font-bold text-blue-light tracking-wide uppercase text-[12px] mb-3">Estimación B2B</div>
+      <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] leading-[1.2] text-white mb-4">
+        {calculadora_roi.titulo}
+      </h2>
+      <p class="font-body text-[16px] text-white/80">
+        {calculadora_roi.subtitulo}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white/5 border border-white/15 rounded-card p-6 md:p-10 shadow-hero-card backdrop-blur-sm">
+      <!-- Columna Izquierda: Controles e Inputs -->
+      <div class="lg:col-span-6 flex flex-col gap-6">
+        <div class="flex flex-col gap-2">
+          <label for="select-equipo" class="font-heading font-bold text-[15px] text-white flex items-center gap-2">
+            <svg class="w-5 h-5 text-blue-light" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+            </svg>
+            Seleccione tipo de equipo electromédico:
+          </label>
+          <div class="relative">
+            <select
+              id="select-equipo"
+              class="w-full bg-navy/80 border border-white/30 rounded-[8px] px-4 py-3.5 text-white font-body text-[15px] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-light appearance-none pr-10 cursor-pointer transition-colors"
+            >
+              {calculadora_roi.equipos.map((eq) => (
+                <option value={eq.id} data-horas={eq.horasInactividadEvitadas} data-costo={eq.costoEvitadoPorEquipo} class="bg-navy text-white">
+                  {eq.nombre}
+                </option>
+              ))}
+            </select>
+            <svg class="absolute right-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <div class="flex justify-between items-center">
+            <label for="range-cantidad" class="font-heading font-bold text-[15px] text-white flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-light" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+              </svg>
+              Cantidad de unidades en su servicio:
+            </label>
+            <span id="cantidad-display" class="font-heading font-extrabold text-[20px] text-blue-light bg-blue/20 px-3 py-0.5 rounded-md border border-blue-light/30">
+              5
+            </span>
+          </div>
+          <input
+            type="range"
+            id="range-cantidad"
+            min="1"
+            max="25"
+            value="5"
+            class="w-full h-2.5 bg-white/20 rounded-lg appearance-none cursor-pointer accent-blue-light focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-light"
+            aria-label="Cantidad de equipos en la institución"
+          />
+          <div class="flex justify-between text-[12px] font-body text-white/50 px-1">
+            <span>1 equipo</span>
+            <span>12 equipos</span>
+            <span>25+ equipos</span>
+          </div>
+        </div>
+
+        <p class="font-body text-[13px] text-white/60 bg-white/5 p-3.5 rounded-[8px] border border-white/10 flex items-start gap-2">
+          <svg class="w-4 h-4 text-blue-light flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>Los cálculos se proyectan en base a estadísticas de tasa de fallas preventivas anuales y costos promedios de reparación por urgencia en NOA.</span>
+        </p>
+      </div>
+
+      <!-- Columna Derecha: Tarjetas de Resultados y CTA -->
+      <div class="lg:col-span-6 flex flex-col gap-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" role="region" aria-live="polite" aria-label="Resultados estimados de la calculadora ROI">
+          <!-- Tarjeta Horas Evitadas -->
+          <div class="bg-navy-dark/90 p-5 rounded-[12px] border border-white/15 shadow-sm flex flex-col justify-between">
+            <div class="text-[13px] font-heading font-medium text-white/70 mb-2">Horas de inactividad evitadas/año</div>
+            <div class="flex items-baseline gap-2">
+              <span id="resultado-horas" class="font-heading font-extrabold text-[32px] md:text-[36px] text-white tracking-tight">
+                {defaultEquipo.horasInactividadEvitadas * 5}
+              </span>
+              <span class="font-body text-[14px] text-blue-light font-semibold">horas</span>
+            </div>
+            <div class="text-[11px] font-body text-white/50 mt-2">Continuidad operativa asegurada</div>
+          </div>
+
+          <!-- Tarjeta Ahorro Estimado -->
+          <div class="bg-navy-dark/90 p-5 rounded-[12px] border border-blue/40 shadow-sm flex flex-col justify-between relative overflow-hidden">
+            <div class="text-[13px] font-heading font-medium text-blue-light mb-2">Ahorro proyectado anual</div>
+            <div class="flex items-baseline gap-1">
+              <span class="font-heading font-extrabold text-[24px] text-blue-light">$</span>
+              <span id="resultado-ahorro" class="font-heading font-extrabold text-[32px] md:text-[36px] text-blue-light tracking-tight">
+                {(defaultEquipo.costoEvitadoPorEquipo * 5).toLocaleString('es-AR')}
+              </span>
+            </div>
+            <div class="text-[11px] font-body text-white/50 mt-2">En costos evitados por repuestos de urgencia</div>
+          </div>
+        </div>
+
+        <!-- Botón CTA Acción -->
+        <a
+          id="roi-whatsapp-cta"
+          href={`https://wa.me/${contacto.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('Hola TechHealth! Realicé el cálculo en su web para ' + defaultEquipo.nombre + ' y me gustaría solicitar una propuesta de mantenimiento preventivo.')}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group w-full bg-blue hover:bg-blue-light text-navy font-heading font-bold py-4 px-6 rounded-[8px] transition-all flex items-center justify-center gap-3 shadow-md hover:shadow-lg focus-visible:ring-2 focus-visible:ring-white outline-none"
+        >
+          <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
+            <use href="#icon-whatsapp" />
+          </svg>
+          <span id="roi-cta-text" class="text-[15px]">Solicitar Plan Preventivo para este Equipo</span>
+          <svg class="w-4 h-4 text-navy/70 group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    function initCalculadora() {
+      const selectEquipo = document.getElementById('select-equipo') as HTMLSelectElement | null;
+      const rangeCantidad = document.getElementById('range-cantidad') as HTMLInputElement | null;
+      const cantidadDisplay = document.getElementById('cantidad-display');
+      const resultadoHoras = document.getElementById('resultado-horas');
+      const resultadoAhorro = document.getElementById('resultado-ahorro');
+      const ctaButton = document.getElementById('roi-whatsapp-cta') as HTMLAnchorElement | null;
+
+      if (!selectEquipo || !rangeCantidad || !cantidadDisplay || !resultadoHoras || !resultadoAhorro || !ctaButton) {
+        return () => {};
+      }
+
+      const updateCalculos = () => {
+        const selectedOption = selectEquipo.options[selectEquipo.selectedIndex];
+        const horasBase = parseInt(selectedOption.dataset.horas || '36', 10);
+        const costoBase = parseInt(selectedOption.dataset.costo || '480000', 10);
+        const cantidad = parseInt(rangeCantidad.value, 10);
+
+        const totalHoras = horasBase * cantidad;
+        const totalAhorro = costoBase * cantidad;
+        const nombreEquipo = selectedOption.text.trim();
+
+        cantidadDisplay.textContent = cantidad.toString();
+        resultadoHoras.textContent = totalHoras.toLocaleString('es-AR');
+        resultadoAhorro.textContent = totalAhorro.toLocaleString('es-AR');
+
+        const waText = `Hola TechHealth! Realicé el cálculo en su web para ${cantidad} unidad(es) de ${nombreEquipo} (Ahorro estimado: $${totalAhorro.toLocaleString('es-AR')}) y me gustaría solicitar una propuesta de mantenimiento preventivo.`;
+        const phone = '5493815658239';
+        ctaButton.href = `https://wa.me/${phone}?text=${encodeURIComponent(waText)}`;
+      };
+
+      selectEquipo.addEventListener('change', updateCalculos);
+      rangeCantidad.addEventListener('input', updateCalculos);
+
+      return () => {
+        selectEquipo.removeEventListener('change', updateCalculos);
+        rangeCantidad.removeEventListener('input', updateCalculos);
+      };
+    }
+
+    let cleanup = initCalculadora();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initCalculadora();
+    });
+  })();
+</script>
