@@ -58,6 +58,7 @@ import { CONFIG } from '../data/config';
               id="proceso-ticket-input"
               name="ticket"
               required
+              maxlength="30"
               placeholder="Ej: TH-2026-1234"
               class="bg-white/10 border border-white/20 rounded-[8px] pl-4 pr-9 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none uppercase"
               autocomplete="off"
@@ -125,7 +126,8 @@ import { CONFIG } from '../data/config';
           return;
         }
 
-        input.value = input.value.replace(/\s+/g, '').toUpperCase();
+        // Security: Enforce 30-char length limit to mitigate DoS and oversized URL query parameter risks
+        input.value = input.value.replace(/\s+/g, '').toUpperCase().slice(0, 30);
 
         const originalText = submitText.textContent;
         submitText.textContent = 'Buscando...';
