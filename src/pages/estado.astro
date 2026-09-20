@@ -55,6 +55,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 							</button>
 						</div>
 						<p id="ticket-input-hint" class="font-body text-[12px] text-white/50">Formato: letras y números (ej. TH-2026-1234)</p>
+						<div id="estado-clear-announcement" class="sr-only" aria-live="polite"></div>
 					</div>
 					<button type="submit" id="estado-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-light">
 						<svg id="estado-spinner" class="hidden w-5 h-5 animate-spin text-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
@@ -217,6 +218,11 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			toggleClearButton();
 			errorDiv?.classList.add('hidden');
 			resultDiv?.classList.add('hidden');
+			const clearAnnouncement = document.getElementById('estado-clear-announcement');
+			if (clearAnnouncement) {
+				clearAnnouncement.textContent = 'Campo de número de ticket limpiado';
+				setTimeout(() => { clearAnnouncement.textContent = ''; }, 2000);
+			}
 			input.focus();
 		});
 

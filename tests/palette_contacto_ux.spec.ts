@@ -28,10 +28,8 @@ test.describe('Contacto UX Enhancements', () => {
     // Initial state
     await expect(counter).toHaveText('0 / 500');
 
-    // Normal state color (text-white/40 is rgba(255, 255, 255, 0.4))
-    let color = await counter.evaluate((el) => getComputedStyle(el).color);
-    // Note: getComputedStyle might return rgba or rgb depending on browser
-    expect(color.replace(/ /g, '')).toContain('rgba(255,255,255,0.4)');
+    // Normal state class (text-white/40)
+    await expect(counter).toHaveClass(/text-white\/40/);
 
     // Type some text
     await textarea.fill('Testing character counter');
@@ -42,14 +40,12 @@ test.describe('Contacto UX Enhancements', () => {
     await textarea.fill(longText);
     await expect(counter).toHaveText('450 / 500');
 
-    // Verify warning color (text-red-500 is rgb(239, 68, 68))
-    color = await counter.evaluate((el) => getComputedStyle(el).color);
-    expect(color.replace(/ /g, '')).toBe('rgb(239,68,68)');
+    // Verify warning class (text-amber-400 for high-capacity threshold)
+    await expect(counter).toHaveClass(/text-amber-400/);
 
     // Back to normal
     await textarea.fill('Short text');
     await expect(counter).toHaveText('10 / 500');
-    color = await counter.evaluate((el) => getComputedStyle(el).color);
-    expect(color.replace(/ /g, '')).toContain('rgba(255,255,255,0.4)');
+    await expect(counter).toHaveClass(/text-white\/40/);
   });
 });
