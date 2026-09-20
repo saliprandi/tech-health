@@ -25,3 +25,7 @@
 ## 2026-03-30 - Sincronización dinámica de atributos ARIA label en botones de copia y acción
 **Learning:** Cuando un botón de copia o acción comparte contenido (ej. `#copy-ticket-btn` y `#share-ticket-btn`), cambiar el texto visible a "¡Copiado!" o "¡Enlace copiado!" sin actualizar el atributo `aria-label` causa una discrepancia donde los lectores de pantalla continúan anunciando la instrucción original ("Copiar...").
 **Action:** Capturar siempre el `aria-label` original al activar la acción, actualizar temporalmente el `aria-label` a la confirmación (ej. "Número de ticket copiado al portapapeles") y restaurar el `aria-label` original tras el timeout de retroalimentación.
+
+## 2026-03-30 - Validación nativa de formularios con preventDefault en búsquedas asíncronas
+**Learning:** En manejadores `submit` de cliente que previenen el envío estándar (`e.preventDefault()`), omitir la llamada a `form.checkValidity()` / `form.reportValidity()` silencia la retroalimentación visual de campos requeridos o inválidos, dejando al usuario sin respuesta visual al hacer clic en enviar.
+**Action:** Evaluar `if (!form.checkValidity()) { form.reportValidity(); return; }` al inicio del manejador `submit` para activar las sugerencias nativas del navegador y anunciar errores a tecnologías de asistencia.

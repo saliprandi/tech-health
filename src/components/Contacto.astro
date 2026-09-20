@@ -284,9 +284,9 @@ import { CONFIG } from '../data/config';
 
         if (len >= 450) {
           counter.classList.remove('text-white/40');
-          counter.classList.add('text-amber-400', 'font-semibold');
+          counter.classList.add('text-red-500', 'font-semibold');
         } else {
-          counter.classList.remove('text-amber-400', 'font-semibold');
+          counter.classList.remove('text-red-500', 'font-semibold');
           counter.classList.add('text-white/40');
         }
       };
@@ -357,8 +357,8 @@ import { CONFIG } from '../data/config';
 
         if (submitBtn && submitBtnText) {
           const originalText = submitBtnText.textContent;
-          submitBtnText.textContent = 'Enviando...';
-          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Enviando solicitud...';
+          submitBtnText.textContent = 'Redirigiendo...';
+          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
           submitBtn.disabled = true;
           submitBtn.setAttribute('aria-busy', 'true');
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
@@ -389,9 +389,6 @@ import { CONFIG } from '../data/config';
           } catch {
             // Silencioso: si el webhook falla, igual abre WhatsApp
           }
-
-          submitBtnText.textContent = 'Redirigiendo...';
-          if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
 
           // Mostrar el ticket generado si llegó
           if (ticketNumber) {
