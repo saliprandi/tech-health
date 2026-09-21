@@ -29,3 +29,7 @@
 ## 2026-03-30 - Visibilidad de foco en enlaces de navegación fijos sobre fondo claro
 **Learning:** Los enlaces de navegación en cabeceras fijas que omiten el contorno por defecto (`outline-none`) deben incorporar anillos de enfoque luminosos de alto contraste (`focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-sm`) para garantizar accesibilidad WCAG 2.1 AA durante la navegación por teclado.
 **Action:** Aplicar siempre anillos de enfoque con contraste suficiente y desplazamiento de anillo (`ring-offset-2`) en enlaces de barra de navegación principal.
+
+## 2026-03-30 - Etiquetado semántico accesible para grillas estáticas de elementos
+**Learning:** Las listas no ordenadas (`<ul>`) que contienen elementos de grilla informativos y estáticos (como tipos de equipos médicos atendidos) deben contar con un `aria-label` explícito y descriptivo en lugar de `role="list"` redundante. Esto comunica contexto directo a tecnologías de asistencia sin introducir falsos indicadores de foco interactivo (`focus-within`).
+**Action:** Asignar atributos `aria-label` contextuales a listas estáticas y remover clases de foco o interacción no aplicables en ítems informativos.
