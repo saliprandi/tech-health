@@ -111,6 +111,21 @@ import { CONFIG } from '../data/config';
         scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       };
 
+      const handleResize = () => {
+        updateScrollHeight();
+        if (window.innerWidth >= 1024 && isOpen) {
+          toggleMenu(true);
+        }
+      };
+
+      const handleOutsideClick = (e: MouseEvent) => {
+        if (!isOpen) return;
+        const target = e.target as Node | null;
+        if (target && !menu.contains(target) && !toggle.contains(target)) {
+          toggleMenu(true);
+        }
+      };
+
       const toggleMenu = (forceClose = false) => {
         if (isRedirecting && !forceClose) return;
         if (forceClose) isOpen = false;
@@ -265,7 +280,8 @@ import { CONFIG } from '../data/config';
       navCta?.addEventListener('click', handleCtaClick as EventListener);
       mobileNavCta?.addEventListener('click', handleCtaClick as EventListener);
       window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', updateScrollHeight, { passive: true });
+      window.addEventListener('resize', handleResize, { passive: true });
+      document.addEventListener('click', handleOutsideClick);
       sections.forEach(section => observer.observe(section));
 
       updateScrollHeight();
@@ -278,7 +294,8 @@ import { CONFIG } from '../data/config';
         navCta?.removeEventListener('click', handleCtaClick as EventListener);
         mobileNavCta?.removeEventListener('click', handleCtaClick as EventListener);
         window.removeEventListener('scroll', onScroll);
-        window.removeEventListener('resize', updateScrollHeight);
+        window.removeEventListener('resize', handleResize);
+        document.removeEventListener('click', handleOutsideClick);
         observer.disconnect();
         document.body.style.overflow = '';
       };
