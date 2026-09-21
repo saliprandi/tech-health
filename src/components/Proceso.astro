@@ -126,6 +126,7 @@ import { CONFIG } from '../data/config';
           return;
         }
 
+        // Security: Enforce 30-char length limit to mitigate DoS and oversized URL query parameter risks
         input.value = input.value.replace(/\s+/g, '').toUpperCase().slice(0, 30);
 
         const originalText = submitText.textContent;
