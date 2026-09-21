@@ -346,10 +346,11 @@ import { CONFIG } from '../data/config';
           return;
         }
 
-        const nombre = (formData.get('nombre') as string || '').trim();
-        const tel = (formData.get('telefono') as string || '').trim();
-        const servicio = (formData.get('servicio') as string || 'Consulta general');
-        const mensaje = (formData.get('mensaje') as string || '').trim();
+        // Security: Enforce strict input length limits in JS client-side processing to mitigate DoS and oversized payload risks
+        const nombre = (formData.get('nombre') as string || '').trim().slice(0, 100);
+        const tel = (formData.get('telefono') as string || '').trim().slice(0, 20);
+        const servicio = (formData.get('servicio') as string || 'Consulta general').trim().slice(0, 100);
+        const mensaje = (formData.get('mensaje') as string || '').trim().slice(0, 500);
 
         const rawMessage = `Hola TechHealth! Me comunico desde su web.\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n*Mensaje:* ${mensaje}`;
         const sanitizedWa = whatsappNumber.replace(/\D/g, '');
