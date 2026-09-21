@@ -1,0 +1,3 @@
+## 2026-03-30 - O(1) Active State Tracking for Interactive Accordions
+**Learning:** Running `forEach` loops over DOM collections (`items.forEach(...)`) on every user interaction triggers repeated $O(N)$ `querySelector` calls on every click event. Keeping a single `activeItem` reference initialized from initial DOM state reduces state toggles to $O(1)$ without sacrificing layout transitions or accessibility attributes.
+**Action:** Always maintain an active element reference when implementing single-expanded components (accordions, tabs, dropdowns) in client-side Astro scripts rather than scanning all DOM nodes on click events.
