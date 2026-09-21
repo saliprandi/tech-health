@@ -29,3 +29,7 @@
 ## 2026-03-30 - Visibilidad de foco en enlaces de navegación fijos sobre fondo claro
 **Learning:** Los enlaces de navegación en cabeceras fijas que omiten el contorno por defecto (`outline-none`) deben incorporar anillos de enfoque luminosos de alto contraste (`focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-sm`) para garantizar accesibilidad WCAG 2.1 AA durante la navegación por teclado.
 **Action:** Aplicar siempre anillos de enfoque con contraste suficiente y desplazamiento de anillo (`ring-offset-2`) en enlaces de barra de navegación principal.
+
+## 2026-03-30 - Navegación accesible por teclado WAI-ARIA en acordeones y etiquetado de listas
+**Learning:** En componentes desplegables de preguntas frecuentes (FAQ accordion), permitir la navegación con teclas de dirección (`ArrowDown`, `ArrowUp`, `Home`, `End`) con rotación cíclica mejora drásticamente la accesibilidad para usuarios de teclado sin obligar a avanzar botón por botón con la tecla Tab. Asimismo, etiquetar contenedores de listas con `aria-label` en grillas informativas (ej. `Equipos.astro`) garantiza contexto de lectura a usuarios de lectores de pantalla.
+**Action:** Implementar siempre manejadores de eventos de teclado `ArrowDown`, `ArrowUp`, `Home` y `End` en activadores de acordeón y proveer `aria-label` descriptivo en listas `<ul>` de elementos temáticos.
