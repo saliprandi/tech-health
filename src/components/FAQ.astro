@@ -61,6 +61,11 @@ import { CONFIG } from '../data/config';
 
       const transitionTimers = new Map<HTMLElement, ReturnType<typeof setTimeout>>();
 
+      // Performance Optimization: Maintain a reference to the active trigger for O(1) accordion toggles without running O(N) DOM query loops
+      let activeTrigger: HTMLButtonElement | null = Array.from(items)
+        .map(item => item.querySelector('.faq-trigger') as HTMLButtonElement | null)
+        .find(trig => trig?.getAttribute('aria-expanded') === 'true') || null;
+
       const closeContainer = (container: HTMLElement) => {
         if (!container) return;
 
@@ -86,22 +91,19 @@ import { CONFIG } from '../data/config';
         const icon = item?.querySelector('.faq-icon');
         const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
 
-        items.forEach(otherItem => {
-          if (otherItem !== item) {
-            const otherTrigger = otherItem.querySelector('.faq-trigger');
-            const otherContainer = otherItem.querySelector('.faq-answer-container') as HTMLElement;
-            const otherIcon = otherItem.querySelector('.faq-icon');
+        // Performance Optimization: Close previously active accordion item in O(1) constant time
+        if (activeTrigger && activeTrigger !== trigger) {
+          activeTrigger.setAttribute('aria-expanded', 'false');
+          const activeItem = activeTrigger.closest('.faq-item');
+          activeItem?.querySelector('.faq-icon')?.classList.remove('rotate-180');
+          const activeContainer = activeItem?.querySelector('.faq-answer-container') as HTMLElement | null;
+          if (activeContainer) closeContainer(activeContainer);
+        }
 
-            if (otherTrigger?.getAttribute('aria-expanded') === 'true') {
-              otherTrigger?.setAttribute('aria-expanded', 'false');
-              otherIcon?.classList.remove('rotate-180');
-              if (otherContainer) closeContainer(otherContainer);
-            }
-          }
-        });
-
-        trigger.setAttribute('aria-expanded', (!isExpanded).toString());
-        icon?.classList.toggle('rotate-180', !isExpanded);
+        const willExpand = !isExpanded;
+        trigger.setAttribute('aria-expanded', willExpand.toString());
+        icon?.classList.toggle('rotate-180', willExpand);
+        activeTrigger = willExpand ? trigger : null;
 
         if (container) {
           if (transitionTimers.has(container)) {
