@@ -33,3 +33,7 @@
 ## 2026-03-30 - Navegación accesible por teclado WAI-ARIA en acordeones y etiquetado de listas
 **Learning:** En componentes desplegables de preguntas frecuentes (FAQ accordion), permitir la navegación con teclas de dirección (`ArrowDown`, `ArrowUp`, `Home`, `End`) con rotación cíclica mejora drásticamente la accesibilidad para usuarios de teclado sin obligar a avanzar botón por botón con la tecla Tab. Asimismo, etiquetar contenedores de listas con `aria-label` en grillas informativas (ej. `Equipos.astro`) garantiza contexto de lectura a usuarios de lectores de pantalla.
 **Action:** Implementar siempre manejadores de eventos de teclado `ArrowDown`, `ArrowUp`, `Home` y `End` en activadores de acordeón y proveer `aria-label` descriptivo en listas `<ul>` de elementos temáticos.
+
+## 2026-03-30 - Interrupción de navegación nativa por submitBtn.disabled = true en formularios HTML
+**Learning:** En formularios HTML con envío nativo GET o POST (ej. consulta de ticket en `Proceso.astro`), aplicar `submitBtn.disabled = true` de forma síncrona dentro del manejador del evento `submit` cancela la navegación nativa del navegador en varios motores web.
+**Action:** Para mantener retroalimentación visual durante el envío de un formulario nativo sin interrumpir la navegación, actualizar `aria-busy="true"`, alternar íconos/spina visuales y aplicar `pointer-events-none opacity-70` en lugar de `disabled = true`.
