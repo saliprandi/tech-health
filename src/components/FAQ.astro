@@ -79,26 +79,32 @@ import { CONFIG } from '../data/config';
         transitionTimers.set(container, timer);
       };
 
+      // Performance Optimization: Track active item reference inside component closure scope
+      // to eliminate $O(N)$ DOM query loops on every FAQ toggle.
+      let activeItem: HTMLElement | null = Array.from(items).find(item =>
+        item.querySelector('.faq-trigger')?.getAttribute('aria-expanded') === 'true'
+      ) as HTMLElement | null;
+
       const handleToggle = (e: Event) => {
         const trigger = e.currentTarget as HTMLButtonElement;
-        const item = trigger.closest('.faq-item');
-        const container = item?.querySelector('.faq-answer-container') as HTMLElement;
-        const icon = item?.querySelector('.faq-icon');
+        const item = trigger.closest('.faq-item') as HTMLElement | null;
+        if (!item) return;
+
+        const container = item.querySelector('.faq-answer-container') as HTMLElement | null;
+        const icon = item.querySelector('.faq-icon');
         const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
 
-        items.forEach(otherItem => {
-          if (otherItem !== item) {
-            const otherTrigger = otherItem.querySelector('.faq-trigger');
-            const otherContainer = otherItem.querySelector('.faq-answer-container') as HTMLElement;
-            const otherIcon = otherItem.querySelector('.faq-icon');
+        if (activeItem && activeItem !== item) {
+          const activeTrigger = activeItem.querySelector('.faq-trigger');
+          const activeContainer = activeItem.querySelector('.faq-answer-container') as HTMLElement | null;
+          const activeIcon = activeItem.querySelector('.faq-icon');
 
-            if (otherTrigger?.getAttribute('aria-expanded') === 'true') {
-              otherTrigger?.setAttribute('aria-expanded', 'false');
-              otherIcon?.classList.remove('rotate-180');
-              if (otherContainer) closeContainer(otherContainer);
-            }
+          if (activeTrigger?.getAttribute('aria-expanded') === 'true') {
+            activeTrigger.setAttribute('aria-expanded', 'false');
+            activeIcon?.classList.remove('rotate-180');
+            if (activeContainer) closeContainer(activeContainer);
           }
-        });
+        }
 
         trigger.setAttribute('aria-expanded', (!isExpanded).toString());
         icon?.classList.toggle('rotate-180', !isExpanded);
@@ -115,8 +121,10 @@ import { CONFIG } from '../data/config';
             container.classList.remove('opacity-0');
             const height = container.scrollHeight;
             container.style.height = `${height}px`;
+            activeItem = item;
           } else {
             closeContainer(container);
+            activeItem = null;
           }
         }
       };
