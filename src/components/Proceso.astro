@@ -60,9 +60,11 @@ import { CONFIG } from '../data/config';
               required
               maxlength="30"
               placeholder="Ej: TH-2026-1234"
+              aria-describedby="proceso-ticket-hint"
               class="bg-white/10 border border-white/20 rounded-[8px] pl-4 pr-9 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none uppercase"
               autocomplete="off"
             />
+            <span id="proceso-ticket-hint" class="sr-only">Formato de ticket: letras y números (ejemplo: TH-2026-1234)</span>
             <button
               type="button"
               id="proceso-clear-ticket-input"

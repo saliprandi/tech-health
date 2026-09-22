@@ -324,6 +324,11 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			e.preventDefault();
 			if (!input || !submitBtn || !submitText || !spinner) return;
 
+			if (!form.checkValidity()) {
+				form.reportValidity();
+				return;
+			}
+
 			// Security: Limit ticket query length to 30 characters to prevent DoS and oversized URL query parameters
 			const ticketNumber = input.value.replace(/\s+/g, '').toUpperCase().slice(0, 30);
 			if (!ticketNumber) return;
