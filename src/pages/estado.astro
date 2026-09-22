@@ -9,7 +9,12 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			<a href="/" class="flex items-center group outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-sm" aria-label="TechHealth Home">
 				<img src="/logo-name.svg" alt="TechHealth Medical Engineering" width="228" height="56" loading="eager" decoding="async" class="h-[56px] w-auto group-hover:scale-105 group-focus-visible:scale-105 transition-transform duration-300" />
 			</a>
-			<a href="/" class="font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-sm px-2 py-1">Volver al inicio</a>
+			<a href="/" class="group inline-flex items-center gap-1.5 font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-sm px-2.5 py-1.5" aria-label="Volver a la página principal">
+				<svg class="w-4 h-4 text-text-soft group-hover:text-navy group-hover:-translate-x-0.5 group-focus-visible:-translate-x-0.5 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
+				</svg>
+				<span>Volver al inicio</span>
+			</a>
 		</div>
 	</nav>
 
@@ -214,6 +219,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		clearInputBtn?.addEventListener('click', () => {
 			if (!input) return;
 			input.value = '';
+			input.removeAttribute('aria-invalid');
 			toggleClearButton();
 			errorDiv?.classList.add('hidden');
 			resultDiv?.classList.add('hidden');
@@ -360,7 +366,9 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					} else {
 						errorDiv.textContent = err instanceof Error ? err.message : 'Error al consultar el ticket';
 					}
+					input.setAttribute('aria-invalid', 'true');
 					errorDiv.classList.remove('hidden');
+					errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 				}
 			} finally {
 				submitText.textContent = 'Consultar estado';
@@ -504,6 +512,9 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 
 		input.addEventListener('input', () => {
 			toggleClearButton();
+			if (input.hasAttribute('aria-invalid')) {
+				input.removeAttribute('aria-invalid');
+			}
 			if (errorDiv && !errorDiv.classList.contains('hidden')) {
 				errorDiv.classList.add('hidden');
 			}
@@ -514,6 +525,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			resultDiv?.classList.add('hidden');
 			if (input) {
 				input.value = '';
+				input.removeAttribute('aria-invalid');
 				toggleClearButton();
 				input.focus();
 			}

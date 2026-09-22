@@ -4,6 +4,14 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
   test('should have accessible focus-visible rings, ARIA live regions, and button attributes', async ({ page }) => {
     await page.goto('http://localhost:4321/estado');
 
+    // 0. Check navigation "Volver al inicio" back-link icon and group hover styling
+    const backLink = page.locator('nav a[aria-label="Volver a la página principal"]');
+    await expect(backLink).toBeVisible();
+    await expect(backLink).toHaveClass(/group/);
+    const backIcon = backLink.locator('svg');
+    await expect(backIcon).toBeVisible();
+    await expect(backIcon).toHaveClass(/group-hover:-translate-x-0.5/);
+
     // 1. Check ticket input attributes, helper text linkage, and focus styling
     const input = page.locator('#ticket-input');
     await expect(input).toBeVisible();
@@ -134,9 +142,11 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     const errorContainer = page.locator('#estado-error');
     await expect(errorContainer).toBeVisible();
     await expect(errorContainer).toHaveText('Ticket no encontrado');
+    await expect(input).toHaveAttribute('aria-invalid', 'true');
 
-    // Verify dynamic error dismissal on typing
+    // Verify dynamic error dismissal and aria-invalid cleanup on typing
     await input.pressSequentially('X');
     await expect(errorContainer).toBeHidden();
+    await expect(input).not.toHaveAttribute('aria-invalid');
   });
 });
