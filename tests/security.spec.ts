@@ -145,3 +145,38 @@ test('ticket status page enforces maxlength and truncates oversized inputs', asy
   expect(requestedTicket.length).toBeLessThanOrEqual(30);
   expect(requestedTicket).toBe(('TH-2026-' + 'A'.repeat(50)).slice(0, 30));
 });
+
+test('contact form submission truncates oversized field inputs in payload', async ({ page }) => {
+  let capturedPayload: any = null;
+  await page.route('**/webhook/techhealth-solicitud*', async (route) => {
+    capturedPayload = JSON.parse(route.request().postData() || '{}');
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ success: true, ticket_number: 'TH-2026-TEST' })
+    });
+  });
+
+  await page.goto('http://localhost:4321/#contacto');
+
+  const nameInput = page.locator('#f-nombre');
+  const telInput = page.locator('#f-tel');
+  const descInput = page.locator('#f-desc');
+
+  const oversizedName = 'Juan ' + 'A'.repeat(150);
+  const oversizedTel = '+54 9 381 ' + '1'.repeat(50);
+  const oversizedMsg = 'Consulta: ' + 'M'.repeat(600);
+
+  await nameInput.fill(oversizedName);
+  await telInput.fill(oversizedTel);
+  await descInput.fill(oversizedMsg);
+
+  await page.click('#f-submit');
+
+  await page.waitForTimeout(500);
+
+  expect(capturedPayload).not.toBeNull();
+  expect(capturedPayload.nombre.length).toBeLessThanOrEqual(100);
+  expect(capturedPayload.telefono.length).toBeLessThanOrEqual(20);
+  expect(capturedPayload.mensaje.length).toBeLessThanOrEqual(500);
+});
