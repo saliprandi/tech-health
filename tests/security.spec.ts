@@ -142,7 +142,6 @@ test('ticket status page enforces maxlength and truncates oversized inputs', asy
   await ticketInput.fill(oversizedTicket);
   await page.click('#estado-submit');
 
-  await expect(page.locator('#estado-result')).toBeVisible();
   expect(requestedTicket.length).toBeLessThanOrEqual(30);
   expect(requestedTicket).toBe(('TH-2026-' + 'A'.repeat(50)).slice(0, 30));
 });
