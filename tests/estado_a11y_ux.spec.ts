@@ -4,6 +4,12 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
   test('should have accessible focus-visible rings, ARIA live regions, and button attributes', async ({ page }) => {
     await page.goto('http://localhost:4321/estado');
 
+    // 0. Check "Volver al inicio" back link visible text and directional icon
+    const backLink = page.getByRole('link', { name: 'Volver al inicio' });
+    await expect(backLink).toBeVisible();
+    await expect(backLink.locator('svg')).toHaveClass(/group-hover:-translate-x-0.5/);
+    await expect(backLink.locator('svg')).toHaveAttribute('aria-hidden', 'true');
+
     // 1. Check ticket input attributes, helper text linkage, and focus styling
     const input = page.locator('#ticket-input');
     await expect(input).toBeVisible();
