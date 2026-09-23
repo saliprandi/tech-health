@@ -205,12 +205,19 @@ import { CONFIG } from '../data/config';
         let tucumanDate: Date;
 
         try {
+          // Performance Optimization: Direct numeric parameter extraction avoids allocating temporary record objects and parsing ISO timestamp strings on every status check
           const parts = tucumanFormatter.formatToParts(now);
-          const p: Record<string, string> = {};
-          for (const part of parts) {
-            p[part.type] = part.value;
+          let year = 0, month = 0, dayNum = 0, hour = 0, minute = 0, second = 0;
+          for (let i = 0; i < parts.length; i++) {
+            const part = parts[i];
+            if (part.type === 'year') year = parseInt(part.value, 10);
+            else if (part.type === 'month') month = parseInt(part.value, 10);
+            else if (part.type === 'day') dayNum = parseInt(part.value, 10);
+            else if (part.type === 'hour') hour = parseInt(part.value, 10);
+            else if (part.type === 'minute') minute = parseInt(part.value, 10);
+            else if (part.type === 'second') second = parseInt(part.value, 10);
           }
-          tucumanDate = new Date(`${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`);
+          tucumanDate = new Date(year, month - 1, dayNum, hour, minute, second);
         } catch {
           tucumanDate = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
         }
