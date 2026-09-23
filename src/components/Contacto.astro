@@ -342,6 +342,21 @@ import { CONFIG } from '../data/config';
         return () => btn.removeEventListener('click', handleCopy);
       };
 
+      // --- Form Validation Feedback ---
+      const handleInvalid = (e: Event) => {
+        const target = e.target as HTMLElement | null;
+        if (target) {
+          target.setAttribute('aria-invalid', 'true');
+        }
+      };
+
+      const handleInput = (e: Event) => {
+        const target = e.target as HTMLElement | null;
+        if (target && target.hasAttribute('aria-invalid')) {
+          target.removeAttribute('aria-invalid');
+        }
+      };
+
       // --- Form Submission ---
       const handleSubmit = async (e: Event) => {
         e.preventDefault();
@@ -435,6 +450,8 @@ import { CONFIG } from '../data/config';
       const cleanupAddress = setupCopy('copy-address', 'copy-address-text', 'copy-address-icon-use', 'address-text', 'Dirección copiada');
       const cleanupTicket = setupCopy('copy-ticket', 'copy-ticket-text', 'copy-ticket-icon-use', 'ticket-confirmation-number', 'Número de ticket copiado');
       form.addEventListener('submit', handleSubmit);
+      form.addEventListener('input', handleInput);
+      form.addEventListener('invalid', handleInvalid, true);
 
       return () => {
         if (statusInterval) clearInterval(statusInterval);
@@ -444,6 +461,8 @@ import { CONFIG } from '../data/config';
         cleanupAddress();
         cleanupTicket();
         form.removeEventListener('submit', handleSubmit);
+        form.removeEventListener('input', handleInput);
+        form.removeEventListener('invalid', handleInvalid, true);
       };
     }
 

@@ -104,6 +104,9 @@ import { CONFIG } from '../data/config';
 
       const toggleClearButton = () => {
         if (!clearBtn) return;
+        if (input.hasAttribute('aria-invalid')) {
+          input.removeAttribute('aria-invalid');
+        }
         if (input.value.trim().length > 0) {
           clearBtn.classList.remove('hidden');
         } else {
@@ -123,6 +126,7 @@ import { CONFIG } from '../data/config';
 
       const handleSubmit = (e: Event) => {
         if (!form.checkValidity()) {
+          input.setAttribute('aria-invalid', 'true');
           form.reportValidity();
           e.preventDefault();
           return;
@@ -147,15 +151,24 @@ import { CONFIG } from '../data/config';
         }, 3000);
       };
 
+      const handleInvalid = (e: Event) => {
+        const target = e.target as HTMLElement | null;
+        if (target) {
+          target.setAttribute('aria-invalid', 'true');
+        }
+      };
+
       toggleClearButton();
       input.addEventListener('input', toggleClearButton);
       clearBtn?.addEventListener('click', handleClear);
       form.addEventListener('submit', handleSubmit);
+      form.addEventListener('invalid', handleInvalid, true);
 
       return () => {
         input.removeEventListener('input', toggleClearButton);
         clearBtn?.removeEventListener('click', handleClear);
         form.removeEventListener('submit', handleSubmit);
+        form.removeEventListener('invalid', handleInvalid, true);
       };
     }
 
