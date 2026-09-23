@@ -180,3 +180,27 @@ test('contact form submission truncates oversized field inputs in payload', asyn
   expect(capturedPayload.telefono.length).toBeLessThanOrEqual(20);
   expect(capturedPayload.mensaje.length).toBeLessThanOrEqual(500);
 });
+
+test('contact form gracefully handles 500 error response from webhook', async ({ page }) => {
+  await page.route('**/webhook/techhealth-solicitud*', async (route) => {
+    await route.fulfill({
+      status: 500,
+      contentType: 'text/html',
+      body: '<html><body>500 Internal Server Error</body></html>'
+    });
+  });
+
+  await page.goto('http://localhost:4321/#contacto');
+
+  await page.fill('#f-nombre', 'Carlos Lopez');
+  await page.fill('#f-tel', '+54 9 381 9876543');
+  await page.fill('#f-desc', 'Consulta urgente');
+
+  await page.click('#f-submit');
+
+  await page.waitForTimeout(500);
+
+  // Ticket confirmation banner should NOT be visible when server returns 500 error
+  const ticketConfirmation = page.locator('#ticket-confirmation');
+  await expect(ticketConfirmation).not.toBeVisible();
+});
