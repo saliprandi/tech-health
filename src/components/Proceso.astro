@@ -77,8 +77,12 @@ import { CONFIG } from '../data/config';
             </button>
           </div>
           <button type="submit" id="proceso-estado-submit" class="group bg-white text-navy font-heading font-bold text-[14px] py-3 px-6 rounded-[8px] hover:bg-white/90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-light whitespace-nowrap">
+            <svg id="proceso-estado-spinner" class="hidden w-4 h-4 animate-spin text-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
             <span id="proceso-estado-submit-text">Consultar estado</span>
-            <svg class="w-4 h-4 group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <svg id="proceso-estado-chevron" class="w-4 h-4 group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </button>
@@ -98,9 +102,12 @@ import { CONFIG } from '../data/config';
       const clearBtn = document.getElementById('proceso-clear-ticket-input') as HTMLButtonElement | null;
       const submitBtn = document.getElementById('proceso-estado-submit') as HTMLButtonElement | null;
       const submitText = document.getElementById('proceso-estado-submit-text');
+      const spinner = document.getElementById('proceso-estado-spinner');
+      const chevron = document.getElementById('proceso-estado-chevron');
       const announcement = document.getElementById('proceso-estado-announcement');
 
       if (!form || !input || !submitBtn || !submitText) return () => {};
+      let isSubmitting = false;
 
       const toggleClearButton = () => {
         if (!clearBtn) return;
@@ -111,8 +118,20 @@ import { CONFIG } from '../data/config';
         }
       };
 
+      const handleInput = () => {
+        toggleClearButton();
+        if (input.hasAttribute('aria-invalid')) {
+          input.removeAttribute('aria-invalid');
+        }
+      };
+
+      const handleInvalid = () => {
+        input.setAttribute('aria-invalid', 'true');
+      };
+
       const handleClear = () => {
         input.value = '';
+        input.removeAttribute('aria-invalid');
         toggleClearButton();
         if (announcement) announcement.textContent = 'Campo de número de ticket limpiado';
         input.focus();
@@ -122,38 +141,54 @@ import { CONFIG } from '../data/config';
       };
 
       const handleSubmit = (e: Event) => {
+        if (isSubmitting) {
+          e.preventDefault();
+          return;
+        }
+
         if (!form.checkValidity()) {
+          input.setAttribute('aria-invalid', 'true');
           form.reportValidity();
           e.preventDefault();
           return;
         }
+
+        input.removeAttribute('aria-invalid');
+        isSubmitting = true;
 
         // Security: Enforce 30-char length limit to mitigate DoS and oversized URL query parameter risks
         input.value = input.value.replace(/\s+/g, '').toUpperCase().slice(0, 30);
 
         const originalText = submitText.textContent;
         submitText.textContent = 'Buscando...';
+        spinner?.classList.remove('hidden');
+        chevron?.classList.add('hidden');
         if (announcement) announcement.textContent = 'Buscando estado de ticket...';
-        submitBtn.disabled = true;
         submitBtn.setAttribute('aria-busy', 'true');
-        submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+        submitBtn.setAttribute('aria-disabled', 'true');
+        submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         setTimeout(() => {
+          isSubmitting = false;
           if (submitText) submitText.textContent = originalText;
+          spinner?.classList.add('hidden');
+          chevron?.classList.remove('hidden');
           if (announcement) announcement.textContent = '';
-          submitBtn.disabled = false;
           submitBtn.removeAttribute('aria-busy');
-          submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+          submitBtn.removeAttribute('aria-disabled');
+          submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }, 3000);
       };
 
       toggleClearButton();
-      input.addEventListener('input', toggleClearButton);
+      input.addEventListener('input', handleInput);
+      input.addEventListener('invalid', handleInvalid);
       clearBtn?.addEventListener('click', handleClear);
       form.addEventListener('submit', handleSubmit);
 
       return () => {
         input.removeEventListener('input', toggleClearButton);
+        input.removeEventListener('invalid', handleInvalid);
         clearBtn?.removeEventListener('click', handleClear);
         form.removeEventListener('submit', handleSubmit);
       };
