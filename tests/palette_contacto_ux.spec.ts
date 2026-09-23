@@ -50,4 +50,23 @@ test.describe('Contacto UX Enhancements', () => {
     await expect(counter).toHaveText('10 / 500');
     await expect(counter).toHaveClass(/text-white\/40/);
   });
+
+  test('should set aria-invalid="true" when required fields fail validation and clear on input', async ({ page }) => {
+    const nameInput = page.locator('#f-nombre');
+
+    // Initially should not have aria-invalid
+    await expect(nameInput).not.toHaveAttribute('aria-invalid');
+
+    // Trigger invalid event on required field
+    await nameInput.evaluate((el) => el.dispatchEvent(new Event('invalid', { bubbles: true })));
+
+    // Field should now have aria-invalid="true"
+    await expect(nameInput).toHaveAttribute('aria-invalid', 'true');
+
+    // Type into field to trigger input event
+    await nameInput.fill('Juan');
+
+    // aria-invalid should be removed on typing
+    await expect(nameInput).not.toHaveAttribute('aria-invalid');
+  });
 });

@@ -94,14 +94,14 @@ import { CONFIG } from '../data/config';
             <label for="f-nombre" class="font-body font-medium text-[13px] text-white/80">
               Nombre completo <span class="text-blue-light" aria-hidden="true">*</span>
             </label>
-            <input type="text" id="f-nombre" name="nombre" required maxlength="100" autocomplete="name" placeholder="Ej: Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none" />
+            <input type="text" id="f-nombre" name="nombre" required maxlength="100" autocomplete="name" placeholder="Ej: Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none aria-invalid:border-red-400 aria-invalid:ring-1 aria-invalid:ring-red-400 transition-colors" />
           </div>
 
           <div class="flex flex-col gap-1.5">
             <label for="f-tel" class="font-body font-medium text-[13px] text-white/80">
               Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span>
             </label>
-            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-\(\)]*" autocomplete="tel" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none" />
+            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-\(\)]*" autocomplete="tel" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none aria-invalid:border-red-400 aria-invalid:ring-1 aria-invalid:ring-red-400 transition-colors" />
           </div>
 
           <div class="flex flex-col gap-1.5">
@@ -424,6 +424,29 @@ import { CONFIG } from '../data/config';
       updateCounter();
       desc?.addEventListener('input', updateCounter);
 
+      // --- Validation Error Handling (aria-invalid) ---
+      const inputs = [
+        document.getElementById('f-nombre') as HTMLInputElement | null,
+        document.getElementById('f-tel') as HTMLInputElement | null,
+      ].filter((el): el is HTMLInputElement => el !== null);
+
+      const handleInvalid = (e: Event) => {
+        const target = e.target as HTMLInputElement;
+        target.setAttribute('aria-invalid', 'true');
+      };
+
+      const handleInputChange = (e: Event) => {
+        const target = e.target as HTMLInputElement;
+        if (target.hasAttribute('aria-invalid')) {
+          target.removeAttribute('aria-invalid');
+        }
+      };
+
+      inputs.forEach(inp => {
+        inp.addEventListener('invalid', handleInvalid);
+        inp.addEventListener('input', handleInputChange);
+      });
+
       const cleanupPhone = setupCopy('copy-phone', 'copy-phone-text', 'copy-phone-icon-use', 'phone-text', 'Teléfono copiado');
       const cleanupAddress = setupCopy('copy-address', 'copy-address-text', 'copy-address-icon-use', 'address-text', 'Dirección copiada');
       const cleanupTicket = setupCopy('copy-ticket', 'copy-ticket-text', 'copy-ticket-icon-use', 'ticket-confirmation-number', 'Número de ticket copiado');
@@ -433,6 +456,10 @@ import { CONFIG } from '../data/config';
         if (statusInterval) clearInterval(statusInterval);
         observer.disconnect();
         desc?.removeEventListener('input', updateCounter);
+        inputs.forEach(inp => {
+          inp.removeEventListener('invalid', handleInvalid);
+          inp.removeEventListener('input', handleInputChange);
+        });
         cleanupPhone();
         cleanupAddress();
         cleanupTicket();
