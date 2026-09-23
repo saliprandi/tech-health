@@ -1,0 +1,3 @@
+## 2026-03-23 - Numeric Timezone Date Component Extraction
+**Learning:** Parsing dates across timezones using `Intl.DateTimeFormat.prototype.formatToParts()` into an intermediate dictionary object and ISO string template (`new Date(`${p.year}-${p.month}-${p.day}T...`)`) causes unnecessary heap object allocations, string concatenation, and string date parser overhead on every invocation.
+**Action:** Extract numeric date parts directly in a loop into integer variables (`year`, `month`, `day`, `hour`, `minute`, `second`) and call `new Date(year, month - 1, day, hour, minute, second)` to instantiate local Date objects directly without heap garbage or string parsing.

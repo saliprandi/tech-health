@@ -205,12 +205,20 @@ import { CONFIG } from '../data/config';
         let tucumanDate: Date;
 
         try {
+          // Performance Optimization: Extract numeric date components directly to avoid intermediate dictionary object allocation, string template concatenation, and ISO string date parsing.
           const parts = tucumanFormatter.formatToParts(now);
-          const p: Record<string, string> = {};
-          for (const part of parts) {
-            p[part.type] = part.value;
+          let year = 0, month = 0, day = 0, hour = 0, minute = 0, second = 0;
+          for (let i = 0; i < parts.length; i++) {
+            const pt = parts[i];
+            const val = parseInt(pt.value, 10);
+            if (pt.type === 'year') year = val;
+            else if (pt.type === 'month') month = val;
+            else if (pt.type === 'day') day = val;
+            else if (pt.type === 'hour') hour = val;
+            else if (pt.type === 'minute') minute = val;
+            else if (pt.type === 'second') second = val;
           }
-          tucumanDate = new Date(`${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`);
+          tucumanDate = new Date(year, month - 1, day, hour, minute, second);
         } catch {
           tucumanDate = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
         }
