@@ -50,4 +50,19 @@ test.describe('Contacto UX Enhancements', () => {
     await expect(counter).toHaveText('10 / 500');
     await expect(counter).toHaveClass(/text-white\/40/);
   });
+
+  test('should toggle aria-invalid on invalid submission and clear on field input', async ({ page }) => {
+    const nameInput = page.locator('#f-nombre');
+    const submitBtn = page.locator('#f-submit');
+
+    // Submit empty form to trigger validation
+    await submitBtn.click();
+
+    // Verify aria-invalid is set on required field
+    await expect(nameInput).toHaveAttribute('aria-invalid', 'true');
+
+    // Type input to clear aria-invalid
+    await nameInput.fill('Juan Perez');
+    await expect(nameInput).not.toHaveAttribute('aria-invalid');
+  });
 });
