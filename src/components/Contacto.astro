@@ -130,7 +130,11 @@ import { CONFIG } from '../data/config';
           <p class="font-body text-[12px] text-white/50 text-center">El mensaje le redirigirá a WhatsApp</p>
 
           <button type="submit" id="f-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-blue-light outline-none">
-            <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
+            <svg id="f-submit-spinner" class="hidden w-5 h-5 animate-spin text-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <svg id="f-submit-wa-icon" class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
               <use href="#icon-whatsapp" />
             </svg>
             <span id="f-submit-text">Enviar por WhatsApp</span>
@@ -378,10 +382,15 @@ import { CONFIG } from '../data/config';
         const sanitizedWa = whatsappNumber.replace(/\D/g, '');
         const url = `https://wa.me/${sanitizedWa}?text=${encodeURIComponent(rawMessage)}`;
 
+        const submitSpinner = document.getElementById('f-submit-spinner');
+        const submitWaIcon = document.getElementById('f-submit-wa-icon');
+
         if (submitBtn && submitBtnText) {
           const originalText = submitBtnText.textContent;
           submitBtnText.textContent = 'Redirigiendo...';
           if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
+          submitSpinner?.classList.remove('hidden');
+          submitWaIcon?.classList.add('hidden');
           submitBtn.disabled = true;
           submitBtn.setAttribute('aria-busy', 'true');
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
@@ -429,6 +438,8 @@ import { CONFIG } from '../data/config';
           setTimeout(() => {
             if (submitBtnText) submitBtnText.textContent = originalText;
             if (redirectAnnouncement) redirectAnnouncement.textContent = '';
+            submitSpinner?.classList.add('hidden');
+            submitWaIcon?.classList.remove('hidden');
             if (submitBtn) {
               submitBtn.disabled = false;
               submitBtn.removeAttribute('aria-busy');

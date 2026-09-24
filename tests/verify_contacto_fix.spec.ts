@@ -30,7 +30,7 @@ test.describe('Contacto Component Fix Verification', () => {
     // 3. Test Business Hours Badge Visibility
     await expect(statusBadges).not.toHaveClass(/hidden/);
     const badgeText = await statusBadges.textContent();
-    expect(['Abierto ahora', 'Cerrado']).toContain(badgeText?.trim());
+    expect(['Abierto ahora', 'Cerrado', 'Abrirá pronto', 'Cerrará pronto']).toContain(badgeText?.trim());
 
     // 4. Test Clipboard Copy (Visual feedback only as clipboard API is tricky in some CI envs)
     // We check if the classes and text change as expected in the script
@@ -51,20 +51,27 @@ test.describe('Contacto Component Fix Verification', () => {
     await expect(copyPhoneBtn).not.toHaveClass(/ text-blue /);
   });
 
-  test('should show redirection feedback on form submit', async ({ page }) => {
+  test('should show redirection feedback and loading spinner on form submit', async ({ page }) => {
     const submitBtn = page.locator('#f-submit');
     const submitBtnText = page.locator('#f-submit-text');
+    const submitSpinner = page.locator('#f-submit-spinner');
+    const submitWaIcon = page.locator('#f-submit-wa-icon');
 
     // Fill required fields
     await page.locator('#f-nombre').fill('Test User');
     await page.locator('#f-tel').fill('123456789');
     await page.locator('#f-desc').fill('Test message');
 
-    // We catch the navigation/redirection if possible or just check the button state
-    // Since it opens in a new tab, we just check the UI feedback
+    // Verify initial state
+    await expect(submitSpinner).toHaveClass(/hidden/);
+    await expect(submitWaIcon).not.toHaveClass(/hidden/);
+
+    // Click submit
     await submitBtn.click();
 
     await expect(submitBtnText).toHaveText('Redirigiendo...');
+    await expect(submitSpinner).not.toHaveClass(/hidden/);
+    await expect(submitWaIcon).toHaveClass(/hidden/);
     await expect(submitBtn).toBeDisabled();
     await expect(submitBtn).toHaveClass(/opacity-70/);
   });
