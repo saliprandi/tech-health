@@ -61,16 +61,21 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await input.fill('TH-2026-9999');
     await expect(clearBtn).toBeVisible();
 
+    const formAnnouncement = page.locator('#estado-form-announcement');
+    await expect(formAnnouncement).toHaveAttribute('aria-live', 'polite');
+
     await clearBtn.click();
     await expect(input).toHaveValue('');
     await expect(clearBtn).toBeHidden();
     await expect(input).toBeFocused();
+    await expect(formAnnouncement).toHaveText('Campo de número de ticket limpiado');
   });
 
   test('should display result and allow copying ticket number', async ({ page, context }) => {
     await context.grantPermissions(['clipboard-read', 'clipboard-write']);
 
     await page.route('**/webhook/techhealth-estado*', async (route) => {
+      await new Promise((r) => setTimeout(r, 200));
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -94,8 +99,13 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     // Enter ticket with spaces to test whitespace stripping
     await input.fill(' TH - 2026 - 1234 ');
 
+    const formAnnouncement = page.locator('#estado-form-announcement');
     const submitBtn = page.locator('#estado-submit');
-    await submitBtn.click();
+
+    // Submit form and check polite announcement
+    const submitPromise = submitBtn.click();
+    await expect(formAnnouncement).toHaveText('Consultando estado de ticket...');
+    await submitPromise;
 
     const resultTicketNumber = page.locator('#result-ticket-number');
     await expect(resultTicketNumber).toHaveText('TH-2026-1234');
