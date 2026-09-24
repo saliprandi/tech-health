@@ -41,3 +41,7 @@
 ## 2026-03-30 - Indicador de carga animado y retroalimentación de estado accesible en formularios de consulta de tickets
 **Learning:** En formularios de consulta asíncronos o de búsqueda de estado (`Proceso.astro`), sustituir solo el texto del botón de envío durante la búsqueda priva a los usuarios de retroalimentación visual clara. Incorporar un ícono vectorial animado (`animate-spin`), alternar la visibilidad de íconos vectoriales secundarios y acompañar el proceso con `aria-busy="true"`, región `aria-live="polite"` y estado `disabled` proporciona feedback visual y auditivo en tiempo real para todos los usuarios.
 **Action:** Equipar siempre los botones de envío en formularios de búsqueda/consulta con un ícono de carga animado (`animate-spin`), conmutación de íconos secundarios y atributos ARIA `aria-busy` e indicadores para lectores de pantalla.
+
+## 2026-03-30 - Orientación de formato accesible con aria-describedby en campos con patrones de entrada
+**Learning:** En campos de entrada con restricciones o atributos de patrón HTML5 (como `type="tel"` o `pattern`), la falta de un texto de ayuda explícito asociado mediante `aria-describedby` deja a los usuarios de lectores de pantalla sin información previa sobre la sintaxis requerida.
+**Action:** Vincular siempre los campos de entrada que requieran formatos específicos a un elemento explicativo con `aria-describedby` y texto descriptivo (ej. "Formato: números, espacios o signo +").
