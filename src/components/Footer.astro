@@ -7,7 +7,20 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
 
 <footer class="bg-navy-dark py-10 px-[5%] text-center border-t border-white/5">
   <div class="container-custom flex flex-col items-center">
-    
+
+    <!-- Volver Arriba -->
+    <a
+      href="#hero"
+      id="back-to-top"
+      class="group inline-flex items-center gap-2 font-body font-medium text-[13px] text-white/60 hover:text-white focus-visible:text-white mb-6 transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark rounded-md px-3.5 py-1.5 bg-white/5 hover:bg-white/10"
+      aria-label="Volver al inicio de la página"
+    >
+      <svg class="w-4 h-4 text-white/60 group-hover:text-white group-hover:-translate-y-0.5 group-focus-visible:-translate-y-0.5 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+      </svg>
+      <span>Volver arriba</span>
+    </a>
+
     <div class="font-body font-light text-[13px] text-white/50 mb-6 flex items-center justify-center gap-2 flex-wrap">
       <span>{CONFIG.empresa.ciudad}, {CONFIG.empresa.pais}</span>
       <span aria-hidden="true">·</span>
