@@ -374,6 +374,8 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					input.setAttribute('aria-invalid', 'true');
 					errorDiv.classList.remove('hidden');
 					errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+					input.focus();
+					input.select();
 				}
 			} finally {
 				submitText.textContent = 'Consultar estado';
@@ -514,6 +516,16 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		};
 
 		form.addEventListener('submit', handleSubmit);
+
+		input.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape') {
+				input.value = '';
+				input.removeAttribute('aria-invalid');
+				toggleClearButton();
+				errorDiv?.classList.add('hidden');
+				resultDiv?.classList.add('hidden');
+			}
+		});
 
 		input.addEventListener('input', () => {
 			toggleClearButton();

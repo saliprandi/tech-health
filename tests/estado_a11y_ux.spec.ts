@@ -144,9 +144,17 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await expect(errorContainer).toHaveText('Ticket no encontrado');
     await expect(input).toHaveAttribute('aria-invalid', 'true');
 
-    // Verify dynamic error dismissal and aria-invalid cleanup on typing
-    await input.pressSequentially('X');
+    // Verify focus is returned to input on error for immediate correction
+    await expect(input).toBeFocused();
+
+    // Verify Escape key clears input value and dismisses error message
+    await input.press('Escape');
+    await expect(input).toHaveValue('');
     await expect(errorContainer).toBeHidden();
+    await expect(input).not.toHaveAttribute('aria-invalid');
+
+    // Type again and verify aria-invalid cleanup on typing
+    await input.fill('TH-1234');
     await expect(input).not.toHaveAttribute('aria-invalid');
   });
 });
