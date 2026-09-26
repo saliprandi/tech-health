@@ -437,10 +437,9 @@ import { CONFIG } from '../data/config';
           }, 3000);
         }
 
-        const openedWin = window.open(url, '_blank', 'noopener,noreferrer');
-        if (!openedWin) {
-          window.location.href = url;
-        }
+        // Performance & UX Optimization: window.open with noopener/noreferrer returns null by W3C specification.
+        // Calling window.open directly avoids triggering an immediate same-page location reload that unloads the DOM.
+        window.open(url, '_blank', 'noopener,noreferrer');
       };
 
       updateCounter();
