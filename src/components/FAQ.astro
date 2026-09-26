@@ -79,6 +79,9 @@ import { CONFIG } from '../data/config';
         transitionTimers.set(container, timer);
       };
 
+      // Performance Optimization: Track active trigger reference for O(1) state updates without O(N) DOM loop iterations
+      let activeTrigger: HTMLButtonElement | null = document.querySelector('.faq-trigger[aria-expanded="true"]');
+
       const handleToggle = (e: Event) => {
         const trigger = e.currentTarget as HTMLButtonElement;
         const item = trigger.closest('.faq-item');
@@ -86,19 +89,20 @@ import { CONFIG } from '../data/config';
         const icon = item?.querySelector('.faq-icon');
         const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
 
-        items.forEach(otherItem => {
-          if (otherItem !== item) {
-            const otherTrigger = otherItem.querySelector('.faq-trigger');
-            const otherContainer = otherItem.querySelector('.faq-answer-container') as HTMLElement;
-            const otherIcon = otherItem.querySelector('.faq-icon');
+        if (!isExpanded) {
+          if (activeTrigger && activeTrigger !== trigger) {
+            const activeItem = activeTrigger.closest('.faq-item');
+            const activeContainer = activeItem?.querySelector('.faq-answer-container') as HTMLElement;
+            const activeIcon = activeItem?.querySelector('.faq-icon');
 
-            if (otherTrigger?.getAttribute('aria-expanded') === 'true') {
-              otherTrigger?.setAttribute('aria-expanded', 'false');
-              otherIcon?.classList.remove('rotate-180');
-              if (otherContainer) closeContainer(otherContainer);
-            }
+            activeTrigger.setAttribute('aria-expanded', 'false');
+            activeIcon?.classList.remove('rotate-180');
+            if (activeContainer) closeContainer(activeContainer);
           }
-        });
+          activeTrigger = trigger;
+        } else if (activeTrigger === trigger) {
+          activeTrigger = null;
+        }
 
         trigger.setAttribute('aria-expanded', (!isExpanded).toString());
         icon?.classList.toggle('rotate-180', !isExpanded);
