@@ -60,6 +60,11 @@ test.describe('Contacto Component Fix Verification', () => {
     await page.locator('#f-tel').fill('123456789');
     await page.locator('#f-desc').fill('Test message');
 
+    // Stub window.open to prevent page redirection in headless test environment
+    await page.evaluate(() => {
+      window.open = () => ({} as Window);
+    });
+
     // We catch the navigation/redirection if possible or just check the button state
     // Since it opens in a new tab, we just check the UI feedback
     await submitBtn.click();
