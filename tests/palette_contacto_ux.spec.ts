@@ -65,4 +65,13 @@ test.describe('Contacto UX Enhancements', () => {
     await nameInput.fill('Juan Perez');
     await expect(nameInput).not.toHaveAttribute('aria-invalid');
   });
+
+  test('should provide accessible format hint aria-describedby for phone field', async ({ page }) => {
+    const phoneInput = page.locator('#f-tel');
+    await expect(phoneInput).toHaveAttribute('aria-describedby', 'f-tel-hint');
+
+    const phoneHint = page.locator('#f-tel-hint');
+    await expect(phoneHint).toBeAttached();
+    await expect(phoneHint).toHaveText('Formato: números, espacios o signo +');
+  });
 });
