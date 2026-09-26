@@ -437,10 +437,7 @@ import { CONFIG } from '../data/config';
           }, 3000);
         }
 
-        const openedWin = window.open(url, '_blank', 'noopener,noreferrer');
-        if (!openedWin) {
-          window.location.href = url;
-        }
+        window.open(url, '_blank', 'noopener,noreferrer');
       };
 
       updateCounter();
