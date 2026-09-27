@@ -51,6 +51,13 @@ test.describe('Navigation UX', () => {
     await expect(menuToggle).toHaveAttribute('aria-expanded', 'false');
   });
 
+  test('logo link should have focus-visible ring styles for keyboard navigation', async ({ page }) => {
+    const logoLink = page.locator('nav a[aria-label="TechHealth Home"]');
+    await expect(logoLink).toBeVisible();
+    await expect(logoLink).toHaveClass(/focus-visible:ring-2/);
+    await expect(logoLink).toHaveClass(/focus-visible:ring-navy/);
+  });
+
   test('reading progress bar should update on scroll', async ({ page }) => {
     const progressBar = page.locator('#reading-progress').first();
     await expect(progressBar).toBeAttached();
