@@ -69,6 +69,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 						<span id="estado-submit-text">Consultar estado</span>
 					</button>
 				</form>
+				<div id="estado-form-announcement" class="sr-only" aria-live="polite"></div>
 				<div id="estado-error" role="alert" aria-live="assertive" class="hidden mt-4 p-4 bg-red-500/20 border border-red-500/30 rounded-[8px] text-red-200 text-[14px] font-body"></div>
 			</div>
 
@@ -216,6 +217,8 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			}
 		};
 
+		const formAnnouncement = document.getElementById('estado-form-announcement');
+
 		clearInputBtn?.addEventListener('click', () => {
 			if (!input) return;
 			input.value = '';
@@ -223,7 +226,11 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			toggleClearButton();
 			errorDiv?.classList.add('hidden');
 			resultDiv?.classList.add('hidden');
+			if (formAnnouncement) formAnnouncement.textContent = 'Campo de número de ticket limpiado';
 			input.focus();
+			setTimeout(() => {
+				if (formAnnouncement) formAnnouncement.textContent = '';
+			}, 2000);
 		});
 
 		// Copy ticket event handler
@@ -341,6 +348,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 
 			// UI: loading
 			submitText.textContent = 'Consultando...';
+			if (formAnnouncement) formAnnouncement.textContent = 'Consultando estado de ticket...';
 			spinner.classList.remove('hidden');
 			submitBtn.disabled = true;
 			submitBtn.setAttribute('aria-busy', 'true');
@@ -377,6 +385,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 				}
 			} finally {
 				submitText.textContent = 'Consultar estado';
+				if (formAnnouncement) formAnnouncement.textContent = '';
 				spinner.classList.add('hidden');
 				submitBtn.disabled = false;
 				submitBtn.removeAttribute('aria-busy');
