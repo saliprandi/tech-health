@@ -62,6 +62,19 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
       </div>
     )}
 
+    <div class="mb-6">
+      <a
+        href="#hero"
+        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white font-body text-[12px] transition-all group focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark outline-none"
+        aria-label="Volver al inicio de la página"
+      >
+        <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-focus-visible:-translate-y-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        </svg>
+        <span>Volver arriba</span>
+      </a>
+    </div>
+
     <div class="font-body font-light text-[12px] text-white/60">
       &copy; {year} {CONFIG.empresa.nombre} {CONFIG.empresa.subtitulo}. Todos los derechos reservados.
     </div>
