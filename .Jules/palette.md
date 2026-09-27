@@ -41,3 +41,7 @@
 ## 2026-03-30 - Indicador de carga animado y retroalimentación de estado accesible en formularios de consulta de tickets
 **Learning:** En formularios de consulta asíncronos o de búsqueda de estado (`Proceso.astro`), sustituir solo el texto del botón de envío durante la búsqueda priva a los usuarios de retroalimentación visual clara. Incorporar un ícono vectorial animado (`animate-spin`), alternar la visibilidad de íconos vectoriales secundarios y acompañar el proceso con `aria-busy="true"`, región `aria-live="polite"` y estado `disabled` proporciona feedback visual y auditivo en tiempo real para todos los usuarios.
 **Action:** Equipar siempre los botones de envío en formularios de búsqueda/consulta con un ícono de carga animado (`animate-spin`), conmutación de íconos secundarios y atributos ARIA `aria-busy` e indicadores para lectores de pantalla.
+
+## 2026-03-30 - Enlace de retorno superior (Volver arriba) accesible en pie de página
+**Learning:** En páginas de aterrizaje extensas, incorporar un enlace "Volver arriba" con ícono direccional SVG, micro-animación de elevación en `:hover`/`:focus-visible`, anillo de enfoque de alto contraste (`focus-visible:ring-2 focus-visible:ring-white/40`) y etiqueta ARIA descriptiva facilita la re-navegación fluida y accesible tanto para usuarios de teclado como de lectores de pantalla.
+**Action:** Incluir siempre un enlace de retorno superior con micro-animación e indicación ARIA clara en el bloque de enlaces rápidos del pie de página.
