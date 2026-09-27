@@ -339,6 +339,16 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			const ticketNumber = input.value.replace(/\s+/g, '').toUpperCase().slice(0, 30);
 			if (!ticketNumber) return;
 
+			// Security: Sanitize and validate ticket number format to prevent sending malformed query payloads
+			if (!/^[A-Z0-9\-_]{1,30}$/.test(ticketNumber)) {
+				if (errorDiv) {
+					errorDiv.textContent = 'Formato de ticket inválido. Ingrese solo letras, números y guiones (ej. TH-2026-1234).';
+					errorDiv.classList.remove('hidden');
+				}
+				input.setAttribute('aria-invalid', 'true');
+				return;
+			}
+
 			// UI: loading
 			submitText.textContent = 'Consultando...';
 			spinner.classList.remove('hidden');
