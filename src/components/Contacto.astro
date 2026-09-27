@@ -358,8 +358,12 @@ import { CONFIG } from '../data/config';
       };
 
       // --- Form Submission ---
+      let isSubmitting = false;
+
       const handleSubmit = async (e: Event) => {
         e.preventDefault();
+        if (isSubmitting) return;
+
         const formData = new FormData(form);
         if (formData.get('website')) return;
 
@@ -379,11 +383,13 @@ import { CONFIG } from '../data/config';
         const url = `https://wa.me/${sanitizedWa}?text=${encodeURIComponent(rawMessage)}`;
 
         if (submitBtn && submitBtnText) {
+          isSubmitting = true;
           const originalText = submitBtnText.textContent;
           submitBtnText.textContent = 'Redirigiendo...';
           if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
           submitBtn.disabled = true;
           submitBtn.setAttribute('aria-busy', 'true');
+          submitBtn.setAttribute('aria-disabled', 'true');
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
           // Enviar datos al webhook de n8n y capturar el ticket generado
@@ -427,11 +433,13 @@ import { CONFIG } from '../data/config';
           }
 
           setTimeout(() => {
+            isSubmitting = false;
             if (submitBtnText) submitBtnText.textContent = originalText;
             if (redirectAnnouncement) redirectAnnouncement.textContent = '';
             if (submitBtn) {
               submitBtn.disabled = false;
               submitBtn.removeAttribute('aria-busy');
+              submitBtn.removeAttribute('aria-disabled');
               submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
             }
           }, 3000);
