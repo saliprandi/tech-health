@@ -19,7 +19,7 @@
 **Action:** Utilizar named groups para animaciones de foco en íconos embebidos en inputs/selects y equipar contadores de caracteres con regiones `aria-live="polite"` para garantizar feedback visual y por voz.
 
 ## 2026-03-30 - Fallback de redirección transparente para bloqueadores de ventanas emergentes en envíos de formulario
-**Learning:** En manejadores de envíos de formularios que abren enlaces externos (ej. WhatsApp) tras procesar eventos de cliente, `window.open(url, '_blank', 'noopener,noreferrer')` puede ser bloqueado en navegadores estrictos o webviews móviles. Evaluar la referencia resultante (`const openedWin = window.open(...)`) y aplicar `if (!openedWin) window.location.href = url` garantiza la navegación sin parpadeos de pestañas en blanco ni interrupciones silenciosas de UX.
+**Learning:** En manejadores de envíos de formularios que abren enlaces externos (ej. WhatsApp) tras procesar eventos de cliente, `window.open(url, '_blank', 'noopener,noreferrer')` puede ser bloqueado en navegadores strictly o webviews móviles. Evaluar la referencia resultante (`const openedWin = window.open(...)`) y aplicar `if (!openedWin) window.location.href = url` garantiza la navegación sin parpadeos de pestañas en blanco ni interrupciones silenciosas de UX.
 **Action:** Usar asignación condicional `if (!openedWin) window.location.href = url` al abrir enlaces en manejadores de formularios para asegurar redundancia ante bloqueadores de popups.
 
 ## 2026-03-30 - Sincronización dinámica de atributos ARIA label en botones de copia y acción
@@ -45,3 +45,7 @@
 ## 2026-03-30 - Enlace de retorno superior (Volver arriba) accesible en pie de página
 **Learning:** En páginas de aterrizaje extensas, incorporar un enlace "Volver arriba" con ícono direccional SVG, micro-animación de elevación en `:hover`/`:focus-visible`, anillo de enfoque de alto contraste (`focus-visible:ring-2 focus-visible:ring-white/40`) y etiqueta ARIA descriptiva facilita la re-navegación fluida y accesible tanto para usuarios de teclado como de lectores de pantalla.
 **Action:** Incluir siempre un enlace de retorno superior con micro-animación e indicación ARIA clara en el bloque de enlaces rápidos del pie de página.
+
+## 2026-03-30 - Acceso rápido Ctrl+Enter en campos de texto multilínea
+**Learning:** En formularios de contacto con áreas de texto (`<textarea>`), permitir el envío rápido mediante el atajo de teclado `Ctrl + Enter` (o `Cmd + Enter` en macOS) mejora significativamente la fluidez de interacción para usuarios avanzados de teclado. Acompañar el campo con una indicación visual sutil (`Ctrl + Enter para enviar`) y una descripción accesible (`f-desc-hint` asociada mediante `aria-describedby`) garantiza la descubribilidad tanto para usuarios visuales como para lectores de pantalla.
+**Action:** Incluir siempre un manejador `keydown` para `(e.ctrlKey || e.metaKey) && e.key === 'Enter'` en `<textarea>` de formularios principales y asociar la ayuda por voz con `aria-describedby`.
