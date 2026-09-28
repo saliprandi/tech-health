@@ -72,6 +72,6 @@ test.describe('Contacto UX Enhancements', () => {
 
     const phoneHint = page.locator('#f-tel-hint');
     await expect(phoneHint).toBeAttached();
-    await expect(phoneHint).toHaveText('Formato: números, espacios o signo +');
+    await expect(phoneHint).toHaveText('Formato: números, espacios, signo +, guiones o paréntesis');
   });
 });
