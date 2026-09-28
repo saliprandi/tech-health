@@ -20,7 +20,7 @@ const { title = "TechHealth Medical Engineering | TÃ©cnicos en Electromedicina â
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<!-- Security Hardening: Disable base-uri and frame-ancestors to prevent injection and clickjacking attacks -->
 		<!-- Security: base-uri 'none' prevents <base> tag injection, frame-ancestors 'none' prevents clickjacking -->
-		<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; script-src-attr 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://season-exec-grades-insulation.trycloudflare.com; form-action 'self' https://wa.me; media-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; upgrade-insecure-requests;" />
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://season-exec-grades-insulation.trycloudflare.com; form-action 'self' https://wa.me; media-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; upgrade-insecure-requests;" />
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
 		<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -49,7 +49,16 @@ const { title = "TechHealth Medical Engineering | TÃ©cnicos en Electromedicina â
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" />
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" media="print" onload="this.setAttribute('media', 'all')" />
+		<link id="gfonts-main" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" media="print" />
+		<script is:inline>
+			(function() {
+				var l = document.getElementById('gfonts-main');
+				if (l) {
+					if (l.sheet) { l.media = 'all'; }
+					else { l.addEventListener('load', function() { l.media = 'all'; }); }
+				}
+			})();
+		</script>
 		<noscript>
 			<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" />
 		</noscript>
