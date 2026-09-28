@@ -161,6 +161,13 @@ import { CONFIG } from '../data/config';
         }, 3000);
       };
 
+      const handleKeydown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape' && input.value.trim().length > 0) {
+          e.preventDefault();
+          handleClear();
+        }
+      };
+
       const handleInvalid = (e: Event) => {
         const target = e.target as HTMLElement | null;
         if (target) {
@@ -170,12 +177,14 @@ import { CONFIG } from '../data/config';
 
       toggleClearButton();
       input.addEventListener('input', toggleClearButton);
+      input.addEventListener('keydown', handleKeydown);
       clearBtn?.addEventListener('click', handleClear);
       form.addEventListener('submit', handleSubmit);
       form.addEventListener('invalid', handleInvalid, true);
 
       return () => {
         input.removeEventListener('input', toggleClearButton);
+        input.removeEventListener('keydown', handleKeydown);
         clearBtn?.removeEventListener('click', handleClear);
         form.removeEventListener('submit', handleSubmit);
         form.removeEventListener('invalid', handleInvalid, true);

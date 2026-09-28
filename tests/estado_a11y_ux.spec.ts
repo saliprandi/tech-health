@@ -65,6 +65,13 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await expect(input).toHaveValue('');
     await expect(clearBtn).toBeHidden();
     await expect(input).toBeFocused();
+
+    // 7. Check Escape key clears input and hides clear button
+    await input.fill('TH-2026-8888');
+    await expect(clearBtn).toBeVisible();
+    await input.press('Escape');
+    await expect(input).toHaveValue('');
+    await expect(clearBtn).toBeHidden();
   });
 
   test('should display result and allow copying ticket number', async ({ page, context }) => {
@@ -143,6 +150,9 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await expect(errorContainer).toBeVisible();
     await expect(errorContainer).toHaveText('Ticket no encontrado');
     await expect(input).toHaveAttribute('aria-invalid', 'true');
+
+    // Verify input is focused upon error display
+    await expect(input).toBeFocused();
 
     // Verify dynamic error dismissal and aria-invalid cleanup on typing
     await input.pressSequentially('X');

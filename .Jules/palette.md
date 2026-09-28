@@ -45,3 +45,7 @@
 ## 2026-03-30 - Enlace de retorno superior (Volver arriba) accesible en pie de página
 **Learning:** En páginas de aterrizaje extensas, incorporar un enlace "Volver arriba" con ícono direccional SVG, micro-animación de elevación en `:hover`/`:focus-visible`, anillo de enfoque de alto contraste (`focus-visible:ring-2 focus-visible:ring-white/40`) y etiqueta ARIA descriptiva facilita la re-navegación fluida y accesible tanto para usuarios de teclado como de lectores de pantalla.
 **Action:** Incluir siempre un enlace de retorno superior con micro-animación e indicación ARIA clara en el bloque de enlaces rápidos del pie de página.
+
+## 2026-03-30 - Cancelación por tecla Escape y auto-selección en formularios de búsqueda
+**Learning:** En formularios de consulta rápida de tickets (`estado.astro` y `Proceso.astro`), incorporar un manejador de tecla `Escape` en los inputs para limpiar el texto, ocultar el botón de borrado y descartar avisos de error/resultado (junto a anuncios en regiones `aria-live`) agiliza drásticamente la navegación por teclado. Asimismo, al desplegar alertas de error por ticket no encontrado, llamar a `input.focus()` e `input.select()` permite a los usuarios corregir o sobrescribir de inmediato la consulta sin borrado manual.
+**Action:** Asignar manejadores de la tecla `Escape` en inputs de búsqueda interactivos e invocar `focus()` y `select()` al notificar errores de búsqueda en formularios.

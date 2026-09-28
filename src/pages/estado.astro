@@ -374,6 +374,8 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					input.setAttribute('aria-invalid', 'true');
 					errorDiv.classList.remove('hidden');
 					errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+					input.focus();
+					input.select();
 				}
 			} finally {
 				submitText.textContent = 'Consultar estado';
@@ -522,6 +524,23 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			}
 			if (errorDiv && !errorDiv.classList.contains('hidden')) {
 				errorDiv.classList.add('hidden');
+			}
+		});
+
+		input.addEventListener('keydown', (e: KeyboardEvent) => {
+			if (e.key === 'Escape' && input.value.trim().length > 0) {
+				e.preventDefault();
+				input.value = '';
+				input.removeAttribute('aria-invalid');
+				toggleClearButton();
+				errorDiv?.classList.add('hidden');
+				resultDiv?.classList.add('hidden');
+				const cleanUrl = window.location.pathname;
+				window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
+				if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = 'Campo de número de ticket limpiado';
+				setTimeout(() => {
+					if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = '';
+				}, 2000);
 			}
 		});
 
