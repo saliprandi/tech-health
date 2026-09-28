@@ -130,6 +130,9 @@ import { CONFIG } from '../data/config';
         }, 2000);
       };
 
+      // Security: Character whitelist validation regex
+      const TICKET_REGEX = /^[A-Z0-9\-_]{1,30}$/;
+
       const handleSubmit = (e: Event) => {
         if (!form.checkValidity()) {
           input.setAttribute('aria-invalid', 'true');
@@ -138,8 +141,16 @@ import { CONFIG } from '../data/config';
           return;
         }
 
-        // Security: Enforce 30-char length limit to mitigate DoS and oversized URL query parameter risks
-        input.value = input.value.replace(/\s+/g, '').toUpperCase().slice(0, 30);
+        // Security: Enforce 30-char length limit and validate against whitelist regex
+        const sanitizedVal = input.value.replace(/\s+/g, '').toUpperCase().slice(0, 30);
+        if (!sanitizedVal || !TICKET_REGEX.test(sanitizedVal)) {
+          input.setAttribute('aria-invalid', 'true');
+          if (announcement) announcement.textContent = 'Número de ticket inválido. Ingrese solo letras, números y guiones.';
+          e.preventDefault();
+          return;
+        }
+
+        input.value = sanitizedVal;
 
         const originalText = submitText.textContent;
         submitText.textContent = 'Buscando...';

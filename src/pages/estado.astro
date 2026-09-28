@@ -326,6 +326,9 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			}
 		};
 
+		// Security: Character whitelist validation regex to prevent injection attempts or malformed queries
+		const TICKET_REGEX = /^[A-Z0-9\-_]{1,30}$/;
+
 		const handleSubmit = async (e: Event) => {
 			e.preventDefault();
 			if (!input || !submitBtn || !submitText || !spinner) return;
@@ -335,9 +338,16 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 				return;
 			}
 
-			// Security: Limit ticket query length to 30 characters to prevent DoS and oversized URL query parameters
+			// Security: Limit ticket query length to 30 characters and validate against character whitelist
 			const ticketNumber = input.value.replace(/\s+/g, '').toUpperCase().slice(0, 30);
-			if (!ticketNumber) return;
+			if (!ticketNumber || !TICKET_REGEX.test(ticketNumber)) {
+				if (errorDiv) {
+					errorDiv.textContent = 'Número de ticket inválido. Ingrese solo letras, números y guiones (ej. TH-2026-1234).';
+					input.setAttribute('aria-invalid', 'true');
+					errorDiv.classList.remove('hidden');
+				}
+				return;
+			}
 
 			// UI: loading
 			submitText.textContent = 'Consultando...';
@@ -543,9 +553,12 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		const params = new URLSearchParams(window.location.search);
 		const ticketParam = params.get('ticket');
 		if (ticketParam && input) {
-			input.value = ticketParam.replace(/\s+/g, '').toUpperCase().slice(0, 30);
-			toggleClearButton();
-			form.requestSubmit();
+			const sanitizedParam = ticketParam.replace(/\s+/g, '').toUpperCase().slice(0, 30);
+			if (TICKET_REGEX.test(sanitizedParam)) {
+				input.value = sanitizedParam;
+				toggleClearButton();
+				form.requestSubmit();
+			}
 		}
 	})();
 </script>
