@@ -65,4 +65,19 @@ test.describe('Contacto UX Enhancements', () => {
     await nameInput.fill('Juan Perez');
     await expect(nameInput).not.toHaveAttribute('aria-invalid');
   });
+
+  test('should have focus-within classes on contact info cards for keyboard focus parity', async ({ page }) => {
+    const waCard = page.locator('.group.relative:has(#phone-text)');
+    const labCard = page.locator('.group.relative:has(#address-text)');
+    const horarioCard = page.locator('#horario-card');
+
+    await expect(waCard).toHaveClass(/focus-within:bg-off-white/);
+    await expect(waCard).toHaveClass(/focus-within:border-border/);
+
+    await expect(labCard).toHaveClass(/focus-within:bg-off-white/);
+    await expect(labCard).toHaveClass(/focus-within:border-border/);
+
+    await expect(horarioCard).toHaveClass(/focus-within:bg-off-white/);
+    await expect(horarioCard).toHaveClass(/focus-within:border-border/);
+  });
 });
