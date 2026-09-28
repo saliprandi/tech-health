@@ -205,6 +205,30 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		const shareTicketIcon = document.getElementById('share-ticket-icon-use');
 		const copyTicketAnnouncement = document.getElementById('copy-ticket-announcement');
 
+		// Performance Optimization: Cache result section DOM element references in initialization scope to eliminate redundant DOM queries on status render
+		const resTicketEl = document.getElementById('result-ticket-number');
+		const resBadgeEl = document.getElementById('result-estado-badge');
+		const resNombreEl = document.getElementById('result-nombre');
+		const resServicioEl = document.getElementById('result-servicio');
+		const resTecnicoEl = document.getElementById('result-tecnico');
+		const resFechaEl = document.getElementById('result-fecha');
+		const resIconEl = document.getElementById('result-estado-icon');
+		const resTituloEl = document.getElementById('result-estado-titulo');
+		const resDescEl = document.getElementById('result-estado-desc');
+		const resEquipoSection = document.getElementById('result-equipo-section');
+		const resEquipoEl = document.getElementById('result-equipo');
+		const resMarcaEl = document.getElementById('result-marca');
+		const resModeloEl = document.getElementById('result-modelo');
+		const resSerieEl = document.getElementById('result-serie');
+		const resDiagSection = document.getElementById('result-diagnostico-section');
+		const resDiagEl = document.getElementById('result-diagnostico');
+		const resTrabajoSection = document.getElementById('result-trabajo-section');
+		const resTrabajoEl = document.getElementById('result-trabajo');
+		const resGarantiaSection = document.getElementById('result-garantia-section');
+		const resGarantiaEl = document.getElementById('result-garantia');
+		const resHistorialEl = document.getElementById('result-historial');
+		const resHistorialSection = document.getElementById('result-historial-section');
+
 		if (!form || !input || !submitBtn) return;
 
 		const toggleClearButton = () => {
@@ -229,8 +253,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		// Copy ticket event handler
 		copyTicketBtn?.addEventListener('click', (e) => {
 			e.preventDefault();
-			const ticketEl = document.getElementById('result-ticket-number');
-			const ticketNum = ticketEl?.textContent?.trim();
+			const ticketNum = resTicketEl?.textContent?.trim();
 			if (!ticketNum || !navigator.clipboard) return;
 
 			const originalAriaLabel = copyTicketBtn.getAttribute('aria-label') || 'Copiar número de ticket al portapapeles';
@@ -254,8 +277,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		// Copy share link event handler
 		shareTicketBtn?.addEventListener('click', (e) => {
 			e.preventDefault();
-			const ticketEl = document.getElementById('result-ticket-number');
-			const ticketNum = ticketEl?.textContent?.trim();
+			const ticketNum = resTicketEl?.textContent?.trim();
 			if (!ticketNum || !navigator.clipboard) return;
 
 			const originalAriaLabel = shareTicketBtn.getAttribute('aria-label') || 'Copiar enlace directo del ticket al portapapeles';
@@ -390,88 +412,70 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			const cfg = getEstadoCfg(ticket.estado);
 
 			// Header
-			const ticketEl = document.getElementById('result-ticket-number');
-			const badgeEl = document.getElementById('result-estado-badge');
-			if (ticketEl) ticketEl.textContent = ticket.ticket_number;
-			if (badgeEl) {
-				badgeEl.textContent = cfg.titulo;
-				badgeEl.className = `px-4 py-2 rounded-full text-[14px] font-bold ${cfg.color} ${cfg.bg}`;
+			if (resTicketEl) resTicketEl.textContent = ticket.ticket_number;
+			if (resBadgeEl) {
+				resBadgeEl.textContent = cfg.titulo;
+				resBadgeEl.className = `px-4 py-2 rounded-full text-[14px] font-bold ${cfg.color} ${cfg.bg}`;
 			}
 
 			// Datos
-			const set = (id: string, val: string) => {
-				const el = document.getElementById(id);
-				if (el) el.textContent = val || '-';
-			};
-			set('result-nombre', ticket.nombre);
-			set('result-servicio', ticket.servicio);
-			set('result-tecnico', ticket.tecnico || 'Sin asignar');
-			set('result-fecha', formatDate(ticket.created_at));
+			if (resNombreEl) resNombreEl.textContent = ticket.nombre || '-';
+			if (resServicioEl) resServicioEl.textContent = ticket.servicio || '-';
+			if (resTecnicoEl) resTecnicoEl.textContent = ticket.tecnico || 'Sin asignar';
+			if (resFechaEl) resFechaEl.textContent = formatDate(ticket.created_at) || '-';
 
 			// Estado actual
-			const iconEl = document.getElementById('result-estado-icon');
-			if (iconEl) {
-				iconEl.className = `w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${cfg.bg} ${cfg.color}`;
-				iconEl.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="${cfg.icon}"></path></svg>`;
+			if (resIconEl) {
+				resIconEl.className = `w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${cfg.bg} ${cfg.color}`;
+				resIconEl.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="${cfg.icon}"></path></svg>`;
 			}
-			const tituloEl = document.getElementById('result-estado-titulo');
-			const descEl = document.getElementById('result-estado-desc');
-			if (tituloEl) tituloEl.textContent = cfg.titulo;
-			if (descEl) descEl.textContent = ticket.estado_descripcion || '';
+			if (resTituloEl) resTituloEl.textContent = cfg.titulo;
+			if (resDescEl) resDescEl.textContent = ticket.estado_descripcion || '';
 
 			// Equipo
-			const equipoSection = document.getElementById('result-equipo-section');
-			if (equipoSection) {
+			if (resEquipoSection) {
 				if (ticket.equipo) {
-					equipoSection.classList.remove('hidden');
-					set('result-equipo', ticket.equipo);
-					set('result-marca', ticket.marca);
-					set('result-modelo', ticket.modelo);
-					set('result-serie', ticket.serie);
+					resEquipoSection.classList.remove('hidden');
+					if (resEquipoEl) resEquipoEl.textContent = ticket.equipo || '-';
+					if (resMarcaEl) resMarcaEl.textContent = ticket.marca || '-';
+					if (resModeloEl) resModeloEl.textContent = ticket.modelo || '-';
+					if (resSerieEl) resSerieEl.textContent = ticket.serie || '-';
 
-					const diagSection = document.getElementById('result-diagnostico-section');
-					if (diagSection) {
+					if (resDiagSection) {
 						if (ticket.diagnostico) {
-							diagSection.classList.remove('hidden');
-							const diagEl = document.getElementById('result-diagnostico');
-							if (diagEl) diagEl.textContent = ticket.diagnostico;
+							resDiagSection.classList.remove('hidden');
+							if (resDiagEl) resDiagEl.textContent = ticket.diagnostico;
 						} else {
-							diagSection.classList.add('hidden');
+							resDiagSection.classList.add('hidden');
 						}
 					}
-					const trabajoSection = document.getElementById('result-trabajo-section');
-					if (trabajoSection) {
+					if (resTrabajoSection) {
 						if (ticket.trabajo_realizado) {
-							trabajoSection.classList.remove('hidden');
-							const trabajoEl = document.getElementById('result-trabajo');
-							if (trabajoEl) trabajoEl.textContent = ticket.trabajo_realizado;
+							resTrabajoSection.classList.remove('hidden');
+							if (resTrabajoEl) resTrabajoEl.textContent = ticket.trabajo_realizado;
 						} else {
-							trabajoSection.classList.add('hidden');
+							resTrabajoSection.classList.add('hidden');
 						}
 					}
-					const garantiaSection = document.getElementById('result-garantia-section');
-					if (garantiaSection) {
+					if (resGarantiaSection) {
 						if (ticket.garantia_vence) {
-							garantiaSection.classList.remove('hidden');
-							const garantiaEl = document.getElementById('result-garantia');
-							if (garantiaEl) garantiaEl.textContent = formatDate(ticket.garantia_vence);
+							resGarantiaSection.classList.remove('hidden');
+							if (resGarantiaEl) resGarantiaEl.textContent = formatDate(ticket.garantia_vence);
 						} else {
-							garantiaSection.classList.add('hidden');
+							resGarantiaSection.classList.add('hidden');
 						}
 					}
 				} else {
-					equipoSection.classList.add('hidden');
+					resEquipoSection.classList.add('hidden');
 				}
 			}
 
 			// Historial
-			const historialEl = document.getElementById('result-historial');
-			const historialSection = document.getElementById('result-historial-section');
-			if (historialEl) {
+			if (resHistorialEl) {
 				if (historial.length === 0) {
-					historialEl.innerHTML = '<p class="text-text-soft text-[14px]">Sin cambios registrados</p>';
+					resHistorialEl.innerHTML = '<p class="text-text-soft text-[14px]">Sin cambios registrados</p>';
 				} else {
-					historialEl.innerHTML = historial.map((h: any) => {
+					resHistorialEl.innerHTML = historial.map((h: any) => {
 						const cfgAnt = getEstadoCfg(h.estado_anterior);
 						const cfgNuevo = getEstadoCfg(h.estado_nuevo);
 						const nota = h.nota ? `<div class="text-[13px] text-navy mt-1 italic">"${escapeHtml(h.nota)}"</div>` : '';
@@ -495,10 +499,10 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					}).join('');
 				}
 			}
-			if (historialSection && historial.length === 0) {
-				historialSection.classList.add('hidden');
-			} else if (historialSection) {
-				historialSection.classList.remove('hidden');
+			if (resHistorialSection && historial.length === 0) {
+				resHistorialSection.classList.add('hidden');
+			} else if (resHistorialSection) {
+				resHistorialSection.classList.remove('hidden');
 			}
 
 			// Actualizar URL para compartir/guardar en marcadores

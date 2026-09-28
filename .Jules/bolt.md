@@ -1,0 +1,3 @@
+## 2026-03-30 - Cache Result DOM References in Status Lookup
+**Learning:** Performing multiple `document.getElementById` queries inside dynamic rendering functions (like status result display handlers) causes repetitive DOM tree traversals on every render update. Pre-caching DOM element references once in the component script's initialization/IIFE scope eliminates DOM lookup overhead and simplifies element access across handlers.
+**Action:** In client-side Astro component scripts with dynamic render functions, pre-query and cache all target DOM element references in the module initialization scope rather than calling `document.getElementById` inside event handlers or render loops.
