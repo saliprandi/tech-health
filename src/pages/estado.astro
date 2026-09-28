@@ -67,8 +67,12 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 							<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
 						</svg>
 						<span id="estado-submit-text">Consultar estado</span>
+						<svg id="estado-arrow" class="w-4 h-4 group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+						</svg>
 					</button>
 				</form>
+				<div id="estado-announcement" class="sr-only" aria-live="polite"></div>
 				<div id="estado-error" role="alert" aria-live="assertive" class="hidden mt-4 p-4 bg-red-500/20 border border-red-500/30 rounded-[8px] text-red-200 text-[14px] font-body"></div>
 			</div>
 
@@ -194,6 +198,8 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		const submitBtn = document.getElementById('estado-submit') as HTMLButtonElement | null;
 		const submitText = document.getElementById('estado-submit-text');
 		const spinner = document.getElementById('estado-spinner');
+		const arrowIcon = document.getElementById('estado-arrow');
+		const announcement = document.getElementById('estado-announcement');
 		const errorDiv = document.getElementById('estado-error');
 		const resultDiv = document.getElementById('estado-result');
 		const nuevaConsultaBtn = document.getElementById('nueva-consulta');
@@ -341,7 +347,9 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 
 			// UI: loading
 			submitText.textContent = 'Consultando...';
+			if (announcement) announcement.textContent = 'Consultando estado de ticket...';
 			spinner.classList.remove('hidden');
+			arrowIcon?.classList.add('hidden');
 			submitBtn.disabled = true;
 			submitBtn.setAttribute('aria-busy', 'true');
 			submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
@@ -377,7 +385,9 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 				}
 			} finally {
 				submitText.textContent = 'Consultar estado';
+				if (announcement) announcement.textContent = '';
 				spinner.classList.add('hidden');
+				arrowIcon?.classList.remove('hidden');
 				submitBtn.disabled = false;
 				submitBtn.removeAttribute('aria-busy');
 				submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
@@ -522,6 +532,20 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			}
 			if (errorDiv && !errorDiv.classList.contains('hidden')) {
 				errorDiv.classList.add('hidden');
+			}
+		});
+
+		input.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape' && input.value) {
+				input.value = '';
+				input.removeAttribute('aria-invalid');
+				toggleClearButton();
+				errorDiv?.classList.add('hidden');
+				resultDiv?.classList.add('hidden');
+				if (announcement) announcement.textContent = 'Campo de número de ticket limpiado';
+				setTimeout(() => {
+					if (announcement) announcement.textContent = '';
+				}, 2000);
 			}
 		});
 

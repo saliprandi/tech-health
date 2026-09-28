@@ -22,10 +22,17 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await expect(helperText).toBeVisible();
     await expect(helperText).toHaveText(/Formato: letras y números/);
 
-    // 2. Check submit button focus styling
+    // 2. Check submit button focus styling and directional arrow icon
     const submitBtn = page.locator('#estado-submit');
     await expect(submitBtn).toBeVisible();
     await expect(submitBtn).toHaveClass(/focus-visible:ring-blue-light/);
+    const arrowIcon = page.locator('#estado-arrow');
+    await expect(arrowIcon).toBeVisible();
+    await expect(arrowIcon).toHaveClass(/group-hover:translate-x-0.5/);
+
+    // 2b. Check live status announcement container
+    const announcement = page.locator('#estado-announcement');
+    await expect(announcement).toHaveAttribute('aria-live', 'polite');
 
     // 3. Check ARIA attributes on error container and result container
     const errorContainer = page.locator('#estado-error');
@@ -148,5 +155,18 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await input.pressSequentially('X');
     await expect(errorContainer).toBeHidden();
     await expect(input).not.toHaveAttribute('aria-invalid');
+  });
+
+  test('should clear ticket input on Escape key press and announce to screen reader', async ({ page }) => {
+    await page.goto('http://localhost:4321/estado');
+
+    const input = page.locator('#ticket-input');
+    await input.fill('TH-2026-5555');
+
+    const announcement = page.locator('#estado-announcement');
+    await input.press('Escape');
+
+    await expect(input).toHaveValue('');
+    await expect(announcement).toHaveText('Campo de número de ticket limpiado');
   });
 });
