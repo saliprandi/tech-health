@@ -45,3 +45,7 @@
 ## 2026-03-30 - Enlace de retorno superior (Volver arriba) accesible en pie de página
 **Learning:** En páginas de aterrizaje extensas, incorporar un enlace "Volver arriba" con ícono direccional SVG, micro-animación de elevación en `:hover`/`:focus-visible`, anillo de enfoque de alto contraste (`focus-visible:ring-2 focus-visible:ring-white/40`) y etiqueta ARIA descriptiva facilita la re-navegación fluida y accesible tanto para usuarios de teclado como de lectores de pantalla.
 **Action:** Incluir siempre un enlace de retorno superior con micro-animación e indicación ARIA clara en el bloque de enlaces rápidos del pie de página.
+
+## 2026-03-30 - Micro-UX de limpieza con Escape e indicación direccional en búsquedas de estado
+**Learning:** En formularios de consulta asíncronos (como la búsqueda de estado de ticket), permitir la tecla `Escape` en la entrada de texto para limpiar rápidamente la consulta y cerrar mensajes de error/resultado, junto con un ícono direccional SVG en el botón de envío que responda a `:hover` y `:focus-visible`, mejora de manera significativa la accesibilidad por teclado y la fluidez interactiva.
+**Action:** Equipar siempre las entradas de búsqueda con manejadores de tecla `Escape` para limpieza e incluir íconos vectoriales direccionales con transiciones en los botones principales.
