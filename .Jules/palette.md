@@ -49,3 +49,7 @@
 ## 2026-03-30 - Micro-UX de limpieza con Escape e indicación direccional en búsquedas de estado
 **Learning:** En formularios de consulta asíncronos (como la búsqueda de estado de ticket), permitir la tecla `Escape` en la entrada de texto para limpiar rápidamente la consulta y cerrar mensajes de error/resultado, junto con un ícono direccional SVG en el botón de envío que responda a `:hover` y `:focus-visible`, mejora de manera significativa la accesibilidad por teclado y la fluidez interactiva.
 **Action:** Equipar siempre las entradas de búsqueda con manejadores de tecla `Escape` para limpieza e incluir íconos vectoriales direccionales con transiciones en los botones principales.
+
+## 2026-03-30 - Elevación y respuesta micro-interactiva en tarjetas informativas con focus-within
+**Learning:** En tarjetas de contenido y listas de ventajas (como `Diferenciales.astro`), combinar transiciones de sombra de caja con micro-animaciones de desplazamiento vertical (`hover:-translate-y-1` y `focus-within:-translate-y-1`) proporciona una respuesta táctil y tridimensional idéntica tanto para interacción con ratón como para navegación por teclado.
+**Action:** Sincronizar siempre las clases `hover:-translate-y-1` y `focus-within:-translate-y-1` junto a los cambios de bordes e íconos en componentes de tarjetas interactivos.
