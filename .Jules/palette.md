@@ -49,3 +49,7 @@
 ## 2026-03-30 - Micro-UX de limpieza con Escape e indicación direccional en búsquedas de estado
 **Learning:** En formularios de consulta asíncronos (como la búsqueda de estado de ticket), permitir la tecla `Escape` en la entrada de texto para limpiar rápidamente la consulta y cerrar mensajes de error/resultado, junto con un ícono direccional SVG en el botón de envío que responda a `:hover` y `:focus-visible`, mejora de manera significativa la accesibilidad por teclado y la fluidez interactiva.
 **Action:** Equipar siempre las entradas de búsqueda con manejadores de tecla `Escape` para limpieza e incluir íconos vectoriales direccionales con transiciones en los botones principales.
+
+## 2026-03-30 - Envío mediante atajo de teclado Ctrl + Enter e indicación visual/accesible en campos multilínea
+**Learning:** Permitir a usuarios de teclado enviar formularios desde áreas de texto multilínea (`<textarea>`) mediante `Ctrl + Enter` (o `Cmd + Enter` en macOS) usando `form.requestSubmit()`, evitando múltiples tabulaciones hasta el botón de envío. Acompañar el campo con una pista sutil ("Ctrl + Enter para enviar") vinculada a través de `aria-describedby` asegura que los lectores de pantalla anuncien el atajo al enfocar el control.
+**Action:** Implementar siempre manejadores de `keydown` para `Ctrl/Cmd + Enter` en formularios con campos `<textarea>` e indicar la disponibilidad del atajo de forma accesible usando `aria-describedby`.

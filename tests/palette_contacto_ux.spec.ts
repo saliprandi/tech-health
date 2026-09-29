@@ -80,4 +80,26 @@ test.describe('Contacto UX Enhancements', () => {
     await expect(horarioCard).toHaveClass(/focus-within:bg-off-white/);
     await expect(horarioCard).toHaveClass(/focus-within:border-border/);
   });
+
+  test('should support Ctrl+Enter shortcut in message textarea and display accessible hint', async ({ page }) => {
+    const textarea = page.locator('#f-desc');
+    const ctrlHint = page.locator('#ctrl-enter-hint');
+    const submitBtnText = page.locator('#f-submit-text');
+
+    // Verify aria-describedby and hint text
+    await expect(textarea).toHaveAttribute('aria-describedby', /ctrl-enter-hint/);
+    await expect(ctrlHint).toHaveText('Ctrl + Enter para enviar');
+
+    // Fill form fields
+    await page.locator('#f-nombre').fill('Carlos Lopez');
+    await page.locator('#f-tel').fill('3811234567');
+    await textarea.fill('Consulta sobre mantenimiento preventivo');
+
+    // Focus textarea and press Control+Enter
+    await textarea.focus();
+    await page.keyboard.press('Control+Enter');
+
+    // Verify form submitted via keyboard shortcut
+    await expect(submitBtnText).toHaveText('Redirigiendo...');
+  });
 });
