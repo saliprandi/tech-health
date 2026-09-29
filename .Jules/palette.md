@@ -49,3 +49,7 @@
 ## 2026-03-30 - Micro-UX de limpieza con Escape e indicación direccional en búsquedas de estado
 **Learning:** En formularios de consulta asíncronos (como la búsqueda de estado de ticket), permitir la tecla `Escape` en la entrada de texto para limpiar rápidamente la consulta y cerrar mensajes de error/resultado, junto con un ícono direccional SVG en el botón de envío que responda a `:hover` y `:focus-visible`, mejora de manera significativa la accesibilidad por teclado y la fluidez interactiva.
 **Action:** Equipar siempre las entradas de búsqueda con manejadores de tecla `Escape` para limpieza e incluir íconos vectoriales direccionales con transiciones en los botones principales.
+
+## 2026-03-30 - Atributo aria-busy e itinerario de enlace seguro en botones de acción principales
+**Learning:** Cuando un enlace con aspecto de botón (`<a class="btn-primary">`) desencadena acciones de redirección externa con retroalimentación en pantalla, no actualizar `aria-busy="true"` priva a los lectores de pantalla de la señal de procesamiento en curso. Además, apoyarse únicamente en `window.open(url, '_blank', 'noopener,noreferrer')` puede fallar silenciosamente en navegadores móviles o bloqueadores de ventanas emergentes.
+**Action:** Togglear `aria-busy="true"` sincrónicamente en eventos de click y emplear un fallback explícito (`const win = window.open(...); if (win) win.opener = null; else window.location.href = url;`) para garantizar redirección fluida sin bloqueos silenciosos.
