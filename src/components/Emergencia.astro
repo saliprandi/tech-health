@@ -39,6 +39,9 @@ const { emergencia, contacto } = CONFIG;
               <use href="#icon-whatsapp" />
             </svg>
             <span id="emergencia-cta-text">{emergencia.cta}</span>
+            <svg class="w-4 h-4 text-navy/70 group-hover:text-blue group-focus-visible:text-blue group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" aria-hidden="true">
+              <use href="#icon-external" />
+            </svg>
             <span id="emergencia-cta-announcement" class="sr-only" aria-live="polite"></span>
           </a>
         </div>
@@ -64,7 +67,12 @@ const { emergencia, contacto } = CONFIG;
 
         const href = cta.getAttribute('href');
         if (href && href.startsWith('https://wa.me/')) {
-          window.open(href, '_blank', 'noopener,noreferrer');
+          const openedWin = window.open(href, '_blank');
+          if (openedWin) {
+            openedWin.opener = null;
+          } else {
+            window.location.href = href;
+          }
         }
 
         setTimeout(() => {
