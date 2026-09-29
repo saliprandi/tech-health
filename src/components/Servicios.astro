@@ -205,7 +205,12 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
           const href = cta.getAttribute('href');
           if (href) {
-            window.open(href, '_blank', 'noopener,noreferrer');
+            const openedWin = window.open(href, '_blank');
+            if (openedWin) {
+              openedWin.opener = null;
+            } else {
+              window.location.href = href;
+            }
           }
 
           setTimeout(() => {
