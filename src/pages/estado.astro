@@ -341,9 +341,18 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 				return;
 			}
 
-			// Security: Limit ticket query length to 30 characters to prevent DoS and oversized URL query parameters
+			// Security: Limit ticket query length and validate against whitelist regex to prevent DoS, malformed parameters, and injection attacks
+			const TICKET_REGEX = /^[A-Z0-9\-_]{1,30}$/;
 			const ticketNumber = input.value.replace(/\s+/g, '').toUpperCase().slice(0, 30);
-			if (!ticketNumber) return;
+			if (!ticketNumber || !TICKET_REGEX.test(ticketNumber)) {
+				if (errorDiv) {
+					errorDiv.textContent = 'Formato de ticket inválido. Ingrese letras, números o guiones (ej. TH-2026-1234).';
+					errorDiv.classList.remove('hidden');
+					errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+				}
+				input.setAttribute('aria-invalid', 'true');
+				return;
+			}
 
 			// UI: loading
 			submitText.textContent = 'Consultando...';
