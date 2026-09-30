@@ -6,7 +6,7 @@ test.describe('Footer Back to Top UX', () => {
 
     const backToTopLink = page.locator('footer a[href="#hero"]');
     await expect(backToTopLink).toBeVisible();
-    await expect(backToTopLink).toHaveAttribute('aria-label', 'Volver al inicio de la página');
+    await expect(backToTopLink).toHaveAttribute('aria-label', 'Volver arriba: ir al inicio de la página');
     await expect(backToTopLink).toContainText('Volver arriba');
 
     // Verify SVG icon is hidden from screen readers
