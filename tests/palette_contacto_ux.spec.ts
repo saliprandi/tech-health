@@ -80,4 +80,24 @@ test.describe('Contacto UX Enhancements', () => {
     await expect(horarioCard).toHaveClass(/focus-within:bg-off-white/);
     await expect(horarioCard).toHaveClass(/focus-within:border-border/);
   });
+
+  test('should display visual hint and submit form on Ctrl+Enter in textarea', async ({ page }) => {
+    const hint = page.locator('#f-desc-hint');
+    const textarea = page.locator('#f-desc');
+    const submitBtnText = page.locator('#f-submit-text');
+
+    // Visual hint check
+    await expect(hint).toHaveText('Ctrl + Enter para enviar');
+
+    // Fill valid form inputs
+    await page.locator('#f-nombre').fill('Carlos Lopez');
+    await page.locator('#f-tel').fill('+54 381 9876543');
+    await textarea.fill('Consulta enviada mediante Ctrl+Enter');
+
+    // Press Control+Enter in textarea
+    await textarea.press('Control+Enter');
+
+    // Verify submission triggered submit button state update
+    await expect(submitBtnText).toHaveText('Redirigiendo...');
+  });
 });
