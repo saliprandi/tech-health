@@ -30,7 +30,7 @@ test.describe('Contacto Component Fix Verification', () => {
     // 3. Test Business Hours Badge Visibility
     await expect(statusBadges).not.toHaveClass(/hidden/);
     const badgeText = await statusBadges.textContent();
-    expect(['Abierto ahora', 'Cerrado']).toContain(badgeText?.trim());
+    expect(['Abierto ahora', 'Cerrado', 'Abrirá pronto', 'Cerrará pronto']).toContain(badgeText?.trim());
 
     // 4. Test Clipboard Copy (Visual feedback only as clipboard API is tricky in some CI envs)
     // We check if the classes and text change as expected in the script

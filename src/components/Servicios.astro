@@ -104,7 +104,14 @@ const modalData = CONFIG.servicios.map(servicio => ({
 
       const modalDataRaw = (grid as HTMLElement).dataset.modalData;
       const whatsappNumber = (grid as HTMLElement).dataset.whatsapp;
-      const modalData = modalDataRaw ? JSON.parse(modalDataRaw) : [];
+      let modalData: any[] = [];
+      if (modalDataRaw) {
+        try {
+          modalData = JSON.parse(modalDataRaw);
+        } catch {
+          modalData = [];
+        }
+      }
 
       let isModalOpen = false;
       let lastFocusedElement: HTMLElement | null = null;

@@ -411,9 +411,11 @@ import { CONFIG } from '../data/config';
               body: payload,
               signal: AbortSignal.timeout(4000),
             });
-            const data = await res.json();
-            if (data && data.ticket_number) {
-              ticketNumber = data.ticket_number;
+            if (res.ok) {
+              const data = await res.json();
+              if (data && data.ticket_number) {
+                ticketNumber = data.ticket_number;
+              }
             }
           } catch {
             // Silencioso: si el webhook falla, igual abre WhatsApp
