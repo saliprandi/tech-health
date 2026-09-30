@@ -80,4 +80,26 @@ test.describe('Contacto UX Enhancements', () => {
     await expect(horarioCard).toHaveClass(/focus-within:bg-off-white/);
     await expect(horarioCard).toHaveClass(/focus-within:border-border/);
   });
+
+  test('should submit form on Ctrl+Enter in textarea and display loading spinner', async ({ page }) => {
+    const hint = page.locator('#f-desc-hint');
+    await expect(hint).toHaveText('Ctrl + Enter para enviar');
+
+    await page.locator('#f-nombre').fill('Test User');
+    await page.locator('#f-tel').fill('123456789');
+
+    const textarea = page.locator('#f-desc');
+    await textarea.fill('Consulta de prueba por teclado');
+
+    const submitBtnText = page.locator('#f-submit-text');
+    const spinner = page.locator('#f-submit-spinner');
+    const whatsappIcon = page.locator('#f-submit-icon');
+
+    // Trigger Ctrl+Enter shortcut in textarea
+    await textarea.press('Control+Enter');
+
+    await expect(submitBtnText).toHaveText('Redirigiendo...');
+    await expect(spinner).not.toHaveClass(/hidden/);
+    await expect(whatsappIcon).toHaveClass(/hidden/);
+  });
 });
