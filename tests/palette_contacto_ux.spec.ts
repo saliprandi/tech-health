@@ -80,4 +80,25 @@ test.describe('Contacto UX Enhancements', () => {
     await expect(horarioCard).toHaveClass(/focus-within:bg-off-white/);
     await expect(horarioCard).toHaveClass(/focus-within:border-border/);
   });
+
+  test('should submit form when pressing Ctrl+Enter in textarea and announce hint via aria-describedby', async ({ page }) => {
+    const textarea = page.locator('#f-desc');
+    const hint = page.locator('#f-desc-hint');
+    const submitBtnText = page.locator('#f-submit-text');
+
+    // 1. Check visual hint and aria-describedby
+    await expect(hint).toHaveText('Ctrl + Enter para enviar');
+    await expect(textarea).toHaveAttribute('aria-describedby', /f-desc-hint/);
+
+    // 2. Fill required fields
+    await page.locator('#f-nombre').fill('Carlos Perez');
+    await page.locator('#f-tel').fill('3811234567');
+    await textarea.fill('Consulta urgente sobre equipamiento electromédico.');
+
+    // 3. Press Control+Enter inside textarea
+    await textarea.press('Control+Enter');
+
+    // 4. Verify submission feedback
+    await expect(submitBtnText).toHaveText('Redirigiendo...');
+  });
 });
