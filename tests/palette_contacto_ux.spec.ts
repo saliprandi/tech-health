@@ -80,4 +80,19 @@ test.describe('Contacto UX Enhancements', () => {
     await expect(horarioCard).toHaveClass(/focus-within:bg-off-white/);
     await expect(horarioCard).toHaveClass(/focus-within:border-border/);
   });
+
+  test('should support Ctrl + Enter keyboard submission and include shortcut hint description', async ({ page }) => {
+    const textarea = page.locator('#f-desc');
+    const shortcutHint = page.locator('#f-desc-shortcut');
+    const nameInput = page.locator('#f-nombre');
+
+    await expect(shortcutHint).toContainText('Ctrl + Enter para enviar');
+    await expect(textarea).toHaveAttribute('aria-describedby', /f-desc-shortcut/);
+
+    await textarea.focus();
+    await textarea.press('Control+Enter');
+
+    // Submitting form without required fields triggers validation setting aria-invalid
+    await expect(nameInput).toHaveAttribute('aria-invalid', 'true');
+  });
 });
