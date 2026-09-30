@@ -53,3 +53,7 @@
 ## 2026-03-30 - Paridad de affordance direccional en botones de acción prioritaria (CTA de emergencia)
 **Learning:** Incorporar un ícono vectorial de flecha/chevron direccional (`aria-hidden="true"`) con micro-animaciones coordinadas (`group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-all duration-300`) en botones de llamada a la acción prioritarios da una pista visual direccional clara que refuerza la intención de avance o redirección tanto para navegación con ratón como por teclado.
 **Action:** Acompañar siempre los botones principales de llamada a la acción con un ícono direccional SVG y animaciones pareadas de desplazar a la derecha (`translate-x-1`) en estados `:hover` y `:focus-visible`.
+
+## 2026-03-30 - Micro-UX de escalado interactivo y estado aria-busy en CTA principal
+**Learning:** Equipar íconos vectoriales en botones de llamada a la acción principales (CTA Hero) con micro-animaciones de escalado suave (`group-hover:scale-110 group-focus-visible:scale-110 transition-transform duration-300`), junto con etiquetado explícito `aria-label` y la activación dinámica del atributo WAI-ARIA `aria-busy="true"` durante eventos de redirección, mejora drásticamente la percepción táctil y la accesibilidad para usuarios de lectores de pantalla.
+**Action:** Sincronizar siempre efectos de escala en íconos SVG de CTAs principales en hover/focus-visible y activar `aria-busy="true"` en botones interactivos durante redirecciones o llamadas asíncronas.
