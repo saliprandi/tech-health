@@ -53,3 +53,7 @@
 ## 2026-03-30 - Paridad de affordance direccional en botones de acción prioritaria (CTA de emergencia)
 **Learning:** Incorporar un ícono vectorial de flecha/chevron direccional (`aria-hidden="true"`) con micro-animaciones coordinadas (`group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-all duration-300`) en botones de llamada a la acción prioritarios da una pista visual direccional clara que refuerza la intención de avance o redirección tanto para navegación con ratón como por teclado.
 **Action:** Acompañar siempre los botones principales de llamada a la acción con un ícono direccional SVG y animaciones pareadas de desplazar a la derecha (`translate-x-1`) en estados `:hover` y `:focus-visible`.
+
+## 2026-03-30 - Atajo de teclado Ctrl + Enter e indicación descriptiva accesible en áreas de texto
+**Learning:** En formularios de contacto multilínea, admitir el envío directo mediante `Ctrl + Enter` (o `Cmd + Enter`) en `<textarea>` con `e.ctrlKey || e.metaKey` e invocar `form.requestSubmit()` mejora la productividad del usuario sin eludir las validaciones HTML5. Acompañar el campo con una pista visual sutil (`Ctrl + Enter para enviar`) asociada a la entrada mediante `aria-describedby` garantiza que la funcionalidad sea descubrible y anunciada por lectores de pantalla.
+**Action:** Equipar las áreas de texto de formularios con escuchadores de `keydown` para `Ctrl + Enter` e interconectar pistas contextuales visibles mediante `aria-describedby`.
