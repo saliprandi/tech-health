@@ -1,0 +1,3 @@
+## 2026-03-31 - FAQ Accordion State Tracking Optimization
+**Learning:** In interactive accordion scripts (such as `src/components/FAQ.astro`), iterating through all DOM items (`items.forEach`) and querying `querySelector('.faq-trigger')` on every toggle event creates unnecessary $O(N)$ DOM query overhead. Storing references to the currently active trigger, container, and icon in closure variables inside `initFAQ()` allows immediate $O(1)$ toggling and closing of active accordion panels without DOM iteration or querying.
+**Action:** Always maintain closure scope references to active UI elements in single-open accordion/collapsible components to achieve $O(1)$ state transitions on toggle events.
