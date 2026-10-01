@@ -404,8 +404,11 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 		};
 
 		const displayResult = (data: any) => {
+			if (!data || typeof data !== 'object' || !data.ticket || typeof data.ticket !== 'object') {
+				throw new Error('Respuesta de ticket malformada o incompleta.');
+			}
 			const ticket = data.ticket;
-			const historial = data.historial || [];
+			const historial = Array.isArray(data.historial) ? data.historial : [];
 			const cfg = getEstadoCfg(ticket.estado);
 
 			// Header
