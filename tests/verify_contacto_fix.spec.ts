@@ -52,6 +52,11 @@ test.describe('Contacto Component Fix Verification', () => {
   });
 
   test('should show redirection feedback and loading spinner on form submit', async ({ page }) => {
+    // Intercept window.open to prevent popup navigation from unloading/changing page context
+    await page.addInitScript(() => {
+      window.open = () => null;
+    });
+
     const submitBtn = page.locator('#f-submit');
     const submitBtnText = page.locator('#f-submit-text');
     const submitSpinner = page.locator('#f-submit-spinner');
