@@ -1,0 +1,3 @@
+## 2026-03-31 - Accordion Active State Tracking for O(1) Toggles
+**Learning:** In dynamic accordion components (like `FAQ.astro`), looping through all item nodes on every click to collapse inactive items (`items.forEach(otherItem => { otherItem.querySelector(...) })`) introduces $O(N)$ DOM query overhead per toggle. Storing references to the currently active element (`activeTrigger`, `activeContainer`, `activeIcon`) inside the component's closure scope allows closing the previously active item in $O(1)$ constant time without any DOM queries or list iterations.
+**Action:** When implementing accordions or single-expanded UI patterns, encapsulate active component references within the initialization closure to bypass redundant DOM queries on interaction.
