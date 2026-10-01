@@ -57,3 +57,7 @@
 ## 2026-03-30 - Atajo de teclado Ctrl + Enter e indicación descriptiva accesible en áreas de texto
 **Learning:** En formularios de contacto multilínea, admitir el envío directo mediante `Ctrl + Enter` (o `Cmd + Enter`) en `<textarea>` con `e.ctrlKey || e.metaKey` e invocar `form.requestSubmit()` mejora la productividad del usuario sin eludir las validaciones HTML5. Acompañar el campo con una pista visual sutil (`Ctrl + Enter para enviar`) asociada a la entrada mediante `aria-describedby` garantiza que la funcionalidad sea descubrible y anunciada por lectores de pantalla.
 **Action:** Equipar las áreas de texto de formularios con escuchadores de `keydown` para `Ctrl + Enter` e interconectar pistas contextuales visibles mediante `aria-describedby`.
+
+## 2026-03-30 - Indicador de foco de alto contraste en botones secundarios sobre fondo claro
+**Learning:** Los botones secundarios (`.btn-secondary`) situados sobre fondos claros (`bg-off-white`) deben incluir anillos de foco explícitos con contraste adecuado (`outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2`) para asegurar que la navegación por teclado resalte claramente el control sin depender únicamente del cambio sutil de color de fondo o borde.
+**Action:** Especificar siempre `focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2` en botones con la clase `.btn-secondary`.
