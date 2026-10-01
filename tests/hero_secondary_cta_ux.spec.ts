@@ -1,8 +1,22 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Hero Secondary CTA UX', () => {
+test.describe('Hero CTA UX & Directional Icons', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:4321');
+  });
+
+  test('should render primary CTA button with directional arrow icon and group hover/focus micro-animation', async ({ page }) => {
+    const primaryBtn = page.locator('#hero-cta');
+
+    await expect(primaryBtn).toBeVisible();
+    await expect(primaryBtn).toContainText('Solicitar servicio');
+    await expect(primaryBtn).toHaveClass(/group/);
+
+    const arrowIcon = primaryBtn.locator('svg').filter({ has: page.locator('path[d="M9 5l7 7-7 7"]') });
+    await expect(arrowIcon).toBeVisible();
+    await expect(arrowIcon).toHaveAttribute('aria-hidden', 'true');
+    await expect(arrowIcon).toHaveClass(/group-hover:translate-x-1/);
+    await expect(arrowIcon).toHaveClass(/group-focus-visible:translate-x-1/);
   });
 
   test('should render secondary CTA button with directional chevron icon and group hover styling', async ({ page }) => {
