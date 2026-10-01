@@ -57,3 +57,7 @@
 ## 2026-03-30 - Atajo de teclado Ctrl + Enter e indicación descriptiva accesible en áreas de texto
 **Learning:** En formularios de contacto multilínea, admitir el envío directo mediante `Ctrl + Enter` (o `Cmd + Enter`) en `<textarea>` con `e.ctrlKey || e.metaKey` e invocar `form.requestSubmit()` mejora la productividad del usuario sin eludir las validaciones HTML5. Acompañar el campo con una pista visual sutil (`Ctrl + Enter para enviar`) asociada a la entrada mediante `aria-describedby` garantiza que la funcionalidad sea descubrible y anunciada por lectores de pantalla.
 **Action:** Equipar las áreas de texto de formularios con escuchadores de `keydown` para `Ctrl + Enter` e interconectar pistas contextuales visibles mediante `aria-describedby`.
+
+## 2026-03-30 - Micro-UX de elevación y resaltado focus-within en tarjetas informativas de diferenciales
+**Learning:** Las tarjetas informativas con contenedor `<li>` o `<div>` que responden a gestos de deslizamiento con el ratón (`hover:-translate-y-1`) deben combinar transiciones suaves con soporte `focus-within:-translate-y-1` y anillos de enfoque (`focus-within:ring-2 focus-within:ring-blue focus-within:ring-offset-2`) para garantizar retroalimentación idéntica cuando contengan o reciban eventos de foco.
+**Action:** Emparejar siempre utilidades `hover:-translate-y-1` con `focus-within:-translate-y-1` y anillos de enfoque de contraste adecuado en tarjetas informativas del sistema de diseño.
