@@ -224,7 +224,8 @@ import { CONFIG } from '../data/config';
         }
 
         const href = cta.getAttribute('href');
-        if (href) {
+        // Security Hardening: Validate URL origin to prevent open redirect/malicious URL execution
+        if (href && href.startsWith('https://wa.me/')) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 
