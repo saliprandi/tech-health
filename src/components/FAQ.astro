@@ -56,10 +56,15 @@ import { CONFIG } from '../data/config';
 <script>
   (function() {
     function initFAQ() {
-      const items = document.querySelectorAll('.faq-item');
-      if (!items.length) return () => {};
+      const triggers = Array.from(document.querySelectorAll<HTMLButtonElement>('.faq-trigger'));
+      if (!triggers.length) return () => {};
 
       const transitionTimers = new Map<HTMLElement, ReturnType<typeof setTimeout>>();
+
+      // Performance Optimization: Cache active accordion references to avoid O(N) DOM query loops on every toggle event
+      let activeTrigger: HTMLButtonElement | null = null;
+      let activeContainer: HTMLElement | null = null;
+      let activeIcon: Element | null = null;
 
       const closeContainer = (container: HTMLElement) => {
         if (!container) return;
@@ -82,26 +87,22 @@ import { CONFIG } from '../data/config';
       const handleToggle = (e: Event) => {
         const trigger = e.currentTarget as HTMLButtonElement;
         const item = trigger.closest('.faq-item');
-        const container = item?.querySelector('.faq-answer-container') as HTMLElement;
-        const icon = item?.querySelector('.faq-icon');
+        const container = item?.querySelector('.faq-answer-container') as HTMLElement | null;
+        const icon = item?.querySelector('.faq-icon') || null;
         const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
 
-        items.forEach(otherItem => {
-          if (otherItem !== item) {
-            const otherTrigger = otherItem.querySelector('.faq-trigger');
-            const otherContainer = otherItem.querySelector('.faq-answer-container') as HTMLElement;
-            const otherIcon = otherItem.querySelector('.faq-icon');
-
-            if (otherTrigger?.getAttribute('aria-expanded') === 'true') {
-              otherTrigger?.setAttribute('aria-expanded', 'false');
-              otherIcon?.classList.remove('rotate-180');
-              if (otherContainer) closeContainer(otherContainer);
-            }
-          }
-        });
+        // Close previously active item directly without O(N) iteration
+        if (activeTrigger && activeTrigger !== trigger) {
+          activeTrigger.setAttribute('aria-expanded', 'false');
+          if (activeIcon) activeIcon.classList.remove('rotate-180');
+          if (activeContainer) closeContainer(activeContainer);
+          activeTrigger = null;
+          activeContainer = null;
+          activeIcon = null;
+        }
 
         trigger.setAttribute('aria-expanded', (!isExpanded).toString());
-        icon?.classList.toggle('rotate-180', !isExpanded);
+        if (icon) icon.classList.toggle('rotate-180', !isExpanded);
 
         if (container) {
           if (transitionTimers.has(container)) {
@@ -115,13 +116,18 @@ import { CONFIG } from '../data/config';
             container.classList.remove('opacity-0');
             const height = container.scrollHeight;
             container.style.height = `${height}px`;
+
+            activeTrigger = trigger;
+            activeContainer = container;
+            activeIcon = icon;
           } else {
             closeContainer(container);
+            activeTrigger = null;
+            activeContainer = null;
+            activeIcon = null;
           }
         }
       };
-
-      const triggers = Array.from(document.querySelectorAll<HTMLButtonElement>('.faq-trigger'));
 
       const handleKeydown = (e: KeyboardEvent) => {
         const target = e.currentTarget as HTMLButtonElement;
