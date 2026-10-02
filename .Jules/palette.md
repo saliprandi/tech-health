@@ -61,3 +61,7 @@
 ## 2026-03-30 - Micro-UX de elevación y resaltado focus-within en tarjetas informativas de diferenciales
 **Learning:** Las tarjetas informativas con contenedor `<li>` o `<div>` que responden a gestos de deslizamiento con el ratón (`hover:-translate-y-1`) deben combinar transiciones suaves con soporte `focus-within:-translate-y-1` y anillos de enfoque (`focus-within:ring-2 focus-within:ring-blue focus-within:ring-offset-2`) para garantizar retroalimentación idéntica cuando contengan o reciban eventos de foco.
 **Action:** Emparejar siempre utilidades `hover:-translate-y-1` con `focus-within:-translate-y-1` y anillos de enfoque de contraste adecuado en tarjetas informativas del sistema de diseño.
+
+## 2026-03-30 - Recuperación de errores con enfoque y selección automática en campos de búsqueda
+**Learning:** En formularios de consulta asíncrona o búsqueda de estado (ej. `estado.astro`), invocar `input.focus()` y `input.select()` tras detectar errores de validación o fallos en la consulta permite a usuarios de teclado, lectores de pantalla y pantallas táctiles corregir inmediatamente su entrada escribiendo de nuevo, sin requerir pulsaciones repetidas de retroceso o selección manual.
+**Action:** Invocar siempre `input.focus()` y `input.select()` en los bloques de captura de errores de formularios de búsqueda para ofrecer una recuperación de errores fluida.

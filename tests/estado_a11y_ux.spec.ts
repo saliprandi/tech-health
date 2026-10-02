@@ -150,6 +150,7 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await expect(errorContainer).toBeVisible();
     await expect(errorContainer).toHaveText('Ticket no encontrado');
     await expect(input).toHaveAttribute('aria-invalid', 'true');
+    await expect(input).toBeFocused();
 
     // Verify dynamic error dismissal and aria-invalid cleanup on typing
     await input.pressSequentially('X');
