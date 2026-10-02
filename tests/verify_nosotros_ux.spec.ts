@@ -13,7 +13,7 @@ test.describe('Nosotros Section UX Enhancements', () => {
     const equipoHeading = nosotrosSection.locator('h3', { hasText: 'Nuestro Equipo' });
     await expect(equipoHeading).toBeVisible();
 
-    const teamCards = nosotrosSection.locator('div.group:has(span.font-heading)');
+    const teamCards = nosotrosSection.locator('.group:has(span.font-heading)');
     const count = await teamCards.count();
     expect(count).toBeGreaterThan(0);
 
@@ -23,7 +23,7 @@ test.describe('Nosotros Section UX Enhancements', () => {
     await expect(avatar).toHaveClass(/group-focus-within:scale-110/);
 
     // Verify value cards
-    const valueCards = nosotrosSection.locator('div.group:has(h4:has-text("Precisión técnica")), div.group:has(h4:has-text("Compromiso con la salud")), div.group:has(h4:has-text("Atención personalizada"))');
+    const valueCards = nosotrosSection.locator('.group:has(h4:has-text("Precisión técnica")), .group:has(h4:has-text("Compromiso con la salud")), .group:has(h4:has-text("Atención personalizada"))');
     await expect(valueCards).toHaveCount(3);
 
     const firstValueCard = valueCards.first();
