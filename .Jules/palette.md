@@ -61,3 +61,7 @@
 ## 2026-03-30 - Micro-UX de elevación y resaltado focus-within en tarjetas informativas de diferenciales
 **Learning:** Las tarjetas informativas con contenedor `<li>` o `<div>` que responden a gestos de deslizamiento con el ratón (`hover:-translate-y-1`) deben combinar transiciones suaves con soporte `focus-within:-translate-y-1` y anillos de enfoque (`focus-within:ring-2 focus-within:ring-blue focus-within:ring-offset-2`) para garantizar retroalimentación idéntica cuando contengan o reciban eventos de foco.
 **Action:** Emparejar siempre utilidades `hover:-translate-y-1` con `focus-within:-translate-y-1` y anillos de enfoque de contraste adecuado en tarjetas informativas del sistema de diseño.
+
+## 2026-03-30 - Atributos ARIA de estado en botones flotantes durante redirección asíncrona
+**Learning:** En botones de acción flotantes interactivos que desencadenan redirecciones externas (ej. WhatsApp en `WaFloat.astro`), deshabilitar visualmente el botón con `pointer-events-none` sin actualizar atributos ARIA mantiene el control expuesto como interactivo a lectores de pantalla. Alternar `aria-busy="true"` y `aria-disabled="true"` durante la redirección y removerlos tras la ventana de retroalimentación garantiza paridad semántica accesible.
+**Action:** Asignar `aria-busy="true"` y `aria-disabled="true"` al deshabilitar botones de acción interactivos durante redirecciones asíncronas y limpiarlos al restaurar el estado.
