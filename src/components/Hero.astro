@@ -105,7 +105,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
 
         const href = heroCta.getAttribute('href');
         // Security Hardening: Validate URL origin to prevent open redirect/malicious URL execution
-        if (href && href.startsWith('https://wa.me/')) {
+        if (href && (href.startsWith('https://wa.me/') || href.startsWith('https://api.whatsapp.com/'))) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 
