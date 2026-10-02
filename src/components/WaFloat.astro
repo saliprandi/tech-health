@@ -93,6 +93,8 @@ import { CONFIG } from '../data/config';
         showTooltip();
 
         btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        btn.setAttribute('aria-busy', 'true');
+        btn.setAttribute('aria-disabled', 'true');
 
         const href = btn.getAttribute('href');
         if (href) {
@@ -110,6 +112,8 @@ import { CONFIG } from '../data/config';
         feedbackTimer = setTimeout(() => {
           isRedirecting = false;
           btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          btn.removeAttribute('aria-busy');
+          btn.removeAttribute('aria-disabled');
           hideTooltip(true);
 
           if (restoreTimer) clearTimeout(restoreTimer);
