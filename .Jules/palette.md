@@ -61,3 +61,7 @@
 ## 2026-03-30 - Micro-UX de elevación y resaltado focus-within en tarjetas informativas de diferenciales
 **Learning:** Las tarjetas informativas con contenedor `<li>` o `<div>` que responden a gestos de deslizamiento con el ratón (`hover:-translate-y-1`) deben combinar transiciones suaves con soporte `focus-within:-translate-y-1` y anillos de enfoque (`focus-within:ring-2 focus-within:ring-blue focus-within:ring-offset-2`) para garantizar retroalimentación idéntica cuando contengan o reciban eventos de foco.
 **Action:** Emparejar siempre utilidades `hover:-translate-y-1` con `focus-within:-translate-y-1` y anillos de enfoque de contraste adecuado en tarjetas informativas del sistema de diseño.
+
+## 2026-03-30 - Elevación táctil y etiquetado ARIA en tarjetas de equipo y valores en sección Nosotros
+**Learning:** Equipar las tarjetas de integrantes de equipo y valores en la sección Nosotros con clases de micro-animación de elevación en estados de mouse y teclado (`hover:-translate-y-0.5 focus-within:-translate-y-0.5` para tarjetas de equipo, y `hover:-translate-y-1 focus-within:-translate-y-1` para tarjetas de valores) proporciona una respuesta visual homogénea y táctil. Acompañar estos contenedores con atributos `aria-label` descriptivos enriquece la estructura semántica para usuarios de tecnologías de asistencia.
+**Action:** Aplicar micro-animaciones de elevación pareadas en `:hover` y `:focus-within` en tarjetas de presentación corporativa e incorporar etiquetas `aria-label` en contenedores de elementos agrupados.
