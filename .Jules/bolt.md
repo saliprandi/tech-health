@@ -1,0 +1,3 @@
+## 2026-03-31 - O(1) Accordion Toggle Tracking in Astro Components
+**Learning:** In accordion component scripts (such as `src/components/FAQ.astro`), tracking currently active accordion elements (`activeTrigger`, `activeContainer`, `activeIcon`) inside the component initialization function scope eliminates O(N) DOM query iterations over all accordion items on toggle events while ensuring state encapsulation across page swaps.
+**Action:** When implementing expandable UI lists or accordions in client scripts, store the single active element reference in closure variables to toggle previously expanded items in O(1) time without running `querySelectorAll` or iterating through the full element list.
