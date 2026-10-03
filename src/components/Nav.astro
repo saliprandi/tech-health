@@ -224,8 +224,16 @@ import { CONFIG } from '../data/config';
         }
 
         const href = cta.getAttribute('href');
+        // Security Hardening: Validate URL scheme to prevent protocol injection / malicious script execution
         if (href) {
-          window.open(href, '_blank', 'noopener,noreferrer');
+          try {
+            const parsedUrl = new URL(href, window.location.origin);
+            if (parsedUrl.protocol === 'https:' || parsedUrl.protocol === 'http:') {
+              window.open(href, '_blank', 'noopener,noreferrer');
+            }
+          } catch {
+            // Invalid URL format
+          }
         }
 
         setTimeout(() => {

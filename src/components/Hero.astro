@@ -104,8 +104,16 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = heroCta.getAttribute('href');
+        // Security Hardening: Validate URL scheme to prevent protocol injection / malicious script execution
         if (href) {
-          window.open(href, '_blank', 'noopener,noreferrer');
+          try {
+            const parsedUrl = new URL(href, window.location.origin);
+            if (parsedUrl.protocol === 'https:' || parsedUrl.protocol === 'http:') {
+              window.open(href, '_blank', 'noopener,noreferrer');
+            }
+          } catch {
+            // Invalid URL format
+          }
         }
 
         setTimeout(() => {
