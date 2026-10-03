@@ -54,6 +54,8 @@ test.describe('Contacto Component Fix Verification', () => {
   test('should show redirection feedback on form submit', async ({ page }) => {
     const submitBtn = page.locator('#f-submit');
     const submitBtnText = page.locator('#f-submit-text');
+    const submitSpinner = page.locator('#f-submit-spinner');
+    const submitIcon = page.locator('#f-submit-icon');
 
     // Fill required fields
     await page.locator('#f-nombre').fill('Test User');
@@ -65,6 +67,8 @@ test.describe('Contacto Component Fix Verification', () => {
     await submitBtn.click();
 
     await expect(submitBtnText).toHaveText('Redirigiendo...');
+    await expect(submitSpinner).not.toHaveClass(/hidden/);
+    await expect(submitIcon).toHaveClass(/hidden/);
     await expect(submitBtn).toBeDisabled();
     await expect(submitBtn).toHaveClass(/opacity-70/);
   });
