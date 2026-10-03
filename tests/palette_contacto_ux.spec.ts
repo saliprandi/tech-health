@@ -95,4 +95,26 @@ test.describe('Contacto UX Enhancements', () => {
     // Submitting form without required fields triggers validation setting aria-invalid
     await expect(nameInput).toHaveAttribute('aria-invalid', 'true');
   });
+
+  test('should toggle animated spinner and hide static icon on form submission', async ({ page }) => {
+    const submitBtn = page.locator('#f-submit');
+    const submitSpinner = page.locator('#f-submit-spinner');
+    const submitIcon = page.locator('#f-submit-icon');
+
+    // Fill valid form
+    await page.locator('#f-nombre').fill('Test User');
+    await page.locator('#f-tel').fill('123456789');
+    await page.locator('#f-desc').fill('Consulta sobre mantenimiento');
+
+    // Initially spinner is hidden and icon is visible
+    await expect(submitSpinner).toHaveClass(/hidden/);
+    await expect(submitIcon).not.toHaveClass(/hidden/);
+
+    // Submit form
+    await submitBtn.click();
+
+    // Spinner becomes visible and icon is hidden during submit/redirection
+    await expect(submitSpinner).not.toHaveClass(/hidden/);
+    await expect(submitIcon).toHaveClass(/hidden/);
+  });
 });
