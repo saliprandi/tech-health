@@ -48,7 +48,7 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
     </div>
 
     {hasSocials && (
-      <div class="flex items-center gap-4 mb-6">
+      <div class="flex items-center gap-4 mb-6" role="group" aria-label="Redes sociales">
         {CONFIG.redes.instagram && (
           <a href={CONFIG.redes.instagram} target="_blank" rel="noopener noreferrer" class="p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-lg hover:scale-110 focus-visible:scale-110 focus-visible:ring-2 focus-visible:ring-white/40 outline-none transition-all duration-300" aria-label="Seguir en Instagram">
             <svg class="w-5 h-5" fill="currentColor" aria-hidden="true">
