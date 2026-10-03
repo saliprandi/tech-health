@@ -65,3 +65,7 @@
 ## 2026-03-30 - Recuperación de errores con enfoque y selección automática en campos de búsqueda
 **Learning:** En formularios de consulta asíncrona o búsqueda de estado (ej. `estado.astro`), invocar `input.focus()` y `input.select()` tras detectar errores de validación o fallos en la consulta permite a usuarios de teclado, lectores de pantalla y pantallas táctiles corregir inmediatamente su entrada escribiendo de nuevo, sin requerir pulsaciones repetidas de retroceso o selección manual.
 **Action:** Invocar siempre `input.focus()` y `input.select()` en los bloques de captura de errores de formularios de búsqueda para ofrecer una recuperación de errores fluida.
+
+## 2026-03-30 - Asociación accesible de tooltips flotantes y estados ARIA de redirección
+**Learning:** Los botones flotantes de acción principal (como `#wa-float-btn`) deben vincular explícitamente sus globos informativos flotantes mediante `aria-describedby` para asegurar que los lectores de pantalla anuncien la ayuda contextual al recibir foco. Además, conmutar `aria-busy="true"` y `aria-disabled="true"` durante estados de redirección asíncrona comunica de forma clara a tecnologías de asistencia que el control está procesando una acción externa.
+**Action:** Asociar siempre tooltips a botones flotantes mediante `aria-describedby` y gestionar dinámicamente los atributos `aria-busy` y `aria-disabled` durante procesos de redirección.
