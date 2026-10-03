@@ -122,12 +122,22 @@ import { CONFIG } from '../data/config';
 
       const handleClear = () => {
         input.value = '';
+        if (input.hasAttribute('aria-invalid')) {
+          input.removeAttribute('aria-invalid');
+        }
         toggleClearButton();
         if (announcement) announcement.textContent = 'Campo de número de ticket limpiado';
         input.focus();
         setTimeout(() => {
           if (announcement) announcement.textContent = '';
         }, 2000);
+      };
+
+      const handleKeydown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape' && input.value) {
+          e.preventDefault();
+          handleClear();
+        }
       };
 
       const handleSubmit = (e: Event) => {
@@ -178,12 +188,14 @@ import { CONFIG } from '../data/config';
 
       toggleClearButton();
       input.addEventListener('input', toggleClearButton);
+      input.addEventListener('keydown', handleKeydown);
       clearBtn?.addEventListener('click', handleClear);
       form.addEventListener('submit', handleSubmit);
       form.addEventListener('invalid', handleInvalid, true);
 
       return () => {
         input.removeEventListener('input', toggleClearButton);
+        input.removeEventListener('keydown', handleKeydown);
         clearBtn?.removeEventListener('click', handleClear);
         form.removeEventListener('submit', handleSubmit);
         form.removeEventListener('invalid', handleInvalid, true);

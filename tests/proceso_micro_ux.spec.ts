@@ -33,4 +33,23 @@ test.describe('Proceso Ticket Search Form Micro-UX', () => {
     await expect(submitBtn).toBeDisabled();
     await expect(announcement).toHaveText('Buscando estado de ticket...');
   });
+
+  test('clears proceso ticket input on Escape key press and announces to screen reader', async ({ page }) => {
+    const section = page.locator('#proceso');
+    await section.scrollIntoViewIfNeeded();
+
+    const input = page.locator('#proceso-ticket-input');
+    const clearBtn = page.locator('#proceso-clear-ticket-input');
+    const announcement = page.locator('#proceso-estado-announcement');
+
+    await input.fill('TH-2026-1234');
+    await expect(clearBtn).toBeVisible();
+
+    await input.press('Escape');
+
+    await expect(input).toHaveValue('');
+    await expect(clearBtn).toBeHidden();
+    await expect(input).not.toHaveAttribute('aria-invalid');
+    await expect(announcement).toHaveText('Campo de número de ticket limpiado');
+  });
 });
