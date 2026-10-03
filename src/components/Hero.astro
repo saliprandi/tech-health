@@ -104,9 +104,16 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = heroCta.getAttribute('href');
-        // Security Hardening: Validate URL origin to prevent open redirect/malicious URL execution
-        if (href && (href.startsWith('https://wa.me/') || href.startsWith('https://api.whatsapp.com/'))) {
-          window.open(href, '_blank', 'noopener,noreferrer');
+        // Security Hardening: Validate URL scheme to prevent protocol injection / malicious script execution
+        if (href) {
+          try {
+            const parsedUrl = new URL(href, window.location.origin);
+            if (parsedUrl.protocol === 'https:' || parsedUrl.protocol === 'http:') {
+              window.open(href, '_blank', 'noopener,noreferrer');
+            }
+          } catch {
+            // Invalid URL format
+          }
         }
 
         setTimeout(() => {

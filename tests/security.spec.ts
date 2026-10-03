@@ -237,13 +237,13 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
 
-test('CTA click handlers reject untrusted window.open URL destinations', async ({ page }) => {
+test('CTA click handlers reject dangerous pseudo-protocol window.open URL destinations', async ({ page }) => {
   await page.goto('http://localhost:4321/', { waitUntil: 'networkidle' });
 
-  // Tamper with href to untrusted domain
+  // Tamper with href to malicious javascript pseudo-protocol
   await page.evaluate(() => {
     const heroCta = document.getElementById('hero-cta');
-    if (heroCta) heroCta.setAttribute('href', 'https://malicious-site.com/phish');
+    if (heroCta) heroCta.setAttribute('href', 'javascript:alert(1)');
   });
 
   let popupOpened = false;
