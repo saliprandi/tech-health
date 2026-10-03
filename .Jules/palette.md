@@ -65,3 +65,7 @@
 ## 2026-03-30 - Recuperación de errores con enfoque y selección automática en campos de búsqueda
 **Learning:** En formularios de consulta asíncrona o búsqueda de estado (ej. `estado.astro`), invocar `input.focus()` y `input.select()` tras detectar errores de validación o fallos en la consulta permite a usuarios de teclado, lectores de pantalla y pantallas táctiles corregir inmediatamente su entrada escribiendo de nuevo, sin requerir pulsaciones repetidas de retroceso o selección manual.
 **Action:** Invocar siempre `input.focus()` y `input.select()` en los bloques de captura de errores de formularios de búsqueda para ofrecer una recuperación de errores fluida.
+
+## 2026-03-30 - Indicador de carga animado en envíos de formulario de contacto
+**Learning:** En botones de envío de formularios de contacto que realizan consultas asíncronas previo a una redirección (ej. generación de ticket vía webhook antes de abrir WhatsApp en `Contacto.astro`), cambiar únicamente el texto del botón sin ocultar el ícono estático priva al usuario de una indicación visual de progreso dinámica. Alternar un ícono vectorial animado (`#f-submit-spinner` con `animate-spin`) y ocultar el ícono de WhatsApp durante el procesamiento proporciona consistencia visual con otros módulos de consulta y refuerza la retroalimentación interactiva.
+**Action:** Equipar siempre los botones de envío con un ícono vectorial de carga animado (`animate-spin`) que se active en tiempo real junto con la deshabilitación temporal y atributos ARIA `aria-busy`.
