@@ -133,10 +133,17 @@ import { CONFIG } from '../data/config';
           <p class="font-body text-[12px] text-white/50 text-center">El mensaje le redirigirá a WhatsApp</p>
 
           <button type="submit" id="f-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-blue-light outline-none">
-            <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
+            <svg id="f-submit-spinner" class="hidden w-5 h-5 animate-spin text-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <svg id="f-submit-wa-icon" class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
               <use href="#icon-whatsapp" />
             </svg>
             <span id="f-submit-text">Enviar por WhatsApp</span>
+            <svg id="f-submit-arrow" class="w-4 h-4 text-navy/70 group-hover:text-navy group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
           </button>
           <div id="redirect-announcement" class="sr-only" aria-live="polite"></div>
         </form>
@@ -387,8 +394,14 @@ import { CONFIG } from '../data/config';
 
         if (submitBtn && submitBtnText) {
           isSubmitting = true;
+          const submitSpinner = document.getElementById('f-submit-spinner');
+          const submitWaIcon = document.getElementById('f-submit-wa-icon');
+          const submitArrow = document.getElementById('f-submit-arrow');
           const originalText = submitBtnText.textContent;
           submitBtnText.textContent = 'Redirigiendo...';
+          submitSpinner?.classList.remove('hidden');
+          submitWaIcon?.classList.add('hidden');
+          submitArrow?.classList.add('hidden');
           if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
           submitBtn.disabled = true;
           submitBtn.setAttribute('aria-busy', 'true');
@@ -441,6 +454,9 @@ import { CONFIG } from '../data/config';
             isSubmitting = false;
             if (submitBtnText) submitBtnText.textContent = originalText;
             if (redirectAnnouncement) redirectAnnouncement.textContent = '';
+            submitSpinner?.classList.add('hidden');
+            submitWaIcon?.classList.remove('hidden');
+            submitArrow?.classList.remove('hidden');
             if (submitBtn) {
               submitBtn.disabled = false;
               submitBtn.removeAttribute('aria-busy');
