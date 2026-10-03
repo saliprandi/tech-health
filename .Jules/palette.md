@@ -65,3 +65,7 @@
 ## 2026-03-30 - Recuperación de errores con enfoque y selección automática en campos de búsqueda
 **Learning:** En formularios de consulta asíncrona o búsqueda de estado (ej. `estado.astro`), invocar `input.focus()` y `input.select()` tras detectar errores de validación o fallos en la consulta permite a usuarios de teclado, lectores de pantalla y pantallas táctiles corregir inmediatamente su entrada escribiendo de nuevo, sin requerir pulsaciones repetidas de retroceso o selección manual.
 **Action:** Invocar siempre `input.focus()` y `input.select()` en los bloques de captura de errores de formularios de búsqueda para ofrecer una recuperación de errores fluida.
+
+## 2026-03-30 - Paridad de resaltado focus-within en insignias informativas de marcas
+**Learning:** En cuadrículas o vitrinas de marcas/logos (como `Marcas.astro`), emparejar utilidades de transformación de ratón (`group-hover:scale-105 group-hover:text-navy`) con sus equivalentes de foco (`group-focus-within:scale-105 group-focus-within:text-navy`) garantiza que usuarios asistidos por teclado o herramientas de inspección reciban retroalimentación visual idéntica al navegar por la cuadrícula.
+**Action:** Aplicar siempre reglas pareadas `group-hover:*` y `group-focus-within:*` en elementos distintivos o insignias de marcas.
