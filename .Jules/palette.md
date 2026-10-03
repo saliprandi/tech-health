@@ -64,4 +64,8 @@
 
 ## 2026-03-30 - Recuperación de errores con enfoque y selección automática en campos de búsqueda
 **Learning:** En formularios de consulta asíncrona o búsqueda de estado (ej. `estado.astro`), invocar `input.focus()` y `input.select()` tras detectar errores de validación o fallos en la consulta permite a usuarios de teclado, lectores de pantalla y pantallas táctiles corregir inmediatamente su entrada escribiendo de nuevo, sin requerir pulsaciones repetidas de retroceso o selección manual.
-**Action:** Invocar siempre `input.focus()` y `input.select()` en los bloques de captura de errores de formularios de búsqueda para ofrecer una recuperación de errores fluida.
+**Action:** Invocar siempre `input.focus()` and `input.select()` en los bloques de captura de errores de formularios de búsqueda para ofrecer una recuperación de errores fluida.
+
+## 2026-03-30 - Desambiguación accesible de puntos de referencia de navegación (nav landmark aria-labels)
+**Learning:** Cuando una aplicación web contiene múltiples elementos `<nav>` (por ejemplo, barra principal de navegación y navegación secundaria de estado o menú móvil), omitir los atributos `aria-label` hace que los lectores de pantalla anuncien simplemente "Navegación" repetidamente. Proveer etiquetas concisas e intencionales (`aria-label="Navegación principal"` y `aria-label="Navegación de consulta"`) permite a usuarios de tecnologías de asistencia identificar y saltar directamente al punto de referencia de navegación deseado.
+**Action:** Equipar siempre todos los elementos `<nav>` con atributos `aria-label` descriptivos e individualizados en aplicaciones con múltiples barras o menús de navegación.
