@@ -30,7 +30,7 @@ test.describe('Proceso Ticket Search Form Micro-UX', () => {
     await expect(spinner).toBeVisible();
     await expect(arrowIcon).toBeHidden();
     await expect(submitBtn).toHaveAttribute('aria-busy', 'true');
-    await expect(submitBtn).toBeDisabled();
+    await expect(submitBtn).toHaveAttribute('aria-disabled', 'true');
     await expect(announcement).toHaveText('Buscando estado de ticket...');
   });
 
