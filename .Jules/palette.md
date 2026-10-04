@@ -69,3 +69,7 @@
 ## 2026-03-30 - Desambiguación accesible de puntos de referencia de navegación (nav landmark aria-labels)
 **Learning:** Cuando una aplicación web contiene múltiples elementos `<nav>` (por ejemplo, barra principal de navegación y navegación secundaria de estado o menú móvil), omitir los atributos `aria-label` hace que los lectores de pantalla anuncien simplemente "Navegación" repetidamente. Proveer etiquetas concisas e intencionales (`aria-label="Navegación principal"` y `aria-label="Navegación de consulta"`) permite a usuarios de tecnologías de asistencia identificar y saltar directamente al punto de referencia de navegación deseado.
 **Action:** Equipar siempre todos los elementos `<nav>` con atributos `aria-label` descriptivos e individualizados en aplicaciones con múltiples barras o menús de navegación.
+
+## 2026-03-30 - Indicador de carga SVG animado en botones de envío de formulario de contacto
+**Learning:** Ocultar el ícono estático y desplegar un indicador de carga SVG animado (`animate-spin`) junto al cambio de texto a "Redirigiendo..." durante el procesamiento del formulario de contacto otorga una retroalimentación visual clara e inconfundible de que la acción del usuario está en progreso antes del redireccionamiento externo.
+**Action:** Equipar los botones de envío de formularios de contacto con íconos de carga animados `animate-spin` que se alternen sincrónicamente con el ícono estático y el estado `aria-busy`.
