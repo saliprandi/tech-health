@@ -229,7 +229,11 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			toggleClearButton();
 			errorDiv?.classList.add('hidden');
 			resultDiv?.classList.add('hidden');
+			if (announcement) announcement.textContent = 'Campo de número de ticket limpiado';
 			input.focus();
+			setTimeout(() => {
+				if (announcement) announcement.textContent = '';
+			}, 2000);
 		});
 
 		// Copy ticket event handler
@@ -539,7 +543,15 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			}, 100);
 		};
 
+		const handleInvalid = (e: Event) => {
+			const target = e.target as HTMLElement | null;
+			if (target) {
+				target.setAttribute('aria-invalid', 'true');
+			}
+		};
+
 		form.addEventListener('submit', handleSubmit);
+		form.addEventListener('invalid', handleInvalid, true);
 
 		input.addEventListener('input', () => {
 			toggleClearButton();
