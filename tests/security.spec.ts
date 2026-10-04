@@ -236,3 +236,23 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('CTA event handlers validate URL prefix and reject untrusted or malformed schemes before window.open', async ({ page }) => {
+  await page.goto('http://localhost:4321/', { waitUntil: 'networkidle' });
+
+  await page.evaluate(() => {
+    (window as any).__openedUrls = [];
+    window.open = (url?: string | URL) => {
+      (window as any).__openedUrls.push(String(url));
+      return null;
+    };
+  });
+
+  const heroCta = page.locator('#hero-cta');
+  await heroCta.evaluate((el) => el.setAttribute('href', 'javascript:alert("xss")'));
+  await heroCta.click();
+
+  const openedUrls = await page.evaluate(() => (window as any).__openedUrls);
+  expect(openedUrls).not.toContain('javascript:alert("xss")');
+  expect(openedUrls.length).toBe(0);
+});
