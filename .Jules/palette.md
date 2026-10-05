@@ -73,3 +73,7 @@
 ## 2026-03-30 - Semántica de lista explicita y resaltado por foco en grillas multimarca
 **Learning:** En grillas o listas de marcas donde Safari y VoiceOver eliminan la semántica de lista debido a utilidades CSS como `list-none`, incluir explícitamente `role="list"` restaura la estructura de lista accesible. Además, equipar los elementos contenedores `<li>` con micro-UX de fondo (`hover:bg-slate-50/80 focus-within:bg-slate-50/80`) y escalado pareado (`group-hover:scale-105 group-focus-within:scale-105`) garantiza que la respuesta táctil/visual sea coherente tanto con puntero como en navegación por foco sin introducir paradas muertas de teclado (`tabindex="0"` innecesarios).
 **Action:** Asignar `role="list"` en listas con `list-none` y parear siempre utilidades `hover:*` con `focus-within:*` o `group-focus-within:*` en contenedores de elementos de lista.
+
+## 2026-03-30 - Resaltado por foco accesible en tarjetas de equipo y valores
+**Learning:** Equipar las tarjetas informativas y de equipo (`Nosotros.astro`) con anillos de enfoque visibles de alto contraste (`outline-none focus-within:ring-2 focus-within:ring-blue focus-within:ring-offset-2`) asegura que cualquier elemento interactivo o foco interno sea claramente perceptible para los usuarios de teclado, eliminando la disparidad con los estados de desplazamiento por ratón (`hover`).
+**Action:** Incluir siempre `focus-within:ring-2 focus-within:ring-blue focus-within:ring-offset-2` en tarjetas contenedoras con efectos interactivos o de elevación.

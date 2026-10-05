@@ -20,8 +20,14 @@ test.describe('Nosotros Section UX Enhancements', () => {
     const count = await teamCards.count();
     expect(count).toBeGreaterThan(0);
 
+    // Verify team member card focus-within ring classes
+    const firstTeamCard = teamCards.first();
+    await expect(firstTeamCard).toHaveClass(/focus-within:ring-2/);
+    await expect(firstTeamCard).toHaveClass(/focus-within:ring-blue/);
+    await expect(firstTeamCard).toHaveClass(/focus-within:ring-offset-2/);
+
     // Verify avatar scaling classes exist
-    const avatar = teamCards.first().locator('div').first();
+    const avatar = firstTeamCard.locator('div').first();
     await expect(avatar).toHaveClass(/group-hover:scale-110/);
     await expect(avatar).toHaveClass(/group-focus-within:scale-110/);
 
@@ -37,6 +43,9 @@ test.describe('Nosotros Section UX Enhancements', () => {
     await expect(firstValueCard).toHaveClass(/focus-within:shadow-card-hover/);
     await expect(firstValueCard).toHaveClass(/hover:-translate-y-1/);
     await expect(firstValueCard).toHaveClass(/focus-within:-translate-y-1/);
+    await expect(firstValueCard).toHaveClass(/focus-within:ring-2/);
+    await expect(firstValueCard).toHaveClass(/focus-within:ring-blue/);
+    await expect(firstValueCard).toHaveClass(/focus-within:ring-offset-2/);
 
     const numberBadge = firstValueCard.locator('div', { hasText: '01' });
     await expect(numberBadge).toHaveClass(/group-hover:text-blue\/20/);
