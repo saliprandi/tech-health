@@ -58,8 +58,9 @@ test.describe('Contacto UX Enhancements', () => {
     // Submit empty form to trigger validation
     await submitBtn.click();
 
-    // Verify aria-invalid is set on required field
+    // Verify aria-invalid is set on required field and visual error class is applied
     await expect(nameInput).toHaveAttribute('aria-invalid', 'true');
+    await expect(nameInput).toHaveClass(/aria-invalid:border-red-400\/80/);
 
     // Type input to clear aria-invalid
     await nameInput.fill('Juan Perez');
