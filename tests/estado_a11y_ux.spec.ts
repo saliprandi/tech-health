@@ -12,11 +12,12 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await expect(backIcon).toBeVisible();
     await expect(backIcon).toHaveClass(/group-hover:-translate-x-0.5/);
 
-    // 1. Check ticket input attributes, helper text linkage, and focus styling
+    // 1. Check ticket input attributes, helper text linkage, focus styling, and aria-invalid error ring class
     const input = page.locator('#ticket-input');
     await expect(input).toBeVisible();
     await expect(input).toHaveAttribute('aria-describedby', 'ticket-input-hint');
     await expect(input).toHaveClass(/focus-visible:ring-blue-light/);
+    await expect(input).toHaveClass(/aria-invalid:border-red-400\/80/);
 
     const helperText = page.locator('#ticket-input-hint');
     await expect(helperText).toBeVisible();

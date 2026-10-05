@@ -45,7 +45,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 								maxlength="30"
 								placeholder="Ej: TH-2026-1234"
 								aria-describedby="ticket-input-hint"
-								class="bg-white/10 border border-white/20 rounded-[8px] pl-4 pr-10 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none uppercase"
+								class="bg-white/10 border border-white/20 rounded-[8px] pl-4 pr-10 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light outline-none uppercase aria-invalid:border-red-400/80 aria-invalid:ring-1 aria-invalid:ring-red-400"
 								autocomplete="off"
 							/>
 							<button
@@ -332,9 +332,12 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			}
 		};
 
+		let isSubmitting = false;
+
 		const handleSubmit = async (e: Event) => {
 			e.preventDefault();
 			if (!input || !submitBtn || !submitText || !spinner) return;
+			if (isSubmitting) return;
 
 			if (!form.checkValidity()) {
 				form.reportValidity();
@@ -357,13 +360,14 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			}
 
 			// UI: loading
+			isSubmitting = true;
 			submitText.textContent = 'Consultando...';
 			if (announcement) announcement.textContent = 'Consultando estado de ticket...';
 			spinner.classList.remove('hidden');
 			arrowIcon?.classList.add('hidden');
-			submitBtn.disabled = true;
 			submitBtn.setAttribute('aria-busy', 'true');
-			submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+			submitBtn.setAttribute('aria-disabled', 'true');
+			submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 			errorDiv?.classList.add('hidden');
 			resultDiv?.classList.add('hidden');
 
@@ -397,13 +401,14 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					input.select();
 				}
 			} finally {
+				isSubmitting = false;
 				submitText.textContent = 'Consultar estado';
 				if (announcement) announcement.textContent = '';
 				spinner.classList.add('hidden');
 				arrowIcon?.classList.remove('hidden');
-				submitBtn.disabled = false;
 				submitBtn.removeAttribute('aria-busy');
-				submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+				submitBtn.removeAttribute('aria-disabled');
+				submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 			}
 		};
 
