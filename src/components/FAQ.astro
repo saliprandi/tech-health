@@ -6,7 +6,7 @@ import { CONFIG } from '../data/config';
   <div class="container-custom">
 
     <div class="max-w-3xl mx-auto">
-      <div class="text-center mb-12">
+      <div class="text-center mb-10">
         <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Preguntas Frecuentes</div>
         <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-4">
           Dudas comunes sobre nuestro servicio
@@ -16,11 +16,48 @@ import { CONFIG } from '../data/config';
         </p>
       </div>
 
+      <!-- FAQ Search Filter Input -->
+      <div class="mb-8 relative max-w-md mx-auto">
+        <label for="faq-search-input" class="sr-only">Buscar en preguntas frecuentes</label>
+        <div class="relative">
+          <input
+            type="text"
+            id="faq-search-input"
+            inputmode="search"
+            placeholder="Buscar pregunta o palabra clave..."
+            class="w-full bg-off-white border border-border rounded-full py-2.5 pl-11 pr-10 font-body text-[14px] text-navy placeholder:text-text-soft/60 focus:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue transition-all"
+            aria-label="Buscar en preguntas frecuentes"
+          />
+          <svg class="w-4 h-4 text-text-soft absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <button
+            type="button"
+            id="clear-faq-search"
+            class="hidden absolute right-3 top-1/2 -translate-y-1/2 p-1 text-text-soft hover:text-navy focus-visible:text-navy rounded-full outline-none focus-visible:ring-2 focus-visible:ring-blue transition-colors cursor-pointer"
+            aria-label="Limpiar búsqueda"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div id="faq-search-counter" class="sr-only" aria-live="polite"></div>
+      </div>
+
+      <!-- Empty State -->
+      <div id="faq-empty-state" class="hidden text-center py-8 px-4 bg-off-white border border-border rounded-[16px] mb-6">
+        <p class="font-body text-[15px] text-text-soft mb-3">No se encontraron preguntas que coincidan con su búsqueda.</p>
+        <button type="button" id="faq-reset-btn" class="font-heading font-bold text-[13px] text-blue hover:text-navy underline outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm px-2 py-1 cursor-pointer">
+          Mostrar todas las preguntas
+        </button>
+      </div>
+
       <div class="flex flex-col gap-4">
         {CONFIG.faqs.map((faq, index) => (
           <div class="faq-item group border border-border rounded-[16px] bg-off-white overflow-hidden transition-all duration-300 hover:bg-white focus-within:bg-white hover:shadow-card-hover focus-within:shadow-card-hover">
             <button
-              class="faq-trigger group/trigger w-full flex items-center justify-between p-6 text-left focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-inset outline-none"
+              class="faq-trigger group/trigger w-full flex items-center justify-between p-6 text-left focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-inset outline-none cursor-pointer"
               aria-expanded="false"
               aria-controls={`faq-answer-${index}`}
               id={`faq-question-${index}`}
@@ -58,6 +95,12 @@ import { CONFIG } from '../data/config';
     function initFAQ() {
       const items = document.querySelectorAll('.faq-item');
       if (!items.length) return () => {};
+
+      const searchInput = document.getElementById('faq-search-input') as HTMLInputElement | null;
+      const clearBtn = document.getElementById('clear-faq-search') as HTMLButtonElement | null;
+      const counterEl = document.getElementById('faq-search-counter');
+      const emptyState = document.getElementById('faq-empty-state');
+      const resetBtn = document.getElementById('faq-reset-btn');
 
       const transitionTimers = new Map<HTMLElement, ReturnType<typeof setTimeout>>();
 
@@ -150,6 +193,70 @@ import { CONFIG } from '../data/config';
         trigger.addEventListener('keydown', handleKeydown);
       });
 
+      // --- FAQ Search Filter Logic ---
+      const filterFAQs = () => {
+        if (!searchInput) return;
+        const query = searchInput.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        if (clearBtn) {
+          if (query.length > 0) clearBtn.classList.remove('hidden');
+          else clearBtn.classList.add('hidden');
+        }
+
+        items.forEach(item => {
+          const text = item.textContent?.toLowerCase() || '';
+          if (!query || text.includes(query)) {
+            item.classList.remove('hidden');
+            visibleCount++;
+          } else {
+            item.classList.add('hidden');
+            // Close if hidden
+            const trigger = item.querySelector('.faq-trigger') as HTMLButtonElement | null;
+            const container = item.querySelector('.faq-answer-container') as HTMLElement | null;
+            const icon = item.querySelector('.faq-icon');
+            if (trigger?.getAttribute('aria-expanded') === 'true') {
+              trigger.setAttribute('aria-expanded', 'false');
+              icon?.classList.remove('rotate-180');
+              if (container) closeContainer(container);
+            }
+          }
+        });
+
+        if (emptyState) {
+          if (visibleCount === 0 && query.length > 0) emptyState.classList.remove('hidden');
+          else emptyState.classList.add('hidden');
+        }
+
+        if (counterEl) {
+          if (query.length > 0) {
+            counterEl.textContent = `${visibleCount} ${visibleCount === 1 ? 'pregunta encontrada' : 'preguntas encontradas'}`;
+          } else {
+            counterEl.textContent = 'Mostrando todas las preguntas';
+          }
+        }
+      };
+
+      const handleClear = () => {
+        if (searchInput) {
+          searchInput.value = '';
+          filterFAQs();
+          searchInput.focus();
+        }
+      };
+
+      const handleSearchKeydown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape' && searchInput && searchInput.value) {
+          e.preventDefault();
+          handleClear();
+        }
+      };
+
+      searchInput?.addEventListener('input', filterFAQs);
+      searchInput?.addEventListener('keydown', handleSearchKeydown);
+      clearBtn?.addEventListener('click', handleClear);
+      resetBtn?.addEventListener('click', handleClear);
+
       return () => {
         transitionTimers.forEach(timer => clearTimeout(timer));
         transitionTimers.clear();
@@ -157,6 +264,10 @@ import { CONFIG } from '../data/config';
           trigger.removeEventListener('click', handleToggle);
           trigger.removeEventListener('keydown', handleKeydown);
         });
+        searchInput?.removeEventListener('input', filterFAQs);
+        searchInput?.removeEventListener('keydown', handleSearchKeydown);
+        clearBtn?.removeEventListener('click', handleClear);
+        resetBtn?.removeEventListener('click', handleClear);
       };
     }
 
