@@ -140,7 +140,14 @@ import { CONFIG } from '../data/config';
         }
       };
 
+      let isSubmitting = false;
+
       const handleSubmit = (e: Event) => {
+        if (isSubmitting) {
+          e.preventDefault();
+          return;
+        }
+
         if (!form.checkValidity()) {
           input.setAttribute('aria-invalid', 'true');
           form.reportValidity();
@@ -159,23 +166,25 @@ import { CONFIG } from '../data/config';
         }
         input.value = sanitizedVal;
 
+        isSubmitting = true;
         const originalText = submitText.textContent;
         submitText.textContent = 'Buscando...';
         if (announcement) announcement.textContent = 'Buscando estado de ticket...';
         spinner?.classList.remove('hidden');
         arrowIcon?.classList.add('hidden');
-        submitBtn.disabled = true;
         submitBtn.setAttribute('aria-busy', 'true');
-        submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+        submitBtn.setAttribute('aria-disabled', 'true');
+        submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         setTimeout(() => {
+          isSubmitting = false;
           if (submitText) submitText.textContent = originalText;
           if (announcement) announcement.textContent = '';
           spinner?.classList.add('hidden');
           arrowIcon?.classList.remove('hidden');
-          submitBtn.disabled = false;
           submitBtn.removeAttribute('aria-busy');
-          submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+          submitBtn.removeAttribute('aria-disabled');
+          submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }, 3000);
       };
 

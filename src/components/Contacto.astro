@@ -398,7 +398,6 @@ import { CONFIG } from '../data/config';
           submitSpinner?.classList.remove('hidden');
           submitIcon?.classList.add('hidden');
           if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
-          submitBtn.disabled = true;
           submitBtn.setAttribute('aria-busy', 'true');
           submitBtn.setAttribute('aria-disabled', 'true');
           submitBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
@@ -452,7 +451,6 @@ import { CONFIG } from '../data/config';
             submitIcon?.classList.remove('hidden');
             if (redirectAnnouncement) redirectAnnouncement.textContent = '';
             if (submitBtn) {
-              submitBtn.disabled = false;
               submitBtn.removeAttribute('aria-busy');
               submitBtn.removeAttribute('aria-disabled');
               submitBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
