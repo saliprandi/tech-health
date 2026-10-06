@@ -67,4 +67,20 @@ test.describe('FAQ Search Filter Micro-UX & Accessibility', () => {
     await expect(searchInput).toHaveValue('');
     expect(await visibleItems.count()).toBe(initialCount);
   });
+
+  test('should expand and focus single FAQ match on Enter key press', async ({ page }) => {
+    const searchInput = page.locator('#faq-search-input');
+    const visibleItems = page.locator('.faq-item:not(.hidden)');
+
+    await searchInput.fill('garantía');
+    expect(await visibleItems.count()).toBe(1);
+
+    const singleTrigger = visibleItems.first().locator('.faq-trigger');
+    await expect(singleTrigger).toHaveAttribute('aria-expanded', 'false');
+
+    await searchInput.press('Enter');
+
+    await expect(singleTrigger).toBeFocused();
+    await expect(singleTrigger).toHaveAttribute('aria-expanded', 'true');
+  });
 });
