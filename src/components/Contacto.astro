@@ -180,14 +180,6 @@ import { CONFIG } from '../data/config';
 
 <script>
   (function() {
-    // Performance Optimization: Cache Intl instance for date formatting
-    const tucumanFormatter = new Intl.DateTimeFormat('en-CA', {
-      timeZone: 'America/Argentina/Tucuman',
-      hour12: false,
-      year: 'numeric', month: '2-digit', day: '2-digit',
-      hour: '2-digit', minute: '2-digit', second: '2-digit'
-    });
-
     function initContacto() {
       const horarioCard = document.getElementById('horario-card');
       const form = document.getElementById('contact-form') as HTMLFormElement | null;
@@ -211,25 +203,10 @@ import { CONFIG } from '../data/config';
 
       const updateStatusBadge = () => {
         const now = new Date();
-        let tucumanDate: Date;
-
-        try {
-          // Performance Optimization: Direct numeric parameter extraction avoids allocating temporary record objects and parsing ISO timestamp strings on every status check
-          const parts = tucumanFormatter.formatToParts(now);
-          let year = 0, month = 0, dayNum = 0, hour = 0, minute = 0, second = 0;
-          for (let i = 0; i < parts.length; i++) {
-            const part = parts[i];
-            if (part.type === 'year') year = parseInt(part.value, 10);
-            else if (part.type === 'month') month = parseInt(part.value, 10);
-            else if (part.type === 'day') dayNum = parseInt(part.value, 10);
-            else if (part.type === 'hour') hour = parseInt(part.value, 10);
-            else if (part.type === 'minute') minute = parseInt(part.value, 10);
-            else if (part.type === 'second') second = parseInt(part.value, 10);
-          }
-          tucumanDate = new Date(year, month - 1, dayNum, hour, minute, second);
-        } catch {
-          tucumanDate = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) - (3 * 3600000));
-        }
+        // Performance Optimization: Direct fixed offset calculation for Tucumán (ART / UTC-3) avoids Intl.DateTimeFormat.formatToParts array allocation, string parsing, and iteration on every 30s check.
+        const tucumanOffsetMs = -3 * 3600000;
+        const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
+        const tucumanDate = new Date(utcMs + tucumanOffsetMs);
 
         const day = tucumanDate.getDay();
         const totalMinutes = tucumanDate.getHours() * 60 + tucumanDate.getMinutes();
