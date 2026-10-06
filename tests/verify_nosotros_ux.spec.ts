@@ -15,6 +15,7 @@ test.describe('Nosotros Section UX Enhancements', () => {
 
     const teamList = nosotrosSection.locator('ul[aria-label="Integrantes de nuestro equipo"]');
     await expect(teamList).toBeVisible();
+    await expect(teamList).toHaveAttribute('role', 'list');
 
     const teamCards = teamList.locator('li.group');
     const count = await teamCards.count();
@@ -28,6 +29,7 @@ test.describe('Nosotros Section UX Enhancements', () => {
     // Verify value cards list and elevation micro-animations
     const valuesList = nosotrosSection.locator('ul[aria-label="Valores fundamentales de la empresa"]');
     await expect(valuesList).toBeVisible();
+    await expect(valuesList).toHaveAttribute('role', 'list');
 
     const valueCards = valuesList.locator('li.group');
     await expect(valueCards).toHaveCount(3);
