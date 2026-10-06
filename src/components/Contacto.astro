@@ -141,6 +141,9 @@ import { CONFIG } from '../data/config';
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
             <span id="f-submit-text">Enviar por WhatsApp</span>
+            <svg id="f-submit-arrow" class="w-4 h-4 text-navy/70 group-hover:text-navy group-focus-visible:text-navy group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
           </button>
           <div id="redirect-announcement" class="sr-only" aria-live="polite"></div>
         </form>
@@ -199,6 +202,7 @@ import { CONFIG } from '../data/config';
       const submitBtn = document.getElementById('f-submit') as HTMLButtonElement | null;
       const submitBtnText = document.getElementById('f-submit-text');
       const submitBtnIcon = document.getElementById('f-submit-icon');
+      const submitBtnArrow = document.getElementById('f-submit-arrow');
       const submitBtnSpinner = document.getElementById('f-submit-spinner');
       const redirectAnnouncement = document.getElementById('redirect-announcement');
 
@@ -396,6 +400,7 @@ import { CONFIG } from '../data/config';
           const originalText = submitBtnText.textContent;
           submitBtnText.textContent = 'Redirigiendo...';
           if (submitBtnIcon) submitBtnIcon.classList.add('hidden');
+          if (submitBtnArrow) submitBtnArrow.classList.add('hidden');
           if (submitBtnSpinner) submitBtnSpinner.classList.remove('hidden');
           if (redirectAnnouncement) redirectAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
           submitBtn.setAttribute('aria-busy', 'true');
@@ -448,6 +453,7 @@ import { CONFIG } from '../data/config';
             isSubmitting = false;
             if (submitBtnText) submitBtnText.textContent = originalText;
             if (submitBtnIcon) submitBtnIcon.classList.remove('hidden');
+            if (submitBtnArrow) submitBtnArrow.classList.remove('hidden');
             if (submitBtnSpinner) submitBtnSpinner.classList.add('hidden');
             if (redirectAnnouncement) redirectAnnouncement.textContent = '';
             if (submitBtn) {
