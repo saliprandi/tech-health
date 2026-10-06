@@ -193,4 +193,24 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  cotizador: {
+    tipos_centro: [
+      { id: "consultorio", nombre: "Consultorio / Centro Médico Pequeño", factor: 1.0 },
+      { id: "clinica", nombre: "Clínica / Sanatorio Mediano", factor: 1.2 },
+      { id: "hospital", nombre: "Hospital / Centro de Alta Complejidad", factor: 1.5 },
+    ],
+    rangos_equipos: [
+      { id: "1-5", label: "1 a 5 equipos", base: "Esencial", visitas: "1 visita semestral", tiempoRespuesta: "48hs" },
+      { id: "6-15", label: "6 a 15 equipos", base: "Prolectiv", visitas: "1 visita trimestral", tiempoRespuesta: "24hs" },
+      { id: "16-30", label: "16 a 30 equipos", base: "Integral B2B", visitas: "1 visita mensual", tiempoRespuesta: "12hs (prioridad)" },
+      { id: "+30", label: "Más de 30 equipos", base: "Flota Personalizada", visitas: "Visitas quincenales / Dedicado", tiempoRespuesta: "Inmediato 24/7" },
+    ],
+    beneficios_base: [
+      "Informe técnico detallado apto auditorías sanitarias (SIPROSA / Salud)",
+      "Inventario digital y trazabilidad del parque tecnológico",
+      "Descuento preferencial en repuestos de microelectrónica",
+      "Prioridad de atención en llamadas de emergencia",
+    ],
+  },
 };
