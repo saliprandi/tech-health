@@ -25,7 +25,7 @@ import { CONFIG } from '../data/config';
             id="faq-search-input"
             inputmode="search"
             placeholder="Buscar pregunta o palabra clave..."
-            class="w-full bg-off-white border border-border rounded-full py-2.5 pl-11 pr-10 font-body text-[14px] text-navy placeholder:text-text-soft/60 focus:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue transition-all"
+            class="w-full bg-off-white border border-border rounded-full py-2.5 pl-11 pr-10 font-body text-[14px] text-navy placeholder:text-text-soft/60 focus:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue transition-all [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
             aria-label="Buscar en preguntas frecuentes"
           />
           <svg class="w-4 h-4 text-text-soft absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -249,6 +249,22 @@ import { CONFIG } from '../data/config';
         if (e.key === 'Escape' && searchInput && searchInput.value) {
           e.preventDefault();
           handleClear();
+          return;
+        }
+
+        if (e.key === 'Enter' && searchInput && searchInput.value.trim()) {
+          e.preventDefault();
+          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
+          if (visibleItems.length > 0) {
+            const firstItem = visibleItems[0];
+            const trigger = firstItem.querySelector('.faq-trigger') as HTMLButtonElement | null;
+            if (trigger) {
+              if (trigger.getAttribute('aria-expanded') !== 'true') {
+                trigger.click();
+              }
+              trigger.focus();
+            }
+          }
         }
       };
 
