@@ -249,6 +249,21 @@ import { CONFIG } from '../data/config';
         if (e.key === 'Escape' && searchInput && searchInput.value) {
           e.preventDefault();
           handleClear();
+        } else if (e.key === 'Enter' && searchInput) {
+          e.preventDefault();
+          const visibleTriggers = Array.from(items)
+            .filter(item => !item.classList.contains('hidden'))
+            .map(item => item.querySelector('.faq-trigger') as HTMLButtonElement)
+            .filter(Boolean);
+
+          if (visibleTriggers.length === 1) {
+            if (visibleTriggers[0].getAttribute('aria-expanded') !== 'true') {
+              visibleTriggers[0].click();
+            }
+            visibleTriggers[0].focus();
+          } else if (visibleTriggers.length > 1) {
+            visibleTriggers[0].focus();
+          }
         }
       };
 
