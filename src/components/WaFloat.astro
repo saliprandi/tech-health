@@ -18,6 +18,7 @@ import { CONFIG } from '../data/config';
     class="group w-[58px] h-[58px] bg-[#25D366] rounded-full flex items-center justify-center text-white hover:scale-[1.08] focus-visible:scale-[1.08] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#25D366] transition-all duration-300 shadow-lg pointer-events-auto outline-none"
     style="box-shadow: 0 4px 20px rgba(37,211,102,0.5);"
     aria-label="Contactar por WhatsApp"
+    aria-describedby="wa-tooltip-text"
   >
     <svg class="w-[30px] h-[30px] fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
       <use href="#icon-whatsapp" />
@@ -92,6 +93,8 @@ import { CONFIG } from '../data/config';
         if (announcement) announcement.textContent = 'Redirigiendo a WhatsApp...';
         showTooltip();
 
+        btn.setAttribute('aria-busy', 'true');
+        btn.setAttribute('aria-disabled', 'true');
         btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = btn.getAttribute('href');
@@ -103,12 +106,19 @@ import { CONFIG } from '../data/config';
           const text = url.searchParams.get('text') || '';
           const sanitizedHref = `https://wa.me/${sanitizedPhone}${text ? '?text=' + encodeURIComponent(text) : ''}`;
 
-          window.open(sanitizedHref, '_blank', 'noopener,noreferrer');
+          const openedWin = window.open(sanitizedHref, '_blank');
+          if (openedWin) {
+            openedWin.opener = null;
+          } else {
+            window.location.href = sanitizedHref;
+          }
         }
 
         if (feedbackTimer) clearTimeout(feedbackTimer);
         feedbackTimer = setTimeout(() => {
           isRedirecting = false;
+          btn.removeAttribute('aria-busy');
+          btn.removeAttribute('aria-disabled');
           btn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
           hideTooltip(true);
 
