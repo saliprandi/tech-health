@@ -249,6 +249,26 @@ import { CONFIG } from '../data/config';
         if (e.key === 'Escape' && searchInput && searchInput.value) {
           e.preventDefault();
           handleClear();
+          return;
+        }
+
+        if (e.key === 'Enter' && searchInput && searchInput.value.trim()) {
+          e.preventDefault();
+          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
+          if (visibleItems.length === 1) {
+            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
+            if (trigger) {
+              if (trigger.getAttribute('aria-expanded') !== 'true') {
+                trigger.click();
+              }
+              trigger.focus();
+            }
+          } else if (visibleItems.length > 1) {
+            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
+            if (trigger) {
+              trigger.focus();
+            }
+          }
         }
       };
 
