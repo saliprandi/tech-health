@@ -95,4 +95,13 @@ test.describe('Contacto UX Enhancements', () => {
     // Submitting form without required fields triggers validation setting aria-invalid
     await expect(nameInput).toHaveAttribute('aria-invalid', 'true');
   });
+
+  test('should render ticket confirmation link with group hover and directional arrow micro-UX classes', async ({ page }) => {
+    const confirmationLink = page.locator('#ticket-confirmation-link');
+    const directionalIcon = confirmationLink.locator('svg');
+
+    await expect(confirmationLink).toHaveClass(/group/);
+    await expect(directionalIcon).toHaveClass(/group-hover:translate-x-0\.5/);
+    await expect(directionalIcon).toHaveClass(/group-focus-visible:translate-x-0\.5/);
+  });
 });
