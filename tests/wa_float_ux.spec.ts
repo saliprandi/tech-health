@@ -66,7 +66,12 @@ test.describe('WhatsApp Floating Button UX', () => {
     await expect(tooltip).toHaveClass(/invisible/);
   });
 
-  test('redirection state should preserve tooltip visibility', async ({ page }) => {
+  test('floating button should have aria-describedby pointing to tooltip', async ({ page }) => {
+    const btn = page.locator('#wa-float-btn');
+    await expect(btn).toHaveAttribute('aria-describedby', 'wa-tooltip');
+  });
+
+  test('redirection state should preserve tooltip visibility and toggle aria attributes', async ({ page }) => {
     const btn = page.locator('#wa-float-btn');
     const tooltip = page.locator('#wa-tooltip');
     const tooltipText = page.locator('#wa-tooltip-text');
@@ -76,6 +81,8 @@ test.describe('WhatsApp Floating Button UX', () => {
 
     await expect(tooltipText).toHaveText('¡Redirigiendo!');
     await expect(tooltip).not.toHaveClass(/invisible/);
+    await expect(btn).toHaveAttribute('aria-busy', 'true');
+    await expect(btn).toHaveAttribute('aria-disabled', 'true');
 
     // Try to hide by moving away
     await page.mouse.move(0, 0);
@@ -88,7 +95,9 @@ test.describe('WhatsApp Floating Button UX', () => {
     // Wait for redirection timeout (3s)
     await page.waitForTimeout(3000);
 
-    // Now it should hide
+    // Now it should hide and remove aria attributes
     await expect(tooltip).toHaveClass(/opacity-0/);
+    await expect(btn).not.toHaveAttribute('aria-busy', '');
+    await expect(btn).not.toHaveAttribute('aria-disabled', '');
   });
 });
