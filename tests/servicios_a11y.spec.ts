@@ -25,6 +25,21 @@ test.describe('Servicios Modal CTA Accessibility', () => {
     await expect(announcement).toHaveText('Redirigiendo a WhatsApp...');
   });
 
+  test('modal CTA includes directional arrow icon with hover/focus micro-animation classes', async ({ page }) => {
+    const serviceCard = page.locator('.service-card').first();
+    await serviceCard.click();
+
+    const modalCta = page.locator('#modal-cta');
+    await expect(modalCta).toBeVisible();
+
+    const svgIcons = modalCta.locator('svg[aria-hidden="true"]');
+    await expect(svgIcons).toHaveCount(2);
+
+    const arrowIcon = svgIcons.nth(1);
+    await expect(arrowIcon).toHaveClass(/group-hover:translate-x-1/);
+    await expect(arrowIcon).toHaveClass(/group-focus-visible:translate-x-1/);
+  });
+
   test('modal close button has enhanced aria-label and focus-visible styling', async ({ page }) => {
     const serviceCard = page.locator('.service-card').first();
     await serviceCard.click();
