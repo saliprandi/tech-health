@@ -5,6 +5,12 @@ test.describe('Diferenciales Micro-UX & Accessibility', () => {
     await page.goto('http://localhost:4321/');
   });
 
+  test('should render differential list with role="list" for screen reader accessibility', async ({ page }) => {
+    const list = page.locator('ul[aria-label="Diferenciales de la empresa"]');
+    await expect(list).toBeVisible();
+    await expect(list).toHaveAttribute('role', 'list');
+  });
+
   test('should render differential cards with hover and focus-within micro-UX classes', async ({ page }) => {
     const list = page.locator('ul[aria-label="Diferenciales de la empresa"]');
     await expect(list).toBeVisible();
