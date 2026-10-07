@@ -95,4 +95,19 @@ test.describe('Contacto UX Enhancements', () => {
     // Submitting form without required fields triggers validation setting aria-invalid
     await expect(nameInput).toHaveAttribute('aria-invalid', 'true');
   });
+
+  test('should clear contact input field and announce to screen reader on Escape key press', async ({ page }) => {
+    const nameInput = page.locator('#f-nombre');
+    const announcement = page.locator('#copy-announcement');
+
+    await nameInput.focus();
+    await nameInput.fill('Juan Perez');
+    await expect(nameInput).toHaveValue('Juan Perez');
+
+    await nameInput.press('Escape');
+
+    await expect(nameInput).toHaveValue('');
+    await expect(nameInput).not.toHaveAttribute('aria-invalid');
+    await expect(announcement).toHaveText('Campo de texto limpiado');
+  });
 });
