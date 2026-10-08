@@ -78,10 +78,14 @@
 **Learning:** Integrar un filtro de búsqueda interactivo en acordeones de preguntas frecuentes mejora la usabilidad. La implementación requiere asociar un elemento `<label class="sr-only">`, equipar la entrada con la tecla `Escape` para restablecer el texto, ofrecer un estado vacío accesible con botón de reinicio y sincronizar una región en vivo `aria-live="polite"` que anuncie en tiempo real la cantidad de preguntas coincidentes a lectores de pantalla.
 **Action:** Equipar los filtros de búsqueda client-side con contadores en regiones `aria-live="polite"`, atajo `Escape` para borrar y botones de reinicio en estados vacíos.
 
-## 2026-03-30 - Estilo de error visual de alto contraste para aria-invalid y paridad de anuncios al limpiar entradas
+## 2026-03-30 - Estilo de error visual de alto contraste para aria-invalid e paridad de anuncios al limpiar entradas
 **Learning:** Cuando un campo de entrada recibe dinámicamente `aria-invalid="true"`, omitir clases visuales explícitas de error deja la entrada sin resaltado visible sobre fondos oscuros (`bg-navy`). Incorporar utilidades Tailwind `aria-invalid:border-red-400/80 aria-invalid:ring-1 aria-invalid:ring-red-400` garantiza feedback visual de alto contraste en sincronía con lectores de pantalla. Asimismo, accionar el botón de limpieza de un campo debe anunciar el estado "Campo limpiado" a través de regiones en vivo `aria-live="polite"`, asegurando paridad con atajos como la tecla `Escape`.
 **Action:** Aplicar utilidades `aria-invalid:*` en entradas de formulario sobre fondo oscuro y sincronizar anuncios en regiones `aria-live` tanto en eventos de teclado como en clics de limpieza de entrada.
 
 ## 2026-03-30 - Asociación accesible aria-describedby y gestión de estado ocupado en botones flotantes
 **Learning:** Los botones flotantes de acción (FAB) con tooltip flotante (como `#wa-float-btn`) se benefician de la asociación semántica explícita mediante `aria-describedby` apuntando al contenedor del tooltip. Además, alternar dinámicamente `aria-busy="true"` y `aria-disabled="true"` durante la redirección (y limpiarlos al restaurar el estado) mantiene a las tecnologías de asistencia correctamente informadas del progreso.
 **Action:** Enlazar siempre tooltips contextuales a botones flotantes mediante `aria-describedby` y alternar atributos ARIA `aria-busy` y `aria-disabled` durante estados de redirección asíncronos.
+
+## 2026-03-30 - Tooltip nativo y animación táctil de escala en botones de limpieza de entrada
+**Learning:** En botones de limpieza rápida de entradas (`#clear-ticket-input` y `#proceso-clear-ticket-input`), combinar `aria-label` con un atributo `title` explicito (ej. `title="Limpiar número de ticket"`) garantiza tooltips emergentes para usuarios de ratón. Además, equipar el botón con utilidades `hover:scale-110 active:scale-95 transition-all duration-200` provee retroalimentación visual y táctil inmediata al presionar o pasar el puntero.
+**Action:** Incluir siempre `title` e interacciones de escala (`hover:scale-110 active:scale-95`) en botones flotantes de limpieza dentro de campos de búsqueda.
