@@ -14,6 +14,13 @@ test.describe('Servicios Modal CTA Accessibility', () => {
 
     const modalCta = page.locator('#modal-cta');
     await expect(modalCta).toBeVisible();
+    await expect(modalCta).toHaveClass(/group/);
+
+    // Directional icon micro-UX check
+    const directionalIcon = modalCta.locator('svg[stroke="currentColor"]');
+    await expect(directionalIcon).toBeVisible();
+    await expect(directionalIcon).toHaveClass(/group-hover:translate-x-0\.5/);
+    await expect(directionalIcon).toHaveClass(/group-focus-visible:translate-x-0\.5/);
 
     const announcement = page.locator('#modal-cta-announcement');
     await expect(announcement).toBeAttached();
