@@ -1,0 +1,282 @@
+---
+import { CONFIG } from '../data/config';
+
+const { calculadora, contacto } = CONFIG;
+---
+
+<section id="calculadora" class="py-20 bg-navy text-white relative overflow-hidden scroll-mt-20" aria-labelledby="calc-heading">
+  <!-- Dynamic background glow decorations -->
+  <div class="absolute top-0 right-1/4 w-96 h-96 bg-blue/10 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute bottom-0 left-10 w-80 h-80 bg-blue-light/10 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue/20 border border-blue-light/30 text-blue-light text-xs font-semibold uppercase tracking-wider mb-4">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+        <span>Herramienta B2B</span>
+      </div>
+      <h2 id="calc-heading" class="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-4">
+        {calculadora.titulo}
+      </h2>
+      <p class="text-lg text-slate-300 leading-relaxed">
+        {calculadora.subtitulo}
+      </p>
+    </div>
+
+    <!-- Calculator Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Input Controls Card -->
+      <div class="lg:col-span-7 bg-navy-dark/90 border border-border/40 rounded-2xl p-6 sm:p-8 backdrop-blur-sm shadow-xl">
+        <form id="calc-form" class="space-y-6" aria-label="Formulario de estimación de mantenimiento">
+
+          <!-- Tipo de Institución -->
+          <div>
+            <label for="calc-tipo" class="block text-sm font-semibold text-slate-200 mb-2">
+              Tipo de Institución Sanitaria:
+            </label>
+            <div class="relative group/select">
+              <select
+                id="calc-tipo"
+                name="tipo"
+                class="w-full bg-navy/80 border border-slate-700 rounded-xl px-4 py-3 text-white appearance-none focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-light focus-visible:border-transparent transition-all cursor-pointer"
+              >
+                {calculadora.tipos_institucion.map((inst) => (
+                  <option value={inst.id}>{inst.nombre}</option>
+                ))}
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400 group-focus-within/select:rotate-180 group-focus-within/select:text-blue-light transition-transform duration-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cantidad de Equipos (Slider + Number input) -->
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <label for="calc-equipos-slider" class="block text-sm font-semibold text-slate-200">
+                Cantidad de Equipos Médicos:
+              </label>
+              <span id="calc-equipos-val" class="text-blue-light font-bold text-lg bg-blue/20 px-3 py-0.5 rounded-lg border border-blue-light/30">
+                15 equipos
+              </span>
+            </div>
+            <div class="space-y-3">
+              <input
+                type="range"
+                id="calc-equipos-slider"
+                min="1"
+                max="100"
+                value="15"
+                step="1"
+                aria-valuemin="1"
+                aria-valuemax="100"
+                aria-valuenow="15"
+                aria-label="Cantidad aproximada de equipos médicos"
+                class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-light focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-light"
+              />
+              <div class="flex justify-between text-xs text-slate-400 px-1 font-mono">
+                <span>1 equipo</span>
+                <span>25</span>
+                <span>50</span>
+                <span>75</span>
+                <span>100+ equipos</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Frecuencia de Mantenimiento Deseada -->
+          <div>
+            <label for="calc-frecuencia" class="block text-sm font-semibold text-slate-200 mb-2">
+              Frecuencia de Mantenimiento Deseada:
+            </label>
+            <div class="relative group/select">
+              <select
+                id="calc-frecuencia"
+                name="frecuencia"
+                class="w-full bg-navy/80 border border-slate-700 rounded-xl px-4 py-3 text-white appearance-none focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-light focus-visible:border-transparent transition-all cursor-pointer"
+              >
+                {calculadora.frecuencias.map((frec) => (
+                  <option value={frec.id} selected={frec.id === 'trimestral'}>
+                    {frec.nombre}
+                  </option>
+                ))}
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400 group-focus-within/select:rotate-180 group-focus-within/select:text-blue-light transition-transform duration-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Beneficios incluidos checklist -->
+          <div class="pt-4 border-t border-slate-800">
+            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
+              Ventajas del Plan Estimado
+            </h3>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-300" role="list">
+              {calculadora.beneficios.map((item) => (
+                <li class="flex items-start gap-2">
+                  <svg class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </form>
+      </div>
+
+      <!-- Results Summary Card -->
+      <div class="lg:col-span-5 bg-gradient-to-br from-blue-dark/90 to-navy-dark border border-blue-light/30 rounded-2xl p-6 sm:p-8 shadow-2xl relative flex flex-col justify-between min-h-[420px]">
+        <div>
+          <div class="flex items-center justify-between pb-4 mb-6 border-b border-blue-light/20">
+            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Resumen Estimado
+            </h3>
+            <span class="text-xs font-semibold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2.5 py-1 rounded-full">
+              Sugerido para Auditorías
+            </span>
+          </div>
+
+          <div id="calc-results-region" class="space-y-5" aria-live="polite" role="region" aria-label="Resultados de la estimación">
+            <!-- Visitas preventivas al año -->
+            <div class="bg-navy/60 border border-slate-700/60 rounded-xl p-4 flex items-center justify-between">
+              <div>
+                <p class="text-xs text-slate-400">Inspecciones Programadas / Año</p>
+                <p id="calc-res-visitas" class="text-2xl font-extrabold text-white mt-0.5">4 Mantenimientos</p>
+              </div>
+              <div class="p-3 bg-blue/20 rounded-lg text-blue-light" aria-hidden="true">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Informes técnicos expedidos -->
+            <div class="bg-navy/60 border border-slate-700/60 rounded-xl p-4 flex items-center justify-between">
+              <div>
+                <p class="text-xs text-slate-400">Total Informes Técnicos de Auditoría</p>
+                <p id="calc-res-informes" class="text-2xl font-extrabold text-blue-light mt-0.5">60 Informes / Año</p>
+              </div>
+              <div class="p-3 bg-blue/20 rounded-lg text-blue-light" aria-hidden="true">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Cobertura de guardia -->
+            <div class="bg-navy/60 border border-slate-700/60 rounded-xl p-4 flex items-center justify-between">
+              <div>
+                <p class="text-xs text-slate-400">Atención Prioritaria en Urgencias</p>
+                <p id="calc-res-guardia" class="text-lg font-bold text-emerald-400 mt-0.5">Guardia 24h Tucumán & NOA</p>
+              </div>
+              <div class="p-3 bg-emerald-950/50 rounded-lg text-emerald-400" aria-hidden="true">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA Action Button -->
+        <div class="mt-8 pt-4 border-t border-blue-light/20">
+          <button
+            type="button"
+            id="calc-cta-btn"
+            class="group w-full py-4 px-6 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-base shadow-lg shadow-emerald-900/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy transition-all duration-200 flex items-center justify-center gap-3 active:scale-[0.99]"
+            aria-label="Solicitar presupuesto formal de la estimación por WhatsApp"
+          >
+            <svg class="w-6 h-6 fill-current text-white flex-shrink-0 group-hover:scale-110 transition-transform duration-200" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984 0 1.763.459 3.483 1.332 5.001L2 22l5.127-1.341a9.92 9.92 0 004.881 1.282h.004c5.506 0 9.99-4.478 9.99-9.985 0-2.667-1.038-5.175-2.925-7.062A9.917 9.917 0 0012.012 2zm0 18.256h-.003a8.23 8.23 0 01-4.2-1.154l-.301-.18-3.12.817.832-3.041-.197-.314a8.23 8.23 0 01-1.264-4.382c0-4.55 3.702-8.251 8.253-8.251 2.205 0 4.277.859 5.836 2.419 1.558 1.559 2.416 3.632 2.416 5.837 0 4.551-3.702 8.251-8.252 8.251z" />
+            </svg>
+            <span>Solicitar Presupuesto Formal</span>
+            <svg class="w-5 h-5 text-white/80 group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </button>
+          <p class="text-center text-xs text-slate-400 mt-2">
+            Respuesta prioritaria en menos de 24 horas hábiles.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline define:vars={{ phone: contacto.whatsapp }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const slider = document.getElementById('calc-equipos-slider');
+    const equiposValDisplay = document.getElementById('calc-equipos-val');
+    const tipoSelect = document.getElementById('calc-tipo');
+    const frecuenciaSelect = document.getElementById('calc-frecuencia');
+
+    const resVisitas = document.getElementById('calc-res-visitas');
+    const resInformes = document.getElementById('calc-res-informes');
+    const ctaBtn = document.getElementById('calc-cta-btn');
+
+    if (!slider || !tipoSelect || !frecuenciaSelect || !resVisitas || !resInformes || !ctaBtn) {
+      return;
+    }
+
+    const visitasMap = {
+      mensual: 12,
+      trimestral: 4,
+      semestral: 2,
+      anual: 1,
+    };
+
+    function updateCalculations() {
+      const cantidadEquipos = parseInt(slider.value, 10) || 1;
+      const frecuencia = frecuenciaSelect.value;
+      const visitasAnuales = visitasMap[frecuencia] || 4;
+      const totalInformes = cantidadEquipos * visitasAnuales;
+
+      if (equiposValDisplay) {
+        equiposValDisplay.textContent = `${cantidadEquipos} ${cantidadEquipos === 1 ? 'equipo' : 'equipos'}`;
+      }
+
+      slider.setAttribute('aria-valuenow', cantidadEquipos.toString());
+
+      resVisitas.textContent = `${visitasAnuales} ${visitasAnuales === 1 ? 'Mantenimiento' : 'Mantenimientos'} / Año`;
+      resInformes.textContent = `${totalInformes} ${totalInformes === 1 ? 'Informe' : 'Informes'} / Año`;
+    }
+
+    slider.addEventListener('input', updateCalculations);
+    tipoSelect.addEventListener('change', updateCalculations);
+    frecuenciaSelect.addEventListener('change', updateCalculations);
+
+    // Initial calculation
+    updateCalculations();
+
+    // CTA Click -> Pre-formatted WhatsApp link with safe opener pattern
+    ctaBtn.addEventListener('click', () => {
+      const cantidadEquipos = slider.value;
+      const tipoInstText = tipoSelect.options[tipoSelect.selectedIndex]?.text || 'Institución';
+      const frecuenciaText = frecuenciaSelect.options[frecuenciaSelect.selectedIndex]?.text || 'Trimestral';
+
+      const text = `Hola TechHealth, quisiera solicitar un presupuesto formal de mantenimiento preventivo para:\n- Tipo: ${tipoInstText}\n- Cantidad de equipos: ${cantidadEquipos}\n- Frecuencia: ${frecuenciaText}`;
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+
+      if (url.startsWith('https://wa.me/')) {
+        const openedWin = window.open(url, '_blank');
+        if (openedWin) {
+          openedWin.opener = null;
+        } else {
+          window.location.href = url;
+        }
+      }
+    });
+  });
+</script>
