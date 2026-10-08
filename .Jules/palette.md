@@ -78,7 +78,7 @@
 **Learning:** Integrar un filtro de búsqueda interactivo en acordeones de preguntas frecuentes mejora la usabilidad. La implementación requiere asociar un elemento `<label class="sr-only">`, equipar la entrada con la tecla `Escape` para restablecer el texto, ofrecer un estado vacío accesible con botón de reinicio y sincronizar una región en vivo `aria-live="polite"` que anuncie en tiempo real la cantidad de preguntas coincidentes a lectores de pantalla.
 **Action:** Equipar los filtros de búsqueda client-side con contadores en regiones `aria-live="polite"`, atajo `Escape` para borrar y botones de reinicio en estados vacíos.
 
-## 2026-03-30 - Estilo de error visual de alto contraste para aria-invalid e paridad de anuncios al limpiar entradas
+## 2026-03-30 - Estilo de error visual de alto contraste para aria-invalid e indicación de paridad de anuncios al limpiar entradas
 **Learning:** Cuando un campo de entrada recibe dinámicamente `aria-invalid="true"`, omitir clases visuales explícitas de error deja la entrada sin resaltado visible sobre fondos oscuros (`bg-navy`). Incorporar utilidades Tailwind `aria-invalid:border-red-400/80 aria-invalid:ring-1 aria-invalid:ring-red-400` garantiza feedback visual de alto contraste en sincronía con lectores de pantalla. Asimismo, accionar el botón de limpieza de un campo debe anunciar el estado "Campo limpiado" a través de regiones en vivo `aria-live="polite"`, asegurando paridad con atajos como la tecla `Escape`.
 **Action:** Aplicar utilidades `aria-invalid:*` en entradas de formulario sobre fondo oscuro y sincronizar anuncios en regiones `aria-live` tanto en eventos de teclado como en clics de limpieza de entrada.
 
