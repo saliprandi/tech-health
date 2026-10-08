@@ -236,3 +236,29 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('CTA buttons prevent open redirect when href is manipulated to untrusted origin', async ({ page }) => {
+  await page.goto('http://localhost:4321/');
+
+  // Intercept window.open calls
+  await page.evaluate(() => {
+    (window as any).__openedUrls = [];
+    window.open = (url?: string | URL, target?: string, features?: string) => {
+      (window as any).__openedUrls.push(String(url));
+      return null;
+    };
+  });
+
+  // Test Hero CTA with untrusted modified href
+  const heroCta = page.locator('#hero-cta');
+  await heroCta.evaluate((el) => el.setAttribute('href', 'https://malicious-phishing-site.com'));
+  await heroCta.click();
+
+  // Test Nav CTA with untrusted modified href
+  const navCta = page.locator('#nav-cta');
+  await navCta.evaluate((el) => el.setAttribute('href', 'javascript:alert(1)'));
+  await navCta.click();
+
+  const openedUrls = await page.evaluate(() => (window as any).__openedUrls);
+  expect(openedUrls).toEqual([]);
+});
