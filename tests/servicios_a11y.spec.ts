@@ -14,6 +14,12 @@ test.describe('Servicios Modal CTA Accessibility', () => {
 
     const modalCta = page.locator('#modal-cta');
     await expect(modalCta).toBeVisible();
+    await expect(modalCta).toHaveClass(/group/);
+
+    const ctaArrow = page.locator('#modal-cta-arrow');
+    await expect(ctaArrow).toBeVisible();
+    await expect(ctaArrow).toHaveClass(/group-hover:translate-x-1/);
+    await expect(ctaArrow).toHaveClass(/group-focus-visible:translate-x-1/);
 
     const announcement = page.locator('#modal-cta-announcement');
     await expect(announcement).toBeAttached();
