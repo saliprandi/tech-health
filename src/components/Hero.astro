@@ -104,8 +104,15 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = heroCta.getAttribute('href');
-        if (href && (href.startsWith('https://wa.me/') || href.startsWith('https://api.whatsapp.com/'))) {
-          window.open(href, '_blank', 'noopener,noreferrer');
+        if (href) {
+          try {
+            const parsed = new URL(href, window.location.origin);
+            if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+              window.open(parsed.href, '_blank', 'noopener,noreferrer');
+            }
+          } catch {
+            // Safe fallback if URL is invalid
+          }
         }
 
         setTimeout(() => {
