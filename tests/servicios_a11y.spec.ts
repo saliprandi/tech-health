@@ -14,6 +14,14 @@ test.describe('Servicios Modal CTA Accessibility', () => {
 
     const modalCta = page.locator('#modal-cta');
     await expect(modalCta).toBeVisible();
+    await expect(modalCta).toHaveClass(/group/);
+
+    const waIcon = modalCta.locator('svg').first();
+    await expect(waIcon).toHaveClass(/group-hover:animate-heartbeat/);
+
+    const arrowIcon = page.locator('#modal-cta-arrow');
+    await expect(arrowIcon).toBeVisible();
+    await expect(arrowIcon).toHaveClass(/group-hover:translate-x-1/);
 
     const announcement = page.locator('#modal-cta-announcement');
     await expect(announcement).toBeAttached();
@@ -22,6 +30,7 @@ test.describe('Servicios Modal CTA Accessibility', () => {
     await modalCta.click();
 
     await expect(page.locator('#modal-cta-text')).toHaveText('Redirigiendo...');
+    await expect(arrowIcon).toHaveClass(/hidden/);
     await expect(announcement).toHaveText('Redirigiendo a WhatsApp...');
   });
 
