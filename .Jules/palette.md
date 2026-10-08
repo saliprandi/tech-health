@@ -84,7 +84,7 @@
 
 ## 2026-03-30 - Asociación accesible aria-describedby y gestión de estado ocupado en botones flotantes
 **Learning:** Los botones flotantes de acción (FAB) con tooltip flotante (como `#wa-float-btn`) se benefician de la asociación semántica explícita mediante `aria-describedby` apuntando al contenedor del tooltip. Además, alternar dinámicamente `aria-busy="true"` y `aria-disabled="true"` durante la redirección (y limpiarlos al restaurar el estado) mantiene a las tecnologías de asistencia correctamente informadas del progreso.
-**Action:** Enlazar siempre tooltips contextuales a botones flotantes mediante `aria-describedby` e alternar atributos ARIA `aria-busy` y `aria-disabled` durante estados de redirección asíncronos.
+**Action:** Enlazar siempre tooltips contextuales a botones flotantes mediante `aria-describedby` y alternar atributos ARIA `aria-busy` y `aria-disabled` durante estados de redirección asíncronos.
 
 ## 2026-03-30 - Paridad de micro-UX y retroalimentación direccional en botones CTA de ventanas modales
 **Learning:** En botones de llamada a la acción (CTA) generados dinámicamente dentro de modales (como `#modal-cta` en `Servicios.astro`), mantener la coherencia de diseño mediante la clase `group`, animación de latido en el ícono del servicio (`group-hover:animate-heartbeat group-focus-visible:animate-heartbeat`) e ícono direccional SVG con desplazamiento (`group-hover:translate-x-1 group-focus-visible:translate-x-1`) garantiza una experiencia interactiva fluida e idéntica a los botones de llamada a la acción principales de la landing page.
