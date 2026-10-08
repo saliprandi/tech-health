@@ -441,11 +441,18 @@ import { CONFIG } from '../data/config';
             const ticketBanner = document.getElementById('ticket-confirmation');
             const ticketLink = document.getElementById('ticket-confirmation-link');
             const ticketNumEl = document.getElementById('ticket-confirmation-number');
+            const copyTicketBtn = document.getElementById('copy-ticket');
             if (ticketBanner && ticketLink && ticketNumEl) {
               ticketNumEl.textContent = ticketNumber;
               ticketLink.setAttribute('href', `/estado?ticket=${encodeURIComponent(ticketNumber)}`);
               ticketBanner.classList.remove('hidden');
               ticketBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              if (redirectAnnouncement) {
+                redirectAnnouncement.textContent = `Solicitud recibida. Su número de ticket es ${ticketNumber}.`;
+              }
+              setTimeout(() => {
+                copyTicketBtn?.focus();
+              }, 100);
             }
           }
 
