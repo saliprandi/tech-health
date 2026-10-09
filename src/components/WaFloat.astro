@@ -98,7 +98,7 @@ import { CONFIG } from '../data/config';
         btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = btn.getAttribute('href');
-        if (href) {
+        if (href && href.startsWith('https://wa.me/')) {
           // Performance Optimization: Use window.open instead of dynamic DOM element allocation and insertion
           const url = new URL(href);
           const phone = url.pathname.split('/').pop() || '';
