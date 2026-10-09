@@ -34,6 +34,22 @@ test.describe('Proceso Ticket Search Form Micro-UX', () => {
     await expect(announcement).toHaveText('Buscando estado de ticket...');
   });
 
+  test('renders process step list with role="list" and card hover/focus elevation micro-UX classes', async ({ page }) => {
+    const list = page.locator('ol[aria-label="Pasos del proceso de servicio técnico"]');
+    await expect(list).toBeVisible();
+    await expect(list).toHaveAttribute('role', 'list');
+
+    const cards = list.locator('li');
+    const count = await cards.count();
+    expect(count).toBeGreaterThan(0);
+
+    for (let i = 0; i < count; i++) {
+      const card = cards.nth(i);
+      await expect(card).toHaveClass(/hover:-translate-y-1/);
+      await expect(card).toHaveClass(/focus-within:-translate-y-1/);
+    }
+  });
+
   test('clears proceso ticket input on Escape key press and announces to screen reader', async ({ page }) => {
     const section = page.locator('#proceso');
     await section.scrollIntoViewIfNeeded();
