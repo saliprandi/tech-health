@@ -93,3 +93,7 @@
 ## 2026-03-30 - Anuncio accesible en regiones aria-live y feedback táctil en reinicio de búsquedas
 **Learning:** Al reiniciar o vaciar la consulta de un formulario de búsqueda de ticket (mediante un botón de acción secundaria como "Consultar otro ticket"), combinar la adición de utilidades de animación táctil por pulsación (`active:scale-95 transition-all`) y tooltips nativos `title` con la actualización de la región `aria-live="polite"` (`announcement.textContent = 'Formulario reiniciado para una nueva consulta'`) garantiza que los usuarios con lector de pantalla reciban confirmación auditiva inmediata de que los resultados previos fueron removidos y el formulario está listo para un nuevo ingreso.
 **Action:** Equipar siempre los botones de reinicio y consulta secundaria con tooltips `title`, utilidades `active:scale-95` y actualizaciones descriptivas a regiones `aria-live`.
+
+## 2026-03-30 - Micro-UX de tooltips nativos y respuesta táctil en botones de copia
+**Learning:** En tarjetas de información con botones de copia en el portapapeles (`#copy-phone`, `#copy-address`, `#copy-ticket` en `Contacto.astro`), combinar el atributo nativo `title` con micro-animaciones de presión activa (`active:scale-95 transition-all duration-200`) provee información emergente en mouse/focus y una respuesta táctil inmediata al hacer clic.
+**Action:** Asignar siempre tooltips nativos `title` explicativos e interacciones `active:scale-95 transition-all duration-200` en todos los botones de acción secundaria y copia.
