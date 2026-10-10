@@ -1,0 +1,264 @@
+---
+import { CONFIG } from '../data/config';
+
+const { calculadora } = CONFIG;
+---
+
+<section id="calculadora" class="py-20 bg-gradient-to-b from-navy/5 via-navy/10 to-white relative overflow-hidden scroll-mt-20">
+  <!-- Grid/Circuit background elements -->
+  <div class="absolute inset-0 bg-grid-slate-900/[0.03] bg-[bottom_1px_center] pointer-events-none" aria-hidden="true"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue/10 border border-blue/20 text-blue text-sm font-medium mb-4">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+        <span>Planificación B2B</span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-bold text-navy tracking-tight mb-4 font-heading">
+        {calculadora.titulo}
+      </h2>
+      <p class="text-lg text-navy-muted leading-relaxed">
+        {calculadora.subtitulo}
+      </p>
+    </div>
+
+    <!-- Calculator Card Container -->
+    <div class="bg-white rounded-2xl shadow-xl border border-border p-6 md:p-10 max-w-4xl mx-auto transition-all duration-300">
+      <form id="calc-form" class="grid grid-cols-1 md:grid-cols-2 gap-8" onsubmit="return false;">
+
+        <!-- Selection Controls -->
+        <div class="space-y-6">
+          <h3 class="text-xl font-bold text-navy flex items-center gap-2 border-b border-border pb-3 font-heading">
+            <svg class="w-5 h-5 text-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+            Parámetros de la Flota
+          </h3>
+
+          <!-- Categoria de Equipo -->
+          <div>
+            <label for="calc-categoria" class="block text-sm font-semibold text-navy mb-2">
+              Tipo de Equipamiento Médico <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <select
+                id="calc-categoria"
+                name="categoria"
+                class="w-full bg-surface border border-border rounded-xl px-4 py-3 text-navy font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 appearance-none transition-all cursor-pointer"
+                required
+              >
+                {calculadora.categorias.map((cat) => (
+                  <option value={cat.id} data-frecuencia={cat.frecuenciaBaseMeses} data-sugerencia={cat.estimadoPorUnidadSugerido} data-recomendacion={cat.recomendacion}>
+                    {cat.nombre}
+                  </option>
+                ))}
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-navy-muted">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cantidad de Unidades -->
+          <div>
+            <label for="calc-cantidad" class="block text-sm font-semibold text-navy mb-2">
+              Cantidad de Unidades <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <input
+                type="number"
+                id="calc-cantidad"
+                name="cantidad"
+                min="1"
+                max="200"
+                value="5"
+                class="w-full bg-surface border border-border rounded-xl px-4 py-3 text-navy font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-all"
+                required
+              />
+            </div>
+            <p class="text-xs text-navy-muted mt-1">Ingrese la cantidad aproximada de equipos a mantener.</p>
+          </div>
+
+          <!-- Intensidad de Uso -->
+          <div>
+            <label for="calc-uso" class="block text-sm font-semibold text-navy mb-2">
+              Intensidad de Uso Diario
+            </label>
+            <select
+              id="calc-uso"
+              name="uso"
+              class="w-full bg-surface border border-border rounded-xl px-4 py-3 text-navy font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 appearance-none transition-all cursor-pointer"
+            >
+              <option value="estandar">Estándar (Consultorio / Planta general)</option>
+              <option value="intensivo" selected>Intensivo (UTI / Guardia / Quirófano)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Output / Results Display -->
+        <div class="bg-surface rounded-xl p-6 border border-border/80 flex flex-col justify-between" role="status" aria-live="polite">
+          <div>
+            <h3 class="text-xl font-bold text-navy flex items-center gap-2 border-b border-border/60 pb-3 font-heading mb-4">
+              <svg class="w-5 h-5 text-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Plan Preventivo Sugerido
+            </h3>
+
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-border/60 shadow-sm">
+                <span class="block text-xs font-semibold uppercase tracking-wider text-navy-muted mb-1">
+                  Frecuencia de Revisión Aconsejada
+                </span>
+                <p id="res-frecuencia" class="text-2xl font-extrabold text-navy font-heading">
+                  Semestral (2 veces al año)
+                </p>
+              </div>
+
+              <div class="bg-white rounded-lg p-4 border border-border/60 shadow-sm">
+                <span class="block text-xs font-semibold uppercase tracking-wider text-navy-muted mb-1">
+                  Inspecciones Anuales Totales
+                </span>
+                <p id="res-inspecciones" class="text-2xl font-extrabold text-blue font-heading">
+                  10 intervenciones / año
+                </p>
+              </div>
+
+              <div class="bg-blue/5 rounded-lg p-4 border border-blue/20">
+                <span class="block text-xs font-semibold uppercase tracking-wider text-blue mb-1">
+                  Alcance Técnico Recomendado
+                </span>
+                <p id="res-recomendacion" class="text-sm text-navy leading-relaxed">
+                  Pruebas de calibración de PNI, SpO2, ECG y reemplazo preventivo de baterías cada 6 meses.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- WhatsApp Request CTA -->
+          <div class="mt-6 pt-4 border-t border-border/60">
+            <button
+              type="button"
+              id="calc-wa-btn"
+              class="group w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-whatsapp hover:bg-whatsapp-dark text-white font-bold rounded-xl shadow-md transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-whatsapp focus-visible:ring-offset-2 active:scale-95"
+            >
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12.031 0C5.39 0 0 5.39 0 12.031c0 2.116.552 4.18 1.6 6.002L0 24l6.136-1.571a11.96 11.96 0 005.895 1.536h.005c6.64 0 12.031-5.39 12.031-12.031 0-3.213-1.252-6.234-3.525-8.508A11.95 11.95 0 0012.031 0zm0 22.028h-.004a9.98 9.98 0 01-5.088-1.393l-.365-.216-3.642.933.97-3.548-.238-.378a9.97 9.97 0 01-1.529-5.397c0-5.522 4.492-10.014 10.015-10.014 2.673 0 5.185 1.042 7.075 2.933A9.94 9.94 0 0122.046 12c0 5.523-4.492 10.028-10.015 10.028zm5.492-7.508c-.301-.15-1.782-.879-2.057-.978-.275-.1-.475-.15-.675.15-.2.3-.776.978-.951 1.178-.175.2-.35.225-.651.075-.301-.15-1.272-.469-2.423-1.496-.895-.798-1.5-1.784-1.675-2.084-.175-.3-.019-.462.131-.611.135-.135.301-.35.451-.525.15-.175.2-.301.3-.5.1-.2.05-.375-.025-.525-.075-.15-.675-1.628-.925-2.228-.244-.585-.492-.505-.675-.515-.175-.008-.375-.01-.575-.01s-.525.075-.8.375c-.275.3-1.05 1.027-1.05 2.505s1.075 2.905 1.225 3.105c.15.2 2.115 3.23 5.125 4.53.716.31 1.275.495 1.71.633.72.228 1.375.196 1.892.119.577-.086 1.782-.728 2.032-1.43.25-.702.25-1.303.175-1.43-.075-.127-.275-.227-.575-.377z"/>
+              </svg>
+              <span>Solicitar Presupuesto por WhatsApp</span>
+              <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-focus-visible:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { CONFIG } from '../data/config';
+
+  (function () {
+    const categoriaSelect = document.getElementById('calc-categoria') as HTMLSelectElement | null;
+    const cantidadInput = document.getElementById('calc-cantidad') as HTMLInputElement | null;
+    const usoSelect = document.getElementById('calc-uso') as HTMLSelectElement | null;
+
+    const resFrecuencia = document.getElementById('res-frecuencia');
+    const resInspecciones = document.getElementById('res-inspecciones');
+    const resRecomendacion = document.getElementById('res-recomendacion');
+    const waBtn = document.getElementById('calc-wa-btn');
+
+    if (!categoriaSelect || !cantidadInput || !usoSelect || !resFrecuencia || !resInspecciones || !resRecomendacion || !waBtn) {
+      return;
+    }
+
+    function calcular() {
+      if (!categoriaSelect || !cantidadInput || !usoSelect || !resFrecuencia || !resInspecciones || !resRecomendacion) return null;
+
+      const selectedOption = categoriaSelect.options[categoriaSelect.selectedIndex];
+      if (!selectedOption) return null;
+
+      const catNombre = selectedOption.textContent ? selectedOption.textContent.trim() : '';
+      const baseMeses = parseInt(selectedOption.getAttribute('data-frecuencia') || '6', 10);
+      const recomendacion = selectedOption.getAttribute('data-recomendacion') || '';
+
+      let cantidad = parseInt(cantidadInput.value, 10);
+      if (isNaN(cantidad) || cantidad < 1) cantidad = 1;
+
+      const usoIntensivo = usoSelect.value === 'intensivo';
+
+      // Ajuste de frecuencia según intensidad de uso
+      let mesesFinales = baseMeses;
+      if (usoIntensivo && baseMeses > 3) {
+        mesesFinales = Math.max(3, baseMeses - 3);
+      }
+
+      let textoFrecuencia = 'Semestral (2 veces al año)';
+      let vecesAlAno = 2;
+
+      if (mesesFinales <= 3) {
+        textoFrecuencia = 'Trimestral (4 veces al año)';
+        vecesAlAno = 4;
+      } else if (mesesFinales <= 4) {
+        textoFrecuencia = 'Cuatrimestral (3 veces al año)';
+        vecesAlAno = 3;
+      } else if (mesesFinales >= 12) {
+        textoFrecuencia = 'Anual (1 vez al año)';
+        vecesAlAno = 1;
+      }
+
+      const totalInspeccionesAno = cantidad * vecesAlAno;
+
+      resFrecuencia.textContent = textoFrecuencia;
+      resInspecciones.textContent = `${totalInspeccionesAno} intervenciones / año (${cantidad} ${cantidad === 1 ? 'unidad' : 'unidades'})`;
+      resRecomendacion.textContent = recomendacion;
+
+      return {
+        catNombre,
+        cantidad,
+        usoText: usoIntensivo ? 'Intensivo (UTI / Guardia / Quirófano)' : 'Estándar (Consultorio / Planta)',
+        textoFrecuencia,
+        totalInspeccionesAno
+      };
+    }
+
+    // Event listeners
+    categoriaSelect.addEventListener('change', calcular);
+    cantidadInput.addEventListener('input', calcular);
+    usoSelect.addEventListener('change', calcular);
+
+    waBtn.addEventListener('click', function () {
+      const data = calcular();
+      if (!data) return;
+
+      const mensaje = `Hola TechHealth, me gustaría solicitar un presupuesto de mantenimiento preventivo para nuestra institución:\n\n` +
+        `• Equipamiento: ${data.catNombre}\n` +
+        `• Cantidad: ${data.cantidad} unidades\n` +
+        `• Uso: ${data.usoText}\n` +
+        `• Plan sugerido: ${data.textoFrecuencia} (~${data.totalInspeccionesAno} intervenciones/año)\n\n` +
+        `Por favor, coordinemos una propuesta formal.`;
+
+      const targetUrl = `https://wa.me/${CONFIG.contacto.whatsapp}?text=${encodeURIComponent(mensaje)}`;
+
+      if (targetUrl.startsWith('https://wa.me/')) {
+        const win = window.open(targetUrl, '_blank');
+        if (win) {
+          win.opener = null;
+        } else {
+          window.location.href = targetUrl;
+        }
+      }
+    });
+
+    // Calculo inicial al cargar
+    calcular();
+  })();
+</script>

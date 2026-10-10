@@ -193,4 +193,61 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora: {
+    titulo: "Calculadora de Estimación de Mantenimiento Preventivo",
+    subtitulo: "Planifique la frecuencia de revisión técnica para la flota de equipamiento médico de su institución.",
+    descripcion: "Seleccione el tipo de equipo, la cantidad y el nivel de intensidad de uso para obtener un plan sugerido de inspección periódica e informe de auditoría.",
+    categorias: [
+      {
+        id: "monitores",
+        nombre: "Monitores de Signos Vitales y Capnógrafos",
+        frecuenciaBaseMeses: 6,
+        estimadoPorUnidadSugerido: "Revisión Semestral",
+        recomendacion: "Pruebas de calibración de PNI, SpO2, ECG y reemplazo preventivo de baterías cada 6 meses."
+      },
+      {
+        id: "respiradores",
+        nombre: "Respiradores, Ventiladores y Anestesia",
+        frecuenciaBaseMeses: 3,
+        estimadoPorUnidadSugerido: "Revisión Trimestral",
+        recomendacion: "Verificación de celdas de O2, válvulas de espiración y pruebas de hermeticidad cada 3 meses."
+      },
+      {
+        id: "ecografos",
+        nombre: "Ecógrafos y Diagnóstico por Imagen",
+        frecuenciaBaseMeses: 6,
+        estimadoPorUnidadSugerido: "Revisión Semestral",
+        recomendacion: "Inspección de conectores de transductores, filtros de aire y calibración de pantallas médicas."
+      },
+      {
+        id: "defibriladores",
+        nombre: "Desfibriladores y Electrocardiógrafos",
+        frecuenciaBaseMeses: 6,
+        estimadoPorUnidadSugerido: "Revisión Semestral",
+        recomendacion: "Verificación de descarga en Joules, estado de paletas/parches y baterías de respaldo."
+      },
+      {
+        id: "bombas",
+        nombre: "Bombas de Infusión y Jeringa",
+        frecuenciaBaseMeses: 6,
+        estimadoPorUnidadSugerido: "Revisión Semestral",
+        recomendacion: "Calibración de caudalímetros, sensores de oclusión y detección de burbujas de aire."
+      },
+      {
+        id: "electrocirugia",
+        nombre: "Electrocirugía y Bisturí Eléctrico",
+        frecuenciaBaseMeses: 6,
+        estimadoPorUnidadSugerido: "Revisión Semestral",
+        recomendacion: "Control de potencia RF de salida, aislamiento de fugas de corriente y placa neutra."
+      },
+      {
+        id: "laboratorio",
+        nombre: "Autoclaves, Esterilizadores y Centrífugas",
+        frecuenciaBaseMeses: 6,
+        estimadoPorUnidadSugerido: "Revisión Semestral",
+        recomendacion: "Pruebas de presión, temperatura, sellos de gomas de puertas y sensores de seguridad."
+      }
+    ]
+  }
 };
