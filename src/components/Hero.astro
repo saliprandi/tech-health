@@ -105,7 +105,14 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
 
         const href = heroCta.getAttribute('href');
         if (href) {
-          window.open(href, '_blank', 'noopener,noreferrer');
+          try {
+            const parsed = new URL(href, window.location.origin);
+            if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+              window.open(parsed.href, '_blank', 'noopener,noreferrer');
+            }
+          } catch {
+            // Safe fallback if URL is invalid
+          }
         }
 
         setTimeout(() => {
