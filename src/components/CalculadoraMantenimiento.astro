@@ -1,0 +1,334 @@
+---
+import { CONFIG } from '../data/config';
+
+const { calculadora } = CONFIG;
+---
+
+<section id="calculadora" class="bg-navy section-padding content-visibility-auto scroll-mt-20 text-white">
+  <div class="container-custom">
+
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="font-heading font-bold text-blue-light tracking-wide uppercase text-[12px] mb-3">
+        {calculadora.subtitulo}
+      </div>
+      <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] leading-[1.2] text-white mb-4">
+        {calculadora.titulo}
+      </h2>
+      <p class="font-body text-[16px] text-white/70">
+        {calculadora.descripcion}
+      </p>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <!-- Left Column: Equipment Selector Cards -->
+      <div class="lg:col-span-7 flex flex-col gap-4" role="region" aria-label="Selección de inventario de equipos">
+        {calculadora.categorias.map((cat) => (
+          <div
+            class="calc-card group bg-white/5 border border-white/10 hover:border-blue-light/50 focus-within:border-blue-light/50 rounded-card p-5 transition-all duration-300 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+            data-cat-id={cat.id}
+            data-cat-nombre={cat.nombre}
+            data-frecuencia-meses={cat.frecuenciaMeses}
+          >
+            <div class="flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-white/10 text-blue-light flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-focus-within:scale-110 transition-transform">
+                <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                  <use href={`#icon-${cat.icono}`} />
+                </svg>
+              </div>
+              <div>
+                <label for={`cat-input-${cat.id}`} class="font-heading font-bold text-[15px] text-white block cursor-pointer">
+                  {cat.nombre}
+                </label>
+                <span class="font-body text-[12px] text-white/60">
+                  Frecuencia sugerida: <strong class="text-blue-light font-medium">{cat.frecuenciaSugerida}</strong>
+                </span>
+              </div>
+            </div>
+
+            <!-- Increment / Decrement Counter Controls -->
+            <div class="flex items-center gap-2 self-end sm:self-center">
+              <button
+                type="button"
+                class="calc-btn-minus w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 text-white flex items-center justify-center font-bold text-lg transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue-light disabled:opacity-40 disabled:pointer-events-none"
+                aria-label={`Disminuir cantidad de ${cat.nombre}`}
+                title={`Disminuir cantidad de ${cat.nombre}`}
+                disabled
+              >
+                −
+              </button>
+
+              <input
+                type="number"
+                id={`cat-input-${cat.id}`}
+                class="calc-input w-16 text-center bg-white/10 border border-white/20 rounded-lg py-1.5 px-2 font-heading font-bold text-[16px] text-white focus-visible:ring-2 focus-visible:ring-blue-light outline-none"
+                value="0"
+                min="0"
+                max="999"
+                aria-label={`Cantidad de ${cat.nombre}`}
+              />
+
+              <button
+                type="button"
+                class="calc-btn-plus w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 text-white flex items-center justify-center font-bold text-lg transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue-light"
+                aria-label={`Aumentar cantidad de ${cat.nombre}`}
+                title={`Aumentar cantidad de ${cat.nombre}`}
+              >
+                +
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Right Column: Live Proposal Summary -->
+      <div class="lg:col-span-5 bg-white text-navy rounded-card p-8 shadow-hero-card sticky top-24">
+        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-border">
+          <div class="w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <use href="#icon-file-text" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-heading font-extrabold text-[20px] text-navy">Resumen de Estimación</h3>
+            <p class="font-body text-[13px] text-text-soft">Plan preventivo recomendado</p>
+          </div>
+        </div>
+
+        <div class="space-y-4 mb-6">
+          <div class="flex justify-between items-center py-2 border-b border-border/60">
+            <span class="font-body text-[14px] text-text-soft">Total de Equipos:</span>
+            <span id="calc-total-equipos" class="font-heading font-extrabold text-[20px] text-navy">0</span>
+          </div>
+
+          <div class="flex justify-between items-center py-2 border-b border-border/60">
+            <span class="font-body text-[14px] text-text-soft">Visitas Técnicas Anuales:</span>
+            <span id="calc-visitas-anuales" class="font-heading font-extrabold text-[20px] text-blue">0</span>
+          </div>
+
+          <div class="py-2">
+            <span class="font-body text-[14px] text-text-soft block mb-1">Esquema Sugerido:</span>
+            <div id="calc-esquema-sugerido" class="font-body font-medium text-[14px] text-navy bg-off-white p-3 rounded-lg border border-border">
+              Seleccione al menos un equipo para calcular la propuesta.
+            </div>
+          </div>
+        </div>
+
+        <!-- WhatsApp CTA -->
+        <button
+          type="button"
+          id="calc-cta"
+          class="group w-full bg-navy text-white font-heading font-bold py-4 px-6 rounded-[8px] hover:bg-navy-dark active:scale-[0.98] transition-all flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 opacity-50 pointer-events-none"
+          disabled
+        >
+          <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
+            <use href="#icon-whatsapp" />
+          </svg>
+          <span id="calc-cta-text">Solicitar Presupuesto Formal</span>
+          <svg class="calc-cta-arrow w-4 h-4 text-white/70 group-hover:text-white group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        <p class="font-body text-[11px] text-text-soft text-center mt-3">
+          El cálculo es orientativo. Se entregará un informe y cotización formal tras evaluar las especificaciones de su institución.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Live Announcement for Screen Readers -->
+    <div id="calc-announcement" class="sr-only" aria-live="polite"></div>
+
+  </div>
+</section>
+
+<script>
+  (function () {
+    function initCalculadora() {
+      const cards = document.querySelectorAll('.calc-card');
+      const totalEquiposEl = document.getElementById('calc-total-equipos');
+      const visitasAnualesEl = document.getElementById('calc-visitas-anuales');
+      const esquemaSugeridoEl = document.getElementById('calc-esquema-sugerido');
+      const ctaBtn = document.getElementById('calc-cta') as HTMLButtonElement | null;
+      const ctaText = document.getElementById('calc-cta-text');
+      const announcement = document.getElementById('calc-announcement');
+
+      if (!cards.length || !totalEquiposEl || !visitasAnualesEl || !esquemaSugeridoEl || !ctaBtn || !ctaText) {
+        return () => {};
+      }
+
+      const updateCalculo = () => {
+        let totalEquipos = 0;
+        let maxFrecuenciaVisitas = 0; // visitas por año recomendadas basadas en el equipo más exigente
+        const inventarioSeleccionado: { nombre: string; cantidad: number }[] = [];
+
+        cards.forEach((card) => {
+          const input = card.querySelector('.calc-input') as HTMLInputElement | null;
+          const minusBtn = card.querySelector('.calc-btn-minus') as HTMLButtonElement | null;
+          const catNombre = card.getAttribute('data-cat-nombre') || '';
+          const meses = parseInt(card.getAttribute('data-frecuencia-meses') || '6', 10);
+
+          if (!input) return;
+          let val = parseInt(input.value, 10);
+          if (isNaN(val) || val < 0) val = 0;
+          if (val > 999) val = 999;
+          input.value = val.toString();
+
+          if (minusBtn) {
+            minusBtn.disabled = val <= 0;
+          }
+
+          if (val > 0) {
+            totalEquipos += val;
+            inventarioSeleccionado.push({ nombre: catNombre, cantidad: val });
+            const visitasPorAno = Math.round(12 / meses);
+            if (visitasPorAno > maxFrecuenciaVisitas) {
+              maxFrecuenciaVisitas = visitasPorAno;
+            }
+          }
+        });
+
+        totalEquiposEl.textContent = totalEquipos.toString();
+
+        if (totalEquipos === 0) {
+          visitasAnualesEl.textContent = '0';
+          esquemaSugeridoEl.textContent = 'Seleccione al menos un equipo para calcular la propuesta.';
+          ctaBtn.disabled = true;
+          ctaBtn.classList.add('opacity-50', 'pointer-events-none');
+        } else {
+          // Si tiene equipos, calculamos las visitas recomendadas
+          // Ejemplo: si tiene respiradores (cada 3 meses = 4 visitas) el plan base es trimestral (4 visitas/año)
+          const visitasAnualesRecomendadas = maxFrecuenciaVisitas > 0 ? maxFrecuenciaVisitas : 2;
+          visitasAnualesEl.textContent = visitasAnualesRecomendadas.toString();
+
+          let frecText = 'Semestral (2 inspecciones anuales completas)';
+          if (visitasAnualesRecomendadas >= 4) {
+            frecText = 'Trimestral (4 inspecciones anuales completas para equipos de alta complejidad)';
+          } else if (visitasAnualesRecomendadas === 1) {
+            frecText = 'Anual (1 inspección técnica preventiva)';
+          }
+
+          esquemaSugeridoEl.textContent = `Plan ${frecText} con calibración e informes técnicos para auditoría.`;
+          ctaBtn.disabled = false;
+          ctaBtn.classList.remove('opacity-50', 'pointer-events-none');
+        }
+
+        if (announcement) {
+          announcement.textContent = `Calculadora actualizada: ${totalEquipos} equipos seleccionados. Visitas anuales estimadas: ${
+            totalEquipos > 0 ? visitasAnualesEl.textContent : 0
+          }.`;
+        }
+      };
+
+      // Event listeners para cada tarjeta
+      cards.forEach((card) => {
+        const input = card.querySelector('.calc-input') as HTMLInputElement | null;
+        const minusBtn = card.querySelector('.calc-btn-minus') as HTMLButtonElement | null;
+        const plusBtn = card.querySelector('.calc-btn-plus') as HTMLButtonElement | null;
+
+        if (!input) return;
+
+        minusBtn?.addEventListener('click', () => {
+          let val = parseInt(input.value, 10) || 0;
+          if (val > 0) {
+            input.value = (val - 1).toString();
+            updateCalculo();
+          }
+        });
+
+        plusBtn?.addEventListener('click', () => {
+          let val = parseInt(input.value, 10) || 0;
+          if (val < 999) {
+            input.value = (val + 1).toString();
+            updateCalculo();
+          }
+        });
+
+        input.addEventListener('input', () => {
+          updateCalculo();
+        });
+
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            plusBtn?.click();
+          } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            minusBtn?.click();
+          }
+        });
+      });
+
+      // Manejador del CTA WhatsApp
+      let isRedirecting = false;
+      const handleCtaClick = (e: MouseEvent) => {
+        e.preventDefault();
+        if (isRedirecting || ctaBtn.disabled) return;
+
+        const total = totalEquiposEl.textContent || '0';
+        const visitas = visitasAnualesEl.textContent || '0';
+
+        const desglose: string[] = [];
+        cards.forEach((card) => {
+          const input = card.querySelector('.calc-input') as HTMLInputElement | null;
+          const catNombre = card.getAttribute('data-cat-nombre') || '';
+          if (input) {
+            const val = parseInt(input.value, 10);
+            if (val > 0) {
+              desglose.push(`• ${catNombre}: ${val} unidad(es)`);
+            }
+          }
+        });
+
+        const mensaje = `Hola TechHealth! Solicito un presupuesto formal para el mantenimiento preventivo de nuestra institución.\n\n*Resumen de Inventario:* (${total} equipos)\n${desglose.join(
+          '\n'
+        )}\n\n*Estimación preliminar:* ${visitas} visitas anuales programadas.\n\nQuedo a la espera de su respuesta.`;
+
+        // Obtener número de WhatsApp de config
+        const waNumber = '5493815658239';
+        const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(mensaje)}`;
+
+        isRedirecting = true;
+        const originalText = ctaText.textContent;
+        ctaText.textContent = 'Redirigiendo a WhatsApp...';
+        ctaBtn.classList.add('opacity-70', 'cursor-not-allowed');
+
+        if (announcement) {
+          announcement.textContent = 'Redirigiendo a WhatsApp con la propuesta estimada...';
+        }
+
+        const openedWin = window.open(url, '_blank');
+        if (openedWin) {
+          openedWin.opener = null;
+        } else {
+          window.location.href = url;
+        }
+
+        setTimeout(() => {
+          isRedirecting = false;
+          if (ctaText) ctaText.textContent = originalText;
+          ctaBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+          if (announcement) announcement.textContent = '';
+        }, 3000);
+      };
+
+      ctaBtn.addEventListener('click', handleCtaClick as EventListener);
+
+      // Calculo inicial
+      updateCalculo();
+
+      return () => {
+        ctaBtn.removeEventListener('click', handleCtaClick as EventListener);
+      };
+    }
+
+    let cleanup = initCalculadora();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initCalculadora();
+    });
+  })();
+</script>
