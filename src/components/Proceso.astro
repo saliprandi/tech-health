@@ -15,9 +15,9 @@ import { CONFIG } from '../data/config';
       </p>
     </div>
 
-    <ol class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 list-none p-0" aria-label="Pasos del proceso de servicio técnico">
+    <ol class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 list-none p-0" role="list" aria-label="Pasos del proceso de servicio técnico">
       {CONFIG.proceso.map((item) => (
-        <li class="relative group bg-off-white rounded-card p-8 border border-border/80 shadow-sm hover:shadow-card-hover hover:border-blue/30 focus-within:border-blue/30 transition-all duration-300 flex flex-col justify-between">
+        <li class="relative group bg-off-white rounded-card p-8 border border-border/80 shadow-sm hover:shadow-card-hover hover:border-blue/30 hover:-translate-y-1 focus-within:shadow-card-hover focus-within:border-blue/30 focus-within:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-6">
               <span class="font-heading font-black text-[28px] text-blue/30 group-hover:text-blue group-focus-within:text-blue group-focus-visible:text-blue transition-colors duration-300">

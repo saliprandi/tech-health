@@ -15,7 +15,7 @@ import { CONFIG } from '../data/config';
       </p>
     </div>
 
-    <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 list-none p-0 m-0" aria-label="Diferenciales de la empresa">
+    <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 list-none p-0 m-0" role="list" aria-label="Diferenciales de la empresa">
       {CONFIG.diferenciales.map((item) => (
         <li class="group bg-white rounded-card p-8 border border-border shadow-sm hover:shadow-card-hover hover:border-blue/30 hover:-translate-y-1 focus-within:shadow-card-hover focus-within:border-blue/30 focus-within:-translate-y-1 outline-none focus-within:ring-2 focus-within:ring-blue focus-within:ring-offset-2 transition-all duration-300">
           <div class="w-14 h-14 rounded-2xl bg-blue-pale text-blue flex items-center justify-center mb-6 group-hover:scale-110 group-focus-within:scale-110 group-focus-visible:scale-110 transition-transform">
