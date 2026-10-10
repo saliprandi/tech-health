@@ -52,4 +52,28 @@ test.describe('Proceso Ticket Search Form Micro-UX', () => {
     await expect(input).not.toHaveAttribute('aria-invalid');
     await expect(announcement).toHaveText('Campo de número de ticket limpiado');
   });
+
+  test('proceso clear ticket button has title tooltip and hover/active micro-animation utilities', async ({ page }) => {
+    const section = page.locator('#proceso');
+    await section.scrollIntoViewIfNeeded();
+
+    const clearBtn = page.locator('#proceso-clear-ticket-input');
+    await expect(clearBtn).toHaveAttribute('title', 'Limpiar número de ticket');
+    await expect(clearBtn).toHaveClass(/hover:scale-110/);
+    await expect(clearBtn).toHaveClass(/active:scale-95/);
+  });
+
+  test('proceso form validation error triggers input focus and text selection for recovery', async ({ page }) => {
+    const section = page.locator('#proceso');
+    await section.scrollIntoViewIfNeeded();
+
+    const input = page.locator('#proceso-ticket-input');
+    const submitBtn = page.locator('#proceso-estado-submit');
+
+    await input.fill('###INVALID###');
+    await submitBtn.click();
+
+    await expect(input).toBeFocused();
+    await expect(input).toHaveAttribute('aria-invalid', 'true');
+  });
 });
