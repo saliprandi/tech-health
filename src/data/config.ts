@@ -193,4 +193,26 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora: {
+    titulo: "Estimador de Plan de Mantenimiento Preventivo",
+    subtitulo: "Calcule la frecuencia recomendada, revisiones anuales e informes de auditoría necesarios para optimizar la seguridad de su equipamiento médico.",
+    tipos_institucion: [
+      { id: "clinica", nombre: "Clínica / Sanatorio / Hospital", recomFrecuencia: "Trimestral" },
+      { id: "centro_diag", nombre: "Centro de Diagnóstico / Imágenes", recomFrecuencia: "Semestral" },
+      { id: "consultorio", nombre: "Consultorio / Laboratorio Clinico", recomFrecuencia: "Semestral" },
+    ],
+    frecuencias: [
+      { id: "mensual", nombre: "Mensual (Urgencias / UCI / Alta demanda)", visitasAnuales: 12 },
+      { id: "trimestral", nombre: "Trimestral (Recomendado Sanitarios)", visitasAnuales: 4 },
+      { id: "semestral", nombre: "Semestral (Mantenimiento Regular)", visitasAnuales: 2 },
+      { id: "anual", nombre: "Anual (Control Básico)", visitasAnuales: 1 },
+    ],
+    beneficios: [
+      "Informes técnicos certificados para auditorías de salud",
+      "Ensayos de seguridad eléctrica y verificación funcional",
+      "Prioridad en atención de guardia para urgencias 24h",
+      "Trazabilidad técnica y protocolo de mantenimiento preventivo",
+    ],
+  },
 };
