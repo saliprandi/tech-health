@@ -90,7 +90,8 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 								<button
 									type="button"
 									id="copy-ticket-btn"
-									class="inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
+									title="Copiar número de ticket"
+									class="inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue active:scale-95 transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
 									aria-label="Copiar número de ticket al portapapeles"
 								>
 									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true">
@@ -101,7 +102,8 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 								<button
 									type="button"
 									id="share-ticket-btn"
-									class="inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
+									title="Copiar enlace directo del ticket"
+									class="inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue active:scale-95 transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
 									aria-label="Copiar enlace directo del ticket al portapapeles"
 								>
 									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true">
@@ -246,11 +248,13 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			if (!ticketNum || !navigator.clipboard) return;
 
 			const originalAriaLabel = copyTicketBtn.getAttribute('aria-label') || 'Copiar número de ticket al portapapeles';
+			const originalTitle = copyTicketBtn.getAttribute('title') || 'Copiar número de ticket';
 			navigator.clipboard.writeText(ticketNum).then(() => {
 				if (copyTicketText) copyTicketText.textContent = '¡Copiado!';
 				if (copyTicketIcon) copyTicketIcon.setAttribute('href', '#icon-check');
 				copyTicketBtn.classList.add('text-blue', 'scale-105');
 				copyTicketBtn.setAttribute('aria-label', 'Número de ticket copiado al portapapeles');
+				copyTicketBtn.setAttribute('title', 'Número de ticket copiado al portapapeles');
 				if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = 'Número de ticket copiado al portapapeles';
 
 				setTimeout(() => {
@@ -258,6 +262,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					if (copyTicketIcon) copyTicketIcon.setAttribute('href', '#icon-copy');
 					copyTicketBtn.classList.remove('text-blue', 'scale-105');
 					copyTicketBtn.setAttribute('aria-label', originalAriaLabel);
+					copyTicketBtn.setAttribute('title', originalTitle);
 					if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = '';
 				}, 2000);
 			});
@@ -271,12 +276,14 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			if (!ticketNum || !navigator.clipboard) return;
 
 			const originalAriaLabel = shareTicketBtn.getAttribute('aria-label') || 'Copiar enlace directo del ticket al portapapeles';
+			const originalTitle = shareTicketBtn.getAttribute('title') || 'Copiar enlace directo del ticket';
 			const shareUrl = `${window.location.origin}${window.location.pathname}?ticket=${encodeURIComponent(ticketNum)}`;
 			navigator.clipboard.writeText(shareUrl).then(() => {
 				if (shareTicketText) shareTicketText.textContent = '¡Enlace copiado!';
 				if (shareTicketIcon) shareTicketIcon.setAttribute('href', '#icon-check');
 				shareTicketBtn.classList.add('text-blue', 'scale-105');
 				shareTicketBtn.setAttribute('aria-label', 'Enlace directo del ticket copiado al portapapeles');
+				shareTicketBtn.setAttribute('title', 'Enlace directo del ticket copiado al portapapeles');
 				if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = 'Enlace directo del ticket copiado al portapapeles';
 
 				setTimeout(() => {
@@ -284,6 +291,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					if (shareTicketIcon) shareTicketIcon.setAttribute('href', '#icon-external');
 					shareTicketBtn.classList.remove('text-blue', 'scale-105');
 					shareTicketBtn.setAttribute('aria-label', originalAriaLabel);
+					shareTicketBtn.setAttribute('title', originalTitle);
 					if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = '';
 				}, 2000);
 			});
