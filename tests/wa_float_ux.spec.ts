@@ -66,6 +66,24 @@ test.describe('WhatsApp Floating Button UX', () => {
     await expect(tooltip).toHaveClass(/invisible/);
   });
 
+  test('button and tooltip have accessible ARIA attributes and redirection state', async ({ page }) => {
+    const btn = page.locator('#wa-float-btn');
+    const tooltip = page.locator('#wa-tooltip');
+
+    await expect(tooltip).toHaveAttribute('role', 'tooltip');
+    await expect(btn).toHaveAttribute('aria-describedby', 'wa-tooltip');
+
+    await btn.click();
+
+    await expect(btn).toHaveAttribute('aria-busy', 'true');
+    await expect(btn).toHaveAttribute('aria-disabled', 'true');
+
+    await page.waitForTimeout(3200);
+
+    await expect(btn).not.toHaveAttribute('aria-busy', 'true');
+    await expect(btn).not.toHaveAttribute('aria-disabled', 'true');
+  });
+
   test('redirection state should preserve tooltip visibility', async ({ page }) => {
     const btn = page.locator('#wa-float-btn');
     const tooltip = page.locator('#wa-tooltip');
