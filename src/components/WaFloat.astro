@@ -98,15 +98,19 @@ import { CONFIG } from '../data/config';
         btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = btn.getAttribute('href');
-        if (href) {
-          // Performance Optimization: Use window.open instead of dynamic DOM element allocation and insertion
-          const url = new URL(href);
-          const phone = url.pathname.split('/').pop() || '';
-          const sanitizedPhone = phone.replace(/\D/g, '');
-          const text = url.searchParams.get('text') || '';
-          const sanitizedHref = `https://wa.me/${sanitizedPhone}${text ? '?text=' + encodeURIComponent(text) : ''}`;
+        if (href && href.startsWith('https://wa.me/')) {
+          try {
+            // Performance Optimization: Use window.open instead of dynamic DOM element allocation and insertion
+            const url = new URL(href, window.location.origin);
+            const phone = url.pathname.split('/').pop() || '';
+            const sanitizedPhone = phone.replace(/\D/g, '');
+            const text = url.searchParams.get('text') || '';
+            const sanitizedHref = `https://wa.me/${sanitizedPhone}${text ? '?text=' + encodeURIComponent(text) : ''}`;
 
-          window.open(sanitizedHref, '_blank', 'noopener,noreferrer');
+            window.open(sanitizedHref, '_blank', 'noopener,noreferrer');
+          } catch {
+            // Ignore invalid URL formatting errors
+          }
         }
 
         if (feedbackTimer) clearTimeout(feedbackTimer);
