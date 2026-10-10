@@ -83,7 +83,7 @@
 **Action:** Aplicar utilidades `aria-invalid:*` en entradas de formulario sobre fondo oscuro y sincronizar anuncios en regiones `aria-live` tanto en eventos de teclado como en clics de limpieza de entrada.
 
 ## 2026-03-30 - Micro-animación de rotación y feedback táctil activo en botones de cierre de diálogos modales
-**Learning:** Equipar botones de cierre en cuadros de diálogo modales con micro-animaciones pareadas de rotación de 90 grados (`hover:rotate-90 focus-visible:rotate-90`) y escalado activo (`active:scale-95 transition-all duration-300`) proporciona una respuesta táctil e interactiva inmediata que refuerza la acción de cierre tanto para navegación con ratón como por teclado.
+**Learning:** Equipar botones de cierre en cuadros de diálogo modales con micro-animaciones pareadas de rotación de 90 grados (`hover:rotate-90 focus-visible:rotate-90`) and escalado activo (`active:scale-95 transition-all duration-300`) proporciona una respuesta táctil e interactiva inmediata que refuerza la acción de cierre tanto para navegación con ratón como por teclado.
 **Action:** Aplicar utilidades Tailwind de rotación (`rotate-90`) e interacción activa (`active:scale-95`) en botones icono de cierre manteniendo paridad entre `:hover` y `:focus-visible`.
 
 ## 2026-03-30 - Asociación accesible aria-describedby y gestión de estado ocupado en botones flotantes
@@ -93,3 +93,7 @@
 ## 2026-03-30 - Anuncio accesible en regiones aria-live y feedback táctil en reinicio de búsquedas
 **Learning:** Al reiniciar o vaciar la consulta de un formulario de búsqueda de ticket (mediante un botón de acción secundaria como "Consultar otro ticket"), combinar la adición de utilidades de animación táctil por pulsación (`active:scale-95 transition-all`) y tooltips nativos `title` con la actualización de la región `aria-live="polite"` (`announcement.textContent = 'Formulario reiniciado para una nueva consulta'`) garantiza que los usuarios con lector de pantalla reciban confirmación auditiva inmediata de que los resultados previos fueron removidos y el formulario está listo para un nuevo ingreso.
 **Action:** Equipar siempre los botones de reinicio y consulta secundaria con tooltips `title`, utilidades `active:scale-95` y actualizaciones descriptivas a regiones `aria-live`.
+
+## 2026-03-30 - Micro-UX de enlace de confirmación de ticket con animación direccional y anillo de enfoque
+**Learning:** Los enlaces de confirmación generados dinámicamente tras enviar un formulario (`#ticket-confirmation-link`) deben equiparse con la clase Tailwind `group`, transiciones direccionales en el ícono SVG (`group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5 transition-transform duration-300`) y anillo de enfoque con desplazamiento (`focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2`). Esto ofrece indicación direccional clara y paridad entre ratón y teclado.
+**Action:** Aplicar siempre clases `group` con animaciones de desplazamiento en el ícono SVG y anillos de enfoque con `ring-offset-2` en enlaces de confirmación o redirección secundaria.
