@@ -106,7 +106,12 @@ import { CONFIG } from '../data/config';
           const text = url.searchParams.get('text') || '';
           const sanitizedHref = `https://wa.me/${sanitizedPhone}${text ? '?text=' + encodeURIComponent(text) : ''}`;
 
-          window.open(sanitizedHref, '_blank', 'noopener,noreferrer');
+          const openedWin = window.open(sanitizedHref, '_blank');
+          if (openedWin) {
+            openedWin.opener = null;
+          } else {
+            window.location.href = sanitizedHref;
+          }
         }
 
         if (feedbackTimer) clearTimeout(feedbackTimer);
