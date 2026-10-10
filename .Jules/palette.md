@@ -19,7 +19,7 @@
 **Action:** Utilizar named groups para animaciones de foco en íconos embebidos en inputs/selects y equipar contadores de caracteres con regiones `aria-live="polite"` para garantizar feedback visual y por voz.
 
 ## 2026-03-30 - Fallback de redirección transparente para bloqueadores de ventanas emergentes en envíos de formulario
-**Learning:** En manejadores de envíos de formularios que abren enlaces externos (ej. WhatsApp) tras procesar eventos de cliente, `window.open(url, '_blank', 'noopener,noreferrer')` puede ser bloqueado en navegadores estrictos o webviews móviles. Evaluar la referencia resultante (`const openedWin = window.open(...)`) y aplicar `if (!openedWin) window.location.href = url` garantiza la navegación sin parpadeos de pestañas en blanco ni interrupciones silenciosas de UX.
+**Learning:** En manejadores de envíos de formularios que abren enlaces externos (ej. WhatsApp) tras procesar eventos de cliente, `window.open(url, '_blank', 'noopener,noreferrer')` puede ser bloqueado en navegadores strictly o webviews móviles. Evaluar la referencia resultante (`const openedWin = window.open(...)`) y aplicar `if (!openedWin) window.location.href = url` garantiza la navegación sin parpadeos de pestañas en blanco ni interrupciones silenciosas de UX.
 **Action:** Usar asignación condicional `if (!openedWin) window.location.href = url` al abrir enlaces en manejadores de formularios para asegurar redundancia ante bloqueadores de popups.
 
 ## 2026-03-30 - Sincronización dinámica de atributos ARIA label en botones de copia y acción
@@ -51,7 +51,7 @@
 **Action:** Equipar siempre las entradas de búsqueda con manejadores de tecla `Escape` para limpieza e incluir íconos vectoriales direccionales con transiciones en los botones principales.
 
 ## 2026-03-30 - Paridad de affordance direccional en botones de acción prioritaria (CTA de emergencia)
-**Learning:** Incorporar un ícono vectorial de flecha/chevron direccional (`aria-hidden="true"`) con micro-animaciones coordinadas (`group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-all duration-300`) en botones de llamada a la acción prioritarios da una pista visual direccional clara que refuerza la intención de avance o redirección tanto para navegación con ratón como por teclado.
+**Learning:** Incorporar un ícono vectorial de flecha/chevron direccional (`aria-hidden="true"`) con micro-animaciones coordinadas (`group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-all duration-300`) en botones de llamada a la acción prioritarios da una pista visual direccional clara que refuerza la intención de advance o redirección tanto para navegación con ratón como por teclado.
 **Action:** Acompañar siempre los botones principales de llamada a la acción con un ícono direccional SVG y animaciones pareadas de desplazar a la derecha (`translate-x-1`) en estados `:hover` y `:focus-visible`.
 
 ## 2026-03-30 - Atajo de teclado Ctrl + Enter e indicación descriptiva accesible en áreas de texto
@@ -88,8 +88,12 @@
 
 ## 2026-03-30 - Asociación accesible aria-describedby y gestión de estado ocupado en botones flotantes
 **Learning:** Los botones flotantes de acción (FAB) con tooltip flotante (como `#wa-float-btn`) se benefician de la asociación semántica explícita mediante `aria-describedby` apuntando al contenedor del tooltip. Además, alternar dinámicamente `aria-busy="true"` y `aria-disabled="true"` durante la redirección (y limpiarlos al restaurar el estado) mantiene a las tecnologías de asistencia correctamente informadas del progreso.
-**Action:** Enlazar siempre tooltips contextuales a botones flotantes mediante `aria-describedby` y alternar atributos ARIA `aria-busy` y `aria-disabled` durante estados de redirección asíncronos.
+**Action:** Enlazar siempre tooltips contextuales a botones flotantes mediante `aria-describedby` y alternar atributos ARIA `aria-busy` e `aria-disabled` durante estados de redirección asíncronos.
 
 ## 2026-03-30 - Anuncio accesible en regiones aria-live y feedback táctil en reinicio de búsquedas
 **Learning:** Al reiniciar o vaciar la consulta de un formulario de búsqueda de ticket (mediante un botón de acción secundaria como "Consultar otro ticket"), combinar la adición de utilidades de animación táctil por pulsación (`active:scale-95 transition-all`) y tooltips nativos `title` con la actualización de la región `aria-live="polite"` (`announcement.textContent = 'Formulario reiniciado para una nueva consulta'`) garantiza que los usuarios con lector de pantalla reciban confirmación auditiva inmediata de que los resultados previos fueron removidos y el formulario está listo para un nuevo ingreso.
 **Action:** Equipar siempre los botones de reinicio y consulta secundaria con tooltips `title`, utilidades `active:scale-95` y actualizaciones descriptivas a regiones `aria-live`.
+
+## 2026-03-30 - Atributos title nativos y micro-animaciones táctiles en botones de limpieza y menú móvil
+**Learning:** Equipar los botones icono de limpieza de búsqueda y entradas (`#proceso-clear-ticket-input` y `#clear-faq-search`) con tooltips nativos explicativos (`title="Limpiar..."`) y micro-animaciones táctiles de escalado (`hover:scale-110 active:scale-95 transition-all duration-200`) provee una pista de affordance visual e interactiva inmediata. Asimismo, sincronizar dinámicamente el atributo `title` en el botón de alternancia del menú móvil (`#menu-toggle`) entre "Abrir menú" y "Cerrar menú" asegura paridad entre los anuncios de lectores de pantalla (`aria-label`) y los tooltips nativos del navegador.
+**Action:** Asignar siempre atributos `title` nativos y utilidades Tailwind de escalado táctil (`hover:scale-110 active:scale-95`) en botones icono de limpieza de inputs y sincronizar dinámicamente el atributo `title` en botones de alternancia de estado.

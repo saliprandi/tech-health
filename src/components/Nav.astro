@@ -36,7 +36,8 @@ import { CONFIG } from '../data/config';
       <!-- Hamburger Button -->
       <button
         id="menu-toggle"
-        class="lg:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 z-[101] outline-none focus-visible:ring-2 focus-visible:ring-navy rounded-sm"
+        title="Abrir menú"
+        class="lg:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 z-[101] outline-none focus-visible:ring-2 focus-visible:ring-navy rounded-sm active:scale-95 transition-transform duration-200"
         aria-label="Abrir menú"
         aria-expanded="false"
         aria-controls="mobile-menu"
@@ -133,6 +134,7 @@ import { CONFIG } from '../data/config';
 
         toggle.setAttribute('aria-expanded', isOpen.toString());
         toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+        toggle.setAttribute('title', isOpen ? 'Cerrar menú' : 'Abrir menú');
 
         if (isOpen) {
           lastFocusedElement = document.activeElement as HTMLElement;
