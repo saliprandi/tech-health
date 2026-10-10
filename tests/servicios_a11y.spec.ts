@@ -19,8 +19,16 @@ test.describe('Servicios Modal CTA Accessibility', () => {
     await expect(announcement).toBeAttached();
     await expect(announcement).toHaveAttribute('aria-live', 'polite');
 
+    const arrowIcon = page.locator('#modal-cta-arrow');
+    await expect(arrowIcon).toBeVisible();
+
+    const arrowClass = await arrowIcon.getAttribute('class');
+    expect(arrowClass).toContain('group-hover:translate-x-1');
+    expect(arrowClass).toContain('group-focus-visible:translate-x-1');
+
     await modalCta.click();
 
+    await expect(arrowIcon).toBeHidden();
     await expect(page.locator('#modal-cta-text')).toHaveText('Redirigiendo...');
     await expect(announcement).toHaveText('Redirigiendo a WhatsApp...');
   });
