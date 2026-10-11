@@ -223,8 +223,9 @@ import { CONFIG } from '../data/config';
           redirectionAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         }
 
+        // Security: Validate trusted WhatsApp URL prefix before window.open to prevent open redirects or scheme execution if href is tampered
         const href = cta.getAttribute('href');
-        if (href) {
+        if (href && /^https:\/\/(wa\.me|api\.whatsapp\.com|chat\.whatsapp\.com)\//.test(href)) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 

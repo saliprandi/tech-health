@@ -236,3 +236,21 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('CTA buttons validate trusted wa.me origin prefix before opening window', async ({ page }) => {
+  await page.goto('http://localhost:4321/', { waitUntil: 'networkidle' });
+
+  // Tamper with href to untrusted domain
+  await page.evaluate(() => {
+    const heroCta = document.getElementById('hero-cta');
+    if (heroCta) heroCta.setAttribute('href', 'https://malicious-site.com');
+  });
+
+  let windowOpened = false;
+  page.on('popup', () => { windowOpened = true; });
+
+  await page.click('#hero-cta');
+  await page.waitForTimeout(500);
+
+  expect(windowOpened).toBe(false);
+});

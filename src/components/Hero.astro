@@ -103,8 +103,9 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         if (heroCtaAnnouncement) heroCtaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
+        // Security: Validate trusted WhatsApp URL prefix before window.open to prevent open redirects or scheme execution if href is tampered
         const href = heroCta.getAttribute('href');
-        if (href) {
+        if (href && /^https:\/\/(wa\.me|api\.whatsapp\.com|chat\.whatsapp\.com)\//.test(href)) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 
