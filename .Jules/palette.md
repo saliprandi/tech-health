@@ -64,7 +64,7 @@
 
 ## 2026-03-30 - Recuperación de errores con enfoque y selección automática en campos de búsqueda
 **Learning:** En formularios de consulta asíncrona o búsqueda de estado (ej. `estado.astro`), invocar `input.focus()` y `input.select()` tras detectar errores de validación o fallos en la consulta permite a usuarios de teclado, lectores de pantalla y pantallas táctiles corregir inmediatamente su entrada escribiendo de nuevo, sin requerir pulsaciones repetidas de retroceso o selección manual.
-**Action:** Invocar siempre `input.focus()` and `input.select()` en los bloques de captura de errores de formularios de búsqueda para ofrecer una recuperación de errores fluida.
+**Action:** Invocar siempre `input.focus()` y `input.select()` en los bloques de captura de errores de formularios de búsqueda para ofrecer una recuperación de errores fluida.
 
 ## 2026-03-30 - Desambiguación accesible de puntos de referencia de navegación (nav landmark aria-labels)
 **Learning:** Cuando una aplicación web contiene múltiples elementos `<nav>` (por ejemplo, barra principal de navegación y navegación secundaria de estado o menú móvil), omitir los atributos `aria-label` hace que los lectores de pantalla anuncien simplemente "Navegación" repetidamente. Proveer etiquetas concisas e intencionales (`aria-label="Navegación principal"` y `aria-label="Navegación de consulta"`) permite a usuarios de tecnologías de asistencia identificar y saltar directamente al punto de referencia de navegación deseado.
@@ -83,7 +83,7 @@
 **Action:** Aplicar utilidades `aria-invalid:*` en entradas de formulario sobre fondo oscuro y sincronizar anuncios en regiones `aria-live` tanto en eventos de teclado como en clics de limpieza de entrada.
 
 ## 2026-03-30 - Micro-animación de rotación y feedback táctil activo en botones de cierre de diálogos modales
-**Learning:** Equipar botones de cierre en cuadros de diálogo modales con micro-animaciones pareadas de rotación de 90 grados (`hover:rotate-90 focus-visible:rotate-90`) and escalado activo (`active:scale-95 transition-all duration-300`) proporciona una respuesta táctil e interactiva inmediata que refuerza la acción de cierre tanto para navegación con ratón como por teclado.
+**Learning:** Equipar botones de cierre en cuadros de diálogo modales con micro-animaciones pareadas de rotación de 90 grados (`hover:rotate-90 focus-visible:rotate-90`) y escalado activo (`active:scale-95 transition-all duration-300`) proporciona una respuesta táctil e interactiva inmediata que refuerza la acción de cierre tanto para navegación con ratón como por teclado.
 **Action:** Aplicar utilidades Tailwind de rotación (`rotate-90`) e interacción activa (`active:scale-95`) en botones icono de cierre manteniendo paridad entre `:hover` y `:focus-visible`.
 
 ## 2026-03-30 - Asociación accesible aria-describedby y gestión de estado ocupado en botones flotantes
