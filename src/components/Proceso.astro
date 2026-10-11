@@ -152,6 +152,8 @@ import { CONFIG } from '../data/config';
         if (!form.checkValidity()) {
           input.setAttribute('aria-invalid', 'true');
           form.reportValidity();
+          input.focus();
+          input.select();
           e.preventDefault();
           return;
         }
@@ -162,6 +164,8 @@ import { CONFIG } from '../data/config';
         if (!sanitizedVal || !TICKET_REGEX.test(sanitizedVal)) {
           input.setAttribute('aria-invalid', 'true');
           if (announcement) announcement.textContent = 'Formato de ticket inválido';
+          input.focus();
+          input.select();
           e.preventDefault();
           return;
         }
