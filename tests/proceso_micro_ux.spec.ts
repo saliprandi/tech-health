@@ -44,6 +44,9 @@ test.describe('Proceso Ticket Search Form Micro-UX', () => {
 
     await input.fill('TH-2026-1234');
     await expect(clearBtn).toBeVisible();
+    await expect(clearBtn).toHaveAttribute('title', 'Limpiar número de ticket');
+    await expect(clearBtn).toHaveClass(/hover:scale-110/);
+    await expect(clearBtn).toHaveClass(/active:scale-95/);
 
     await input.press('Escape');
 

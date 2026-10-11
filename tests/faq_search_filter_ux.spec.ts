@@ -22,6 +22,9 @@ test.describe('FAQ Search Filter Micro-UX & Accessibility', () => {
 
     // Clear button should become visible
     await expect(clearBtn).toBeVisible();
+    await expect(clearBtn).toHaveAttribute('title', 'Limpiar búsqueda');
+    await expect(clearBtn).toHaveClass(/hover:scale-110/);
+    await expect(clearBtn).toHaveClass(/active:scale-95/);
 
     // Check visible items count
     const visibleItems = page.locator('.faq-item:not(.hidden)');
