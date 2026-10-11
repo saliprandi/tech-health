@@ -224,8 +224,8 @@ import { CONFIG } from '../data/config';
         }
 
         const href = cta.getAttribute('href');
-        // Security: Validate trusted origin prefix prior to window.open redirection
-        if (href && href.startsWith('https://wa.me/')) {
+        // Security: Validate trusted origin prefix prior to window.open redirection (supporting https://wa.me/ and https://api.whatsapp.com/)
+        if (href && (href.startsWith('https://wa.me/') || href.startsWith('https://api.whatsapp.com/'))) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 

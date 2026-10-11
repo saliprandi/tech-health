@@ -104,8 +104,8 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = heroCta.getAttribute('href');
-        // Security: Validate trusted origin prefix prior to window.open redirection
-        if (href && href.startsWith('https://wa.me/')) {
+        // Security: Validate trusted origin prefix prior to window.open redirection (supporting https://wa.me/ and https://api.whatsapp.com/)
+        if (href && (href.startsWith('https://wa.me/') || href.startsWith('https://api.whatsapp.com/'))) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 
