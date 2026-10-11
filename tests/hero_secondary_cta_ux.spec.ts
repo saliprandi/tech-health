@@ -26,6 +26,9 @@ test.describe('Hero CTA UX & Directional Icons', () => {
     await expect(secondaryBtn).toContainText('Ver servicios');
     await expect(secondaryBtn).toHaveClass(/group/);
     await expect(secondaryBtn).toHaveClass(/gap-2/);
+    await expect(secondaryBtn).toHaveClass(/focus-visible:ring-2/);
+    await expect(secondaryBtn).toHaveClass(/focus-visible:ring-navy/);
+    await expect(secondaryBtn).toHaveClass(/focus-visible:ring-offset-2/);
 
     const icon = secondaryBtn.locator('svg');
     await expect(icon).toBeVisible();
