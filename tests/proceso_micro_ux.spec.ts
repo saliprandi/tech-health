@@ -34,7 +34,7 @@ test.describe('Proceso Ticket Search Form Micro-UX', () => {
     await expect(announcement).toHaveText('Buscando estado de ticket...');
   });
 
-  test('clears proceso ticket input on Escape key press and announces to screen reader', async ({ page }) => {
+  test('clears proceso ticket input on Escape key press and announces to screen reader with native title and scale classes', async ({ page }) => {
     const section = page.locator('#proceso');
     await section.scrollIntoViewIfNeeded();
 
@@ -44,6 +44,9 @@ test.describe('Proceso Ticket Search Form Micro-UX', () => {
 
     await input.fill('TH-2026-1234');
     await expect(clearBtn).toBeVisible();
+    await expect(clearBtn).toHaveAttribute('title', 'Limpiar número de ticket');
+    await expect(clearBtn).toHaveClass(/hover:scale-110/);
+    await expect(clearBtn).toHaveClass(/active:scale-95/);
 
     await input.press('Escape');
 
