@@ -18,9 +18,11 @@ test.describe('Emergencia CTA Micro-UX & Accessibility', () => {
     await expect(arrowIcon).toHaveClass(/group-hover:translate-x-1/);
     await expect(arrowIcon).toHaveClass(/group-focus-visible:translate-x-1/);
 
-    // Test click feedback and aria-live announcement
+    // Test click feedback, ARIA busy/disabled states, and aria-live announcement
     const announcement = page.locator('#emergencia-cta-announcement');
     await cta.click();
     await expect(announcement).toHaveText('Redirigiendo a WhatsApp...');
+    await expect(cta).toHaveAttribute('aria-busy', 'true');
+    await expect(cta).toHaveAttribute('aria-disabled', 'true');
   });
 });
