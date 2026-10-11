@@ -236,3 +236,31 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('CTA click handlers in Hero, Nav, and Servicios validate trusted WhatsApp domain prefixes before window.open', async ({ page }) => {
+  await page.goto('http://localhost:4321/', { waitUntil: 'networkidle' });
+
+  // Tamper Hero CTA href attribute to malicious scheme/url
+  await page.evaluate(() => {
+    const heroCta = document.getElementById('hero-cta');
+    if (heroCta) heroCta.setAttribute('href', 'javascript:alert("malicious")');
+  });
+
+  let popupOpened = false;
+  page.once('popup', () => { popupOpened = true; });
+
+  await page.click('#hero-cta');
+  await page.waitForTimeout(300);
+  expect(popupOpened).toBe(false);
+
+  // Tamper Nav CTA href attribute
+  await page.evaluate(() => {
+    const navCta = document.getElementById('nav-cta');
+    if (navCta) navCta.setAttribute('href', 'https://malicious-site.com/phish');
+  });
+
+  page.once('popup', () => { popupOpened = true; });
+  await page.click('#nav-cta');
+  await page.waitForTimeout(300);
+  expect(popupOpened).toBe(false);
+});
