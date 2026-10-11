@@ -93,3 +93,7 @@
 ## 2026-03-30 - Anuncio accesible en regiones aria-live y feedback táctil en reinicio de búsquedas
 **Learning:** Al reiniciar o vaciar la consulta de un formulario de búsqueda de ticket (mediante un botón de acción secundaria como "Consultar otro ticket"), combinar la adición de utilidades de animación táctil por pulsación (`active:scale-95 transition-all`) y tooltips nativos `title` con la actualización de la región `aria-live="polite"` (`announcement.textContent = 'Formulario reiniciado para una nueva consulta'`) garantiza que los usuarios con lector de pantalla reciban confirmación auditiva inmediata de que los resultados previos fueron removidos y el formulario está listo para un nuevo ingreso.
 **Action:** Equipar siempre los botones de reinicio y consulta secundaria con tooltips `title`, utilidades `active:scale-95` y actualizaciones descriptivas a regiones `aria-live`.
+
+## 2026-03-30 - Atributos ARIA busy/disabled e indicación tooltip en redirecciones principales
+**Learning:** En botones CTA principales que inician redirecciones externas (ej. WhatsApp), añadir tooltips nativos `title` provee pistas de uso al pasar el ratón, mientras que alternar los atributos `aria-busy="true"` y `aria-disabled="true"` durante la redirección mantiene a los lectores de pantalla informados del estado de carga del botón y evita pulsaciones duplicadas.
+**Action:** Asignar atributos `title` en botones CTA e integrar la conmutación de `aria-busy` y `aria-disabled` durante la fase de procesamiento y redirección.
