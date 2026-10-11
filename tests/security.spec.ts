@@ -236,3 +236,22 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('CTA buttons validate WhatsApp domain prefixes before triggering window.open', async ({ page }) => {
+  await page.goto('http://localhost:4321/', { waitUntil: 'networkidle' });
+
+  // Tamper with hero CTA href to simulate malicious attribute manipulation
+  await page.evaluate(() => {
+    const heroCta = document.getElementById('hero-cta');
+    if (heroCta) heroCta.setAttribute('href', 'https://malicious-site.example.com/phish');
+  });
+
+  let popupOpened = false;
+  page.on('popup', () => { popupOpened = true; });
+
+  await page.click('#hero-cta');
+  await page.waitForTimeout(300);
+
+  // Verify popup was blocked because URL failed trusted domain validation
+  expect(popupOpened).toBe(false);
+});

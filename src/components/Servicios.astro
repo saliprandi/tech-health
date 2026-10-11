@@ -211,7 +211,8 @@ const modalData = CONFIG.servicios.map(servicio => ({
           cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
           const href = cta.getAttribute('href');
-          if (href) {
+          const WA_URL_REGEX = /^https:\/\/(wa\.me|api\.whatsapp\.com|chat\.whatsapp\.com)\//;
+          if (href && WA_URL_REGEX.test(href)) {
             window.open(href, '_blank', 'noopener,noreferrer');
           }
 
