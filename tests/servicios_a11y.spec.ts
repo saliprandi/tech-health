@@ -39,4 +39,23 @@ test.describe('Servicios Modal CTA Accessibility', () => {
     expect(classList).toContain('hover:scale-110');
     expect(classList).toContain('focus-visible:scale-110');
   });
+
+  test('modal CTA includes directional arrow SVG and group hover/focus micro-animations', async ({ page }) => {
+    const serviceCard = page.locator('.service-card').first();
+    await serviceCard.click();
+
+    const modalCta = page.locator('#modal-cta');
+    await expect(modalCta).toBeVisible();
+
+    const classList = await modalCta.getAttribute('class');
+    expect(classList).toContain('group');
+
+    const arrowSvg = modalCta.locator('svg[stroke="currentColor"]');
+    await expect(arrowSvg).toBeVisible();
+    await expect(arrowSvg).toHaveAttribute('aria-hidden', 'true');
+
+    const arrowClass = await arrowSvg.getAttribute('class');
+    expect(arrowClass).toContain('group-hover:translate-x-1');
+    expect(arrowClass).toContain('group-focus-visible:translate-x-1');
+  });
 });
