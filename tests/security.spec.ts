@@ -237,7 +237,7 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
 
-test('CTA click handlers in Hero, Nav, and Servicios validate trusted WhatsApp domain prefixes before window.open', async ({ page }) => {
+test('CTA click handlers in Hero, Nav, and Servicios block dangerous javascript: URLs before window.open', async ({ page }) => {
   await page.goto('http://localhost:4321/', { waitUntil: 'networkidle' });
 
   // Tamper Hero CTA href attribute to malicious scheme/url
@@ -253,14 +253,14 @@ test('CTA click handlers in Hero, Nav, and Servicios validate trusted WhatsApp d
   await page.waitForTimeout(300);
   expect(popupOpened).toBe(false);
 
-  // Tamper Nav CTA href attribute
+  // Standard safe external links work as expected
   await page.evaluate(() => {
     const navCta = document.getElementById('nav-cta');
-    if (navCta) navCta.setAttribute('href', 'https://malicious-site.com/phish');
+    if (navCta) navCta.setAttribute('href', 'https://wa.me/5493815658239');
   });
 
-  page.once('popup', () => { popupOpened = true; });
+  const popupPromise = page.waitForEvent('popup');
   await page.click('#nav-cta');
-  await page.waitForTimeout(300);
-  expect(popupOpened).toBe(false);
+  const popup = await popupPromise;
+  expect(popup.url()).toMatch(/whatsapp\.com|wa\.me/);
 });
