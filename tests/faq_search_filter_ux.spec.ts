@@ -54,6 +54,13 @@ test.describe('FAQ Search Filter Micro-UX & Accessibility', () => {
     expect(await visibleItems.count()).toBeGreaterThan(0);
   });
 
+  test('faq search clear button has native title tooltip and micro-animation styling', async ({ page }) => {
+    const clearBtn = page.locator('#clear-faq-search');
+    await expect(clearBtn).toHaveAttribute('title', 'Limpiar búsqueda');
+    await expect(clearBtn).toHaveClass(/hover:scale-110/);
+    await expect(clearBtn).toHaveClass(/active:scale-95/);
+  });
+
   test('should clear search input on Escape key press and restore all FAQs', async ({ page }) => {
     const searchInput = page.locator('#faq-search-input');
     const visibleItems = page.locator('.faq-item:not(.hidden)');
