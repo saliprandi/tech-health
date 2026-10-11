@@ -34,6 +34,13 @@ test.describe('Proceso Ticket Search Form Micro-UX', () => {
     await expect(announcement).toHaveText('Buscando estado de ticket...');
   });
 
+  test('proceso ticket clear button has native title tooltip and micro-animation styling', async ({ page }) => {
+    const clearBtn = page.locator('#proceso-clear-ticket-input');
+    await expect(clearBtn).toHaveAttribute('title', 'Limpiar número de ticket');
+    await expect(clearBtn).toHaveClass(/hover:scale-110/);
+    await expect(clearBtn).toHaveClass(/active:scale-95/);
+  });
+
   test('clears proceso ticket input on Escape key press and announces to screen reader', async ({ page }) => {
     const section = page.locator('#proceso');
     await section.scrollIntoViewIfNeeded();
