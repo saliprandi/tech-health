@@ -224,7 +224,7 @@ import { CONFIG } from '../data/config';
         }
 
         const href = cta.getAttribute('href');
-        if (href) {
+        if (href && /^https:\/\/(wa\.me|api\.whatsapp\.com|chat\.whatsapp\.com)\//.test(href)) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 
