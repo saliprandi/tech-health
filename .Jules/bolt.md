@@ -3,3 +3,9 @@
 **Learning:** Preloading the primary above-the-fold logo image (`/logo-name.svg`) via `<link rel="preload">` in the layout `<head>` and pairing it with `fetchpriority="high"` on the `<img>` element eliminates network discovery delays and improves Largest Contentful Paint (LCP) performance on subpages like `/estado`.
 
 **Action:** Always include `<link rel="preload" as="image" fetchpriority="high">` in page layout head section for key above-the-fold brand images.
+
+## 2026-03-31 - Avoid Micro-Optimizing FAQ Client Filtering with Cached textContent
+
+**Learning:** Pre-indexing `textContent` and sub-element `querySelector` references in FAQ filtering scripts is considered a negligible micro-optimization when operating on small static lists (e.g., 5–10 items). In addition, caching DOM text client-side creates unnecessary memory overhead and risks stale data.
+
+**Action:** Avoid micro-optimizing small DOM list filters unless a demonstrated, measurable performance bottleneck exists.
