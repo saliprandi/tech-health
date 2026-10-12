@@ -51,7 +51,7 @@
 **Action:** Equipar siempre las entradas de búsqueda con manejadores de tecla `Escape` para limpieza e incluir íconos vectoriales direccionales con transiciones en los botones principales.
 
 ## 2026-03-30 - Paridad de affordance direccional en botones de acción prioritaria (CTA de emergencia)
-**Learning:** Incorporar un ícono vectorial de flecha/chevron direccional (`aria-hidden="true"`) con micro-animaciones coordinadas (`group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-all duration-300`) en botones de llamada a la acción prioritarios da una pista visual direccional clara que refuerza la intención de advance o redirección tanto para navegación con ratón como por teclado.
+**Learning:** Incorporar un ícono vectorial de flecha/chevron direccional (`aria-hidden="true"`) con micro-animaciones coordinadas (`group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-all duration-300`) en botones de llamada a la acción prioritarios da una pista visual direccional clara que refuerza la intención de avance o redirección tanto para navegación con ratón como por teclado.
 **Action:** Acompañar siempre los botones principales de llamada a la acción con un ícono direccional SVG y animaciones pareadas de desplazar a la derecha (`translate-x-1`) en estados `:hover` y `:focus-visible`.
 
 ## 2026-03-30 - Atajo de teclado Ctrl + Enter e indicación descriptiva accesible en áreas de texto
