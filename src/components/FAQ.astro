@@ -194,6 +194,16 @@ import { CONFIG } from '../data/config';
         trigger.addEventListener('keydown', handleKeydown);
       });
 
+      // Performance Optimization: Pre-index DOM element references and lowercased text content
+      // during initialization to prevent layout reflows, repeated string lowercasing, and sub-queries (querySelector) on every input keystroke.
+      const cachedItems = Array.from(items).map(item => ({
+        element: item as HTMLElement,
+        text: (item.textContent || '').toLowerCase(),
+        trigger: item.querySelector('.faq-trigger') as HTMLButtonElement | null,
+        container: item.querySelector('.faq-answer-container') as HTMLElement | null,
+        icon: item.querySelector('.faq-icon') as HTMLElement | null,
+      }));
+
       // --- FAQ Search Filter Logic ---
       const filterFAQs = () => {
         if (!searchInput) return;
@@ -205,17 +215,13 @@ import { CONFIG } from '../data/config';
           else clearBtn.classList.add('hidden');
         }
 
-        items.forEach(item => {
-          const text = item.textContent?.toLowerCase() || '';
+        cachedItems.forEach(({ element, text, trigger, container, icon }) => {
           if (!query || text.includes(query)) {
-            item.classList.remove('hidden');
+            element.classList.remove('hidden');
             visibleCount++;
           } else {
-            item.classList.add('hidden');
+            element.classList.add('hidden');
             // Close if hidden
-            const trigger = item.querySelector('.faq-trigger') as HTMLButtonElement | null;
-            const container = item.querySelector('.faq-answer-container') as HTMLElement | null;
-            const icon = item.querySelector('.faq-icon');
             if (trigger?.getAttribute('aria-expanded') === 'true') {
               trigger.setAttribute('aria-expanded', 'false');
               icon?.classList.remove('rotate-180');
