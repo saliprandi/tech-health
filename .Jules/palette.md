@@ -19,7 +19,7 @@
 **Action:** Utilizar named groups para animaciones de foco en íconos embebidos en inputs/selects y equipar contadores de caracteres con regiones `aria-live="polite"` para garantizar feedback visual y por voz.
 
 ## 2026-03-30 - Fallback de redirección transparente para bloqueadores de ventanas emergentes en envíos de formulario
-**Learning:** En manejadores de envíos de formularios que abren enlaces externos (ej. WhatsApp) tras procesar eventos de cliente, `window.open(url, '_blank', 'noopener,noreferrer')` puede ser bloqueado en navegadores strictly o webviews móviles. Evaluar la referencia resultante (`const openedWin = window.open(...)`) y aplicar `if (!openedWin) window.location.href = url` garantiza la navegación sin parpadeos de pestañas en blanco ni interrupciones silenciosas de UX.
+**Learning:** En manejadores de envíos de formularios que abren enlaces externos (ej. WhatsApp) tras procesar eventos de cliente, `window.open(url, '_blank', 'noopener,noreferrer')` puede ser bloqueado en navegadores estrictos o webviews móviles. Evaluar la referencia resultante (`const openedWin = window.open(...)`) y aplicar `if (!openedWin) window.location.href = url` garantiza la navegación sin parpadeos de pestañas en blanco ni interrupciones silenciosas de UX.
 **Action:** Usar asignación condicional `if (!openedWin) window.location.href = url` al abrir enlaces en manejadores de formularios para asegurar redundancia ante bloqueadores de popups.
 
 ## 2026-03-30 - Sincronización dinámica de atributos ARIA label en botones de copia y acción
@@ -97,6 +97,10 @@
 ## 2026-03-30 - Acompañamiento direccional vectorizado y animación pareada group-hover/focus-visible en botones modal CTA
 **Learning:** En modales de servicio generados dinámicamente (`Servicios.astro`), equipar el botón principal de llamada a la acción con la clase `group`, animación heartbeat en el ícono de WhatsApp e incluir un ícono direccional SVG secundario (`aria-hidden="true"`) con micro-animaciones pareadas (`group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-transform duration-300`) ofrece una indicación clara de avance hacia la redirección externa que beneficia tanto a usuarios de ratón como de teclado.
 **Action:** Equipar siempre los botones de llamada a la acción en modales y diálogos con la clase `group`, ícono direccional SVG y animaciones pareadas de desplazamiento en `:hover` y `:focus-visible`.
+
+## 2026-03-30 - Sincronización dinámicade title y aria-label con feedback activo en el botón toggle de menú móvil
+**Learning:** Los botones conmutadores de menú móvil (`#menu-toggle` en `src/components/Nav.astro`) deben sincronizar el atributo nativo `title` (ej. `title="Abrir menú"` / `title="Cerrar menú"`) junto con `aria-label` al alternar el estado del menú, proporcionando tooltips visuales a usuarios de ratón. Acompañar el botón con clases de escala activa (`active:scale-95 transition-transform duration-200`) brinda retroalimentación táctil inmediata al ser presionado.
+**Action:** Sincronizar siempre `title` y `aria-label` en scripts de conmutación de menús y equipar activadores móviles con utilidades de escalado activo (`active:scale-95`).
 
 ## 2026-03-30 - Preservación de semántica de listas con role="list" y elevación micro-UX en secuencias de proceso
 **Learning:** Cuando las listas (`<ul>`, `<ol>`) emplean utilidades como `list-none`, navegadores como Safari combinados con lectores de pantalla como VoiceOver eliminan los roles de lista y el conteo de elementos. Agregar explícitamente `role="list"` preserva la estructura accesible de la secuencia. Asimismo, parear la elevación visual de tarjetas de procesos (`hover:-translate-y-1 focus-within:-translate-y-1`) asegura paridad interactiva e intuitiva en la experiencia del usuario.
