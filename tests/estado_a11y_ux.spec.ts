@@ -5,7 +5,7 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await page.goto('http://localhost:4321/estado');
 
     // 0. Check navigation "Volver al inicio" back-link icon and group hover styling
-    const backLink = page.locator('nav a[aria-label="Volver a la página principal"]');
+    const backLink = page.locator('nav a[aria-label="Volver al inicio"]');
     await expect(backLink).toBeVisible();
     await expect(backLink).toHaveClass(/group/);
     const backIcon = backLink.locator('svg');
