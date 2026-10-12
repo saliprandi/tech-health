@@ -6,7 +6,8 @@ test.describe('Footer Back to Top Link UX', () => {
 
     const backToTopLink = page.locator('footer a[href="#hero"]');
     await expect(backToTopLink).toBeVisible();
-    await expect(backToTopLink).toHaveAttribute('aria-label', 'Volver al inicio de la página');
+    await expect(backToTopLink).toHaveAttribute('aria-label', 'Volver arriba');
+    await expect(backToTopLink).toHaveAttribute('title', 'Volver arriba');
 
     // Verify it contains the text "Volver arriba"
     await expect(backToTopLink).toContainText('Volver arriba');
