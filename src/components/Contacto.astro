@@ -29,7 +29,7 @@ import { CONFIG } from '../data/config';
               <div class="font-heading font-bold text-[16px] text-navy mb-1">WhatsApp / Teléfono</div>
               <div id="phone-text" class="font-body text-[14px] text-text-soft select-text pointer-events-auto">{CONFIG.contacto.whatsapp_display}</div>
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
-                <button type="button" id="copy-phone" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar teléfono al portapapeles">
+                <button type="button" id="copy-phone" title="Copiar teléfono al portapapeles" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue active:scale-95 transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar teléfono al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true">
                     <use id="copy-phone-icon-use" href="#icon-copy" />
                   </svg>
@@ -51,7 +51,7 @@ import { CONFIG } from '../data/config';
               <div class="font-heading font-bold text-[16px] text-navy mb-1">Laboratorio</div>
               <div id="address-text" class="font-body text-[14px] text-text-soft select-text pointer-events-auto">{CONFIG.contacto.direccion}, {CONFIG.contacto.ciudad_completa}</div>
               <div class="flex items-center gap-3 mt-2 pointer-events-auto">
-                <button type="button" id="copy-address" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar dirección al portapapeles">
+                <button type="button" id="copy-address" title="Copiar dirección al portapapeles" class="relative z-20 flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue active:scale-95 transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm" aria-label="Copiar dirección al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true">
                     <use id="copy-address-icon-use" href="#icon-copy" />
                   </svg>
@@ -160,7 +160,7 @@ import { CONFIG } from '../data/config';
               <div class="font-heading font-bold text-[14px] text-navy mb-1">Solicitud recibida</div>
               <div class="font-body text-[13px] text-text-soft mb-2 flex items-center flex-wrap gap-2">
                 <span>Su ticket es <span id="ticket-confirmation-number" class="font-bold text-navy"></span>.</span>
-                <button type="button" id="copy-ticket" class="inline-flex items-center gap-1 font-body font-medium text-[12px] text-blue hover:text-navy focus-visible:text-navy transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm px-1.5 py-0.5 bg-white border border-blue/20" aria-label="Copiar número de ticket al portapapeles">
+                <button type="button" id="copy-ticket" title="Copiar número de ticket al portapapeles" class="inline-flex items-center gap-1 font-body font-medium text-[12px] text-blue hover:text-navy focus-visible:text-navy active:scale-95 transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm px-1.5 py-0.5 bg-white border border-blue/20" aria-label="Copiar número de ticket al portapapeles">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true">
                     <use id="copy-ticket-icon-use" href="#icon-copy" />
                   </svg>
