@@ -227,9 +227,6 @@ import { CONFIG } from '../data/config';
         const TRUSTED_WA_REGEX = /^https:\/\/(wa\.me|api\.whatsapp\.com|chat\.whatsapp\.com)\//;
         if (href && TRUSTED_WA_REGEX.test(href)) {
           window.open(href, '_blank', 'noopener,noreferrer');
-        } else {
-          // Fallback to default trusted WhatsApp CTA link if attribute is missing or non-matching
-          window.open('https://wa.me/5493815658239', '_blank', 'noopener,noreferrer');
         }
 
         setTimeout(() => {
