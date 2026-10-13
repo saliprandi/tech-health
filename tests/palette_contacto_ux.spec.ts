@@ -81,6 +81,21 @@ test.describe('Contacto UX Enhancements', () => {
     await expect(horarioCard).toHaveClass(/focus-within:border-border/);
   });
 
+  test('should have native title tooltips and active press scale feedback on copy buttons', async ({ page }) => {
+    const copyPhoneBtn = page.locator('#copy-phone');
+    const copyAddressBtn = page.locator('#copy-address');
+    const copyTicketBtn = page.locator('#copy-ticket');
+
+    await expect(copyPhoneBtn).toHaveAttribute('title', 'Copiar teléfono al portapapeles');
+    await expect(copyPhoneBtn).toHaveClass(/active:scale-95/);
+
+    await expect(copyAddressBtn).toHaveAttribute('title', 'Copiar dirección al portapapeles');
+    await expect(copyAddressBtn).toHaveClass(/active:scale-95/);
+
+    await expect(copyTicketBtn).toHaveAttribute('title', 'Copiar número de ticket al portapapeles');
+    await expect(copyTicketBtn).toHaveClass(/active:scale-95/);
+  });
+
   test('should support Ctrl + Enter keyboard submission and include shortcut hint description', async ({ page }) => {
     const textarea = page.locator('#f-desc');
     const shortcutHint = page.locator('#f-desc-shortcut');
