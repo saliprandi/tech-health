@@ -95,4 +95,31 @@ test.describe('Contacto UX Enhancements', () => {
     // Submitting form without required fields triggers validation setting aria-invalid
     await expect(nameInput).toHaveAttribute('aria-invalid', 'true');
   });
+
+  test('should have title tooltips, active scale classes, and dynamic title updates on copy buttons', async ({ page, context }) => {
+    // Grant clipboard permissions
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+
+    const copyPhone = page.locator('#copy-phone');
+    const copyAddress = page.locator('#copy-address');
+    const copyTicket = page.locator('#copy-ticket');
+
+    // Check title attributes
+    await expect(copyPhone).toHaveAttribute('title', 'Copiar teléfono al portapapeles');
+    await expect(copyAddress).toHaveAttribute('title', 'Copiar dirección al portapapeles');
+    await expect(copyTicket).toHaveAttribute('title', 'Copiar número de ticket al portapapeles');
+
+    // Check micro-animation classes
+    await expect(copyPhone).toHaveClass(/active:scale-95/);
+    await expect(copyAddress).toHaveClass(/active:scale-95/);
+    await expect(copyTicket).toHaveClass(/active:scale-95/);
+
+    // Click copy phone and verify title updates dynamically
+    await copyPhone.click();
+    await expect(copyPhone).toHaveAttribute('title', 'Teléfono copiado');
+
+    // Verify title is restored after feedback timeout
+    await page.waitForTimeout(2200);
+    await expect(copyPhone).toHaveAttribute('title', 'Copiar teléfono al portapapeles');
+  });
 });
