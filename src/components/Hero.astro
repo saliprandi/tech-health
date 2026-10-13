@@ -104,8 +104,14 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = heroCta.getAttribute('href');
-        if (href) {
+        // Security: Validate dynamic CTA URL to prevent DOM XSS (javascript: URIs) and open external URLs safely
+        if (!href || /^(javascript|data|vbscript):/i.test(href.trim())) return;
+
+        const isWaUrl = /^https:\/\/(wa\.me|api\.whatsapp\.com|chat\.whatsapp\.com)\//.test(href);
+        if (isWaUrl || href.startsWith('http://') || href.startsWith('https://')) {
           window.open(href, '_blank', 'noopener,noreferrer');
+        } else if (href.startsWith('#') || href.startsWith('/')) {
+          window.location.href = href;
         }
 
         setTimeout(() => {
