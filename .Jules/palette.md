@@ -101,3 +101,7 @@
 ## 2026-03-30 - Sincronización dinámicade title y aria-label con feedback activo en el botón toggle de menú móvil
 **Learning:** Los botones conmutadores de menú móvil (`#menu-toggle` en `src/components/Nav.astro`) deben sincronizar el atributo nativo `title` (ej. `title="Abrir menú"` / `title="Cerrar menú"`) junto con `aria-label` al alternar el estado del menú, proporcionando tooltips visuales a usuarios de ratón. Acompañar el botón con clases de escala activa (`active:scale-95 transition-transform duration-200`) brinda retroalimentación táctil inmediata al ser presionado.
 **Action:** Sincronizar siempre `title` y `aria-label` en scripts de conmutación de menús y equipar activadores móviles con utilidades de escalado activo (`active:scale-95`).
+
+## 2026-03-30 - Micro-UX de escalado activo y tooltips nativos en botones de copia rápida
+**Learning:** Los botones de copia rápida en secciones de contacto (como teléfono, dirección y ticket) ganan significativamente en affordance táctil y usabilidad cuando combinan atributos nativos `title` (para mostrar tooltips emergentes en `:hover`/`:focus`) con utilidades de compresión activa (`active:scale-95 transition-all duration-200`) para dar respuesta táctil inmediata antes de que los manejadores JS actualicen el portapapeles.
+**Action:** Equipar siempre los botones secundarios e inline de copia con `title` descriptivos y utilidades `active:scale-95 transition-all duration-200`.
