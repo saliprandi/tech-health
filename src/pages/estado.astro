@@ -33,8 +33,8 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			<!-- Formulario de búsqueda -->
 			<div class="bg-white/10 backdrop-blur-sm rounded-[16px] p-8 border border-white/10">
 				<form id="estado-form" class="flex flex-col gap-4">
-					<div class="flex flex-col gap-2">
-						<label for="ticket-input" class="font-body font-medium text-[13px] text-white/80">
+					<div class="flex flex-col gap-2 group/field">
+						<label for="ticket-input" class="font-body font-medium text-[13px] text-white/80 group-focus-within/field:text-blue-light transition-colors">
 							Número de ticket <span class="text-blue-light">*</span>
 						</label>
 						<div class="relative w-full">
