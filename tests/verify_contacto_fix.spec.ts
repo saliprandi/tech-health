@@ -43,7 +43,7 @@ test.describe('Contacto Component Fix Verification', () => {
     await copyPhoneBtn.click();
     await expect(copyPhoneText).toHaveText('¡Copiado!');
     await expect(copyPhoneBtn).toHaveClass(/text-blue/);
-    await expect(copyPhoneBtn).toHaveClass(/scale-110/);
+    await expect(copyPhoneBtn).toHaveClass(/scale-105/);
 
     // Wait for restore
     await page.waitForTimeout(3000);

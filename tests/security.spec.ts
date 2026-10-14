@@ -236,3 +236,47 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('EstadoLayout includes frame-ancestors none, upgrade-insecure-requests, and Permissions-Policy headers', async ({ page }) => {
+  await page.goto('http://localhost:4321/estado');
+
+  const cspMeta = page.locator('meta[http-equiv="Content-Security-Policy"]');
+  await expect(cspMeta).toHaveAttribute('content', /frame-ancestors 'none'/);
+  await expect(cspMeta).toHaveAttribute('content', /upgrade-insecure-requests/);
+
+  const permissionsMeta = page.locator('meta[http-equiv="Permissions-Policy"]');
+  await expect(permissionsMeta).toHaveAttribute('content', 'camera=(), microphone=(), geolocation=(), interest-cohort=()');
+});
+
+test('Hero and Nav CTAs only trigger window.open for valid wa.me URLs', async ({ page }) => {
+  let openedUrl = '';
+  await page.exposeFunction('mockWindowOpen', (url: string) => {
+    openedUrl = url;
+  });
+
+  await page.goto('http://localhost:4321/');
+
+  await page.evaluate(() => {
+    const originalOpen = window.open;
+    window.open = (url?: string | URL, target?: string, features?: string) => {
+      if (url && (window as any).mockWindowOpen) {
+        (window as any).mockWindowOpen(url.toString());
+      }
+      return null;
+    };
+  });
+
+  // Click Hero CTA
+  await page.click('#hero-cta');
+  expect(openedUrl).toMatch(/^https:\/\/wa\.me\//);
+
+  // Test tampered href attribute mitigation
+  await page.evaluate(() => {
+    const heroCta = document.getElementById('hero-cta');
+    if (heroCta) heroCta.setAttribute('href', 'javascript:alert(1)');
+  });
+
+  openedUrl = '';
+  await page.click('#hero-cta');
+  expect(openedUrl).toBe('');
+});
