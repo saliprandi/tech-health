@@ -95,4 +95,15 @@ test.describe('Contacto UX Enhancements', () => {
     // Submitting form without required fields triggers validation setting aria-invalid
     await expect(nameInput).toHaveAttribute('aria-invalid', 'true');
   });
+
+  test('should highlight form field labels on input focus-within', async ({ page }) => {
+    const nameInput = page.locator('#f-nombre');
+    const nameLabel = page.locator('label[for="f-nombre"]');
+
+    await expect(nameLabel).toHaveClass(/group-focus-within\/field:text-blue-light/);
+
+    await nameInput.focus();
+    const color = await nameLabel.evaluate((el) => getComputedStyle(el).color);
+    expect(color).toBe('rgb(74, 144, 217)');
+  });
 });

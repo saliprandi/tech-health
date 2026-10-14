@@ -12,11 +12,14 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await expect(backIcon).toBeVisible();
     await expect(backIcon).toHaveClass(/group-hover:-translate-x-0.5/);
 
-    // 1. Check ticket input attributes, helper text linkage, and focus styling
+    // 1. Check ticket input attributes, helper text linkage, focus styling, and label focus-within transition
     const input = page.locator('#ticket-input');
     await expect(input).toBeVisible();
     await expect(input).toHaveAttribute('aria-describedby', 'ticket-input-hint');
     await expect(input).toHaveClass(/focus-visible:ring-blue-light/);
+
+    const ticketLabel = page.locator('label[for="ticket-input"]');
+    await expect(ticketLabel).toHaveClass(/group-focus-within\/field:text-blue-light/);
 
     const helperText = page.locator('#ticket-input-hint');
     await expect(helperText).toBeVisible();
