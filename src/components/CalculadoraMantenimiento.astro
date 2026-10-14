@@ -1,0 +1,274 @@
+---
+import { CONFIG } from '../data/config';
+
+const { calculadora, contacto } = CONFIG;
+---
+
+<section id="calculadora" class="py-20 bg-navy text-white relative overflow-hidden scroll-mt-20" aria-labelledby="calculadora-title">
+  <!-- Background glow / accents -->
+  <div class="absolute top-0 right-1/4 w-96 h-96 bg-blue/10 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute bottom-0 left-10 w-80 h-80 bg-blue-light/5 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+  <div class="container mx-auto px-4 relative z-10">
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-14">
+      <span class="inline-block px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-blue-light bg-blue/20 border border-blue/30 rounded-full mb-3">
+        {calculadora.badge}
+      </span>
+      <h2 id="calculadora-title" class="text-3xl sm:text-4xl font-bold font-heading text-white tracking-tight mb-4">
+        {calculadora.titulo}
+      </h2>
+      <p class="text-slate-300 text-base sm:text-lg">
+        {calculadora.subtitulo}
+      </p>
+    </div>
+
+    <!-- Calculator Card Container -->
+    <div class="bg-navy-dark/80 border border-white/10 rounded-2xl p-6 sm:p-8 lg:p-10 shadow-2xl backdrop-blur-md">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+
+        <!-- Controls Column -->
+        <div class="lg:col-span-7 space-y-6">
+          <h3 class="text-xl font-bold font-heading text-white border-b border-white/10 pb-3 flex items-center gap-2">
+            <svg class="w-5 h-5 text-blue-light" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+            Seleccione la cantidad estimada de equipos
+          </h3>
+
+          <form id="calc-form" class="space-y-6">
+            {calculadora.categorias.map((cat) => (
+              <div class="bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5 hover:border-white/20 focus-within:border-blue-light focus-within:ring-1 focus-within:ring-blue-light transition-all">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
+                  <div>
+                    <label for={`cat-${cat.id}`} class="text-base font-bold text-white block">
+                      {cat.nombre}
+                    </label>
+                    <p class="text-xs text-slate-400 mt-0.5">{cat.descripcion}</p>
+                  </div>
+
+                  <!-- Counter Control -->
+                  <div class="flex items-center gap-2 self-start sm:self-auto bg-navy/80 border border-white/15 rounded-lg p-1">
+                    <button
+                      type="button"
+                      class="btn-decrement w-9 h-9 flex items-center justify-center rounded-md bg-white/5 hover:bg-white/15 active:scale-95 text-white font-bold transition-all disabled:opacity-30 disabled:pointer-events-none"
+                      data-target={`cat-${cat.id}`}
+                      aria-label={`Reducir cantidad de ${cat.nombre}`}
+                      title="Reducir cantidad"
+                    >
+                      <span aria-hidden="true">−</span>
+                    </button>
+
+                    <input
+                      type="number"
+                      id={`cat-${cat.id}`}
+                      name={cat.id}
+                      min="0"
+                      max="100"
+                      value="0"
+                      class="cat-input w-12 text-center bg-transparent font-bold text-white focus:outline-none focus:ring-1 focus:ring-blue-light rounded"
+                      aria-describedby={`desc-${cat.id}`}
+                    />
+
+                    <button
+                      type="button"
+                      class="btn-increment w-9 h-9 flex items-center justify-center rounded-md bg-white/5 hover:bg-white/15 active:scale-95 text-white font-bold transition-all"
+                      data-target={`cat-${cat.id}`}
+                      aria-label={`Aumentar cantidad de ${cat.nombre}`}
+                      title="Aumentar cantidad"
+                    >
+                      <span aria-hidden="true">+</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div id={`desc-${cat.id}`} class="text-xs text-blue-light/90 bg-blue/10 px-3 py-1.5 rounded-md flex items-center gap-1.5">
+                  <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span>Frecuencia recomendada: <strong>{cat.frecuenciaRecomendada}</strong></span>
+                </div>
+              </div>
+            ))}
+          </form>
+        </div>
+
+        <!-- Summary & Estimate Column -->
+        <div class="lg:col-span-5 flex flex-col justify-between bg-white/5 border border-white/10 rounded-xl p-6 relative">
+          <div>
+            <h3 class="text-xl font-bold font-heading text-white border-b border-white/10 pb-3 mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-light" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Resumen de Cobertura
+            </h3>
+
+            <!-- Dynamic Live Region for Summary -->
+            <div id="calc-summary" role="status" aria-live="polite" class="space-y-4 text-sm text-slate-300">
+              <div class="flex justify-between items-center py-2 border-b border-white/10">
+                <span class="text-slate-400">Total de equipos:</span>
+                <span id="total-equipos-count" class="font-bold text-lg text-white">0</span>
+              </div>
+
+              <div class="flex justify-between items-center py-2 border-b border-white/10">
+                <span class="text-slate-400">Revisiones anuales estimadas:</span>
+                <span id="total-revisiones-count" class="font-bold text-lg text-blue-light">0</span>
+              </div>
+
+              <div class="pt-2">
+                <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold block mb-2">
+                  Protocolos Incluidos:
+                </span>
+                <ul role="list" class="space-y-2 text-xs text-slate-300">
+                  <li class="flex items-start gap-2">
+                    <svg class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>Seguridad Eléctrica según norma IEC 62353.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <svg class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>Informes técnicos digitales para auditorías sanitarias.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <svg class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>Garantía técnica de 90 días por intervención.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          <div class="mt-8 pt-4 border-t border-white/10">
+            <a
+              id="calc-whatsapp-btn"
+              href={`https://wa.me/${contacto.whatsapp}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group inline-flex items-center justify-center w-full px-6 py-3.5 text-base font-bold text-white bg-blue hover:bg-blue-light focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy rounded-xl shadow-lg transition-all active:scale-95 text-center"
+            >
+              <span>Solicitar Cotización por WhatsApp</span>
+              <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+            <p class="text-[11px] text-center text-slate-400 mt-2">
+              Atención B2B inmediata para clínicas, sanatorios y hospitales en Tucumán y NOA.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { CONFIG } from '../data/config';
+
+  function initCalculadora() {
+    const calcForm = document.getElementById('calc-form') as HTMLFormElement | null;
+    const totalEquiposEl = document.getElementById('total-equipos-count');
+    const totalRevisionesEl = document.getElementById('total-revisiones-count');
+    const whatsappBtn = document.getElementById('calc-whatsapp-btn') as HTMLAnchorElement | null;
+
+    if (!calcForm || !totalEquiposEl || !totalRevisionesEl || !whatsappBtn) return;
+
+    calcForm.addEventListener('submit', (e) => e.preventDefault());
+
+    const baseWhatsappUrl = `https://wa.me/${CONFIG.contacto.whatsapp}`;
+
+    const updateCalculator = () => {
+      let totalEquipos = 0;
+      let totalRevisiones = 0;
+      const breakdown: string[] = [];
+
+      const criticos = parseInt((document.getElementById('cat-criticos') as HTMLInputElement)?.value || '0', 10);
+      const diagnostico = parseInt((document.getElementById('cat-diagnostico') as HTMLInputElement)?.value || '0', 10);
+      const esterilizacion = parseInt((document.getElementById('cat-esterilizacion') as HTMLInputElement)?.value || '0', 10);
+
+      if (criticos > 0) {
+        totalEquipos += criticos;
+        totalRevisiones += criticos * 4; // Trimestral
+        breakdown.push(`• Soporte Vital / Quirófano: ${criticos} equipos`);
+      }
+      if (diagnostico > 0) {
+        totalEquipos += diagnostico;
+        totalRevisiones += diagnostico * 2; // Semestral
+        breakdown.push(`• Diagnóstico / Infusión: ${diagnostico} equipos`);
+      }
+      if (esterilizacion > 0) {
+        totalEquipos += esterilizacion;
+        totalRevisiones += esterilizacion * 2; // Semestral
+        breakdown.push(`• Esterilización / Lab: ${esterilizacion} equipos`);
+      }
+
+      totalEquiposEl.textContent = totalEquipos.toString();
+      totalRevisionesEl.textContent = totalRevisiones.toString();
+
+      // Update WhatsApp URL with prefilled message
+      let msg = `Hola ${CONFIG.empresa.nombre}, quisiera solicitar un presupuesto de mantenimiento preventivo B2B.\n\n`;
+      if (totalEquipos > 0) {
+        msg += `Resumen del Parque Tecnológico (${totalEquipos} equipos totales):\n${breakdown.join('\n')}\n`;
+        msg += `Revisiones anuales estimadas: ${totalRevisiones}\n\n`;
+      } else {
+        msg += `Deseo recibir información general sobre sus planes de mantenimiento preventivo para nuestra institución.\n\n`;
+      }
+      msg += `Quedo a la espera de su respuesta. Gracias!`;
+
+      whatsappBtn.href = `${baseWhatsappUrl}?text=${encodeURIComponent(msg)}`;
+    };
+
+    // Attach event listeners to increment/decrement buttons
+    document.querySelectorAll('.btn-decrement').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        if (!targetId) return;
+        const input = document.getElementById(targetId) as HTMLInputElement | null;
+        if (input) {
+          const val = Math.max(0, parseInt(input.value || '0', 10) - 1);
+          input.value = val.toString();
+          updateCalculator();
+        }
+      });
+    });
+
+    document.querySelectorAll('.btn-increment').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        if (!targetId) return;
+        const input = document.getElementById(targetId) as HTMLInputElement | null;
+        if (input) {
+          const val = Math.min(100, parseInt(input.value || '0', 10) + 1);
+          input.value = val.toString();
+          updateCalculator();
+        }
+      });
+    });
+
+    // Attach listener for manual input changes
+    document.querySelectorAll('.cat-input').forEach((input) => {
+      input.addEventListener('input', () => {
+        const inp = input as HTMLInputElement;
+        let val = parseInt(inp.value || '0', 10);
+        if (isNaN(val) || val < 0) val = 0;
+        if (val > 100) val = 100;
+        inp.value = val.toString();
+        updateCalculator();
+      });
+    });
+
+    // Initial calculation
+    updateCalculator();
+  }
+
+  // Run on initial load and Astro page transitions
+  initCalculadora();
+  document.addEventListener('astro:page-load', initCalculadora);
+</script>
