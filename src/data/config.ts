@@ -193,4 +193,23 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora_mantenimiento: {
+    titulo: "Calculadora B2B de Mantenimiento Biomédico",
+    subtitulo: "Cotización y Diagnóstico Preventivo",
+    descripcion: "Estime la frecuencia ideal de revisiones, pruebas de seguridad eléctrica (norma IEC 62353) y plan de mantenimiento preventivo para su parque tecnológico médico.",
+    tipos_institucion: [
+      { id: "clinica", nombre: "Clínica o Sanatorio Privado", factor_riesgo: 1.2 },
+      { id: "hospital", nombre: "Hospital / Centro de Alta Complejidad", factor_riesgo: 1.4 },
+      { id: "centro_diag", nombre: "Centro de Diagnóstico por Imágenes", factor_riesgo: 1.1 },
+      { id: "consultorio", nombre: "Consultorio / Centro Médico Polivalente", factor_riesgo: 1.0 },
+    ],
+    categorias_equipos: [
+      { id: "monitores", nombre: "Monitores de Signos Vitales y ECG", riesgo: "Medio", peso: 1.2, default_cantidad: 4 },
+      { id: "respiradores", nombre: "Respiradores, Anestesia y Terapia Intensiva", riesgo: "Crítico", peso: 2.0, default_cantidad: 2 },
+      { id: "quirofano", nombre: "Electrocirugía y Quirófano (Bisturí Electrónico)", riesgo: "Alto", peso: 1.5, default_cantidad: 2 },
+      { id: "diagnostico", nombre: "Ecógrafos, Rayos X y Diagnóstico por Imagen", riesgo: "Alto", peso: 1.6, default_cantidad: 1 },
+      { id: "infusion", nombre: "Bombas de Infusión y Defibriladores", riesgo: "Alto", peso: 1.3, default_cantidad: 4 },
+    ],
+  },
 };
