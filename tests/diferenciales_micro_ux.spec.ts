@@ -8,6 +8,7 @@ test.describe('Diferenciales Micro-UX & Accessibility', () => {
   test('should render differential cards with hover and focus-within micro-UX classes', async ({ page }) => {
     const list = page.locator('ul[aria-label="Diferenciales de la empresa"]');
     await expect(list).toBeVisible();
+    await expect(list).toHaveAttribute('role', 'list');
 
     const cards = list.locator('li');
     const count = await cards.count();
