@@ -86,4 +86,20 @@ test.describe('Proceso Ticket Search Form Micro-UX', () => {
     await expect(input).toBeFocused();
     await expect(input).toHaveAttribute('aria-invalid', 'true');
   });
+
+  test('proceso step cards include hover and focus-within elevation micro-UX classes', async ({ page }) => {
+    const list = page.locator('ol[aria-label="Pasos del proceso de servicio técnico"]');
+    await expect(list).toBeVisible();
+
+    const cards = list.locator('li');
+    const count = await cards.count();
+    expect(count).toBeGreaterThan(0);
+
+    for (let i = 0; i < count; i++) {
+      const card = cards.nth(i);
+      await expect(card).toHaveClass(/hover:-translate-y-1/);
+      await expect(card).toHaveClass(/focus-within:-translate-y-1/);
+      await expect(card).toHaveClass(/focus-within:shadow-card-hover/);
+    }
+  });
 });
