@@ -113,3 +113,7 @@
 ## 2026-03-30 - Retroalimentación visual coordinada por foco en etiquetas sobre fondos oscuros
 **Learning:** En formularios sobre fondos oscuros (`bg-navy`), agrupar la etiqueta `<label>` y el control de entrada (`<input>`, `<textarea>`, `<select>`) dentro de un contenedor con Tailwind `group/field` (o `group/select`) y aplicar `group-focus-within/field:text-blue-light transition-colors` en la etiqueta coordina la respuesta visual cuando el campo recibe foco, destacando sutilmente la etiqueta asociada en sincronía con el anillo de enfoque.
 **Action:** Agrupar siempre controles e instrucciones en contenedores `group/field` y sincronizar transiciones de color en etiquetas con `group-focus-within/field:text-blue-light`.
+
+## 2026-03-30 - Retroalimentación táctil activa y tooltips nativos en botones principales de llamada a la acción
+**Learning:** Los botones de llamada a la acción principales (`.btn-primary`) que cuentan con elevación en `:hover` y `:focus-visible` deben incorporar un estado activo de pulsación táctil (`.btn-primary:active { transform: translateY(0) scale(0.98); }`) e integrar atributos nativos `title` en sus elementos contenedores para proporcionar retroalimentación táctil instantánea durante el clic o pulsación y affordance de texto emergente en usuarios de ratón.
+**Action:** Definir reglas de escalado activo (`scale(0.98)`) en clases de botones base CSS y acompañar enlaces CTA con atributos nativos `title` descriptivos.
