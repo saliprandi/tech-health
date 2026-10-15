@@ -103,9 +103,15 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         if (heroCtaAnnouncement) heroCtaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
-        const href = heroCta.getAttribute('href');
-        if (href) {
-          window.open(href, '_blank', 'noopener,noreferrer');
+        const rawHref = heroCta.getAttribute('href') || '';
+        const href = rawHref.trim();
+        // Security: Validate against dangerous pseudoprotocols (javascript:, data:, vbscript:) to prevent DOM XSS
+        if (href && !/^(javascript|data|vbscript):/i.test(href)) {
+          if (href.startsWith('http://') || href.startsWith('https://')) {
+            window.open(href, '_blank', 'noopener,noreferrer');
+          } else {
+            window.location.href = href;
+          }
         }
 
         setTimeout(() => {

@@ -225,9 +225,15 @@ import { CONFIG } from '../data/config';
           redirectionAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         }
 
-        const href = cta.getAttribute('href');
-        if (href) {
-          window.open(href, '_blank', 'noopener,noreferrer');
+        const rawHref = cta.getAttribute('href') || '';
+        const href = rawHref.trim();
+        // Security: Validate against dangerous pseudoprotocols (javascript:, data:, vbscript:) to prevent DOM XSS
+        if (href && !/^(javascript|data|vbscript):/i.test(href)) {
+          if (href.startsWith('http://') || href.startsWith('https://')) {
+            window.open(href, '_blank', 'noopener,noreferrer');
+          } else {
+            window.location.href = href;
+          }
         }
 
         setTimeout(() => {

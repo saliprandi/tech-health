@@ -236,3 +236,18 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('CTA click handlers validate href and reject dangerous pseudoprotocols (javascript:, data:, vbscript:)', async ({ page }) => {
+  await page.goto('http://localhost:4321/', { waitUntil: 'networkidle' });
+
+  // Inject dangerous javascript: href on hero CTA
+  await page.evaluate(() => {
+    const heroCta = document.getElementById('hero-cta');
+    if (heroCta) heroCta.setAttribute('href', 'javascript:window.xssTriggered=true');
+  });
+
+  await page.click('#hero-cta');
+
+  const xssTriggered = await page.evaluate(() => (window as any).xssTriggered);
+  expect(xssTriggered).toBeUndefined();
+});
