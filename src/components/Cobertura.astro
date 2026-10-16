@@ -1,0 +1,138 @@
+---
+import { CONFIG } from '../data/config';
+
+const { cobertura, contacto } = CONFIG;
+---
+
+<section id="cobertura" class="bg-off-white section-padding content-visibility-auto" aria-labelledby="cobertura-heading">
+  <div class="container-custom">
+    <div class="max-w-2xl mb-12">
+      <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3 flex items-center gap-2">
+        <svg class="w-4 h-4 text-blue" fill="none" stroke="currentColor" aria-hidden="true">
+          <use href="#icon-map-pin" />
+        </svg>
+        <span>Cobertura Regional NOA</span>
+      </div>
+      <h2 id="cobertura-heading" class="font-heading font-extrabold text-[clamp(28px,4vw,42px)] leading-[1.2] text-navy mb-4">
+        {cobertura.titulo}
+      </h2>
+      <p class="font-body text-[16px] text-text-soft leading-relaxed">
+        {cobertura.subtitulo}
+      </p>
+    </div>
+
+    <!-- Interactive Coverage Tabs / Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+      {cobertura.zonas.map((zona) => (
+        <div
+          class="bg-white border border-border rounded-card p-8 shadow-sm hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative group"
+        >
+          <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+
+          <div>
+            <!-- Header Badge -->
+            <div class="flex items-center justify-between mb-6">
+              <div class="w-12 h-12 rounded-xl bg-blue-pale flex items-center justify-center text-blue group-hover:scale-110 transition-transform">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" aria-hidden="true">
+                  <use href={`#icon-${zona.icono}`} />
+                </svg>
+              </div>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-heading font-bold bg-blue-pale text-navy border border-blue/20">
+                <span class="w-2 h-2 rounded-full bg-blue animate-pulse"></span>
+                {zona.tiempoRespuesta}
+              </span>
+            </div>
+
+            <h3 class="font-heading font-bold text-[20px] text-navy mb-2">{zona.nombre}</h3>
+            <div class="font-heading font-medium text-[13px] text-blue mb-4">{zona.tipoServicio}</div>
+            <p class="font-body text-[14px] text-text-soft mb-6 leading-relaxed">{zona.descripcion}</p>
+
+            <div class="border-t border-border/60 pt-4 mb-6">
+              <div class="font-heading font-semibold text-[12px] uppercase text-text-soft mb-3">Localidades / Zonas atentas:</div>
+              <div class="flex flex-wrap gap-2">
+                {zona.localidades.map(loc => (
+                  <span class="inline-block px-2.5 py-1 rounded-md text-[12px] font-body text-navy bg-off-white border border-border">
+                    {loc}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <!-- Direct Zone CTA -->
+          <a
+            href={`https://wa.me/${contacto.whatsapp}?text=${encodeURIComponent('Hola TechHealth! Quisiera consultar disponibilidad y coordinar servicio técnico para la zona de ' + zona.nombre)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="cobertura-wa-btn w-full inline-flex items-center justify-center gap-2 bg-navy/5 text-navy font-heading font-bold text-[13px] py-2.5 px-4 rounded-lg hover:bg-navy hover:text-white transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2"
+            aria-label={`Consultar disponibilidad para ${zona.nombre}`}
+          >
+            <svg class="cobertura-spinner hidden w-4 h-4 animate-spin text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span class="cobertura-btn-text">Consultar Visita en Zonas</span>
+            <svg class="cobertura-icon w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" aria-hidden="true">
+              <use href="#icon-external" />
+            </svg>
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <!-- Announcement for Screen Readers -->
+    <div id="cobertura-announcement" class="sr-only" aria-live="polite"></div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    function initCobertura() {
+      const btns = document.querySelectorAll('.cobertura-wa-btn');
+      const announcement = document.getElementById('cobertura-announcement');
+
+      if (!btns.length) return () => {};
+
+      btns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = e.currentTarget as HTMLAnchorElement;
+          const textSpan = target.querySelector('.cobertura-btn-text');
+          const spinner = target.querySelector('.cobertura-spinner');
+          const icon = target.querySelector('.cobertura-icon');
+
+          if (textSpan && spinner && icon) {
+            const origText = textSpan.textContent;
+            textSpan.textContent = 'Redirigiendo...';
+            spinner.classList.remove('hidden');
+            icon.classList.add('hidden');
+            target.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+            if (announcement) announcement.textContent = 'Redirigiendo a WhatsApp...';
+
+            const href = target.getAttribute('href');
+            if (href) {
+              window.open(href, '_blank', 'noopener,noreferrer');
+            }
+
+            setTimeout(() => {
+              textSpan.textContent = origText;
+              spinner.classList.add('hidden');
+              icon.classList.remove('hidden');
+              target.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+              if (announcement) announcement.textContent = '';
+            }, 3000);
+          }
+        });
+      });
+
+      return () => {};
+    }
+
+    let cleanup = initCobertura();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initCobertura();
+    });
+  })();
+</script>

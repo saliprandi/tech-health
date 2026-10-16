@@ -1,0 +1,277 @@
+---
+import { CONFIG } from '../data/config';
+
+const { calculadora_roi, contacto } = CONFIG;
+---
+
+<section id="calculadora" class="bg-navy-dark text-white section-padding relative overflow-hidden content-visibility-auto" aria-labelledby="calculadora-heading">
+  <!-- Subtle Background Grid Pattern -->
+  <div class="absolute inset-0 bg-[radial-gradient(#2563A8_1px,transparent_1px)] [background-size:24px_24px] opacity-10 pointer-events-none" aria-hidden="true"></div>
+
+  <div class="container-custom relative z-10">
+    <div class="max-w-2xl mb-12">
+      <div class="font-heading font-bold text-blue-light tracking-wide uppercase text-[12px] mb-3 flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" aria-hidden="true">
+          <use href="#icon-calculator" />
+        </svg>
+        <span>Herramienta B2B</span>
+      </div>
+      <h2 id="calculadora-heading" class="font-heading font-extrabold text-[clamp(28px,4vw,42px)] leading-[1.2] text-white mb-4">
+        {calculadora_roi.titulo}
+      </h2>
+      <p class="font-body text-[16px] text-white/80 leading-relaxed">
+        {calculadora_roi.subtitulo}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start" data-whatsapp={contacto.whatsapp}>
+      <!-- Controls Panel -->
+      <div class="lg:col-span-7 bg-navy/60 border border-white/10 backdrop-blur-md rounded-card p-6 md:p-8 shadow-xl">
+
+        <!-- Step 1: Select Institution Type -->
+        <div class="mb-8">
+          <label class="block font-heading font-bold text-[15px] text-white mb-3">
+            1. Seleccione el tipo de institución de salud:
+          </label>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" role="radiogroup" aria-label="Tipo de institución">
+            {calculadora_roi.tipos_institucion.map((inst, index) => (
+              <button
+                type="button"
+                class={`inst-btn p-4 rounded-xl border text-left transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-blue-light focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark ${
+                  index === 0
+                    ? 'bg-blue/30 border-blue-light text-white font-semibold'
+                    : 'bg-navy-light/40 border-white/10 text-white/80 hover:border-white/30'
+                }`}
+                data-inst-id={inst.id}
+                data-factor-downtime={inst.factorDowntime}
+                data-factor-ahorro={inst.factorAhorro}
+                role="radio"
+                aria-checked={index === 0 ? "true" : "false"}
+              >
+                <div class="font-heading text-[14px] leading-tight mb-1">{inst.nombre}</div>
+                <div class="font-body text-[12px] text-blue-light/90">Prioridad B2B</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Step 2: Equipment Scale Slider -->
+        <div class="mb-8">
+          <div class="flex justify-between items-center mb-3">
+            <label for="equipos-range" class="font-heading font-bold text-[15px] text-white">
+              2. Estimación de equipos médicos en su parque:
+            </label>
+            <span id="equipos-count-display" class="font-heading font-extrabold text-[20px] text-blue-light">
+              10 equipos
+            </span>
+          </div>
+          <input
+            type="range"
+            id="equipos-range"
+            min="1"
+            max="60"
+            value="10"
+            step="1"
+            class="w-full h-2.5 bg-navy-light rounded-lg appearance-none cursor-pointer accent-blue-light focus-visible:ring-2 focus-visible:ring-blue-light focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark"
+            aria-label="Cantidad aproximada de equipos médicos"
+            aria-valuemin="1"
+            aria-valuemax="60"
+            aria-valuenow="10"
+            aria-valuetext="10 equipos médicos"
+          />
+          <div class="flex justify-between text-[12px] text-white/50 mt-2 font-body">
+            <span>1 equipo</span>
+            <span>20 equipos</span>
+            <span>40 equipos</span>
+            <span>+60 equipos</span>
+          </div>
+        </div>
+
+        <p class="font-body text-[13px] text-white/60 flex items-center gap-2">
+          <svg class="w-4 h-4 text-blue-light flex-shrink-0" fill="none" stroke="currentColor" aria-hidden="true">
+            <use href="#icon-shield-check" />
+          </svg>
+          <span>Los valores se estiman en base a parámetros estandarizados de mantenimiento biomédico preventivo.</span>
+        </p>
+      </div>
+
+      <!-- Results Display Box -->
+      <div class="lg:col-span-5 bg-gradient-to-br from-navy-light/90 to-navy border border-blue/30 rounded-card p-6 md:p-8 shadow-2xl flex flex-col justify-between h-full min-h-[380px]">
+        <div>
+          <div class="font-heading font-bold uppercase tracking-wider text-[11px] text-blue-light mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-blue-light animate-pulse"></span>
+            <span>Resultado Estimado de Eficiencia</span>
+          </div>
+
+          <!-- Main Metric 1 -->
+          <div class="mb-6 p-4 rounded-xl bg-navy-dark/60 border border-white/5">
+            <div class="font-body text-[13px] text-white/70 mb-1">Reducción estimada de inactividad técnica (downtime):</div>
+            <div class="flex items-baseline gap-2">
+              <span id="metric-downtime" class="font-heading font-black text-[36px] text-white text-gradient bg-gradient-to-r from-blue-light to-white bg-clip-text text-transparent">
+                153 hrs/año
+              </span>
+            </div>
+            <p class="font-body text-[12px] text-white/60 mt-1">
+              ~<span id="metric-dias">6</span> días de disponibilidad operativa recuperada
+            </p>
+          </div>
+
+          <!-- Main Metric 2 -->
+          <div class="mb-6 p-4 rounded-xl bg-navy-dark/60 border border-white/5">
+            <div class="font-body text-[13px] text-white/70 mb-1">Impacto en ciclo de vida útil del equipamiento:</div>
+            <div class="font-heading font-bold text-[22px] text-blue-light">
+              +35% a +50% extensión estimada
+            </div>
+            <p class="font-body text-[12px] text-white/60 mt-1">
+              Menor degradación en placas electrónicas y fuentes de alimentación.
+            </p>
+          </div>
+        </div>
+
+        <!-- Call To Action -->
+        <div>
+          <a
+            id="calc-wa-btn"
+            href={`https://wa.me/${contacto.whatsapp}?text=${encodeURIComponent('Hola TechHealth! Realicé una estimación B2B para ' + calculadora_roi.tipos_institucion[0].nombre + ' (10 equipos) y me interesa coordinar un presupuesto de mantenimiento preventivo.')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full inline-flex items-center justify-center gap-2 bg-blue text-white font-heading font-bold text-[14px] py-3.5 px-6 rounded-xl hover:bg-blue-light transition-all duration-300 shadow-lg hover:shadow-blue/20 outline-none focus-visible:ring-2 focus-visible:ring-blue-light focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark group"
+          >
+            <svg class="calc-spinner hidden w-4 h-4 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <svg class="calc-wa-icon w-5 h-5 fill-current group-hover:scale-110 transition-transform" aria-hidden="true">
+              <use href="#icon-whatsapp" />
+            </svg>
+            <span class="calc-btn-text">Solicitar Propuesta para mi Parque</span>
+          </a>
+          <span id="calc-announcement" class="sr-only" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    function initCalculadora() {
+      const section = document.getElementById('calculadora');
+      if (!section) return () => {};
+
+      const instBtns = section.querySelectorAll('.inst-btn');
+      const rangeInput = section.querySelector('#equipos-range') as HTMLInputElement | null;
+      const countDisplay = section.querySelector('#equipos-count-display');
+      const metricDowntime = section.querySelector('#metric-downtime');
+      const metricDias = section.querySelector('#metric-dias');
+      const waBtn = section.querySelector('#calc-wa-btn') as HTMLAnchorElement | null;
+      const announcement = section.querySelector('#calc-announcement');
+      const container = section.querySelector('[data-whatsapp]');
+      const whatsappNumber = container ? (container as HTMLElement).dataset.whatsapp : '5493815658239';
+
+      if (!instBtns.length || !rangeInput || !countDisplay || !metricDowntime || !metricDias || !waBtn) {
+        return () => {};
+      }
+
+      let selectedInstName = 'Clínica / Sanatorio Privado';
+      let factorDowntime = 18;
+      let factorAhorro = 0.85;
+
+      const updateCalculations = () => {
+        const count = parseInt(rangeInput.value, 10) || 1;
+        countDisplay.textContent = `${count} ${count === 1 ? 'equipo' : 'equipos'}`;
+        rangeInput.setAttribute('aria-valuenow', count.toString());
+        rangeInput.setAttribute('aria-valuetext', `${count} equipos médicos`);
+
+        // Business formula: hours saved per year = count * factorDowntime * factorAhorro
+        const horasPrevenibles = Math.round(count * factorDowntime * factorAhorro);
+        const diasPrevenibles = Math.round(horasPrevenibles / 24);
+
+        metricDowntime.textContent = `${horasPrevenibles} hrs/año`;
+        metricDias.textContent = diasPrevenibles.toString();
+
+        const cleanNumber = (whatsappNumber || '').replace(/\D/g, '');
+        const message = `Hola TechHealth! Realicé una estimación B2B para ${selectedInstName} (${count} equipos) y estimó un ahorro de ${horasPrevenibles} hrs/año de inactividad. Quisiera solicitar una propuesta de mantenimiento preventivo.`;
+
+        waBtn.setAttribute(
+          'href',
+          `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`
+        );
+      };
+
+      const handleInstClick = (btn: HTMLElement) => {
+        instBtns.forEach(b => {
+          b.setAttribute('aria-checked', 'false');
+          b.classList.remove('bg-blue/30', 'border-blue-light', 'text-white', 'font-semibold');
+          b.classList.add('bg-navy-light/40', 'border-white/10', 'text-white/80');
+        });
+
+        btn.setAttribute('aria-checked', 'true');
+        btn.classList.remove('bg-navy-light/40', 'border-white/10', 'text-white/80');
+        btn.classList.add('bg-blue/30', 'border-blue-light', 'text-white', 'font-semibold');
+
+        const instNameEl = btn.querySelector('.font-heading');
+        selectedInstName = instNameEl?.textContent?.trim() || 'Institución de salud';
+        factorDowntime = parseFloat(btn.dataset.factorDowntime || '18');
+        factorAhorro = parseFloat(btn.dataset.factorAhorro || '0.85');
+
+        updateCalculations();
+      };
+
+      instBtns.forEach(btn => {
+        btn.addEventListener('click', () => handleInstClick(btn as HTMLElement));
+        btn.addEventListener('keydown', (e) => {
+          const ke = e as KeyboardEvent;
+          if (ke.key === 'Enter' || ke.key === ' ') {
+            e.preventDefault();
+            handleInstClick(btn as HTMLElement);
+          }
+        });
+      });
+
+      rangeInput.addEventListener('input', updateCalculations);
+
+      waBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const btnText = waBtn.querySelector('.calc-btn-text');
+        const spinner = waBtn.querySelector('.calc-spinner');
+        const icon = waBtn.querySelector('.calc-wa-icon');
+
+        if (btnText && spinner && icon) {
+          const origText = btnText.textContent;
+          btnText.textContent = 'Redirigiendo...';
+          spinner.classList.remove('hidden');
+          icon.classList.add('hidden');
+          waBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+          if (announcement) announcement.textContent = 'Redirigiendo a WhatsApp...';
+
+          const href = waBtn.getAttribute('href');
+          if (href) {
+            window.open(href, '_blank', 'noopener,noreferrer');
+          }
+
+          setTimeout(() => {
+            btnText.textContent = origText;
+            spinner.classList.add('hidden');
+            icon.classList.remove('hidden');
+            waBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+            if (announcement) announcement.textContent = '';
+          }, 3000);
+        }
+      });
+
+      updateCalculations();
+
+      return () => {
+        rangeInput.removeEventListener('input', updateCalculations);
+      };
+    }
+
+    let cleanup = initCalculadora();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initCalculadora();
+    });
+  })();
+</script>
