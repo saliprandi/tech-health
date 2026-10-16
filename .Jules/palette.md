@@ -113,3 +113,7 @@
 ## 2026-03-30 - Retroalimentación visual coordinada por foco en etiquetas sobre fondos oscuros
 **Learning:** En formularios sobre fondos oscuros (`bg-navy`), agrupar la etiqueta `<label>` y el control de entrada (`<input>`, `<textarea>`, `<select>`) dentro de un contenedor con Tailwind `group/field` (o `group/select`) y aplicar `group-focus-within/field:text-blue-light transition-colors` en la etiqueta coordina la respuesta visual cuando el campo recibe foco, destacando sutilmente la etiqueta asociada en sincronía con el anillo de enfoque.
 **Action:** Agrupar siempre controles e instrucciones en contenedores `group/field` y sincronizar transiciones de color en etiquetas con `group-focus-within/field:text-blue-light`.
+
+## 2026-03-30 - Coordinación de foco e higiene de controles nativos en filtros de búsqueda
+**Learning:** En filtros de búsqueda sobre fondos claros (ej. `src/components/FAQ.astro`), agrupar el contenedor de entrada e ícono de búsqueda en un named group (`group/search`) y aplicar `group-focus-within/search:text-blue transition-colors` en el ícono SVG brinda feedback de foco coordinado e intuitivo. Además, suprimir los botones nativos de cancelación de WebKit (`[&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden`) previene duplicaciones y solapamientos visuales con botones de limpieza personalizados.
+**Action:** Usar `group/search` para resaltar íconos al enfocar búsquedas e inhabilitar los controles nativos de cancelación de WebKit cuando se proporcione un botón de limpieza propio.
