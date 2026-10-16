@@ -7,6 +7,8 @@ test.describe('Footer Back to Top Link UX', () => {
     const backToTopLink = page.locator('footer a[href="#hero"]');
     await expect(backToTopLink).toBeVisible();
     await expect(backToTopLink).toHaveAttribute('aria-label', 'Volver al inicio de la página');
+    await expect(backToTopLink).toHaveAttribute('title', 'Volver al inicio de la página');
+    await expect(backToTopLink).toHaveClass(/active:scale-95/);
 
     // Verify it contains the text "Volver arriba"
     await expect(backToTopLink).toContainText('Volver arriba');
@@ -18,8 +20,11 @@ test.describe('Footer Back to Top Link UX', () => {
     await backToTopLink.focus();
     await expect(backToTopLink).toBeFocused();
 
-    // Click back to top and verify page scrolls towards top (#hero)
+    const announcement = page.locator('#footer-announcement');
+
+    // Click back to top and verify page scrolls towards top (#hero) and live region is updated
     await backToTopLink.click();
+    await expect(announcement).toHaveText('Navegando al inicio de la página');
     await page.waitForTimeout(500);
 
     // Verify hero section is visible
