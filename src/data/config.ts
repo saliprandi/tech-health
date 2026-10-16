@@ -193,4 +193,41 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora_roi: {
+    titulo: "Calculadora de Inactividad y ROI",
+    subtitulo: "Estime las pérdidas económicas por paradas no programadas de equipos médicos y descubra el valor del mantenimiento preventivo.",
+    equipos: [
+      {
+        id: "respirador",
+        nombre: "Respirador / Ventilador UTI",
+        costo_diario_estimado: 450000,
+        costo_preventivo_anual: 350000,
+      },
+      {
+        id: "ecografo",
+        nombre: "Ecógrafo / Diagnóstico por Imagen",
+        costo_diario_estimado: 380000,
+        costo_preventivo_anual: 300000,
+      },
+      {
+        id: "electrocirugia",
+        nombre: "Bisturí Electrónico / Electrocirugía",
+        costo_diario_estimado: 250000,
+        costo_preventivo_anual: 220000,
+      },
+      {
+        id: "monitor",
+        nombre: "Monitor de Signos Vitales",
+        costo_diario_estimado: 120000,
+        costo_preventivo_anual: 180000,
+      },
+      {
+        id: "bomba",
+        nombre: "Bomba de Infusión / Jeringa",
+        costo_diario_estimado: 85000,
+        costo_preventivo_anual: 120000,
+      },
+    ],
+  },
 };
