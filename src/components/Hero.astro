@@ -104,7 +104,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = heroCta.getAttribute('href');
-        if (href) {
+        if (href && !/^(javascript|data|vbscript):/i.test(href.trim())) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 
