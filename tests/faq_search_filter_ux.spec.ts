@@ -74,4 +74,13 @@ test.describe('FAQ Search Filter Micro-UX & Accessibility', () => {
     await expect(searchInput).toHaveValue('');
     expect(await visibleItems.count()).toBe(initialCount);
   });
+
+  test('faq search container and icon have group focus-within micro-UX classes', async ({ page }) => {
+    const container = page.locator('#faq div.group\\/search');
+    await expect(container).toBeVisible();
+
+    const searchIcon = container.locator('svg.group-focus-within\\/search\\:text-blue');
+    await expect(searchIcon).toBeVisible();
+    await expect(searchIcon).toHaveClass(/transition-colors/);
+  });
 });
