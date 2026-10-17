@@ -94,3 +94,54 @@ test('ticket status page sanitizes XSS payloads in history response', async ({ p
   expect(historialHtml).not.toContain('<img src=x');
   expect(historialHtml).toContain('&lt;script&gt;');
 });
+
+test('ticket status page gracefully handles 500 HTTP error response', async ({ page }) => {
+  await page.route('**/webhook/techhealth-estado*', async (route) => {
+    await route.fulfill({
+      status: 500,
+      contentType: 'text/html',
+      body: '<html><body>500 Internal Server Error</body></html>'
+    });
+  });
+
+  await page.goto('http://localhost:4321/estado');
+  await page.fill('#ticket-input', 'TH-2026-ERR');
+  await page.click('#estado-submit');
+
+  const errorDiv = page.locator('#estado-error');
+  await expect(errorDiv).toBeVisible();
+  await expect(errorDiv).toContainText('Error de servidor (500)');
+});
+
+test('ticket status page enforces maxlength and truncates oversized inputs', async ({ page }) => {
+  let requestedTicket = '';
+  await page.route('**/webhook/techhealth-estado*', async (route) => {
+    const url = new URL(route.request().url());
+    requestedTicket = url.searchParams.get('ticket_number') || '';
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        success: true,
+        ticket: {
+          ticket_number: requestedTicket,
+          nombre: 'Cliente Test',
+          servicio: 'Diagnostico',
+          created_at: '2026-03-01T10:00:00Z',
+          estado: 'recepcion'
+        }
+      })
+    });
+  });
+
+  await page.goto('http://localhost:4321/estado');
+  const ticketInput = page.locator('#ticket-input');
+  await expect(ticketInput).toHaveAttribute('maxlength', '30');
+
+  const oversizedTicket = 'TH-2026-' + 'A'.repeat(50);
+  await ticketInput.fill(oversizedTicket);
+  await page.click('#estado-submit');
+
+  expect(requestedTicket.length).toBeLessThanOrEqual(30);
+  expect(requestedTicket).toBe(('TH-2026-' + 'A'.repeat(50)).slice(0, 30));
+});

@@ -26,6 +26,31 @@ test.describe('Navigation UX', () => {
     await expect(menuToggle).toHaveAttribute('aria-expanded', 'false');
   });
 
+  test('mobile menu should close when clicking outside or resizing to desktop', async ({ page }) => {
+    // Set viewport to mobile
+    await page.setViewportSize({ width: 375, height: 667 });
+
+    const menuToggle = page.locator('#menu-toggle');
+    const mobileMenu = page.locator('#mobile-menu');
+
+    // Test outside click
+    await menuToggle.click();
+    await expect(mobileMenu).toBeVisible();
+
+    // Click outside menu (on position below menu)
+    await page.mouse.click(10, 500);
+    await expect(mobileMenu).not.toBeVisible();
+    await expect(menuToggle).toHaveAttribute('aria-expanded', 'false');
+
+    // Test resize to desktop
+    await menuToggle.click();
+    await expect(mobileMenu).toBeVisible();
+
+    await page.setViewportSize({ width: 1024, height: 800 });
+    await expect(mobileMenu).not.toBeVisible();
+    await expect(menuToggle).toHaveAttribute('aria-expanded', 'false');
+  });
+
   test('reading progress bar should update on scroll', async ({ page }) => {
     const progressBar = page.locator('#reading-progress').first();
     await expect(progressBar).toBeAttached();

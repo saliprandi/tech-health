@@ -121,17 +121,41 @@ import { CONFIG } from '../data/config';
         }
       };
 
-      items.forEach(item => {
-        const trigger = item.querySelector('.faq-trigger');
-        trigger?.addEventListener('click', handleToggle);
+      const triggers = Array.from(document.querySelectorAll<HTMLButtonElement>('.faq-trigger'));
+
+      const handleKeydown = (e: KeyboardEvent) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        const index = triggers.indexOf(target);
+        if (index === -1) return;
+
+        let nextIndex = -1;
+        if (e.key === 'ArrowDown') {
+          nextIndex = (index + 1) % triggers.length;
+        } else if (e.key === 'ArrowUp') {
+          nextIndex = (index - 1 + triggers.length) % triggers.length;
+        } else if (e.key === 'Home') {
+          nextIndex = 0;
+        } else if (e.key === 'End') {
+          nextIndex = triggers.length - 1;
+        }
+
+        if (nextIndex !== -1) {
+          e.preventDefault();
+          triggers[nextIndex].focus();
+        }
+      };
+
+      triggers.forEach(trigger => {
+        trigger.addEventListener('click', handleToggle);
+        trigger.addEventListener('keydown', handleKeydown);
       });
 
       return () => {
         transitionTimers.forEach(timer => clearTimeout(timer));
         transitionTimers.clear();
-        items.forEach(item => {
-          const trigger = item.querySelector('.faq-trigger');
-          trigger?.removeEventListener('click', handleToggle);
+        triggers.forEach(trigger => {
+          trigger.removeEventListener('click', handleToggle);
+          trigger.removeEventListener('keydown', handleKeydown);
         });
       };
     }

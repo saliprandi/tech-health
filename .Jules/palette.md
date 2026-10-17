@@ -5,3 +5,31 @@
 ## 2026-03-30 - Anti-patrón de accesibilidad: tabindex="0" en elementos pasivos
 **Learning:** Agregar `tabindex="0"` o indicadores de foco interactivos a elementos estáticos o pasivos sin acciones (como tarjetas puramente informativas) degrada la experiencia de navegación por teclado al crear paradas sin interacción ("dead-end focus stops").
 **Action:** Evitar `tabindex="0"` en elementos que no responden a eventos de teclado (click, enter, space) o no abren modales/enlaces. Para dar feedback visual en formularios/módulos de consulta, asociar atributos ARIA (`aria-busy`, regiones `aria-live`) e indicadores de carga directamente al botón de envío.
+
+## 2026-03-30 - Gestión de foco accesible en revelación asíncrona de resultados
+**Learning:** Cuando una búsqueda asíncrona despliega un panel de resultados debajo del formulario (ej. estado de ticket), mantener el foco atrapado en el botón de envío desorienta a usuarios de teclado y lectores de pantalla.
+**Action:** Transferir explícitamente el foco al primer elemento interactivo del panel de resultados (como el botón de copiar ticket o enlace) al cargar la respuesta, asegurando posicionamiento inmediato y anuncio fluido.
+
+## 2026-03-30 - Paridad micro-interactiva entre hover y focus-visible en botones principales
+**Learning:** Asignar transformaciones visuales (como `translateY(-2px)` y `box-shadow` de elevación) únicamente a `:hover` en componentes `.btn-primary` priva a los usuarios de navegación por teclado de la misma retroalimentación táctil y dinámica que experimentan los usuarios de ratón.
+**Action:** Garantizar siempre paridad funcional asignando reglas idénticas a `.btn-primary:hover` y `.btn-primary:focus-visible` en las clases utility del sistema de diseño CSS.
+
+## 2026-03-30 - Micro-UX de selectores y contadores accesibles en formularios
+**Learning:** En controles `<select>` personalizados, envolver la entrada con Tailwind named groups (`group/select`) y aplicar `group-focus-within/select:rotate-180` al ícono de flecha provee una respuesta táctil/visual instantánea tanto con ratón como con navegación por teclado. Asimismo, los contadores de texto dinámicos en `<textarea>` deben incorporar `aria-live="polite"` y cambiar a un tono de advertencia legible (`text-amber-400 font-semibold`) al superar el 90% de la capacidad.
+**Action:** Utilizar named groups para animaciones de foco en íconos embebidos en inputs/selects y equipar contadores de caracteres con regiones `aria-live="polite"` para garantizar feedback visual y por voz.
+
+## 2026-03-30 - Fallback de redirección transparente para bloqueadores de ventanas emergentes en envíos de formulario
+**Learning:** En manejadores de envíos de formularios que abren enlaces externos (ej. WhatsApp) tras procesar eventos de cliente, `window.open(url, '_blank', 'noopener,noreferrer')` puede ser bloqueado en navegadores estrictos o webviews móviles. Evaluar la referencia resultante (`const openedWin = window.open(...)`) y aplicar `if (!openedWin) window.location.href = url` garantiza la navegación sin parpadeos de pestañas en blanco ni interrupciones silenciosas de UX.
+**Action:** Usar asignación condicional `if (!openedWin) window.location.href = url` al abrir enlaces en manejadores de formularios para asegurar redundancia ante bloqueadores de popups.
+
+## 2026-03-30 - Sincronización dinámica de atributos ARIA label en botones de copia y acción
+**Learning:** Cuando un botón de copia o acción comparte contenido (ej. `#copy-ticket-btn` y `#share-ticket-btn`), cambiar el texto visible a "¡Copiado!" o "¡Enlace copiado!" sin actualizar el atributo `aria-label` causa una discrepancia donde los lectores de pantalla continúan anunciando la instrucción original ("Copiar...").
+**Action:** Capturar siempre el `aria-label` original al activar la acción, actualizar temporalmente el `aria-label` a la confirmación (ej. "Número de ticket copiado al portapapeles") y restaurar el `aria-label` original tras el timeout de retroalimentación.
+
+## 2026-03-30 - Visibilidad de foco en enlaces de navegación fijos sobre fondo claro
+**Learning:** Los enlaces de navegación en cabeceras fijas que omiten el contorno por defecto (`outline-none`) deben incorporar anillos de enfoque luminosos de alto contraste (`focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-sm`) para garantizar accesibilidad WCAG 2.1 AA durante la navegación por teclado.
+**Action:** Aplicar siempre anillos de enfoque con contraste suficiente y desplazamiento de anillo (`ring-offset-2`) en enlaces de barra de navegación principal.
+
+## 2026-03-30 - Navegación accesible por teclado WAI-ARIA en acordeones y etiquetado de listas
+**Learning:** En componentes desplegables de preguntas frecuentes (FAQ accordion), permitir la navegación con teclas de dirección (`ArrowDown`, `ArrowUp`, `Home`, `End`) con rotación cíclica mejora drásticamente la accesibilidad para usuarios de teclado sin obligar a avanzar botón por botón con la tecla Tab. Asimismo, etiquetar contenedores de listas con `aria-label` en grillas informativas (ej. `Equipos.astro`) garantiza contexto de lectura a usuarios de lectores de pantalla.
+**Action:** Implementar siempre manejadores de eventos de teclado `ArrowDown`, `ArrowUp`, `Home` y `End` en activadores de acordeón y proveer `aria-label` descriptivo en listas `<ul>` de elementos temáticos.
