@@ -45,6 +45,10 @@ test.describe('FAQ Search Filter Micro-UX & Accessibility', () => {
     await expect(visibleItems).toHaveCount(0);
     await expect(emptyState).toBeVisible();
 
+    // Reset button micro-UX verification
+    await expect(resetBtn).toHaveAttribute('title', 'Mostrar todas las preguntas');
+    await expect(resetBtn).toHaveClass(/active:scale-95/);
+
     // Click reset button
     await resetBtn.click();
 
