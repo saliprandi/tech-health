@@ -113,3 +113,7 @@
 ## 2026-03-30 - Retroalimentación visual coordinada por foco en etiquetas sobre fondos oscuros
 **Learning:** En formularios sobre fondos oscuros (`bg-navy`), agrupar la etiqueta `<label>` y el control de entrada (`<input>`, `<textarea>`, `<select>`) dentro de un contenedor con Tailwind `group/field` (o `group/select`) y aplicar `group-focus-within/field:text-blue-light transition-colors` en la etiqueta coordina la respuesta visual cuando el campo recibe foco, destacando sutilmente la etiqueta asociada en sincronía con el anillo de enfoque.
 **Action:** Agrupar siempre controles e instrucciones en contenedores `group/field` y sincronizar transiciones de color en etiquetas con `group-focus-within/field:text-blue-light`.
+
+## 2026-03-30 - Tooltips nativos title y atributos ARIA de estado ocupado en botones de redirección principal Hero
+**Learning:** Equipar botones de acción principal en secciones de héroe (`#hero-cta`) con atributos nativos `title` para affordance al posar el cursor, junto con la conmutación dinámica de `aria-busy="true"` y `aria-disabled="true"` durante estados de redirección asíncrona externos, garantiza que tanto usuarios de ratón como de tecnologías de asistencia reciban retroalimentación clara y en tiempo real del progreso de navegación.
+**Action:** Añadir siempre atributos nativos `title` a enlaces/botones de llamadas a la acción y alternar dinámicamente `aria-busy` y `aria-disabled` en manejadores de redirección.
