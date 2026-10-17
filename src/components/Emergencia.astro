@@ -30,6 +30,7 @@ const { emergencia, contacto } = CONFIG;
         <div class="flex-shrink-0 w-full lg:w-auto">
           <a
             id="emergencia-cta"
+            title="Solicitar atención prioritaria por WhatsApp"
             href={`https://wa.me/${contacto.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('SOPORTE DE EMERGENCIA: Necesito asistencia inmediata para un equipo crítico.')}`}
             target="_blank"
             rel="noopener noreferrer"
@@ -67,7 +68,12 @@ const { emergencia, contacto } = CONFIG;
 
         const href = cta.getAttribute('href');
         if (href && href.startsWith('https://wa.me/')) {
-          window.open(href, '_blank', 'noopener,noreferrer');
+          const openedWin = window.open(href, '_blank');
+          if (openedWin) {
+            openedWin.opener = null;
+          } else {
+            window.location.href = href;
+          }
         }
 
         setTimeout(() => {
