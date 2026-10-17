@@ -91,21 +91,21 @@ import { CONFIG } from '../data/config';
           </div>
 
           <div class="flex flex-col gap-1.5 group/field">
-            <label for="f-nombre" class="font-body font-medium text-[13px] text-white/80 group-focus-within/field:text-blue-light transition-colors">
+            <label for="f-nombre" class="font-body font-medium text-[13px] text-white/80 group-focus-within/field:text-blue-light">
               Nombre completo <span class="text-blue-light" aria-hidden="true">*</span>
             </label>
             <input type="text" id="f-nombre" name="nombre" required maxlength="100" autocomplete="name" placeholder="Ej: Juan Pérez" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light aria-invalid:border-red-400/80 aria-invalid:ring-1 aria-invalid:ring-red-400 outline-none" />
           </div>
 
           <div class="flex flex-col gap-1.5 group/field">
-            <label for="f-tel" class="font-body font-medium text-[13px] text-white/80 group-focus-within/field:text-blue-light transition-colors">
+            <label for="f-tel" class="font-body font-medium text-[13px] text-white/80 group-focus-within/field:text-blue-light">
               Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span>
             </label>
             <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-\(\)]*" autocomplete="tel" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light aria-invalid:border-red-400/80 aria-invalid:ring-1 aria-invalid:ring-red-400 outline-none" />
           </div>
 
           <div class="flex flex-col gap-1.5 group/select">
-            <label for="f-servicio" class="font-body font-medium text-[13px] text-white/80 group-focus-within/select:text-blue-light transition-colors">Tipo de servicio</label>
+            <label for="f-servicio" class="font-body font-medium text-[13px] text-white/80 group-focus-within/select:text-blue-light">Tipo de servicio</label>
             <div class="relative">
               <select id="f-servicio" name="servicio" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-[14px] text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-light transition-colors w-full appearance-none pr-10 cursor-pointer">
                 <option value="Consulta general" class="bg-navy text-white">Consulta general</option>
@@ -121,7 +121,7 @@ import { CONFIG } from '../data/config';
 
           <div class="flex flex-col gap-1.5 group/field">
             <div class="flex items-center justify-between">
-              <label for="f-desc" class="font-body font-medium text-[13px] text-white/80 group-focus-within/field:text-blue-light transition-colors">Mensaje</label>
+              <label for="f-desc" class="font-body font-medium text-[13px] text-white/80 group-focus-within/field:text-blue-light">Mensaje</label>
               <span id="f-desc-shortcut" class="font-body text-[11px] text-white/40">Ctrl + Enter para enviar</span>
             </div>
             <div class="relative">
@@ -335,7 +335,7 @@ import { CONFIG } from '../data/config';
           navigator.clipboard.writeText(contentToCopy).then(() => {
             text.textContent = '¡Copiado!';
             iconUse.setAttribute('href', '#icon-check');
-            btn.classList.add('text-blue', 'scale-105');
+            btn.classList.add('text-blue', 'scale-110');
             btn.setAttribute('aria-label', announcementMsg);
             btn.setAttribute('title', announcementMsg);
             if (copyAnnouncement) copyAnnouncement.textContent = announcementMsg;
@@ -343,7 +343,7 @@ import { CONFIG } from '../data/config';
             setTimeout(() => {
               text.textContent = originalText;
               iconUse.setAttribute('href', originalIcon || '#icon-copy');
-              btn.classList.remove('text-blue', 'scale-105');
+              btn.classList.remove('text-blue', 'scale-110');
               if (originalAriaLabel) {
                 btn.setAttribute('aria-label', originalAriaLabel);
               } else {

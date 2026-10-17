@@ -64,6 +64,7 @@ test.describe('FAQ Search Filter Micro-UX & Accessibility', () => {
   test('should clear search input on Escape key press and restore all FAQs', async ({ page }) => {
     const searchInput = page.locator('#faq-search-input');
     const visibleItems = page.locator('.faq-item:not(.hidden)');
+    const liveCounter = page.locator('#faq-search-counter');
     const initialCount = await visibleItems.count();
 
     await searchInput.fill('mantenimiento');
@@ -73,5 +74,16 @@ test.describe('FAQ Search Filter Micro-UX & Accessibility', () => {
 
     await expect(searchInput).toHaveValue('');
     expect(await visibleItems.count()).toBe(initialCount);
+    await expect(liveCounter).toHaveText('Búsqueda de preguntas limpiada. Mostrando todas las preguntas.');
+  });
+
+  test('faq search input has group/search focus styling and webkit cancel hide class', async ({ page }) => {
+    const searchInput = page.locator('#faq-search-input');
+    const searchContainer = searchInput.locator('xpath=..');
+    const searchIcon = searchContainer.locator('svg').first();
+
+    await expect(searchContainer).toHaveClass(/group\/search/);
+    await expect(searchInput).toHaveClass(/\[&::-webkit-search-cancel-button\]:hidden/);
+    await expect(searchIcon).toHaveClass(/group-focus-within\/search:text-blue/);
   });
 });
