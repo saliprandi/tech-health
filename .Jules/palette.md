@@ -113,3 +113,7 @@
 ## 2026-03-30 - Retroalimentación visual coordinada por foco en etiquetas sobre fondos oscuros
 **Learning:** En formularios sobre fondos oscuros (`bg-navy`), agrupar la etiqueta `<label>` y el control de entrada (`<input>`, `<textarea>`, `<select>`) dentro de un contenedor con Tailwind `group/field` (o `group/select`) y aplicar `group-focus-within/field:text-blue-light transition-colors` en la etiqueta coordina la respuesta visual cuando el campo recibe foco, destacando sutilmente la etiqueta asociada en sincronía con el anillo de enfoque.
 **Action:** Agrupar siempre controles e instrucciones en contenedores `group/field` y sincronizar transiciones de color en etiquetas con `group-focus-within/field:text-blue-light`.
+
+## 2026-03-30 - Coordinación de color de foco en íconos de búsqueda embebidos
+**Learning:** En campos de entrada de búsqueda con ícono vectorial SVG embebido (como en `src/components/FAQ.astro`), agrupar el contenedor del campo con Tailwind named group (`group/search`) y aplicar `group-focus-within/search:text-blue transition-colors` al ícono SVG permite que el ícono responda con un cambio suave de color en sincronización inmediata con la activación del anillo de enfoque del input tanto en interacción por ratón como en navegación por teclado.
+**Action:** Agrupar contenedores de búsqueda con `group/search` y coordinar la transición de color del ícono embebido con `group-focus-within/search:text-blue transition-colors`.
