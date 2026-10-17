@@ -1,0 +1,253 @@
+---
+import { CONFIG } from '../data/config';
+
+const { titulo, subtitulo, equipos } = CONFIG.calculadora_roi;
+---
+
+<section id="calculadora" class="py-16 md:py-24 bg-surface relative overflow-hidden scroll-mt-20 border-t border-border">
+  <div class="container-custom px-[5%]">
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue/10 border border-blue/20 text-blue font-body font-semibold text-xs tracking-wider uppercase mb-4">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+        <span>Optimización Financiera B2B</span>
+      </div>
+      <h2 class="font-heading font-extrabold text-3xl md:text-4xl lg:text-5xl text-navy tracking-tight mb-4">
+        {titulo}
+      </h2>
+      <p class="font-body text-base md:text-lg text-text-soft leading-relaxed">
+        {subtitulo}
+      </p>
+    </div>
+
+    <!-- Calculator Card -->
+    <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-card border border-border p-6 md:p-10 transition-all duration-300">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <!-- Controls Column -->
+        <div class="lg:col-span-7 space-y-6">
+
+          <!-- Equipment Selector -->
+          <div class="space-y-2 group/select">
+            <label for="calc-equipo" class="block font-heading font-bold text-sm text-navy group-focus-within/select:text-blue transition-colors">
+              Tipo de Equipo Médico
+            </label>
+            <div class="relative">
+              <select
+                id="calc-equipo"
+                class="w-full bg-off-white border border-border rounded-xl px-4 py-3 text-navy font-body font-medium text-sm focus:outline-none focus:ring-2 focus:ring-blue focus:border-transparent transition-all appearance-none cursor-pointer"
+              >
+                {equipos.map((eq) => (
+                  <option value={eq.id} data-costo={eq.costo_diario_estimado} data-preventivo={eq.costo_preventivo_anual}>
+                    {eq.nombre}
+                  </option>
+                ))}
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-text-soft">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Days Inactive Slider -->
+          <div class="space-y-3 group/field">
+            <div class="flex justify-between items-center">
+              <label for="calc-dias" class="font-heading font-bold text-sm text-navy group-focus-within/field:text-blue transition-colors">
+                Días de inactividad por falla imprevista
+              </label>
+              <span id="calc-dias-val" class="font-heading font-extrabold text-blue text-lg bg-blue/10 px-3 py-0.5 rounded-md">
+                3 días
+              </span>
+            </div>
+            <input
+              type="range"
+              id="calc-dias"
+              min="1"
+              max="30"
+              value="3"
+              class="w-full h-2 bg-border rounded-lg appearance-none cursor-pointer accent-blue focus:outline-none focus:ring-2 focus:ring-blue focus:ring-offset-2"
+              aria-label="Seleccionar días de inactividad"
+            />
+            <div class="flex justify-between text-xs font-body text-text-soft">
+              <span>1 día</span>
+              <span>15 días</span>
+              <span>30 días</span>
+            </div>
+          </div>
+
+          <!-- Quantity of Units -->
+          <div class="space-y-3 group/field">
+            <div class="flex justify-between items-center">
+              <label for="calc-unidades" class="font-heading font-bold text-sm text-navy group-focus-within/field:text-blue transition-colors">
+                Cantidad de unidades en la institución
+              </label>
+              <span id="calc-unidades-val" class="font-heading font-extrabold text-navy text-lg bg-surface px-3 py-0.5 rounded-md border border-border">
+                1 unidad
+              </span>
+            </div>
+            <input
+              type="range"
+              id="calc-unidades"
+              min="1"
+              max="10"
+              value="1"
+              class="w-full h-2 bg-border rounded-lg appearance-none cursor-pointer accent-navy focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2"
+              aria-label="Seleccionar cantidad de unidades"
+            />
+            <div class="flex justify-between text-xs font-body text-text-soft">
+              <span>1 unidad</span>
+              <span>5 unidades</span>
+              <span>10 unidades</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Result Card Column -->
+        <div class="lg:col-span-5 bg-navy text-white rounded-xl p-6 flex flex-col justify-between shadow-lg relative overflow-hidden">
+          <div class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 rounded-full bg-blue/20 blur-2xl pointer-events-none"></div>
+
+          <div>
+            <h3 class="font-heading font-bold text-xs uppercase tracking-wider text-blue-light mb-4">
+              Resumen de Impacto Estimado
+            </h3>
+
+            <!-- Loss Amount -->
+            <div class="mb-6">
+              <span class="block text-xs font-body text-white/70 mb-1">
+                Pérdida estimada por inactividad:
+              </span>
+              <div id="calc-perdida-total" class="font-heading font-black text-3xl sm:text-4xl text-red-400 tracking-tight">
+                $1.350.000
+              </div>
+            </div>
+
+            <!-- Preventative Maintenance Comparison -->
+            <div class="p-3.5 bg-white/10 rounded-lg border border-white/10 mb-6 space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-white/80">Plan Preventivo Anual TechHealth:</span>
+                <span id="calc-costo-preventivo" class="font-bold text-white">$350.000</span>
+              </div>
+              <div class="flex justify-between items-center text-xs pt-1 border-t border-white/10">
+                <span class="text-emerald-300 font-semibold">Ahorro Neto Estimado:</span>
+                <span id="calc-ahorro-neto" class="font-bold text-emerald-300">$1.000.000</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Call to Action -->
+          <div>
+            <a
+              id="calc-whatsapp-btn"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group w-full inline-flex items-center justify-center gap-2 bg-blue hover:bg-blue-light text-white font-heading font-bold text-sm py-3 px-4 rounded-xl transition-all shadow-md active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+              title="Solicitar cotización personalizada para su institución"
+            >
+              <svg class="w-4 h-4 fill-current group-hover:scale-110 transition-transform" aria-hidden="true">
+                <use href="#icon-whatsapp" />
+              </svg>
+              <span>Solicitar Plan Preventivo</span>
+              <svg class="w-4 h-4 text-white/70 group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </a>
+            <p class="text-[11px] font-body text-white/50 text-center mt-2">
+              * Estimaciones basadas en promedios del sector de salud en Tucumán.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Live Region for Screen Readers -->
+    <div id="calc-announcement" class="sr-only" aria-live="polite"></div>
+  </div>
+</section>
+
+<script>
+  import { CONFIG } from '../data/config';
+
+  (function() {
+    function initCalculadora() {
+      const selectEquipo = document.getElementById('calc-equipo') as HTMLSelectElement | null;
+      const inputDias = document.getElementById('calc-dias') as HTMLInputElement | null;
+      const inputUnidades = document.getElementById('calc-unidades') as HTMLInputElement | null;
+
+      const valDias = document.getElementById('calc-dias-val');
+      const valUnidades = document.getElementById('calc-unidades-val');
+      const perdidaTotal = document.getElementById('calc-perdida-total');
+      const costoPreventivo = document.getElementById('calc-costo-preventivo');
+      const ahorroNeto = document.getElementById('calc-ahorro-neto');
+      const whatsappBtn = document.getElementById('calc-whatsapp-btn') as HTMLAnchorElement | null;
+      const announcement = document.getElementById('calc-announcement');
+
+      if (!selectEquipo || !inputDias || !inputUnidades || !perdidaTotal || !costoPreventivo || !ahorroNeto || !whatsappBtn) {
+        return () => {};
+      }
+
+      const formatARS = (value: number) => {
+        return new Intl.NumberFormat('es-AR', {
+          style: 'currency',
+          currency: 'ARS',
+          maximumFractionDigits: 0,
+        }).format(value);
+      };
+
+      const updateCalculo = () => {
+        const selectedOption = selectEquipo.options[selectEquipo.selectedIndex];
+        const equipoNombre = selectedOption.text.trim();
+        const costoDiario = parseFloat(selectedOption.getAttribute('data-costo') || '0');
+        const preventivoUnidad = parseFloat(selectedOption.getAttribute('data-preventivo') || '0');
+
+        const dias = parseInt(inputDias.value, 10);
+        const unidades = parseInt(inputUnidades.value, 10);
+
+        if (valDias) valDias.textContent = `${dias} ${dias === 1 ? 'día' : 'días'}`;
+        if (valUnidades) valUnidades.textContent = `${unidades} ${unidades === 1 ? 'unidad' : 'unidades'}`;
+
+        const totalPerdida = costoDiario * dias * unidades;
+        const totalPreventivo = preventivoUnidad * unidades;
+        const totalAhorro = Math.max(0, totalPerdida - totalPreventivo);
+
+        perdidaTotal.textContent = formatARS(totalPerdida);
+        costoPreventivo.textContent = formatARS(totalPreventivo);
+        ahorroNeto.textContent = formatARS(totalAhorro);
+
+        // Pre-configure WhatsApp Message
+        const cleanPhone = CONFIG.contacto.whatsapp.replace(/\D/g, '');
+        const msg = `Hola TechHealth, estuve utilizando la calculadora de ROI en su sitio web. Deseo solicitar una cotización para un Plan Preventivo de ${unidades} ${unidades === 1 ? 'unidad' : 'unidades'} de ${equipoNombre}. Estimamos un impacto por parada de ${formatARS(totalPerdida)}.`;
+        whatsappBtn.href = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
+
+        if (announcement) {
+          announcement.textContent = `Cálculo actualizado: Pérdida estimada ${formatARS(totalPerdida)}, Plan Preventivo ${formatARS(totalPreventivo)}, Ahorro neto estimado ${formatARS(totalAhorro)}.`;
+        }
+      };
+
+      selectEquipo.addEventListener('change', updateCalculo);
+      inputDias.addEventListener('input', updateCalculo);
+      inputUnidades.addEventListener('input', updateCalculo);
+
+      updateCalculo();
+
+      return () => {
+        selectEquipo.removeEventListener('change', updateCalculo);
+        inputDias.removeEventListener('input', updateCalculo);
+        inputUnidades.removeEventListener('input', updateCalculo);
+      };
+    }
+
+    let cleanup = initCalculadora();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initCalculadora();
+    });
+  })();
+</script>
