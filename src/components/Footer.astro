@@ -36,8 +36,10 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
       </a>
       <span aria-hidden="true">·</span>
       <a
+        id="back-to-top"
         href="#hero"
-        class="inline-flex items-center gap-1.5 hover:text-white focus-visible:text-white underline-offset-4 hover:underline focus-visible:underline outline-none rounded-sm focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark transition-all group"
+        title="Volver al inicio de la página"
+        class="inline-flex items-center gap-1.5 hover:text-white focus-visible:text-white underline-offset-4 hover:underline focus-visible:underline active:scale-95 outline-none rounded-sm focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-dark transition-all group"
         aria-label="Volver al inicio de la página"
       >
         <svg class="w-3.5 h-3.5 text-white/50 group-hover:text-white group-focus-visible:text-white group-hover:-translate-y-0.5 group-focus-visible:-translate-y-0.5 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
@@ -46,6 +48,8 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
         <span>Volver arriba</span>
       </a>
     </div>
+
+    <div id="footer-announcement" class="sr-only" aria-live="polite"></div>
 
     {hasSocials && (
       <div class="flex items-center gap-4 mb-6" role="group" aria-label="Redes sociales">
@@ -78,3 +82,31 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
     </div>
   </div>
 </footer>
+
+<script>
+  (function() {
+    function initFooter() {
+      const backToTopBtn = document.getElementById('back-to-top');
+      const announcement = document.getElementById('footer-announcement');
+      if (!backToTopBtn || !announcement) return () => {};
+
+      const handleBackToTopClick = () => {
+        announcement.textContent = 'Navegando al inicio de la página';
+        setTimeout(() => {
+          if (announcement) announcement.textContent = '';
+        }, 2000);
+      };
+
+      backToTopBtn.addEventListener('click', handleBackToTopClick);
+      return () => {
+        backToTopBtn.removeEventListener('click', handleBackToTopClick);
+      };
+    }
+
+    let cleanup = initFooter();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initFooter();
+    });
+  })();
+</script>
