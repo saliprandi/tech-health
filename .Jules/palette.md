@@ -113,3 +113,7 @@
 ## 2026-03-30 - Retroalimentación visual coordinada por foco en etiquetas sobre fondos oscuros
 **Learning:** En formularios sobre fondos oscuros (`bg-navy`), agrupar la etiqueta `<label>` y el control de entrada (`<input>`, `<textarea>`, `<select>`) dentro de un contenedor con Tailwind `group/field` (o `group/select`) y aplicar `group-focus-within/field:text-blue-light transition-colors` en la etiqueta coordina la respuesta visual cuando el campo recibe foco, destacando sutilmente la etiqueta asociada en sincronía con el anillo de enfoque.
 **Action:** Agrupar siempre controles e instrucciones en contenedores `group/field` y sincronizar transiciones de color en etiquetas con `group-focus-within/field:text-blue-light`.
+
+## 2026-03-30 - Micro-UX de confirmación táctil y anuncios en vivo al volver al inicio de página
+**Learning:** En enlaces de navegación superior en pie de página ('Volver arriba'), añadir utilidades de escalado activo (`active:scale-95`), tooltips nativos `title` y regiones `aria-live="polite"` de anuncio en vivo (`announcement.textContent = 'Navegando al inicio de la página'`) provee retroalimentación táctil y auditiva en tiempo real tanto para usuarios de pantalla táctil como para tecnologías de asistencia.
+**Action:** Equipar los enlaces de navegación de retorno con atributos `title`, escalado `active:scale-95` y confirmación auditiva en tiempo real mediante regiones `aria-live="polite"`.
