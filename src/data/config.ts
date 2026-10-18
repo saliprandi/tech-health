@@ -193,4 +193,19 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora: {
+    tiposInstitucion: [
+      { id: "consultorio", nombre: "Consultorio / Centro Quirúrgico Menor", basePreventivo: 2 },
+      { id: "clinica", nombre: "Clínica / Sanatorio Privado", basePreventivo: 4 },
+      { id: "hospital", nombre: "Hospital / Complejo Hospitalario", basePreventivo: 6 },
+      { id: "diagnostico", nombre: "Centro de Diagnóstico por Imagen", basePreventivo: 4 },
+    ],
+    categoriasEquipos: [
+      { id: "soporte_vital", nombre: "Soporte Vital y UTI (Respiradores, Monitores, Desfibriladores)", ponderacion: 3 },
+      { id: "diagnostico_imagen", nombre: "Diagnóstico por Imagen (Ecógrafos, RX, Arco en C)", ponderacion: 2.5 },
+      { id: "quirofano", nombre: "Equipamiento de Quirófano (Mesa de anestesia, Bisturí eléctrico)", ponderacion: 2 },
+      { id: "general", nombre: "Equipamiento General (Bombas, Oximetría, Camas electromecánicas)", ponderacion: 1 },
+    ],
+  },
 };
