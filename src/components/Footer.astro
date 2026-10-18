@@ -84,30 +84,31 @@ const hasSocials = CONFIG.redes.instagram || CONFIG.redes.facebook || CONFIG.red
 
 <script>
   (function() {
-    function initFooterBackToTop() {
-      const backToTopLink = document.getElementById('back-to-top');
-      const announcement = document.getElementById('footer-announcement');
-      if (!backToTopLink) return () => {};
+    function initFooter() {
+      const backToTopBtn = document.getElementById('back-to-top');
+      const footerAnnouncement = document.getElementById('footer-announcement');
+
+      if (!backToTopBtn) return () => {};
 
       const handleBackToTopClick = () => {
-        if (announcement) {
-          announcement.textContent = 'Navegando al inicio de la página';
+        if (footerAnnouncement) {
+          footerAnnouncement.textContent = 'Navegando al inicio de la página';
           setTimeout(() => {
-            announcement.textContent = '';
+            if (footerAnnouncement) footerAnnouncement.textContent = '';
           }, 2000);
         }
       };
 
-      backToTopLink.addEventListener('click', handleBackToTopClick);
+      backToTopBtn.addEventListener('click', handleBackToTopClick);
       return () => {
-        backToTopLink.removeEventListener('click', handleBackToTopClick);
+        backToTopBtn.removeEventListener('click', handleBackToTopClick);
       };
     }
 
-    let cleanup = initFooterBackToTop();
+    let cleanup = initFooter();
     document.addEventListener('astro:after-swap', () => {
       if (cleanup) cleanup();
-      cleanup = initFooterBackToTop();
+      cleanup = initFooter();
     });
   })();
 </script>
