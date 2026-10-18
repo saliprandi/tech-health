@@ -61,6 +61,16 @@ test.describe('FAQ Search Filter Micro-UX & Accessibility', () => {
     await expect(clearBtn).toHaveClass(/active:scale-95/);
   });
 
+  test('faq search container coordinates focus styling and suppresses WebKit cancel button', async ({ page }) => {
+    const searchInput = page.locator('#faq-search-input');
+    const container = searchInput.locator('xpath=..');
+    const searchIcon = container.locator('svg').first();
+
+    await expect(container).toHaveClass(/group\/search/);
+    await expect(searchIcon).toHaveClass(/group-focus-within\/search:text-blue/);
+    await expect(searchInput).toHaveClass(/\[&::-webkit-search-cancel-button\]:hidden/);
+  });
+
   test('should clear search input on Escape key press and restore all FAQs', async ({ page }) => {
     const searchInput = page.locator('#faq-search-input');
     const visibleItems = page.locator('.faq-item:not(.hidden)');
