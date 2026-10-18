@@ -167,9 +167,9 @@ import { CONFIG } from '../data/config';
                   <span id="copy-ticket-text" class="pointer-events-none">Copiar ticket</span>
                 </button>
               </div>
-              <a id="ticket-confirmation-link" href="/estado" class="inline-flex items-center gap-1.5 font-body font-medium text-[13px] text-blue hover:text-navy focus-visible:text-navy underline-offset-4 hover:underline focus-visible:underline outline-none rounded-sm focus-visible:ring-2 focus-visible:ring-blue transition-all">
+              <a id="ticket-confirmation-link" href="/estado" class="group inline-flex items-center gap-1.5 font-body font-medium text-[13px] text-blue hover:text-navy focus-visible:text-navy underline-offset-4 hover:underline focus-visible:underline outline-none rounded-sm focus-visible:ring-2 focus-visible:ring-blue transition-all">
                 <span>Ver estado de mi reparación</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
               </a>
@@ -335,7 +335,7 @@ import { CONFIG } from '../data/config';
           navigator.clipboard.writeText(contentToCopy).then(() => {
             text.textContent = '¡Copiado!';
             iconUse.setAttribute('href', '#icon-check');
-            btn.classList.add('text-blue', 'scale-105');
+            btn.classList.add('text-blue', 'scale-110');
             btn.setAttribute('aria-label', announcementMsg);
             btn.setAttribute('title', announcementMsg);
             if (copyAnnouncement) copyAnnouncement.textContent = announcementMsg;
@@ -343,7 +343,7 @@ import { CONFIG } from '../data/config';
             setTimeout(() => {
               text.textContent = originalText;
               iconUse.setAttribute('href', originalIcon || '#icon-copy');
-              btn.classList.remove('text-blue', 'scale-105');
+              btn.classList.remove('text-blue', 'scale-110');
               if (originalAriaLabel) {
                 btn.setAttribute('aria-label', originalAriaLabel);
               } else {
@@ -489,13 +489,35 @@ import { CONFIG } from '../data/config';
       updateCounter();
       desc?.addEventListener('input', updateCounter);
 
+      const handleInputKeydown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          const target = e.target as HTMLInputElement | HTMLTextAreaElement | null;
+          if (target && (target.value || target.hasAttribute('aria-invalid'))) {
+            target.value = '';
+            target.removeAttribute('aria-invalid');
+            if (target.id === 'f-desc') updateCounter();
+            if (redirectAnnouncement) redirectAnnouncement.textContent = 'Campo limpiado';
+            setTimeout(() => {
+              if (redirectAnnouncement) redirectAnnouncement.textContent = '';
+            }, 2000);
+          }
+        }
+      };
+
       const handleDescKeydown = (e: KeyboardEvent) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
           e.preventDefault();
           form.requestSubmit();
+        } else {
+          handleInputKeydown(e);
         }
       };
-      desc?.addEventListener('keydown', handleDescKeydown);
+
+      const nombreInput = document.getElementById('f-nombre');
+      const telInput = document.getElementById('f-tel');
+      nombreInput?.addEventListener('keydown', handleInputKeydown as EventListener);
+      telInput?.addEventListener('keydown', handleInputKeydown as EventListener);
+      desc?.addEventListener('keydown', handleDescKeydown as EventListener);
 
       const cleanupPhone = setupCopy('copy-phone', 'copy-phone-text', 'copy-phone-icon-use', 'phone-text', 'Teléfono copiado');
       const cleanupAddress = setupCopy('copy-address', 'copy-address-text', 'copy-address-icon-use', 'address-text', 'Dirección copiada');
@@ -508,7 +530,9 @@ import { CONFIG } from '../data/config';
         if (statusInterval) clearInterval(statusInterval);
         observer.disconnect();
         desc?.removeEventListener('input', updateCounter);
-        desc?.removeEventListener('keydown', handleDescKeydown);
+        desc?.removeEventListener('keydown', handleDescKeydown as EventListener);
+        nombreInput?.removeEventListener('keydown', handleInputKeydown as EventListener);
+        telInput?.removeEventListener('keydown', handleInputKeydown as EventListener);
         cleanupPhone();
         cleanupAddress();
         cleanupTicket();
