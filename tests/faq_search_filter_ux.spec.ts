@@ -61,6 +61,15 @@ test.describe('FAQ Search Filter Micro-UX & Accessibility', () => {
     await expect(clearBtn).toHaveClass(/active:scale-95/);
   });
 
+  test('faq search container has group/search class and icon has focus-within color transition', async ({ page }) => {
+    const searchContainer = page.locator('#faq-search-input').locator('..');
+    const searchIcon = searchContainer.locator('svg').first();
+
+    await expect(searchContainer).toHaveClass(/group\/search/);
+    await expect(searchIcon).toHaveClass(/group-focus-within\/search:text-blue/);
+    await expect(searchIcon).toHaveClass(/transition-colors/);
+  });
+
   test('should clear search input on Escape key press and restore all FAQs', async ({ page }) => {
     const searchInput = page.locator('#faq-search-input');
     const visibleItems = page.locator('.faq-item:not(.hidden)');
