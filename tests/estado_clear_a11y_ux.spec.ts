@@ -25,4 +25,15 @@ test.describe('Estado Ticket Search Clear Button Accessibility & ARIA-Invalid UX
     const input = page.locator('#ticket-input');
     await expect(input).toHaveClass(/aria-invalid:border-red-400\/80/);
   });
+
+  test('sets aria-invalid="true" when HTML5 validation fails on submit and clears on input', async ({ page }) => {
+    const input = page.locator('#ticket-input');
+    const submitBtn = page.locator('#estado-submit');
+
+    await submitBtn.click();
+    await expect(input).toHaveAttribute('aria-invalid', 'true');
+
+    await input.fill('TH');
+    await expect(input).not.toHaveAttribute('aria-invalid');
+  });
 });

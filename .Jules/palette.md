@@ -113,3 +113,7 @@
 ## 2026-03-30 - Retroalimentación visual coordinada por foco en etiquetas sobre fondos oscuros
 **Learning:** En formularios sobre fondos oscuros (`bg-navy`), agrupar la etiqueta `<label>` y el control de entrada (`<input>`, `<textarea>`, `<select>`) dentro de un contenedor con Tailwind `group/field` (o `group/select`) y aplicar `group-focus-within/field:text-blue-light transition-colors` en la etiqueta coordina la respuesta visual cuando el campo recibe foco, destacando sutilmente la etiqueta asociada en sincronía con el anillo de enfoque.
 **Action:** Agrupar siempre controles e instrucciones en contenedores `group/field` y sincronizar transiciones de color en etiquetas con `group-focus-within/field:text-blue-light`.
+
+## 2026-03-30 - Sincronización de aria-invalid en la captura del evento HTML5 invalid en formularios de consulta
+**Learning:** En formularios de consulta con validación nativa de HTML5 (atributos `required`, `pattern`, etc.), la validación del navegador se ejecuta antes del evento `submit` e impide su disparo cuando falla. Escuchar explícitamente el evento `invalid` en el formulario (`form.addEventListener('invalid', handleInvalid, true)`) para asignar `aria-invalid="true"` garantiza que las tecnologías de asistencia y los estilos de alto contraste (`aria-invalid:*`) reflejen inmediatamente el error visual y semánticamente.
+**Action:** Capturar siempre el evento `invalid` en la fase de captura (`useCapture = true`) en todos los formularios para sincronizar `aria-invalid="true"` en fallos de validación nativa HTML5.
