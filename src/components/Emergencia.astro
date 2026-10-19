@@ -33,6 +33,7 @@ const { emergencia, contacto } = CONFIG;
             href={`https://wa.me/${contacto.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('SOPORTE DE EMERGENCIA: Necesito asistencia inmediata para un equipo crítico.')}`}
             target="_blank"
             rel="noopener noreferrer"
+            title="Solicitar atención prioritaria de emergencia por WhatsApp"
             class="btn-primary w-full lg:w-auto bg-white text-navy hover:bg-blue-pale hover:text-blue focus-visible:bg-blue-pale focus-visible:text-blue flex items-center justify-center gap-3 border-none group"
           >
             <svg class="w-6 h-6 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
@@ -63,6 +64,8 @@ const { emergencia, contacto } = CONFIG;
         const originalText = ctaText.textContent;
         ctaText.textContent = 'Redirigiendo...';
         if (ctaAnnouncement) ctaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
+        cta.setAttribute('aria-disabled', 'true');
+        cta.setAttribute('aria-busy', 'true');
         cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = cta.getAttribute('href');
@@ -73,7 +76,11 @@ const { emergencia, contacto } = CONFIG;
         setTimeout(() => {
           if (ctaText) ctaText.textContent = originalText;
           if (ctaAnnouncement) ctaAnnouncement.textContent = '';
-          if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          if (cta) {
+            cta.removeAttribute('aria-disabled');
+            cta.removeAttribute('aria-busy');
+            cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          }
         }, 3000);
       };
 
