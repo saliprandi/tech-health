@@ -25,11 +25,12 @@ const modalData = CONFIG.servicios.map(servicio => ({
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]" data-modal-data={JSON.stringify(modalData)} data-whatsapp={CONFIG.contacto.whatsapp}>
       {CONFIG.servicios.map((servicio, index) => (
         <div
-          class="service-card group relative bg-off-white border border-transparent rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover hover:-translate-y-1 focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:-translate-y-1 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue"
+          class="service-card group relative bg-off-white border border-transparent rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover hover:-translate-y-1 focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:-translate-y-1 active:scale-[0.98] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue"
           data-index={index}
           tabindex="0"
           role="button"
           aria-haspopup="dialog"
+          title={`Ver detalles de ${servicio.titulo}`}
           aria-label={`Ver detalles: ${servicio.titulo}`}
         >
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-500 ease-out"></div>
@@ -174,7 +175,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
               </svg>
               <span id="modal-cta-announcement" class="sr-only" aria-live="polite"></span>
             </a>
-            <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">Cerrar</button>
+            <button type="button" id="modal-close-secondary" title="Cerrar ventana de detalles" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-all active:scale-95 focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md cursor-pointer">Cerrar</button>
           </div>
         `;
 
