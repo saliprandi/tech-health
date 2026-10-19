@@ -193,4 +193,85 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora_b2b: {
+    titulo: "Estimador de Mantenimiento B2B",
+    subtitulo: "Cotizador Preventivo Institucional",
+    descripcion:
+      "Calcule una estimación preliminar del plan de mantenimiento preventivo para el parque de equipos de su institución médica.",
+    categorias: [
+      {
+        id: "monitores",
+        nombre: "Monitores y Electrocardiógrafos",
+        subtexto: "Signos vitales, ECG, capnografía",
+        default: 4,
+        min: 0,
+        max: 50,
+      },
+      {
+        id: "respiradores",
+        nombre: "Respiradores y Anestesia",
+        subtexto: "Ventiladores de terapia e incubadoras",
+        default: 2,
+        min: 0,
+        max: 30,
+      },
+      {
+        id: "ecografos",
+        nombre: "Ecógrafos y Diagnóstico por Imagen",
+        subtexto: "Ecografía, Rx portátiles, arcos en C",
+        default: 1,
+        min: 0,
+        max: 20,
+      },
+      {
+        id: "bombas",
+        nombre: "Bombas y Electromédicos Generales",
+        subtexto: "Infusión, jeringas, electrocirugía, autoclaves",
+        default: 6,
+        min: 0,
+        max: 100,
+      },
+    ],
+    planes: {
+      basico: {
+        nombre: "Plan Esencial B2B",
+        badge: "Cobertura Inicial",
+        rango_equipos: "Hasta 5 equipos",
+        frecuencia: "Visitas semestrales de rutina",
+        beneficios: [
+          "Inspección preventiva y limpieza técnica",
+          "Verificación de calibración de parámetros",
+          "Informe de auditoría básica para habilitación",
+          "Descuento del 10% en reparaciones de placa",
+        ],
+      },
+      profesional: {
+        nombre: "Plan Profesional Sanatorial",
+        badge: "Recomendado para Clínicas",
+        rango_equipos: "De 6 a 15 equipos",
+        frecuencia: "Visitas trimestrales programadas",
+        beneficios: [
+          "Inspección preventiva profunda y pruebas funcionales",
+          "Certificado de calibración y seguridad eléctrica",
+          "Informes técnicos digitalizados para auditorías ANMAT/Salud",
+          "Atención prioritaria para urgencias en menos de 24h",
+          "Descuento del 15% en componentes y reparación de placas",
+        ],
+      },
+      integral: {
+        nombre: "Plan Integral Alta Complejidad",
+        badge: "Cobertura Total 24/7",
+        rango_equipos: "Más de 15 equipos",
+        frecuencia: "Visitas mensuales + Guardia preferencial",
+        beneficios: [
+          "Mantenimiento preventivo mensual en laboratorio e in-situ",
+          "Soporte de guardia técnica prioritaria 24h / 365 días",
+          "Trazabilidad completa con informes ejecutivos para dirección",
+          "Equipos de respaldo temporales en reparaciones mayores",
+          "Descuento del 25% en repuestos y mano de obra",
+        ],
+      },
+    },
+  },
 };

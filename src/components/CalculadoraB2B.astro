@@ -1,0 +1,349 @@
+---
+import { CONFIG } from '../data/config';
+
+const { calculadora_b2b, contacto } = CONFIG;
+---
+
+<section id="calculadora" class="section-padding bg-off-white relative overflow-hidden scroll-mt-20">
+  <div class="container-custom relative z-10">
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">
+        {calculadora_b2b.subtitulo}
+      </div>
+      <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] leading-[1.2] text-navy mb-4">
+        {calculadora_b2b.titulo}
+      </h2>
+      <p class="font-body text-[16px] text-text-soft">
+        {calculadora_b2b.descripcion}
+      </p>
+    </div>
+
+    <!-- Calculadora Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-5xl mx-auto">
+      <!-- Selector de Equipos (Izquierda) -->
+      <div class="lg:col-span-7 bg-white rounded-card p-6 md:p-8 border border-border shadow-card">
+        <h3 class="font-heading font-bold text-[18px] text-navy mb-2 flex items-center gap-2">
+          <svg class="w-5 h-5 text-blue" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+          Seleccione su parque de equipos
+        </h3>
+        <p class="font-body text-[13px] text-text-soft mb-6">
+          Ajuste la cantidad aproximada de aparatos médicos en funcionamiento en su centro de salud:
+        </p>
+
+        <div class="flex flex-col gap-5">
+          {calculadora_b2b.categorias.map((cat) => (
+            <div class="group/field flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl bg-off-white/80 border border-border/60 hover:border-blue/30 focus-within:border-blue/50 transition-colors">
+              <div class="flex-grow">
+                <label for={`calc-input-${cat.id}`} class="block font-heading font-bold text-[14px] text-navy group-focus-within/field:text-blue transition-colors cursor-pointer">
+                  {cat.nombre}
+                </label>
+                <span class="font-body text-[12px] text-text-soft block mt-0.5">
+                  {cat.subtexto}
+                </span>
+              </div>
+
+              <!-- Controles +/- -->
+              <div class="flex items-center gap-2 self-end sm:self-center">
+                <button
+                  type="button"
+                  data-cat-id={cat.id}
+                  data-action="minus"
+                  title={`Disminuir cantidad de ${cat.nombre}`}
+                  aria-label={`Disminuir cantidad de ${cat.nombre}`}
+                  class="btn-calc-step w-9 h-9 rounded-lg bg-white border border-border text-navy hover:text-blue hover:border-blue/40 active:scale-95 focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-1 outline-none flex items-center justify-center font-bold text-[16px] shadow-xs transition-all duration-200"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
+                  </svg>
+                </button>
+
+                <input
+                  type="number"
+                  id={`calc-input-${cat.id}`}
+                  data-cat-id={cat.id}
+                  min={cat.min}
+                  max={cat.max}
+                  value={cat.default}
+                  class="calc-qty-input w-14 text-center font-heading font-bold text-[15px] text-navy bg-white border border-border rounded-lg py-1.5 focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-1 outline-none transition-colors"
+                />
+
+                <button
+                  type="button"
+                  data-cat-id={cat.id}
+                  data-action="plus"
+                  title={`Aumentar cantidad de ${cat.nombre}`}
+                  aria-label={`Aumentar cantidad de ${cat.nombre}`}
+                  class="btn-calc-step w-9 h-9 rounded-lg bg-white border border-border text-navy hover:text-blue hover:border-blue/40 active:scale-95 focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-1 outline-none flex items-center justify-center font-bold text-[16px] shadow-xs transition-all duration-200"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Resumen y Plan Recomendado (Derecha) -->
+      <div class="lg:col-span-5 bg-navy text-white rounded-card p-6 md:p-8 shadow-xl relative overflow-hidden flex flex-col justify-between min-h-[440px]">
+        <!-- Fondo decorativo sutil -->
+        <div class="absolute -right-12 -bottom-12 w-48 h-48 rounded-full bg-blue/10 blur-2xl pointer-events-none" aria-hidden="true"></div>
+
+        <div class="relative z-10">
+          <!-- Total Counter -->
+          <div class="flex items-center justify-between pb-5 mb-5 border-b border-white/10">
+            <span class="font-heading font-semibold text-[13px] uppercase tracking-wider text-white/70">
+              Total de equipos
+            </span>
+            <div class="flex items-baseline gap-1.5">
+              <span id="calc-total-num" class="font-heading font-extrabold text-[28px] text-blue-light">13</span>
+              <span class="font-body text-[12px] text-white/60">unidades</span>
+            </div>
+          </div>
+
+          <!-- Plan Recomendado Header -->
+          <div class="mb-5">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-heading font-bold bg-blue/30 text-blue-light border border-blue/40 mb-3" id="calc-plan-badge">
+              {calculadora_b2b.planes.profesional.badge}
+            </div>
+            <h4 id="calc-plan-nombre" class="font-heading font-extrabold text-[22px] text-white">
+              {calculadora_b2b.planes.profesional.nombre}
+            </h4>
+            <p id="calc-plan-frecuencia" class="font-body text-[13px] text-white/70 mt-1 flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-blue-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>{calculadora_b2b.planes.profesional.frecuencia}</span>
+            </p>
+          </div>
+
+          <!-- Beneficios del Plan -->
+          <div class="mb-6">
+            <div class="font-heading font-semibold text-[12px] uppercase tracking-wider text-white/60 mb-3">
+              Incluye en su propuesta:
+            </div>
+            <ul id="calc-plan-beneficios" class="flex flex-col gap-2.5 list-none p-0 m-0" role="list" aria-label="Beneficios del plan recomendado">
+              {calculadora_b2b.planes.profesional.beneficios.map((b) => (
+                <li class="flex items-start gap-2.5 font-body text-[13px] text-white/90 leading-snug">
+                  <svg class="w-4 h-4 text-blue-light flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <!-- CTA WhatsApp Button -->
+        <div class="relative z-10 pt-4 border-t border-white/10">
+          <a
+            id="calc-whatsapp-cta"
+            href={`https://wa.me/${contacto.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('Hola TechHealth, utilicé la calculadora web. Tengo aproximadamente 13 equipos médicos y quisiera solicitar una propuesta formal para el Plan Profesional Sanatorial.')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Solicitar cotización formal por WhatsApp"
+            class="group w-full bg-blue hover:bg-blue-light text-white hover:text-navy font-heading font-bold text-[14px] py-3.5 px-6 rounded-xl transition-all duration-300 shadow-md flex items-center justify-center gap-2.5 outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy active:scale-95"
+          >
+            <svg id="calc-cta-spinner" class="hidden w-4 h-4 animate-spin text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span id="calc-cta-text">Solicitar Cotización Formal</span>
+            <svg id="calc-cta-icon" class="w-4 h-4 group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <use href="#icon-external" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen Reader Live Announcement -->
+    <div id="calc-announcement" class="sr-only" aria-live="polite"></div>
+  </div>
+</section>
+
+<script>
+  import { CONFIG } from '../data/config';
+
+  (function () {
+    function initCalculadora() {
+      const inputs = document.querySelectorAll('.calc-qty-input') as NodeListOf<HTMLInputElement>;
+      const stepButtons = document.querySelectorAll('.btn-calc-step') as NodeListOf<HTMLButtonElement>;
+      const totalNumEl = document.getElementById('calc-total-num');
+      const badgeEl = document.getElementById('calc-plan-badge');
+      const nombreEl = document.getElementById('calc-plan-nombre');
+      const frecuenciaEl = document.getElementById('calc-plan-frecuencia');
+      const beneficiosEl = document.getElementById('calc-plan-beneficios');
+      const ctaBtn = document.getElementById('calc-whatsapp-cta') as HTMLAnchorElement | null;
+      const ctaText = document.getElementById('calc-cta-text');
+      const ctaSpinner = document.getElementById('calc-cta-spinner');
+      const ctaIcon = document.getElementById('calc-cta-icon');
+      const announcement = document.getElementById('calc-announcement');
+
+      if (!inputs.length || !totalNumEl || !nombreEl || !ctaBtn) return;
+
+      const planesConfig = CONFIG.calculadora_b2b.planes;
+      const whatsappNumber = CONFIG.contacto.whatsapp.replace(/\D/g, '');
+
+      let isRedirecting = false;
+
+      const calculateTotalAndPlan = () => {
+        let total = 0;
+        const details: string[] = [];
+
+        inputs.forEach((input) => {
+          const val = parseInt(input.value, 10) || 0;
+          total += val;
+          if (val > 0) {
+            const catId = input.getAttribute('data-cat-id');
+            const catObj = CONFIG.calculadora_b2b.categorias.find((c) => c.id === catId);
+            if (catObj) {
+              details.push(`${val} ${catObj.nombre.toLowerCase()}`);
+            }
+          }
+        });
+
+        // Seleccionar Plan
+        let planKey: 'basico' | 'profesional' | 'integral' = 'profesional';
+        if (total <= 5) {
+          planKey = 'basico';
+        } else if (total <= 15) {
+          planKey = 'profesional';
+        } else {
+          planKey = 'integral';
+        }
+
+        const plan = planesConfig[planKey];
+
+        // Actualizar UI
+        totalNumEl.textContent = total.toString();
+
+        if (badgeEl) {
+          badgeEl.textContent = plan.badge;
+        }
+
+        nombreEl.textContent = plan.nombre;
+
+        if (frecuenciaEl) {
+          const span = frecuenciaEl.querySelector('span');
+          if (span) span.textContent = plan.frecuencia;
+        }
+
+        if (beneficiosEl) {
+          beneficiosEl.innerHTML = plan.beneficios
+            .map(
+              (b) => `
+              <li class="flex items-start gap-2.5 font-body text-[13px] text-white/90 leading-snug">
+                <svg class="w-4 h-4 text-blue-light flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <span>${b}</span>
+              </li>
+            `
+            )
+            .join('');
+        }
+
+        // Construir mensaje WhatsApp
+        const summaryText = details.length ? details.join(', ') : 'sin equipos especificados';
+        const rawMessage = `Hola TechHealth, utilicé el estimador B2B de la web. Cuento con aproximadamente ${total} equipos (${summaryText}). Quisiera solicitar una propuesta formal para el ${plan.nombre}.`;
+        const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(rawMessage)}`;
+
+        ctaBtn.setAttribute('href', waUrl);
+
+        // Anuncio a lector de pantalla
+        if (announcement) {
+          announcement.textContent = `Total actualizado: ${total} equipos. Plan recomendado: ${plan.nombre}.`;
+        }
+      };
+
+      // Event Listeners para Botones +/-
+      stepButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const catId = btn.getAttribute('data-cat-id');
+          const action = btn.getAttribute('data-action');
+          const targetInput = document.getElementById(`calc-input-${catId}`) as HTMLInputElement | null;
+
+          if (!targetInput) return;
+
+          let val = parseInt(targetInput.value, 10) || 0;
+          const min = parseInt(targetInput.min, 10) || 0;
+          const max = parseInt(targetInput.max, 10) || 100;
+
+          if (action === 'plus' && val < max) {
+            val += 1;
+          } else if (action === 'minus' && val > min) {
+            val -= 1;
+          }
+
+          targetInput.value = val.toString();
+          calculateTotalAndPlan();
+        });
+      });
+
+      // Event Listeners para Inputs
+      inputs.forEach((input) => {
+        input.addEventListener('input', () => {
+          let val = parseInt(input.value, 10);
+          const min = parseInt(input.min, 10) || 0;
+          const max = parseInt(input.max, 10) || 100;
+
+          if (isNaN(val) || val < min) val = min;
+          if (val > max) val = max;
+
+          input.value = val.toString();
+          calculateTotalAndPlan();
+        });
+      });
+
+      // Event Listener CTA WhatsApp
+      ctaBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (isRedirecting) return;
+
+        isRedirecting = true;
+        const originalText = ctaText ? ctaText.textContent : 'Solicitar Cotización Formal';
+
+        if (ctaText) ctaText.textContent = 'Redirigiendo...';
+        ctaSpinner?.classList.remove('hidden');
+        ctaIcon?.classList.add('hidden');
+        ctaBtn.setAttribute('aria-busy', 'true');
+        ctaBtn.setAttribute('aria-disabled', 'true');
+        ctaBtn.classList.add('opacity-80', 'cursor-not-allowed');
+
+        if (announcement) announcement.textContent = 'Redirigiendo a WhatsApp...';
+
+        const href = ctaBtn.getAttribute('href');
+        if (href) {
+          const openedWin = window.open(href, '_blank');
+          if (openedWin) {
+            openedWin.opener = null;
+          } else {
+            window.location.href = href;
+          }
+        }
+
+        setTimeout(() => {
+          isRedirecting = false;
+          if (ctaText) ctaText.textContent = originalText;
+          ctaSpinner?.classList.add('hidden');
+          ctaIcon?.classList.remove('hidden');
+          ctaBtn.removeAttribute('aria-busy');
+          ctaBtn.removeAttribute('aria-disabled');
+          ctaBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+          if (announcement) announcement.textContent = '';
+        }, 3000);
+      });
+
+      calculateTotalAndPlan();
+    }
+
+    initCalculadora();
+    document.addEventListener('astro:after-swap', initCalculadora);
+  })();
+</script>
