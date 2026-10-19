@@ -229,11 +229,7 @@ import { CONFIG } from '../data/config';
         const href = rawHref.trim();
         // Security: Validate against dangerous pseudoprotocols (javascript:, data:, vbscript:) to prevent DOM XSS
         if (href && !/^(javascript|data|vbscript):/i.test(href)) {
-          if (href.startsWith('http://') || href.startsWith('https://')) {
-            window.open(href, '_blank', 'noopener,noreferrer');
-          } else {
-            window.location.href = href;
-          }
+          window.open(href, '_blank', 'noopener,noreferrer');
         }
 
         setTimeout(() => {
