@@ -70,12 +70,7 @@ const { emergencia, contacto } = CONFIG;
 
         const href = cta.getAttribute('href');
         if (href && href.startsWith('https://wa.me/')) {
-          const openedWin = window.open(href, '_blank');
-          if (openedWin) {
-            openedWin.opener = null;
-          } else {
-            window.location.href = href;
-          }
+          window.open(href, '_blank', 'noopener,noreferrer');
         }
 
         setTimeout(() => {
