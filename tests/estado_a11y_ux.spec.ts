@@ -25,9 +25,10 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await expect(helperText).toBeVisible();
     await expect(helperText).toHaveText(/Formato: letras y números/);
 
-    // 2. Check submit button focus styling and directional arrow icon
+    // 2. Check submit button title tooltip, focus styling, and directional arrow icon
     const submitBtn = page.locator('#estado-submit');
     await expect(submitBtn).toBeVisible();
+    await expect(submitBtn).toHaveAttribute('title', 'Consultar estado de reparación');
     await expect(submitBtn).toHaveClass(/focus-visible:ring-blue-light/);
     const arrowIcon = page.locator('#estado-arrow');
     await expect(arrowIcon).toBeVisible();
@@ -75,6 +76,10 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await expect(input).toHaveValue('');
     await expect(clearBtn).toBeHidden();
     await expect(input).toBeFocused();
+
+    // 7. Check HTML5 constraint validation invalid event handling
+    await submitBtn.click();
+    await expect(input).toHaveAttribute('aria-invalid', 'true');
   });
 
   test('should display result and allow copying ticket number', async ({ page, context }) => {
