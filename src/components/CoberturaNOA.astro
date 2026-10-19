@@ -4,7 +4,7 @@ import { CONFIG } from '../data/config';
 const { cobertura_noa, contacto } = CONFIG;
 ---
 
-<section id="cobertura" class="scroll-mt-20 py-20 bg-off-white relative" aria-labelledby="cobertura-heading">
+<section id="cobertura-noa" class="scroll-mt-20 py-20 bg-off-white relative" aria-labelledby="cobertura-heading">
   <div class="container-custom px-[5%]">
     <!-- Section Header -->
     <div class="text-center max-w-3xl mx-auto mb-14">
@@ -153,11 +153,11 @@ const { cobertura_noa, contacto } = CONFIG;
 <script>
   (function() {
     function initCoberturaTabs() {
-      const tablist = document.querySelector('#cobertura [role="tablist"]');
+      const tablist = document.querySelector('#cobertura-noa [role="tablist"]');
       if (!tablist) return;
 
       const tabs = Array.from(tablist.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
-      const panels = Array.from(document.querySelectorAll<HTMLElement>('#cobertura [role="tabpanel"]'));
+      const panels = Array.from(document.querySelectorAll<HTMLElement>('#cobertura-noa [role="tabpanel"]'));
 
       if (!tabs.length || !panels.length) return;
 
