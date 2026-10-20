@@ -58,6 +58,24 @@ test.describe('Navigation UX', () => {
     await expect(logoLink).toHaveClass(/focus-visible:ring-navy/);
   });
 
+  test('mobile nav links should have focus-visible ring styles and title tooltips', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+
+    const menuToggle = page.locator('#menu-toggle');
+    await menuToggle.click();
+
+    const mobileLinks = page.locator('#mobile-menu .mobile-link');
+    const count = await mobileLinks.count();
+    expect(count).toBeGreaterThan(0);
+
+    for (let i = 0; i < count; i++) {
+      const link = mobileLinks.nth(i);
+      await expect(link).toHaveClass(/focus-visible:ring-2/);
+      await expect(link).toHaveClass(/focus-visible:ring-navy/);
+      await expect(link).toHaveAttribute('title', /.+/);
+    }
+  });
+
   test('reading progress bar should update on scroll', async ({ page }) => {
     const progressBar = page.locator('#reading-progress').first();
     await expect(progressBar).toBeAttached();
