@@ -237,7 +237,7 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
 
-test('CTA click handlers validate href and reject dangerous pseudoprotocols (javascript:, data:, vbscript:)', async ({ page }) => {
+test('CTA click handlers validate href using allowlist and reject untrusted or dangerous schemes', async ({ page }) => {
   await page.goto('http://localhost:4321/', { waitUntil: 'networkidle' });
 
   // Inject dangerous javascript: href on hero CTA

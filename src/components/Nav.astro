@@ -227,8 +227,8 @@ import { CONFIG } from '../data/config';
 
         const rawHref = cta.getAttribute('href') || '';
         const href = rawHref.trim();
-        // Security: Validate against dangerous pseudoprotocols (javascript:, data:, vbscript:) to prevent DOM XSS
-        if (href && !/^(javascript|data|vbscript):/i.test(href)) {
+        // Security: Allowlist validation ensures CTA only navigates to verified secure WhatsApp URLs
+        if (href && href.startsWith('https://wa.me/')) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 
