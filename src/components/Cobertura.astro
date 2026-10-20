@@ -1,0 +1,112 @@
+---
+import { CONFIG } from '../data/config';
+
+const { cobertura_noa } = CONFIG;
+---
+
+<section id="cobertura" class="bg-white section-padding scroll-mt-20 content-visibility-auto">
+  <div class="container-custom">
+
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Cobertura & Trazabilidad</div>
+      <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,40px)] text-navy leading-tight mb-4">
+        {cobertura_noa.titulo}
+      </h2>
+      <p class="font-body text-[16px] text-text-soft">
+        {cobertura_noa.subtitulo}
+      </p>
+    </div>
+
+    <!-- Zones Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+      {cobertura_noa.zonas.map((item) => (
+        <div class="group relative bg-off-white p-6 rounded-card border border-border hover:border-blue/30 focus-within:border-blue/30 hover:shadow-card-hover focus-within:shadow-card-hover transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <!-- Badge & Response Time -->
+            <div class="flex items-center justify-between mb-4">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-heading font-bold uppercase tracking-wider bg-blue-pale text-blue">
+                <span class="w-2 h-2 rounded-full bg-blue" aria-hidden="true"></span>
+                {item.badge}
+              </span>
+              <span class="font-heading font-extrabold text-[15px] text-navy bg-white px-2.5 py-1 rounded-[6px] border border-border shadow-xs">
+                {item.tiempoRespuesta}
+              </span>
+            </div>
+
+            <!-- Title & Description -->
+            <h3 class="font-heading font-bold text-[18px] text-navy mb-2 group-hover:text-blue group-focus-within:text-blue transition-colors">
+              {item.zona}
+            </h3>
+            <p class="font-body text-[14px] text-text-soft leading-relaxed">
+              {item.descripcion}
+            </p>
+          </div>
+
+          <!-- Bottom Visual Accent -->
+          <div class="mt-6 pt-4 border-t border-border flex items-center justify-between text-[12px] font-body font-medium text-navy/70">
+            <span>Soporte Técnico In-Situ</span>
+            <svg class="w-4 h-4 text-blue opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 group-hover:translate-x-1 group-focus-within:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Traceability Pillars Banner -->
+    <div class="bg-navy rounded-card p-8 md:p-10 text-white relative overflow-hidden shadow-hero-card">
+      <div class="absolute -bottom-10 -left-10 w-48 h-48 bg-blue/20 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+        {cobertura_noa.pilaresTrazabilidad.map((pilar) => (
+          <div class="flex flex-col gap-3 group">
+            <div class="w-12 h-12 rounded-[10px] bg-white/10 text-blue-light flex items-center justify-center transition-transform group-hover:scale-110 group-focus-within:scale-110">
+              {pilar.icono === 'file-check' && (
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              )}
+              {pilar.icono === 'shield-check' && (
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              )}
+              {pilar.icono === 'qr-code' && (
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+              )}
+            </div>
+            <h3 class="font-heading font-bold text-[18px] text-white">
+              {pilar.titulo}
+            </h3>
+            <p class="font-body text-[14px] text-white/80 leading-relaxed">
+              {pilar.descripcion}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Action Footer -->
+      <div class="mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center justify-between gap-4">
+        <span class="font-body text-[14px] text-white/80">
+          ¿Su institución requiere una auditoría o informe técnico de urgencia?
+        </span>
+        <a
+          href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('Hola TechHealth! Quisiera consultar por auditoría técnica e informes de trazabilidad para mi institución.')}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Consultar por auditorías técnicas por WhatsApp"
+          class="inline-flex items-center gap-2 bg-white text-navy font-heading font-bold text-[13px] py-2.5 px-5 rounded-[8px] hover:bg-white/90 active:scale-95 transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue-light"
+        >
+          <span>Consultar Auditoría B2B</span>
+          <svg class="w-4 h-4 text-navy/70" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
