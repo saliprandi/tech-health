@@ -77,6 +77,10 @@ test.describe('Contacto UX Enhancements', () => {
     await expect(labCard).toHaveClass(/focus-within:bg-off-white/);
     await expect(labCard).toHaveClass(/focus-within:border-border/);
 
+    const labIcon = labCard.locator('svg').first();
+    await expect(labIcon).toHaveClass(/group-hover:animate-heartbeat/);
+    await expect(labIcon).toHaveClass(/group-focus-within:animate-heartbeat/);
+
     await expect(horarioCard).toHaveClass(/focus-within:bg-off-white/);
     await expect(horarioCard).toHaveClass(/focus-within:border-border/);
   });
