@@ -103,6 +103,27 @@ import { CONFIG } from '../data/config';
       const emptyState = document.getElementById('faq-empty-state');
       const resetBtn = document.getElementById('faq-reset-btn');
 
+      // Performance Optimization: Pre-index element references and lowercased searchable text during initialization
+      // to eliminate DOM sub-queries (querySelector) and repeated string conversions on every search keystroke.
+      interface FAQCacheItem {
+        element: HTMLElement;
+        text: string;
+        trigger: HTMLButtonElement | null;
+        container: HTMLElement | null;
+        icon: Element | null;
+      }
+
+      const cachedItems: FAQCacheItem[] = Array.from(items).map(item => {
+        const el = item as HTMLElement;
+        return {
+          element: el,
+          text: el.textContent?.toLowerCase() || '',
+          trigger: el.querySelector('.faq-trigger') as HTMLButtonElement | null,
+          container: el.querySelector('.faq-answer-container') as HTMLElement | null,
+          icon: el.querySelector('.faq-icon'),
+        };
+      });
+
       const transitionTimers = new Map<HTMLElement, ReturnType<typeof setTimeout>>();
 
       const closeContainer = (container: HTMLElement) => {
@@ -205,17 +226,13 @@ import { CONFIG } from '../data/config';
           else clearBtn.classList.add('hidden');
         }
 
-        items.forEach(item => {
-          const text = item.textContent?.toLowerCase() || '';
+        cachedItems.forEach(({ element, text, trigger, container, icon }) => {
           if (!query || text.includes(query)) {
-            item.classList.remove('hidden');
+            element.classList.remove('hidden');
             visibleCount++;
           } else {
-            item.classList.add('hidden');
+            element.classList.add('hidden');
             // Close if hidden
-            const trigger = item.querySelector('.faq-trigger') as HTMLButtonElement | null;
-            const container = item.querySelector('.faq-answer-container') as HTMLElement | null;
-            const icon = item.querySelector('.faq-icon');
             if (trigger?.getAttribute('aria-expanded') === 'true') {
               trigger.setAttribute('aria-expanded', 'false');
               icon?.classList.remove('rotate-180');
@@ -255,9 +272,9 @@ import { CONFIG } from '../data/config';
 
         if (e.key === 'Enter' && searchInput && searchInput.value.trim()) {
           e.preventDefault();
-          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
+          const visibleItems = cachedItems.filter(item => !item.element.classList.contains('hidden'));
           if (visibleItems.length === 1) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
+            const trigger = visibleItems[0].trigger;
             if (trigger) {
               if (trigger.getAttribute('aria-expanded') !== 'true') {
                 trigger.click();
@@ -265,7 +282,7 @@ import { CONFIG } from '../data/config';
               trigger.focus();
             }
           } else if (visibleItems.length > 1) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
+            const trigger = visibleItems[0].trigger;
             if (trigger) {
               trigger.focus();
             }
