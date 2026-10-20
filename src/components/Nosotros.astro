@@ -36,16 +36,27 @@ import { CONFIG } from '../data/config';
               </div>
 
               <!-- Info -->
-              <div>
+              <div class="flex-grow">
                 <h4 class="font-heading font-bold text-navy text-[18px] leading-tight">
                   {member.nombre}
                 </h4>
                 <div class="font-body font-medium text-[12px] text-blue uppercase tracking-wide mb-2 mt-1">
                   {member.cargo}
                 </div>
-                <p class="font-body font-light text-[13px] text-text-soft leading-relaxed">
+                <p class="font-body font-light text-[13px] text-text-soft leading-relaxed mb-3">
                   {member.descripcion}
                 </p>
+                <a
+                  href="#contacto"
+                  title={`Consultar servicio técnico con ${member.nombre} (${member.cargo})`}
+                  aria-label={`Consultar servicio técnico con ${member.nombre}, ${member.cargo}`}
+                  class="group/btn inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-blue hover:text-navy focus-visible:text-navy active:scale-95 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm"
+                >
+                  <span>Consultar especialidad</span>
+                  <svg class="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 group-focus-visible/btn:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
               </div>
 
             </li>
