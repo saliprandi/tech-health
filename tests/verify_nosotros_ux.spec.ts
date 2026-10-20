@@ -26,6 +26,25 @@ test.describe('Nosotros Section UX Enhancements', () => {
     await expect(avatar).toHaveClass(/group-hover:scale-110/);
     await expect(avatar).toHaveClass(/group-focus-within:scale-110/);
 
+    // Verify accessible action links inside team cards
+    const specialtyLinks = teamList.locator('a[href="#contacto"]');
+    const linksCount = await specialtyLinks.count();
+    expect(linksCount).toBe(count);
+
+    for (let i = 0; i < linksCount; i++) {
+      const link = specialtyLinks.nth(i);
+      await expect(link).toBeVisible();
+      await expect(link).toHaveAttribute('aria-label', /Consultar especialidad con/);
+      await expect(link).toHaveAttribute('title', /Consultar especialidad con/);
+      await expect(link).toHaveClass(/focus-visible:ring-2/);
+      await expect(link).toHaveClass(/focus-visible:ring-blue/);
+      await expect(link).toHaveClass(/active:scale-95/);
+
+      const arrowSvg = link.locator('svg');
+      await expect(arrowSvg).toBeAttached();
+      await expect(arrowSvg).toHaveAttribute('aria-hidden', 'true');
+    }
+
     // Verify value cards list and elevation micro-animations
     const valuesList = nosotrosSection.locator('ul[aria-label="Valores fundamentales de la empresa"]');
     await expect(valuesList).toBeVisible();
