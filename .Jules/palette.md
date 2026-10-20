@@ -117,3 +117,7 @@
 ## 2026-03-30 - Botón de reinicio de formulario y gestión accesible de foco tras confirmación de ticket
 **Learning:** Tras la recepción exitosa de una solicitud de contacto asíncrona, proporcionar un botón de reinicio ("Nueva consulta") dentro del panel de confirmación de ticket permite al usuario iniciar una nueva solicitud sin necesidad de borrar manualmente los campos o recargar la página. Combinar la limpieza de los controles (`form.reset()`) y contadores con la transferencia directa de foco al primer campo (`#f-nombre`) y un anuncio en regiones `aria-live="polite"` garantiza una transición fluida y totalmente accesible tanto para navegación por teclado como para lectores de pantalla.
 **Action:** Incluir siempre acciones de reinicio con foco administrado y anuncios `aria-live` en banners de confirmación de formularios asíncronos.
+
+## 2026-03-30 - Tooltips nativos title y micro-animación táctil en enlaces de navegación de cabecera simplificada
+**Learning:** En enlaces de navegación simplificados de la cabecera en páginas secundarias (como `src/pages/estado.astro`), omitir el atributo nativo `title` priva a usuarios de ratón de un tooltip explicativo sutil. Agregar `title` nativos y equipar el enlace de retorno con utilidades de escalado activo (`active:scale-95 transition-all duration-200`) proporciona affordance de cernido y retroalimentación táctil de pulsación completa.
+**Action:** Acompañar los enlaces de cabecera simplificada con atributos nativos `title` y utilidades de escalado activo (`active:scale-95`) en páginas de flujo secundario.
