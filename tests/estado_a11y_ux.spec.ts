@@ -4,13 +4,16 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
   test('should have accessible focus-visible rings, ARIA live regions, and button attributes', async ({ page }) => {
     await page.goto('http://localhost:4321/estado');
 
-    // 0. Check navigation "Volver al inicio" back-link icon and group hover styling
+    // 0. Check navigation "Volver al inicio" back-link icon, native title tooltip, active press scale, and group hover/focus styling
     const backLink = page.locator('nav a[aria-label="Volver a la página principal"]');
     await expect(backLink).toBeVisible();
     await expect(backLink).toHaveClass(/group/);
+    await expect(backLink).toHaveAttribute('title', 'Volver a la página principal');
+    await expect(backLink).toHaveClass(/active:scale-95/);
     const backIcon = backLink.locator('svg');
     await expect(backIcon).toBeVisible();
     await expect(backIcon).toHaveClass(/group-hover:-translate-x-0.5/);
+    await expect(backIcon).toHaveClass(/group-focus-visible:text-navy/);
 
     // 1. Check ticket input attributes, helper text linkage, focus styling, and label focus-within transition
     const input = page.locator('#ticket-input');
