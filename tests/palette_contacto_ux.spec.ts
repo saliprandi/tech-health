@@ -103,7 +103,23 @@ test.describe('Contacto UX Enhancements', () => {
     await expect(nameLabel).toHaveClass(/group-focus-within\/field:text-blue-light/);
 
     await nameInput.focus();
-    const color = await nameLabel.evaluate((el) => getComputedStyle(el).color);
-    expect(color).toBe('rgb(74, 144, 217)');
+    await expect.poll(async () => {
+      return page.evaluate((el) => getComputedStyle(el).color, await nameLabel.elementHandle());
+    }).toBe('rgb(74, 144, 217)');
+  });
+
+  test('overlay card links should have native title tooltips matching aria-labels', async ({ page }) => {
+    const waOverlayLink = page.locator('.group.relative:has(#phone-text) a.absolute');
+    const labOverlayLink = page.locator('.group.relative:has(#address-text) a.absolute');
+
+    const waAria = await waOverlayLink.getAttribute('aria-label');
+    const waTitle = await waOverlayLink.getAttribute('title');
+    expect(waTitle).toBeTruthy();
+    expect(waTitle).toBe(waAria);
+
+    const labAria = await labOverlayLink.getAttribute('aria-label');
+    const labTitle = await labOverlayLink.getAttribute('title');
+    expect(labTitle).toBeTruthy();
+    expect(labTitle).toBe(labAria);
   });
 });
