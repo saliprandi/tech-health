@@ -64,6 +64,8 @@ const { emergencia, contacto } = CONFIG;
         const originalText = ctaText.textContent;
         ctaText.textContent = 'Redirigiendo...';
         if (ctaAnnouncement) ctaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
+        cta.setAttribute('aria-busy', 'true');
+        cta.setAttribute('aria-disabled', 'true');
         cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = cta.getAttribute('href');
@@ -74,7 +76,11 @@ const { emergencia, contacto } = CONFIG;
         setTimeout(() => {
           if (ctaText) ctaText.textContent = originalText;
           if (ctaAnnouncement) ctaAnnouncement.textContent = '';
-          if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          if (cta) {
+            cta.removeAttribute('aria-busy');
+            cta.removeAttribute('aria-disabled');
+            cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          }
         }, 3000);
       };
 
