@@ -1,0 +1,265 @@
+---
+import { CONFIG } from '../data/config';
+import Icons from './Icons.astro';
+
+const { calculadora, contacto } = CONFIG;
+---
+
+<section id="calculadora" class="scroll-mt-20 bg-navy relative overflow-hidden py-16 md:py-24 border-t border-white/10">
+  <!-- Grid de fondo sutil -->
+  <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" aria-hidden="true"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Encabezado de Sección -->
+    <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue/20 border border-blue/30 text-blue-light text-xs sm:text-sm font-medium mb-4">
+        <Icons name="circuit" class="w-4 h-4" />
+        <span>Planificación de Mantenimiento Preventivo</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight">
+        {calculadora.titulo}
+      </h2>
+      <p class="mt-4 text-base sm:text-lg text-slate-300">
+        {calculadora.subtitulo}
+      </p>
+    </div>
+
+    <!-- Contenedor Principal de Calculadora -->
+    <div class="bg-navy-light/80 border border-white/15 rounded-2xl p-6 sm:p-8 md:p-10 shadow-2xl backdrop-blur-sm grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+
+      <!-- Columna Formulario de Selección (5 cols) -->
+      <div class="lg:col-span-5 space-y-6">
+        <h3 class="text-xl font-semibold text-white flex items-center gap-2 border-b border-white/10 pb-3">
+          <Icons name="tool" class="w-5 h-5 text-blue-light" />
+          <span>Configuración de Equipamiento</span>
+        </h3>
+
+        <!-- Selección de Tipo de Equipo -->
+        <div class="group/field space-y-2">
+          <label for="calc-equipo" class="block text-sm font-medium text-slate-300 group-focus-within/field:text-blue-light transition-colors">
+            Categoría de Equipo Médico
+          </label>
+          <div class="relative">
+            <select
+              id="calc-equipo"
+              class="w-full bg-navy border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all cursor-pointer text-sm sm:text-base appearance-none pr-10"
+              aria-describedby="calc-equipo-desc"
+            >
+              {calculadora.equipos.map((equipo) => (
+                <option value={equipo.id} class="bg-navy text-white">
+                  {equipo.nombre}
+                </option>
+              ))}
+            </select>
+            <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" aria-hidden="true">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+          </div>
+          <p id="calc-equipo-desc" class="text-xs text-slate-400">
+            Seleccione el tipo de tecnología o unidad médica a evaluar.
+          </p>
+        </div>
+
+        <!-- Cantidad de Unidades -->
+        <div class="group/field space-y-2">
+          <label for="calc-cantidad" class="block text-sm font-medium text-slate-300 group-focus-within/field:text-blue-light transition-colors">
+            Cantidad de Equipos en la Institución
+          </label>
+          <div class="flex items-center gap-3">
+            <input
+              type="number"
+              id="calc-cantidad"
+              min="1"
+              max="100"
+              value="1"
+              class="w-28 bg-navy border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all text-center font-semibold text-lg"
+            />
+            <span class="text-sm text-slate-300">unidad(es)</span>
+          </div>
+        </div>
+
+        <!-- Régimen / Nivel de Uso -->
+        <div class="group/field space-y-2">
+          <label for="calc-uso" class="block text-sm font-medium text-slate-300 group-focus-within/field:text-blue-light transition-colors">
+            Régimen de Operación
+          </label>
+          <div class="relative">
+            <select
+              id="calc-uso"
+              class="w-full bg-navy border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all cursor-pointer text-sm sm:text-base appearance-none pr-10"
+              aria-describedby="calc-uso-desc"
+            >
+              {calculadora.usos.map((uso) => (
+                <option value={uso.id} class="bg-navy text-white">
+                  {uso.nombre}
+                </option>
+              ))}
+            </select>
+            <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" aria-hidden="true">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+          </div>
+          <p id="calc-uso-desc" class="text-xs text-slate-400">
+            Define la frecuencia de desgaste de componentes mecánicos y sensores.
+          </p>
+        </div>
+      </div>
+
+      <!-- Columna Resultados e Informe (7 cols) -->
+      <div class="lg:col-span-7 bg-navy/90 border border-white/10 rounded-xl p-6 sm:p-8 flex flex-col justify-between space-y-6">
+
+        <div>
+          <!-- Tarjeta de Diagnóstico Preventivo -->
+          <div class="flex items-start justify-between flex-wrap gap-4 pb-4 border-b border-white/10">
+            <div>
+              <span class="text-xs font-semibold uppercase tracking-wider text-blue-light">Frecuencia Recomendada</span>
+              <h4 id="calc-resultado-titulo" class="text-2xl sm:text-3xl font-extrabold text-white mt-1">
+                Cada 3 meses
+              </h4>
+              <p id="calc-resultado-sub" class="text-xs sm:text-sm text-slate-300 mt-1">
+                (4 revisiones preventivas anuales por unidad)
+              </p>
+            </div>
+
+            <div class="bg-blue/20 border border-blue/40 px-3 py-2 rounded-lg text-right">
+              <span class="block text-xs text-slate-300">Nivel de Criticidad</span>
+              <span id="calc-resultado-criticidad" class="text-xs font-bold text-amber-300 uppercase tracking-wide">
+                Alta (Soporte Vital / Quirófano)
+              </span>
+            </div>
+          </div>
+
+          <!-- Protocolo de Inspección Recomendado -->
+          <div class="mt-6 space-y-3">
+            <h5 class="text-sm font-semibold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+              <Icons name="shield-check" class="w-4 h-4 text-emerald-400" />
+              <span>Protocolo de Inspección Incluido</span>
+            </h5>
+
+            <ul id="calc-lista-recomendaciones" role="list" class="space-y-2.5 text-sm text-slate-300">
+              <!-- Insertado dinámicamente -->
+            </ul>
+          </div>
+        </div>
+
+        <!-- Región accesible de anuncio en vivo -->
+        <div id="calc-live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+        <!-- Footer Acción Directa -->
+        <div class="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-xs text-slate-400 text-center sm:text-left">
+            <p>Servicio presencial en Tucumán y zona NOA.</p>
+            <p class="text-slate-300">Emisión de informes técnicos aptos para auditorías.</p>
+          </div>
+
+          <a
+            id="calc-whatsapp-btn"
+            href={`https://wa.me/${contacto.whatsapp}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Solicitar cotización personalizada por WhatsApp"
+            class="group inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition-all shadow-lg shadow-emerald-900/30 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy shrink-0 w-full sm:w-auto"
+          >
+            <Icons name="whatsapp" class="w-5 h-5 text-white" />
+            <span>Solicitar Cotización</span>
+            <Icons name="arrow-right" class="w-4 h-4 group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-transform" />
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  import { CONFIG } from '../data/config';
+
+  function initCalculadora() {
+    const equipoSelect = document.getElementById('calc-equipo') as HTMLSelectElement | null;
+    const cantidadInput = document.getElementById('calc-cantidad') as HTMLInputElement | null;
+    const usoSelect = document.getElementById('calc-uso') as HTMLSelectElement | null;
+    const resultadoTitulo = document.getElementById('calc-resultado-titulo');
+    const resultadoSub = document.getElementById('calc-resultado-sub');
+    const resultadoCriticidad = document.getElementById('calc-resultado-criticidad');
+    const listaRecomendaciones = document.getElementById('calc-lista-recomendaciones');
+    const whatsappBtn = document.getElementById('calc-whatsapp-btn') as HTMLAnchorElement | null;
+    const liveRegion = document.getElementById('calc-live-region');
+
+    if (!equipoSelect || !cantidadInput || !usoSelect || !resultadoTitulo || !resultadoSub || !resultadoCriticidad || !listaRecomendaciones || !whatsappBtn) {
+      return;
+    }
+
+    const { calculadora, contacto } = CONFIG;
+
+    function calcular() {
+      if (!equipoSelect || !cantidadInput || !usoSelect || !resultadoTitulo || !resultadoSub || !resultadoCriticidad || !listaRecomendaciones || !whatsappBtn) {
+        return;
+      }
+
+      const equipoId = equipoSelect.value || calculadora.equipos[0].id;
+      const usoId = usoSelect.value || calculadora.usos[0].id;
+      const cantidad = Math.max(1, parseInt(cantidadInput.value || '1', 10));
+
+      const equipoData = calculadora.equipos.find((e) => e.id === equipoId) || calculadora.equipos[0];
+      const usoData = calculadora.usos.find((u) => u.id === usoId) || calculadora.usos[0];
+
+      // Cálculo de meses recomendados
+      const mesesCalculados = Math.max(1, Math.round(equipoData.frecuenciaBaseMeses * usoData.factorMeses));
+      const revisionesAnuales = Math.round(12 / mesesCalculados);
+
+      // Actualizar UI
+      resultadoTitulo.textContent = `Cada ${mesesCalculados} ${mesesCalculados === 1 ? 'mes' : 'meses'}`;
+      resultadoSub.textContent = `(${revisionesAnuales} ${revisionesAnuales === 1 ? 'revisión preventiva anual' : 'revisiones preventivas anuales'} para ${cantidad} ${cantidad === 1 ? 'unidad' : 'unidades'})`;
+      resultadoCriticidad.textContent = equipoData.criticidad;
+
+      // Renderizar Lista de recomendaciones
+      listaRecomendaciones.innerHTML = '';
+      equipoData.recomendaciones.forEach((rec) => {
+        const li = document.createElement('li');
+        li.className = 'flex items-start gap-2.5';
+        li.innerHTML = `
+          <span class="text-blue-light mt-0.5 shrink-0" aria-hidden="true">•</span>
+          <span>${rec}</span>
+        `;
+        listaRecomendaciones.appendChild(li);
+      });
+
+      // Construir mensaje pre-llenado de WhatsApp
+      const mensaje = `Hola TechHealth, me gustaría solicitar presupuesto para mantenimiento preventivo de ${cantidad} unidad(es) de ${equipoData.nombre} (${usoData.nombre}). Frecuencia estimada: cada ${mesesCalculados} meses.`;
+      const encodedMensaje = encodeURIComponent(mensaje);
+      whatsappBtn.href = `https://wa.me/${contacto.whatsapp}?text=${encodedMensaje}`;
+
+      // Anuncio accesible para lectores de pantalla
+      if (liveRegion) {
+        liveRegion.textContent = `Estimación actualizada: ${equipoData.nombre}, ${cantidad} unidad(es). Frecuencia recomendada: cada ${mesesCalculados} meses.`;
+      }
+    }
+
+    // Escuchadores de eventos
+    equipoSelect.addEventListener('change', calcular);
+    usoSelect.addEventListener('change', calcular);
+    cantidadInput.addEventListener('input', calcular);
+
+    // Evento click con feedback en CTA
+    whatsappBtn.addEventListener('click', () => {
+      whatsappBtn.setAttribute('aria-busy', 'true');
+      whatsappBtn.setAttribute('aria-disabled', 'true');
+      setTimeout(() => {
+        whatsappBtn.removeAttribute('aria-busy');
+        whatsappBtn.removeAttribute('aria-disabled');
+      }, 1500);
+    });
+
+    // Ejecución inicial
+    calcular();
+  }
+
+  // Ejecutar en la carga del DOM y re-inicializaciones de Astro
+  document.addEventListener('DOMContentLoaded', initCalculadora);
+  document.addEventListener('astro:page-load', initCalculadora);
+</script>
