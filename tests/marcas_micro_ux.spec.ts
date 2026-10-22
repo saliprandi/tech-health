@@ -16,8 +16,14 @@ test.describe('Marcas Section Micro-UX & Accessibility', () => {
     await expect(firstItem).toHaveClass(/hover:bg-slate-50\/80/);
     await expect(firstItem).toHaveClass(/focus-within:bg-slate-50\/80/);
 
-    const firstBrandSpan = firstItem.locator('span');
-    await expect(firstBrandSpan).toHaveClass(/group-hover:scale-105/);
-    await expect(firstBrandSpan).toHaveClass(/group-focus-within:scale-105/);
+    const firstBrandLink = firstItem.locator('a');
+    await expect(firstBrandLink).toHaveAttribute('href', '#contacto');
+    await expect(firstBrandLink).toHaveAttribute('aria-label', /Consultar servicio técnico para marca/);
+    await expect(firstBrandLink).toHaveAttribute('title', /Consultar servicio técnico para marca/);
+    await expect(firstBrandLink).toHaveClass(/group-hover:scale-105/);
+    await expect(firstBrandLink).toHaveClass(/group-focus-within:scale-105/);
+    await expect(firstBrandLink).toHaveClass(/group-focus-visible:scale-105/);
+    await expect(firstBrandLink).toHaveClass(/focus-visible:ring-navy/);
+    await expect(firstBrandLink).toHaveClass(/active:scale-95/);
   });
 });
