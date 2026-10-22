@@ -102,8 +102,9 @@ test.describe('Contacto UX Enhancements', () => {
 
     await expect(nameLabel).toHaveClass(/group-focus-within\/field:text-blue-light/);
 
-    await nameInput.focus();
-    const color = await nameLabel.evaluate((el) => getComputedStyle(el).color);
-    expect(color).toBe('rgb(74, 144, 217)');
+    await nameInput.click();
+    await expect.poll(async () => {
+      return await nameLabel.evaluate((el) => getComputedStyle(el).color);
+    }).toBe('rgb(74, 144, 217)');
   });
 });
