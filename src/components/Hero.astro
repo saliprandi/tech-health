@@ -72,11 +72,23 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         <!-- Equipos List -->
         <div>
           <h4 class="font-heading font-bold text-navy text-[16px] mb-4">Equipos que atendemos:</h4>
-          <ul class="flex flex-col gap-3" role="list" aria-label="Equipos destacados que atendemos">
+          <ul class="flex flex-col gap-2" role="list" aria-label="Equipos destacados que atendemos">
             {equiposHero.map(equipo => (
-              <li class="group flex items-start gap-3 font-body text-text-soft text-[15px] hover:text-navy transition-colors duration-200">
-                <span class="w-1.5 h-1.5 rounded-full bg-blue mt-2 flex-shrink-0 group-hover:scale-125 group-hover:bg-blue-light transition-all duration-200" aria-hidden="true"></span>
-                {equipo}
+              <li class="group/item">
+                <a
+                  href="#contacto"
+                  class="flex items-center justify-between gap-3 font-body text-text-soft hover:text-navy focus-visible:text-navy text-[15px] py-1 px-1.5 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 active:scale-[0.98] transition-all duration-200"
+                  aria-label={`Consultar servicio técnico para ${equipo}`}
+                  title={`Consultar servicio técnico para ${equipo}`}
+                >
+                  <div class="flex items-center gap-3">
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue flex-shrink-0 group-hover/item:scale-125 group-focus-within/item:scale-125 group-hover/item:bg-blue-light group-focus-within/item:bg-blue-light transition-all duration-200" aria-hidden="true"></span>
+                    <span>{equipo}</span>
+                  </div>
+                  <svg class="w-3.5 h-3.5 text-blue/60 group-hover/item:text-blue group-focus-within/item:text-blue group-hover/item:translate-x-0.5 group-focus-within/item:translate-x-0.5 transition-all duration-200 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
               </li>
             ))}
           </ul>
