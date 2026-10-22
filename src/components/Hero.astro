@@ -60,18 +60,18 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       <div class="bg-white rounded-card p-10 shadow-hero-card">
         
         <!-- Stats Grid -->
-        <div class="grid grid-cols-2 gap-6 mb-8 pb-8 border-b border-border">
+        <dl class="grid grid-cols-2 gap-6 mb-8 pb-8 border-b border-border" aria-label="Estadísticas de la empresa">
           {CONFIG.stats.map(stat => (
             <div>
-              <div class="font-heading font-extrabold text-[42px] text-navy leading-none mb-1">{stat.numero}</div>
-              <div class="font-body font-medium text-[12px] text-text-soft uppercase tracking-wide">{stat.label}</div>
+              <dt class="font-heading font-extrabold text-[42px] text-navy leading-none mb-1">{stat.numero}</dt>
+              <dd class="font-body font-medium text-[12px] text-text-soft uppercase tracking-wide">{stat.label}</dd>
             </div>
           ))}
-        </div>
+        </dl>
 
         <!-- Equipos List -->
         <div>
-          <h4 class="font-heading font-bold text-navy text-[16px] mb-4">Equipos que atendemos:</h4>
+          <h2 class="font-heading font-bold text-navy text-[16px] mb-4">Equipos que atendemos:</h2>
           <ul class="flex flex-col gap-3" role="list" aria-label="Equipos destacados que atendemos">
             {equiposHero.map(equipo => (
               <li class="group flex items-start gap-3 font-body text-text-soft text-[15px] hover:text-navy transition-colors duration-200">
