@@ -193,4 +193,48 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora: {
+    titulo: "Calculadora de Plan de Mantenimiento Preventivo",
+    subtitulo: "Estimador B2B para Instituciones de Salud",
+    descripcion:
+      "Seleccione la cantidad de equipos de su institución para estimar la frecuencia técnica recomendada y generar una propuesta personalizada.",
+    categorias: [
+      {
+        id: "monitores",
+        nombre: "Monitores de Signos Vitales / ECG",
+        frecuenciaSugerida: "Semestral (2 veces/año)",
+        frecuenciaMeses: 6,
+        icono: "shield",
+      },
+      {
+        id: "respiradores",
+        nombre: "Respiradores y Ventiladores",
+        frecuenciaSugerida: "Trimestral (4 veces/año)",
+        frecuenciaMeses: 3,
+        icono: "circuit",
+      },
+      {
+        id: "ecografos",
+        nombre: "Ecógrafos y Diagnóstico por Imagen",
+        frecuenciaSugerida: "Semestral (2 veces/año)",
+        frecuenciaMeses: 6,
+        icono: "microscope",
+      },
+      {
+        id: "bombas",
+        nombre: "Bombas de Infusión y Jeringa",
+        frecuenciaSugerida: "Semestral (2 veces/año)",
+        frecuenciaMeses: 6,
+        icono: "tool",
+      },
+      {
+        id: "autoclaves",
+        nombre: "Autoclaves y Esterilizadores",
+        frecuenciaSugerida: "Trimestral (4 veces/año)",
+        frecuenciaMeses: 3,
+        icono: "shield-check",
+      },
+    ],
+  },
 };
