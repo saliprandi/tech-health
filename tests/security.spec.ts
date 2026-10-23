@@ -236,3 +236,19 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('hero and nav CTA links validate target WhatsApp URLs before opening window', async ({ page }) => {
+  await page.goto('http://localhost:4321/');
+
+  // Verify default Hero CTA href matches expected trusted WhatsApp format
+  const heroCta = page.locator('#hero-cta');
+  await expect(heroCta).toBeVisible();
+  const heroHref = await heroCta.getAttribute('href');
+  expect(heroHref).toMatch(/^https:\/\/wa\.me\/\d+$/);
+
+  // Verify default Nav CTA href matches expected trusted WhatsApp format
+  const navCta = page.locator('#nav-cta');
+  await expect(navCta).toBeVisible();
+  const navHref = await navCta.getAttribute('href');
+  expect(navHref).toMatch(/^https:\/\/wa\.me\/\d+$/);
+});
