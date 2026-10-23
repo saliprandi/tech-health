@@ -32,6 +32,7 @@ test.describe('Servicios Modal CTA Accessibility', () => {
     const closeBtn = page.locator('#close-modal');
     await expect(closeBtn).toBeVisible();
     await expect(closeBtn).toHaveAttribute('aria-label', 'Cerrar detalles del servicio');
+    await expect(closeBtn).toHaveAttribute('title', 'Cerrar detalles del servicio');
 
     const classList = await closeBtn.getAttribute('class');
     expect(classList).toContain('focus-visible:ring-2');
