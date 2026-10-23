@@ -1,0 +1,281 @@
+---
+import { CONFIG } from '../data/config';
+
+const { calculadora_b2b } = CONFIG;
+---
+
+<section id="calculadora" class="bg-off-white section-padding scroll-mt-20 content-visibility-auto">
+  <div class="container-custom">
+
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Estimador B2B</div>
+      <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,40px)] text-navy leading-tight mb-4">
+        {calculadora_b2b.titulo}
+      </h2>
+      <p class="font-body text-[16px] text-text-soft">
+        {calculadora_b2b.subtitulo}
+      </p>
+    </div>
+
+    <!-- Calculator Grid Container -->
+    <div class="bg-white rounded-card p-6 md:p-10 shadow-hero-card border border-border max-w-4xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <!-- Controls Column -->
+        <div class="lg:col-span-6 flex flex-col gap-6">
+          <div class="font-heading font-bold text-[18px] text-navy border-b border-border pb-3">
+            Parámetros de la institución
+          </div>
+
+          <!-- Input 1: Tipo de Institución -->
+          <div class="flex flex-col gap-2 group/select">
+            <label for="calc-tipo" class="font-body font-semibold text-[14px] text-navy group-focus-within/select:text-blue transition-colors">
+              Tipo de centro de salud
+            </label>
+            <div class="relative">
+              <select id="calc-tipo" class="bg-off-white border border-border rounded-[8px] px-4 py-3 text-[14px] text-navy font-body w-full appearance-none pr-10 cursor-pointer focus-visible:ring-2 focus-visible:ring-blue focus-visible:border-transparent outline-none transition-all">
+                <option value="consultorio">Consultorios / Policonsultorio ambulatorio</option>
+                <option value="clinica" selected>Clínica / Sanatorio con internación</option>
+                <option value="hospital">Hospital / Sanatorio con UTI y Quirófanos</option>
+              </select>
+              <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-soft pointer-events-none group-focus-within/select:rotate-180 group-focus-within/select:text-blue transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Input 2: Número de camas / puestos -->
+          <div class="flex flex-col gap-2 group/field">
+            <div class="flex items-center justify-between">
+              <label for="calc-camas" class="font-body font-semibold text-[14px] text-navy group-focus-within/field:text-blue transition-colors">
+                Cantidad de camas / puestos técnicos
+              </label>
+              <span id="calc-camas-val" class="font-heading font-bold text-[15px] text-blue bg-blue-pale px-2.5 py-0.5 rounded-full">
+                20 camas
+              </span>
+            </div>
+            <input
+              type="range"
+              id="calc-camas"
+              min="1"
+              max="100"
+              value="20"
+              step="1"
+              class="w-full h-2 bg-border rounded-lg appearance-none cursor-pointer accent-blue focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 outline-none"
+              aria-describedby="calc-camas-val"
+            />
+            <div class="flex justify-between text-[11px] text-text-soft font-body px-1">
+              <span>1 (Consultorio)</span>
+              <span>35 (Mediana)</span>
+              <span>100+ (Alta Comp.)</span>
+            </div>
+          </div>
+
+          <!-- Input 3: Equipos Críticos -->
+          <div class="flex flex-col gap-2 group/select">
+            <label for="calc-criticos" class="font-body font-semibold text-[14px] text-navy group-focus-within/select:text-blue transition-colors">
+              Nivel de equipamiento crítico (UTI / Quirófano)
+            </label>
+            <div class="relative">
+              <select id="calc-criticos" class="bg-off-white border border-border rounded-[8px] px-4 py-3 text-[14px] text-navy font-body w-full appearance-none pr-10 cursor-pointer focus-visible:ring-2 focus-visible:ring-blue focus-visible:border-transparent outline-none transition-all">
+                <option value="bajo">Bajo (Monitores, electrocardiógrafos, balanzas)</option>
+                <option value="medio" selected>Moderado (Ecógrafos, bombas de infusión, autoclaves)</option>
+                <option value="alto">Alto (Respiradores, máquinas de anestesia, electrocirugía)</option>
+              </select>
+              <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-soft pointer-events-none group-focus-within/select:rotate-180 group-focus-within/select:text-blue transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Dynamic Recommendation Column -->
+        <div class="lg:col-span-6 bg-navy text-white rounded-[12px] p-6 md:p-8 flex flex-col justify-between h-full min-h-[380px] border border-navy-light/20 relative overflow-hidden">
+
+          <!-- Background Glow Effect -->
+          <div class="absolute -top-10 -right-10 w-40 h-40 bg-blue-light/10 rounded-full blur-2xl pointer-events-none"></div>
+
+          <div>
+            <div class="inline-flex items-center gap-1.5 bg-white/10 text-blue-light text-[11px] font-heading font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4">
+              <span class="w-2 h-2 rounded-full bg-blue-light animate-pulse" aria-hidden="true"></span>
+              Plan Recomendado
+            </div>
+
+            <h3 id="rec-plan-nombre" class="font-heading font-extrabold text-[22px] md:text-[24px] text-white mb-1">
+              Plan Profesional (Trimestral)
+            </h3>
+
+            <div class="flex items-center gap-2 mb-4">
+              <span class="font-body text-[13px] text-white/70">Frecuencia:</span>
+              <span id="rec-plan-frecuencia" class="font-heading font-bold text-[14px] text-blue-light">Cada 3 meses</span>
+            </div>
+
+            <p id="rec-plan-target" class="font-body text-[14px] text-white/80 border-b border-white/15 pb-4 mb-4">
+              Recomendado para clínicas y centros de internación intermedia.
+            </p>
+
+            <div class="mb-2 font-heading font-bold text-[13px] uppercase text-white/60 tracking-wider">
+              Beneficios incluidos:
+            </div>
+
+            <ul id="rec-plan-beneficios" class="flex flex-col gap-2 font-body text-[13px] text-white/90" role="list" aria-label="Beneficios del plan recomendado">
+              <!-- Rendered dynamically -->
+            </ul>
+          </div>
+
+          <!-- Action CTA -->
+          <div class="mt-8 pt-4 border-t border-white/15">
+            <a
+              id="calc-cta"
+              href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Solicitar propuesta personalizada por WhatsApp"
+              class="group w-full bg-blue text-white font-heading font-bold py-3.5 px-5 rounded-[8px] flex items-center justify-center gap-2 hover:bg-blue-light active:scale-95 transition-all outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy shadow-md"
+            >
+              <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
+                <use href="#icon-whatsapp" />
+              </svg>
+              <span id="calc-cta-text">Solicitar propuesta para este plan</span>
+              <svg class="w-4 h-4 text-white/80 group-hover:text-white group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+
+          <div id="calc-live-region" class="sr-only" aria-live="polite"></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  import { CONFIG } from '../data/config';
+
+  (function() {
+    function initCalculadora() {
+      const tipoSelect = document.getElementById('calc-tipo') as HTMLSelectElement | null;
+      const camasInput = document.getElementById('calc-camas') as HTMLInputElement | null;
+      const camasVal = document.getElementById('calc-camas-val');
+      const criticosSelect = document.getElementById('calc-criticos') as HTMLSelectElement | null;
+
+      const recNombre = document.getElementById('rec-plan-nombre');
+      const recFrecuencia = document.getElementById('rec-plan-frecuencia');
+      const recTarget = document.getElementById('rec-plan-target');
+      const recBeneficios = document.getElementById('rec-plan-beneficios');
+      const ctaBtn = document.getElementById('calc-cta') as HTMLAnchorElement | null;
+      const liveRegion = document.getElementById('calc-live-region');
+
+      if (!tipoSelect || !camasInput || !criticosSelect || !recNombre || !recFrecuencia || !recTarget || !recBeneficios || !ctaBtn) {
+        return () => {};
+      }
+
+      const planes = CONFIG.calculadora_b2b.planes;
+      const baseWaNumber = CONFIG.contacto.whatsapp.replace(/\D/g, '');
+
+      const updateCalculation = () => {
+        const camas = parseInt(camasInput.value, 10) || 1;
+        const tipo = tipoSelect.value;
+        const criticos = criticosSelect.value;
+
+        if (camasVal) {
+          camasVal.textContent = `${camas} ${camas === 1 ? 'cama / puesto' : 'camas / puestos'}`;
+        }
+
+        // Calculation Logic based on camas, tipo, and critical equipment
+        let planIndex = 0; // default semestral
+        if (camas > 35 || tipo === 'hospital' || criticos === 'alto') {
+          planIndex = 2; // hospitalario (mensual)
+        } else if (camas > 10 || tipo === 'clinica' || criticos === 'medio') {
+          planIndex = 1; // profesional (trimestral)
+        } else {
+          planIndex = 0; // esencial (semestral)
+        }
+
+        const plan = planes[planIndex];
+
+        // Update DOM
+        recNombre.textContent = plan.nombre;
+        recFrecuencia.textContent = plan.frecuencia;
+        recTarget.textContent = `${plan.equipoMeta} (Atención de guardia: ${plan.respuestaGuardia}).`;
+
+        // Render benefits safely using textContent
+        recBeneficios.innerHTML = '';
+        plan.beneficios.forEach(ben => {
+          const li = document.createElement('li');
+          li.className = 'flex items-start gap-2';
+
+          const iconSpan = document.createElement('span');
+          iconSpan.className = 'text-blue-light mt-0.5 flex-shrink-0 font-bold';
+          iconSpan.textContent = '✓';
+          iconSpan.setAttribute('aria-hidden', 'true');
+
+          const textSpan = document.createElement('span');
+          textSpan.textContent = ben;
+
+          li.appendChild(iconSpan);
+          li.appendChild(textSpan);
+          recBeneficios.appendChild(li);
+        });
+
+        // Update WhatsApp message URL
+        const tipoTexto = tipoSelect.options[tipoSelect.selectedIndex]?.text || tipo;
+        const rawMsg = `Hola TechHealth! Estuve usando el estimador en su web:\n- *Tipo de Centro:* ${tipoTexto}\n- *Camas/Puestos:* ${camas}\n- *Plan Sugerido:* ${plan.nombre}\nMe gustaría solicitar un presupuesto o cotización formal.`;
+        ctaBtn.href = `https://wa.me/${baseWaNumber}?text=${encodeURIComponent(rawMsg)}`;
+
+        // Screen reader announcement
+        if (liveRegion) {
+          liveRegion.textContent = `Plan recomendado actualizado a ${plan.nombre}, frecuencia ${plan.frecuencia}.`;
+        }
+      };
+
+      // Event Listeners
+      tipoSelect.addEventListener('change', updateCalculation);
+      camasInput.addEventListener('input', updateCalculation);
+      criticosSelect.addEventListener('change', updateCalculation);
+
+      const handleCtaClick = (e: MouseEvent) => {
+        e.preventDefault();
+        const ctaText = document.getElementById('calc-cta-text');
+        if (!ctaText) return;
+
+        const originalText = ctaText.textContent;
+        ctaText.textContent = 'Redirigiendo...';
+        ctaBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+        const href = ctaBtn.getAttribute('href');
+        if (href) {
+          window.open(href, '_blank', 'noopener,noreferrer');
+        }
+
+        setTimeout(() => {
+          ctaText.textContent = originalText;
+          ctaBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        }, 3000);
+      };
+
+      ctaBtn.addEventListener('click', handleCtaClick as EventListener);
+
+      // Initial calculation
+      updateCalculation();
+
+      return () => {
+        tipoSelect.removeEventListener('change', updateCalculation);
+        camasInput.removeEventListener('input', updateCalculation);
+        criticosSelect.removeEventListener('change', updateCalculation);
+        ctaBtn.removeEventListener('click', handleCtaClick as EventListener);
+      };
+    }
+
+    let cleanup = initCalculadora();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initCalculadora();
+    });
+  })();
+</script>

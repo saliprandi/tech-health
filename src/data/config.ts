@@ -193,4 +193,101 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora_b2b: {
+    titulo: "Estimador B2B de Mantenimiento Electromédico",
+    subtitulo: "Calcule la frecuencia sugerida de mantenimiento preventivo y respuesta técnica para su centro de salud",
+    planes: [
+      {
+        id: "preventivo_semestral",
+        nombre: "Plan Esencial (Semestral)",
+        frecuencia: "Cada 6 meses",
+        rangoCamas: "1 a 10 camas / consultorios",
+        equipoMeta: "Centros ambulatorios y consultorios de baja/mediana complejidad",
+        respuestaGuardia: "24-48 horas",
+        beneficios: [
+          "2 inspecciones preventivas completas al año",
+          "Informes técnicos aptos para auditorías",
+          "Garantía de 90 días en repuestos y reparaciones",
+          "Soporte telefónico y WhatsApp prioritario"
+        ]
+      },
+      {
+        id: "preventivo_trimestral",
+        nombre: "Plan Profesional (Trimestral)",
+        frecuencia: "Cada 3 meses",
+        rangoCamas: "11 a 35 camas",
+        equipoMeta: "Clínicas, centros de diagnóstico e internación intermedia",
+        respuestaGuardia: "12-24 horas (prioritaria)",
+        beneficios: [
+          "4 inspecciones preventivas al año",
+          "Mediciones de seguridad eléctrica de norma",
+          "Descuento del 10% en reparación de placas",
+          "Verificación de calibración e informes para auditoría"
+        ]
+      },
+      {
+        id: "preventivo_mensual",
+        nombre: "Plan Hospitalario (Mensual / Continuo)",
+        frecuencia: "Mensual / Guardia Continua",
+        rangoCamas: "Más de 35 camas / Quirófanos / UTI",
+        equipoMeta: "Sanatorios, hospitales y unidades de terapia intensiva",
+        respuestaGuardia: "< 2 horas en Tucumán Capital / Guardia 24h",
+        beneficios: [
+          "Mantenimiento mensual de equipos críticos",
+          "Prioridad máxima en guardia de emergencias 24/7",
+          "Descuento del 15% en laboratorio de microelectrónica",
+          "Asesoramiento técnico de ingeniería continuo"
+        ]
+      }
+    ]
+  },
+
+  cobertura_noa: {
+    titulo: "Cobertura Regional y Trazabilidad NOA",
+    subtitulo: "Respuesta presencial urgente en Tucumán y logística técnica coordinada para toda la región del Noroeste Argentino",
+    zonas: [
+      {
+        zona: "San Miguel de Tucumán",
+        tiempoRespuesta: "< 2 Horas",
+        badge: "Respuesta Inmediata",
+        descripcion: "Atención prioritaria in-situ para sanatorios, clínicas y laboratorios del área metropolitana."
+      },
+      {
+        zona: "Gran Tucumán (Yerba Buena, Tafí Viejo, B.R.S.)",
+        tiempoRespuesta: "< 4 Horas",
+        badge: "Cobertura Prioritaria",
+        descripcion: "Desplazamiento técnico rápido con instrumental de calibración y diagnóstico."
+      },
+      {
+        zona: "Interior de Tucumán (Concepción, Monteros, Aguilares)",
+        tiempoRespuesta: "< 12 Horas",
+        badge: "Soporte Provincial",
+        descripcion: "Visitas técnicas programadas y servicio de guardia para instituciones de salud del interior."
+      },
+      {
+        zona: "Región NOA (Salta, Jujuy, Catamarca, Santiago)",
+        tiempoRespuesta: "< 24 Horas",
+        badge: "Logística Regional",
+        descripcion: "Recepción y envío de módulos/placas al laboratorio central en Tucumán con informes certificables."
+      }
+    ],
+    pilaresTrazabilidad: [
+      {
+        icono: "file-check",
+        titulo: "Informes de Auditoría",
+        descripcion: "Documentación conforme a requerimientos de organismos de salud (SIPROSA / ANMAT) con firma técnica."
+      },
+      {
+        icono: "shield-check",
+        titulo: "Garantía Técnica de 90 Días",
+        descripcion: "Todas las reparaciones e intervenciones en laboratorio cuentan con respaldo por escrito."
+      },
+      {
+        icono: "qr-code",
+        titulo: "Trazabilidad por Ticket",
+        descripcion: "Seguimiento transparente del historial de servicio de cada equipo desde el ingreso hasta la entrega."
+      }
+    ]
+  }
 };
