@@ -225,8 +225,9 @@ import { CONFIG } from '../data/config';
           redirectionAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         }
 
+        // Security: Validate target URL against dangerous pseudoprotocols (javascript:, data:, vbscript:) before redirecting
         const href = cta.getAttribute('href');
-        if (href) {
+        if (href && !/^(javascript|data|vbscript):/i.test(href.trim())) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 

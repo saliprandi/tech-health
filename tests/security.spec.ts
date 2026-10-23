@@ -236,3 +236,31 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('CTA redirection handlers reject dangerous pseudoprotocol URLs', async ({ page }) => {
+  await page.goto('http://localhost:4321/');
+
+  // Intercept window.open calls to detect if redirection occurs
+  let openedUrl: string | null = null;
+  await page.exposeFunction('mockWindowOpen', (url: string) => {
+    openedUrl = url;
+  });
+  await page.evaluate(() => {
+    window.open = (url?: string | URL) => {
+      (window as any).mockWindowOpen(String(url));
+      return null;
+    };
+  });
+
+  // Inject dangerous javascript: pseudoprotocol into #hero-cta
+  await page.evaluate(() => {
+    const heroCta = document.getElementById('hero-cta');
+    if (heroCta) heroCta.setAttribute('href', 'javascript:alert(1)');
+  });
+
+  await page.click('#hero-cta');
+  await page.waitForTimeout(300);
+
+  // Expect window.open was NOT called with javascript: URL
+  expect(openedUrl).toBeNull();
+});

@@ -117,8 +117,9 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         heroCta.setAttribute('aria-disabled', 'true');
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
+        // Security: Validate target URL against dangerous pseudoprotocols (javascript:, data:, vbscript:) before redirecting
         const href = heroCta.getAttribute('href');
-        if (href) {
+        if (href && !/^(javascript|data|vbscript):/i.test(href.trim())) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 
