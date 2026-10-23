@@ -1,0 +1,280 @@
+---
+import { CONFIG } from '../data/config';
+
+const { calculadora } = CONFIG;
+---
+
+<section id="calculadora" class="bg-off-white section-padding content-visibility-auto scroll-mt-20">
+  <div class="container-custom">
+
+    <!-- Encabezado de la sección -->
+    <div class="max-w-3xl mx-auto text-center mb-12">
+      <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">
+        Estimador B2B
+      </div>
+      <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,42px)] leading-[1.2] text-navy mb-4">
+        {calculadora.titulo}
+      </h2>
+      <p class="font-body text-[16px] text-text-soft">
+        {calculadora.descripcion}
+      </p>
+    </div>
+
+    <!-- Card Principal de la Calculadora -->
+    <div class="bg-white rounded-card p-6 md:p-10 shadow-hero-card border border-border max-w-4xl mx-auto">
+      <form id="calc-form" class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start" aria-label="Calculadora de Mantenimiento Preventivo">
+
+        <!-- Columna de Entradas (Inputs) -->
+        <div class="flex flex-col gap-6">
+
+          <!-- Tipo de Institución -->
+          <div class="flex flex-col gap-2 group/select">
+            <label for="calc-institucion" class="font-heading font-bold text-[14px] text-navy flex items-center gap-2 group-focus-within/select:text-blue transition-colors">
+              <svg class="w-4 h-4 text-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+              Tipo de centro de salud
+            </label>
+            <div class="relative">
+              <select
+                id="calc-institucion"
+                name="institucion"
+                class="w-full bg-off-white border border-border rounded-[8px] px-4 py-3 text-[14px] font-body text-navy focus:outline-none focus:ring-2 focus:ring-blue transition-all appearance-none cursor-pointer pr-10"
+              >
+                {calculadora.tipos_institucion.map((inst) => (
+                  <option value={inst.id}>{inst.nombre}</option>
+                ))}
+              </select>
+              <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-soft pointer-events-none group-focus-within/select:rotate-180 group-focus-within/select:text-blue transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Selección de Cantidades por Categoría -->
+          <div class="flex flex-col gap-4">
+            <span class="font-heading font-bold text-[14px] text-navy">Cantidad de equipamiento por categoría:</span>
+
+            {calculadora.categorias_equipos.map((cat) => (
+              <div class="flex flex-col gap-1.5 p-3 rounded-lg bg-off-white/80 border border-border/60 hover:border-blue/30 focus-within:border-blue/50 transition-colors">
+                <div class="flex justify-between items-center">
+                  <label for={`cat-${cat.id}`} class="font-body font-medium text-[13px] text-navy cursor-pointer">
+                    {cat.nombre}
+                  </label>
+                  <span id={`val-${cat.id}`} class="font-heading font-bold text-[14px] text-blue min-w-[28px] text-right">0</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <input
+                    type="range"
+                    id={`cat-${cat.id}`}
+                    name={`cat_${cat.id}`}
+                    min="0"
+                    max="20"
+                    value="0"
+                    step="1"
+                    data-cat-id={cat.id}
+                    data-horas={cat.horasFallaEvitada}
+                    data-freq={cat.freqMeses}
+                    class="w-full accent-blue cursor-pointer h-2 bg-border rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-1"
+                    aria-label={`Cantidad de ${cat.nombre}`}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+
+        <!-- Columna de Resultados (Outputs) -->
+        <div class="bg-navy text-white rounded-card p-6 md:p-8 flex flex-col justify-between h-full relative overflow-hidden shadow-lg">
+
+          <!-- Elemento decorativo de fondo -->
+          <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-blue/20 rounded-full blur-2xl pointer-events-none"></div>
+
+          <div>
+            <div class="font-heading font-bold text-blue-light uppercase tracking-wider text-[11px] mb-2">
+              Diagnóstico Estimado
+            </div>
+            <h3 class="font-heading font-bold text-[20px] text-white mb-6 border-b border-white/10 pb-3">
+              Resumen Operativo
+            </h3>
+
+            <!-- Indicadores -->
+            <div class="flex flex-col gap-5">
+
+              <div>
+                <div class="font-body text-[12px] text-white/70 uppercase tracking-wide">Equipos Evaluados</div>
+                <div id="res-total-equipos" class="font-heading font-extrabold text-[32px] text-white">0</div>
+              </div>
+
+              <div>
+                <div class="font-body text-[12px] text-white/70 uppercase tracking-wide">Tiempo fuera de servicio evitado (est. anual)</div>
+                <div class="flex items-baseline gap-2">
+                  <span id="res-horas-evitadas" class="font-heading font-extrabold text-[36px] text-blue-light">0</span>
+                  <span class="font-body text-[14px] text-white/80">horas de operatividad</span>
+                </div>
+              </div>
+
+              <div>
+                <div class="font-body text-[12px] text-white/70 uppercase tracking-wide">Plan Recomendado</div>
+                <div id="res-plan-frecuencia" class="font-body font-semibold text-[15px] text-white mt-1">
+                  Seleccione equipos para calcular
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Botón de acción hacia WhatsApp -->
+          <div class="mt-8 pt-6 border-t border-white/10">
+            <a
+              id="calc-wa-btn"
+              href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group w-full inline-flex items-center justify-center gap-2 bg-white text-navy font-heading font-bold py-3.5 px-6 rounded-lg hover:bg-white/90 active:scale-[0.98] transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue-light"
+              title="Solicitar propuesta técnica en base al cálculo"
+            >
+              <svg class="w-5 h-5 fill-current text-navy group-hover:animate-heartbeat" aria-hidden="true">
+                <use href="#icon-whatsapp" />
+              </svg>
+              <span id="calc-btn-text">Solicitar Propuesta Preventiva</span>
+              <svg class="w-4 h-4 text-navy/70 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+            <div id="calc-announcement" class="sr-only" aria-live="polite"></div>
+          </div>
+
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  (function() {
+    function initCalculadora() {
+      const form = document.getElementById('calc-form') as HTMLFormElement | null;
+      if (!form) return () => {};
+
+      const sliders = form.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>;
+      const instSelect = document.getElementById('calc-institucion') as HTMLSelectElement | null;
+
+      const totalEquiposEl = document.getElementById('res-total-equipos');
+      const horasEvitadasEl = document.getElementById('res-horas-evitadas');
+      const planFrecuenciaEl = document.getElementById('res-plan-frecuencia');
+      const waBtn = document.getElementById('calc-wa-btn') as HTMLAnchorElement | null;
+      const btnText = document.getElementById('calc-btn-text');
+      const announcement = document.getElementById('calc-announcement');
+
+      const whatsappBase = "5493815658239";
+
+      const calcular = () => {
+        let totalEquipos = 0;
+        let horasTotalesEvitadas = 0;
+        let minFreqMeses = 12;
+
+        sliders.forEach((slider) => {
+          const val = parseInt(slider.value, 10) || 0;
+          const catId = slider.dataset.catId;
+          const horasCat = parseFloat(slider.dataset.horas || '0');
+          const freqCat = parseInt(slider.dataset.freq || '12', 10);
+
+          const valEl = document.getElementById(`val-${catId}`);
+          if (valEl) valEl.textContent = val.toString();
+
+          if (val > 0) {
+            totalEquipos += val;
+            horasTotalesEvitadas += val * horasCat;
+            if (freqCat < minFreqMeses) {
+              minFreqMeses = freqCat;
+            }
+          }
+        });
+
+        // Factor por tipo de institución
+        const instOption = instSelect?.options[instSelect.selectedIndex];
+        const instNombre = instOption ? instOption.text : 'Centro de Salud';
+
+        if (totalEquiposEl) totalEquiposEl.textContent = totalEquipos.toString();
+        if (horasEvitadasEl) horasEvitadasEl.textContent = Math.round(horasTotalesEvitadas).toString();
+
+        let planTexto = '';
+        if (totalEquipos === 0) {
+          planTexto = 'Seleccione la cantidad de equipos para ver el plan sugerido';
+        } else if (minFreqMeses <= 3) {
+          planTexto = 'Plan de Inspección Trimestral con Verificación de Calibración';
+        } else if (minFreqMeses <= 4) {
+          planTexto = 'Plan de Inspección Cuatrimestral Programado';
+        } else {
+          planTexto = 'Plan de Mantenimiento Semestral Preventivo';
+        }
+
+        if (planFrecuenciaEl) planFrecuenciaEl.textContent = planTexto;
+
+        // Actualizar URL de WhatsApp
+        if (waBtn) {
+          const msg = `Hola TechHealth! Realicé el cálculo preventivo para ${instNombre}.\n` +
+            `*Equipos evaluados:* ${totalEquipos}\n` +
+            `*Horas de operatividad a resguardar:* ${Math.round(horasTotalesEvitadas)} hs/año\n` +
+            `*Plan sugerido:* ${planTexto}\n` +
+            `Quisiera coordinar una evaluación técnica para nuestra institución.`;
+
+          waBtn.href = `https://wa.me/${whatsappBase}?text=${encodeURIComponent(msg)}`;
+        }
+
+        if (announcement) {
+          announcement.textContent = `Cálculo actualizado: ${totalEquipos} equipos evaluados, ${Math.round(horasTotalesEvitadas)} horas de operatividad resguardadas.`;
+        }
+      };
+
+      // Event Listeners
+      sliders.forEach((slider) => {
+        slider.addEventListener('input', calcular);
+      });
+
+      instSelect?.addEventListener('change', calcular);
+
+      // Feedback en click de botón WhatsApp
+      waBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!btnText) return;
+        const origText = btnText.textContent;
+        btnText.textContent = 'Redirigiendo...';
+        waBtn.classList.add('opacity-70', 'pointer-events-none');
+
+        const href = waBtn.getAttribute('href');
+        if (href) {
+          const openedWin = window.open(href, '_blank');
+          if (openedWin) {
+            openedWin.opener = null;
+          } else {
+            window.location.href = href;
+          }
+        }
+
+        setTimeout(() => {
+          if (btnText) btnText.textContent = origText;
+          if (waBtn) waBtn.classList.remove('opacity-70', 'pointer-events-none');
+        }, 3000);
+      });
+
+      // Cálculo inicial
+      calcular();
+
+      return () => {
+        sliders.forEach((slider) => slider.removeEventListener('input', calcular));
+        instSelect?.removeEventListener('change', calcular);
+      };
+    }
+
+    let cleanup = initCalculadora();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initCalculadora();
+    });
+  })();
+</script>
