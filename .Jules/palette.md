@@ -129,3 +129,7 @@
 ## 2026-03-30 - Animación de rotación y armonía de color por foco en botones de reinicio de formulario
 **Learning:** En acciones secundarias de reinicio de formulario (como `#reset-contact-form`), equipar el botón contenedor con la clase Tailwind `group` e integrar micro-animaciones pareadas de rotación de 180 grados (`group-hover:rotate-180 group-focus-visible:rotate-180 transition-all duration-300`) junto con sincronización de color del ícono (`group-hover:text-navy group-focus-visible:text-navy`) provee una respuesta táctil y visual evidente que comunica claramente la acción de refresco/reinicio tanto para usuarios de ratón como de teclado.
 **Action:** Equipar siempre los íconos embebidos en botones de reinicio con clases `group-hover:rotate-180 group-focus-visible:rotate-180` y sincronización de color por foco.
+
+## 2026-03-30 - Semántica de listas de descripción accesibles en grillas de estadísticas clave
+**Learning:** En grillas o bloques de métricas clave (ej. estadísticas en `Hero.astro`), utilizar listas de descripción semánticas (`<dl>`) con etiquetas/términos en `<dt>` y valores numéricos en `<dd>` estructurados con la utilidad CSS `flex flex-col-reverse` preserva la colocación visual de los números arriba y las etiquetas abajo, garantizando al mismo tiempo que los lectores de pantalla anuncien primero el concepto/término y después su valor asociado.
+**Action:** Estructurar siempre las grillas de estadísticas mediante `<dl>` con etiquetas en `<dt>` y valores en `<dd>` combinados con `flex flex-col-reverse` y un `aria-label` descriptivo.
