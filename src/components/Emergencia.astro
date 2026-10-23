@@ -6,7 +6,7 @@ const { emergencia, contacto } = CONFIG;
 
 <section id="emergencia" class="py-10 px-[5%] content-visibility-auto">
   <div class="container-custom">
-    <div class="relative bg-navy rounded-[24px] p-8 md:p-12 overflow-hidden shadow-xl">
+    <div class="relative bg-navy rounded-[24px] p-8 md:p-12 overflow-hidden shadow-xl border border-white/10 hover:border-white/20 focus-within:border-white/20 transition-colors duration-300">
       <!-- Decorative element -->
       <div class="absolute -right-20 -top-20 w-64 h-64 bg-blue/10 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -34,7 +34,8 @@ const { emergencia, contacto } = CONFIG;
             target="_blank"
             rel="noopener noreferrer"
             title="Solicitar atención de emergencia por WhatsApp"
-            class="btn-primary w-full lg:w-auto bg-white text-navy hover:bg-blue-pale hover:text-blue focus-visible:bg-blue-pale focus-visible:text-blue flex items-center justify-center gap-3 border-none group"
+            aria-label="Solicitar atención de emergencia por WhatsApp"
+            class="btn-primary w-full lg:w-auto bg-white text-navy hover:bg-blue-pale hover:text-blue focus-visible:bg-blue-pale focus-visible:text-blue active:scale-[0.98] flex items-center justify-center gap-3 border-none group transition-all"
           >
             <svg class="w-6 h-6 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
               <use href="#icon-whatsapp" />
