@@ -486,11 +486,15 @@ import { CONFIG } from '../data/config';
           }, 3000);
         }
 
-        const openedWin = window.open(url, '_blank');
-        if (openedWin) {
-          openedWin.opener = null;
-        } else {
-          window.location.href = url;
+        // Security: Validate URL protocol to prevent DOM XSS via dangerous pseudoprotocols and enforce noopener,noreferrer tab isolation
+        const cleanUrl = url.trim();
+        if (!/^(javascript|data|vbscript):/i.test(cleanUrl)) {
+          const openedWin = window.open(cleanUrl, '_blank', 'noopener,noreferrer');
+          if (openedWin) {
+            openedWin.opener = null;
+          } else {
+            window.location.href = cleanUrl;
+          }
         }
       };
 
