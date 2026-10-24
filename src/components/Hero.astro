@@ -117,8 +117,10 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         heroCta.setAttribute('aria-disabled', 'true');
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
-        const href = heroCta.getAttribute('href');
-        if (href) {
+        const rawHref = heroCta.getAttribute('href') || '';
+        const href = rawHref.trim();
+        // Security: Strict allowlist ensures CTA only navigates to secure HTTPS or relative URLs
+        if (href && (href.startsWith('https://') || href.startsWith('/') || href.startsWith('#'))) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 

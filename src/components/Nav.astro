@@ -225,8 +225,10 @@ import { CONFIG } from '../data/config';
           redirectionAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         }
 
-        const href = cta.getAttribute('href');
-        if (href) {
+        const rawHref = cta.getAttribute('href') || '';
+        const href = rawHref.trim();
+        // Security: Strict allowlist ensures CTA only navigates to secure HTTPS or relative URLs
+        if (href && (href.startsWith('https://') || href.startsWith('/') || href.startsWith('#'))) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 
