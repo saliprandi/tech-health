@@ -38,7 +38,7 @@ test.describe('Navigation UX', () => {
     await expect(mobileMenu).toBeVisible();
 
     // Click outside menu (on position below menu)
-    await page.mouse.click(10, 500);
+    await page.mouse.click(10, 650);
     await expect(mobileMenu).not.toBeVisible();
     await expect(menuToggle).toHaveAttribute('aria-expanded', 'false');
 
