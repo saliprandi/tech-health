@@ -42,11 +42,28 @@ test.describe('WhatsApp Floating Button UX', () => {
     await btn.focus();
     await expect(tooltip).not.toHaveClass(/invisible/);
     await expect(tooltip).toHaveCSS('opacity', '1');
+    await expect(tooltip).toHaveAttribute('role', 'tooltip');
+    await expect(tooltip).toHaveAttribute('aria-hidden', 'false');
 
     await btn.blur();
     await expect(tooltip).toHaveClass(/opacity-0/);
+    await expect(tooltip).toHaveAttribute('aria-hidden', 'true');
     await page.waitForTimeout(600);
     await expect(tooltip).toHaveClass(/invisible/);
+  });
+
+  test('pressing Escape key dismisses the tooltip', async ({ page }) => {
+    const btn = page.locator('#wa-float-btn');
+    const tooltip = page.locator('#wa-tooltip');
+
+    await btn.focus();
+    await expect(tooltip).toHaveAttribute('aria-hidden', 'false');
+    await expect(tooltip).toHaveCSS('opacity', '1');
+
+    await page.keyboard.press('Escape');
+
+    await expect(tooltip).toHaveAttribute('aria-hidden', 'true');
+    await expect(tooltip).toHaveClass(/opacity-0/);
   });
 
   test('manual interaction should cancel auto-show timeout', async ({ page }) => {
