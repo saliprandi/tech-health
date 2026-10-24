@@ -443,8 +443,11 @@ import { CONFIG } from '../data/config';
             });
             if (res.ok) {
               const data = await res.json();
-              if (data && data.ticket_number) {
-                ticketNumber = data.ticket_number;
+              if (data && typeof data.ticket_number === 'string') {
+                const rawTicket = data.ticket_number.trim().toUpperCase().slice(0, 30);
+                if (/^[A-Z0-9\-_]{1,30}$/.test(rawTicket)) {
+                  ticketNumber = rawTicket;
+                }
               }
             }
           } catch {
