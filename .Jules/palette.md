@@ -19,7 +19,7 @@
 **Action:** Utilizar named groups para animaciones de foco en íconos embebidos en inputs/selects y equipar contadores de caracteres con regiones `aria-live="polite"` para garantizar feedback visual y por voz.
 
 ## 2026-03-30 - Fallback de redirección transparente para bloqueadores de ventanas emergentes en envíos de formulario
-**Learning:** En manejadores de envíos de formularios que abren enlaces externos (ej. WhatsApp) tras procesar eventos de cliente, `window.open(url, '_blank', 'noopener,noreferrer')` puede ser bloqueado en navegadores estrictos o webviews móviles. Evaluar la referencia resultante (`const openedWin = window.open(...)`) y aplicar `if (!openedWin) window.location.href = url` garantiza la navegación sin parpadeos de pestañas en blanco ni interrupciones silenciosas de UX.
+**Learning:** En manejadores de envíos de formularios que abren enlaces externos (ej. WhatsApp) tras procesar eventos de cliente, `window.open(url, '_blank', 'noopener,noreferrer')` puede ser blocked en navegadores estrictos o webviews móviles. Evaluar la referencia resultante (`const openedWin = window.open(...)`) y aplicar `if (!openedWin) window.location.href = url` garantiza la navegación sin parpadeos de pestañas en blanco ni interrupciones silenciosas de UX.
 **Action:** Usar asignación condicional `if (!openedWin) window.location.href = url` al abrir enlaces en manejadores de formularios para asegurar redundancia ante bloqueadores de popups.
 
 ## 2026-03-30 - Sincronización dinámica de atributos ARIA label en botones de copia y acción
@@ -129,3 +129,7 @@
 ## 2026-03-30 - Animación de rotación y armonía de color por foco en botones de reinicio de formulario
 **Learning:** En acciones secundarias de reinicio de formulario (como `#reset-contact-form`), equipar el botón contenedor con la clase Tailwind `group` e integrar micro-animaciones pareadas de rotación de 180 grados (`group-hover:rotate-180 group-focus-visible:rotate-180 transition-all duration-300`) junto con sincronización de color del ícono (`group-hover:text-navy group-focus-visible:text-navy`) provee una respuesta táctil y visual evidente que comunica claramente la acción de refresco/reinicio tanto para usuarios de ratón como de teclado.
 **Action:** Equipar siempre los íconos embebidos en botones de reinicio con clases `group-hover:rotate-180 group-focus-visible:rotate-180` y sincronización de color por foco.
+
+## 2026-03-30 - Estructura semántica description list <dl> y micro-UX en grillas de métricas
+**Learning:** En grillas o paneles de métricas y estadísticas (como en `src/components/Hero.astro`), sustituir contenedores genéricos `<div>` por listas de descripción semánticas `<dl aria-label="...">` con elementos `<dt>` (término/etiqueta) y `<dd>` (valor numérico) ofrece un contexto estructural claro para tecnologías de asistencia. Envolver cada ítem métrico en contenedores con efectos hover (`group/stat hover:bg-slate-50/80 transition-colors`) y utilizar `flex flex-col-reverse` permite preservar la presentación visual superior de los números grandes mientras se respeta la semántica del DOM.
+**Action:** Utilizar siempre `<dl>` con `<dt>` y `<dd>` en paneles de métricas/estadísticas, acompañados de `aria-label` explícito y micro-animaciones de hover.
