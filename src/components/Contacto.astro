@@ -486,11 +486,14 @@ import { CONFIG } from '../data/config';
           }, 3000);
         }
 
-        const openedWin = window.open(url, '_blank');
-        if (openedWin) {
-          openedWin.opener = null;
-        } else {
-          window.location.href = url;
+        // Security Hardening: Validate target URL protocol/domain, use window.open with 'noopener,noreferrer', and fallback to location.href if popups are blocked
+        if (/^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i.test(url)) {
+          const openedWin = window.open(url, '_blank', 'noopener,noreferrer');
+          if (openedWin) {
+            openedWin.opener = null;
+          } else {
+            window.location.href = url;
+          }
         }
       };
 
