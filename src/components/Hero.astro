@@ -60,14 +60,14 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       <div class="bg-white rounded-card p-10 shadow-hero-card">
         
         <!-- Stats Grid -->
-        <div class="grid grid-cols-2 gap-6 mb-8 pb-8 border-b border-border">
+        <dl class="grid grid-cols-2 gap-4 mb-8 pb-8 border-b border-border" aria-label="Estadísticas y métricas de servicio">
           {CONFIG.stats.map(stat => (
-            <div>
-              <div class="font-heading font-extrabold text-[42px] text-navy leading-none mb-1">{stat.numero}</div>
-              <div class="font-body font-medium text-[12px] text-text-soft uppercase tracking-wide">{stat.label}</div>
+            <div class="group/stat flex flex-col-reverse p-2 rounded-lg hover:bg-slate-50/80 transition-colors duration-200">
+              <dt class="font-body font-medium text-[12px] text-text-soft uppercase tracking-wide group-hover/stat:text-navy transition-colors">{stat.label}</dt>
+              <dd class="font-heading font-extrabold text-[42px] text-navy leading-none mb-1">{stat.numero}</dd>
             </div>
           ))}
-        </div>
+        </dl>
 
         <!-- Equipos List -->
         <div>
