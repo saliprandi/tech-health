@@ -193,4 +193,50 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora_downtime: {
+    titulo: "Calculadora de Impacto por Equipo Inactivo",
+    subtitulo: "Estime el impacto operativo de un equipo fuera de servicio y evalúe la solución técnica inmediata de TechHealth.",
+    equipos: [
+      { id: "ecografo", nombre: "Ecógrafo / Diagnóstico por Imagen", costo_estudio_promedio: 25000, estudios_diarios_default: 12 },
+      { id: "monitor", nombre: "Monitor de Signos Vitales (UTI/Quirófano)", costo_estudio_promedio: 18000, estudios_diarios_default: 15 },
+      { id: "respirador", nombre: "Respirador / Ventilador Mecánico", costo_estudio_promedio: 45000, estudios_diarios_default: 8 },
+      { id: "electrobisturi", nombre: "Electrobisturí / Unidad Quirúrgica", costo_estudio_promedio: 35000, estudios_diarios_default: 10 },
+      { id: "defibrilador", nombre: "Desfibrilador / Electrocardiógrafo", costo_estudio_promedio: 15000, estudios_diarios_default: 14 }
+    ]
+  },
+
+  cobertura_noa: {
+    titulo: "Zonas de Cobertura y Tiempos de Respuesta NOA",
+    subtitulo: "Garantía de respuesta rápida in-situ y laboratorio central de microelectrónica en San Miguel de Tucumán.",
+    zonas: [
+      {
+        id: "gran-tucuman",
+        nombre: "San Miguel de Tucumán y Gran Tucumán",
+        badge: "Respuesta en < 24h",
+        descripcion: "Atención prioritaria inmediata para clínicas, sanatorios y centros de diagnóstico en la zona metropolitana.",
+        modalidad: "Inspección in-situ + Retiro expreso a laboratorio",
+        sla_urgencia: "Guardia activa 24h",
+        localidades: ["San Miguel de Tucumán", "Yerba Buena", "Tafí Viejo", "Banda del Río Salí", "Lules"]
+      },
+      {
+        id: "interior-tucuman",
+        nombre: "Interior de Tucumán",
+        badge: "Respuesta en 24h - 48h",
+        descripcion: "Desplazamiento técnico programado y soporte para instituciones de salud en el interior provincial.",
+        modalidad: "Visitas programadas in-situ y traslado seguro de equipos",
+        sla_urgencia: "Coordinación prioritaria en 24 hs",
+        localidades: ["Concepción", "Monteros", "Aguilares", "Bella Vista", "Famaillá"]
+      },
+      {
+        id: "provincias-noa",
+        nombre: "Provincias del NOA (Salta, Jujuy, Catamarca, Santiago)",
+        badge: "Atención Coordinada",
+        descripcion: "Soporte de alta complejidad a nivel de placa electrónica en laboratorio central especializado.",
+        modalidad: "Recepción por transporte técnico certificado y diagnóstico express",
+        sla_urgencia: "Diagnóstico express en 48 hs desde recepción",
+        localidades: ["Santiago del Estero", "Salta", "San Fernando del Valle de Catamarca", "San Salvador de Jujuy"]
+      }
+    ]
+  }
 };
