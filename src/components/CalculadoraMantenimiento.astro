@@ -1,0 +1,386 @@
+---
+import { CONFIG } from '../data/config';
+---
+
+<section id="calculadora" class="scroll-mt-20 bg-off-white section-padding content-visibility-auto">
+  <div class="container-custom">
+
+    <!-- Encabezado de la sección -->
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="inline-flex items-center gap-2 bg-blue-pale text-blue font-heading font-bold text-[12px] uppercase tracking-wider py-1.5 px-3.5 rounded-full mb-3">
+        <span>Planificación B2B</span>
+      </div>
+      <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-4">
+        Calculadora de Mantenimiento Preventivo
+      </h2>
+      <p class="font-body text-[16px] text-text-soft">
+        Planifique el esquema de mantenimiento óptimo para el parque tecnológico de su institución médica en Tucumán y el NOA. Seleccione el equipamiento y nivel de criticidad para obtener una recomendación técnica personalizada.
+      </p>
+    </div>
+
+    <!-- Contenedor principal de la calculadora -->
+    <div class="bg-white rounded-card border border-border p-6 md:p-10 shadow-hero-card max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <!-- Columna Formulario / Controles (7 cols) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+
+        <!-- Seleccionar Tipo de Equipo -->
+        <div class="flex flex-col gap-2">
+          <label for="calc-equipo" class="font-heading font-bold text-[14px] text-navy">
+            1. Tipo de Equipamiento Medico <span class="text-blue" aria-hidden="true">*</span>
+          </label>
+          <div class="relative group/select">
+            <select
+              id="calc-equipo"
+              class="w-full bg-off-white border border-border rounded-[8px] px-4 py-3 text-[14px] text-navy font-body focus:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 transition-colors appearance-none pr-10 cursor-pointer"
+            >
+              {CONFIG.equipos_atendidos.filter(e => !e.includes('Y mucho más')).map((equipo) => (
+                <option value={equipo}>{equipo}</option>
+              ))}
+            </select>
+            <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-soft pointer-events-none group-focus-within/select:rotate-180 group-focus-within/select:text-blue transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+          <p class="font-body text-[12px] text-text-soft">Seleccione la categoría principal del equipamiento a cotizar.</p>
+        </div>
+
+        <!-- Seleccionar Criticidad del Area -->
+        <div class="flex flex-col gap-2">
+          <span class="font-heading font-bold text-[14px] text-navy">
+            2. Nivel de Criticidad del Área <span class="text-blue" aria-hidden="true">*</span>
+          </span>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" role="radiogroup" aria-label="Nivel de criticidad del área médica">
+
+            <label class="calc-criticidad-option relative flex flex-col items-center text-center p-3.5 rounded-[10px] border-2 border-border hover:border-blue/50 cursor-pointer transition-all focus-within:ring-2 focus-within:ring-blue focus-within:ring-offset-2 bg-off-white/50">
+              <input type="radio" name="calc-criticidad" value="alta" checked class="sr-only" />
+              <span class="w-3 h-3 rounded-full bg-red-500 mb-1.5" aria-hidden="true"></span>
+              <span class="font-heading font-bold text-[13px] text-navy">Alta (UTI / Guardia)</span>
+              <span class="font-body text-[11px] text-text-soft mt-1">Uso crítico 24/7</span>
+            </label>
+
+            <label class="calc-criticidad-option relative flex flex-col items-center text-center p-3.5 rounded-[10px] border-2 border-border hover:border-blue/50 cursor-pointer transition-all focus-within:ring-2 focus-within:ring-blue focus-within:ring-offset-2 bg-off-white/50">
+              <input type="radio" name="calc-criticidad" value="media" class="sr-only" />
+              <span class="w-3 h-3 rounded-full bg-amber-500 mb-1.5" aria-hidden="true"></span>
+              <span class="font-heading font-bold text-[13px] text-navy">Media (Quirófano)</span>
+              <span class="font-body text-[11px] text-text-soft mt-1">Uso diario continuo</span>
+            </label>
+
+            <label class="calc-criticidad-option relative flex flex-col items-center text-center p-3.5 rounded-[10px] border-2 border-border hover:border-blue/50 cursor-pointer transition-all focus-within:ring-2 focus-within:ring-blue focus-within:ring-offset-2 bg-off-white/50">
+              <input type="radio" name="calc-criticidad" value="estandar" class="sr-only" />
+              <span class="w-3 h-3 rounded-full bg-blue mb-1.5" aria-hidden="true"></span>
+              <span class="font-heading font-bold text-[13px] text-navy">Estándar (Consultorios)</span>
+              <span class="font-body text-[11px] text-text-soft mt-1">Atención ambulatoria</span>
+            </label>
+
+          </div>
+        </div>
+
+        <!-- Cantidad de Equipos -->
+        <div class="flex flex-col gap-2">
+          <label for="calc-cantidad" class="font-heading font-bold text-[14px] text-navy">
+            3. Cantidad de Unidades <span class="text-blue" aria-hidden="true">*</span>
+          </label>
+          <div class="flex items-center gap-3">
+            <button
+              type="button"
+              id="calc-dec-btn"
+              title="Disminuir cantidad"
+              class="w-11 h-11 rounded-[8px] bg-off-white border border-border text-navy font-bold text-lg flex items-center justify-center hover:bg-blue-pale hover:text-blue hover:border-blue/30 active:scale-95 focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 outline-none transition-all duration-200"
+              aria-label="Disminuir cantidad de unidades"
+            >
+              −
+            </button>
+            <input
+              type="number"
+              id="calc-cantidad"
+              min="1"
+              max="100"
+              value="5"
+              required
+              class="w-24 text-center bg-off-white border border-border rounded-[8px] py-2.5 text-[16px] font-heading font-bold text-navy focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 outline-none"
+            />
+            <button
+              type="button"
+              id="calc-inc-btn"
+              title="Aumentar cantidad"
+              class="w-11 h-11 rounded-[8px] bg-off-white border border-border text-navy font-bold text-lg flex items-center justify-center hover:bg-blue-pale hover:text-blue hover:border-blue/30 active:scale-95 focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 outline-none transition-all duration-200"
+              aria-label="Aumentar cantidad de unidades"
+            >
+              +
+            </button>
+            <span class="font-body text-[13px] text-text-soft">unidades a mantener</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Columna Resumen y Recomendación Técnica (5 cols) -->
+      <div class="lg:col-span-5 bg-navy text-white rounded-[16px] p-6 sm:p-8 flex flex-col justify-between min-h-[380px]">
+        <div>
+          <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+            <span class="font-heading font-bold text-[13px] text-blue-light uppercase tracking-wider">Plan Recomendado</span>
+            <span id="calc-badge-frecuencia" class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-red-500/20 text-red-300 border border-red-500/30">
+              Trimestral
+            </span>
+          </div>
+
+          <div class="flex flex-col gap-4 mb-6">
+            <div>
+              <div class="font-body text-[12px] text-white/60 uppercase tracking-wider mb-1">Frecuencia de inspección</div>
+              <div id="calc-frecuencia-texto" class="font-heading font-extrabold text-[22px] text-white">4 revisiones al año</div>
+              <p id="calc-frecuencia-desc" class="font-body text-[13px] text-white/70 mt-1">Recomendado para áreas críticas con alta demanda operativa (UTI / Guardia).</p>
+            </div>
+
+            <div class="pt-4 border-t border-white/10">
+              <div class="font-body text-[12px] text-white/60 uppercase tracking-wider mb-1">Volumen anual estimado</div>
+              <div id="calc-total-intervenciones" class="font-heading font-bold text-[20px] text-blue-light">20 intervenciones técnicas / año</div>
+            </div>
+
+            <div class="pt-4 border-t border-white/10">
+              <div class="font-heading font-bold text-[13px] text-white mb-2">Incluido en el servicio:</div>
+              <ul class="flex flex-col gap-2 text-[12px] text-white/80 font-body" role="list">
+                <li class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  <span>Informes técnicos válidos para auditorías sanitarias</span>
+                </li>
+                <li class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  <span>Garantía técnica de 90 días por intervención</span>
+                </li>
+                <li class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  <span>Verificación y calibración con instrumental especializado</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón Solicitar Cotización WhatsApp -->
+        <div class="pt-4">
+          <button
+            type="button"
+            id="calc-cta-btn"
+            data-whatsapp={CONFIG.contacto.whatsapp}
+            class="group w-full bg-white text-navy font-heading font-bold py-3.5 px-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-light cursor-pointer shadow-md"
+          >
+            <svg id="calc-cta-icon-wa" class="w-5 h-5 fill-current text-navy group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
+              <use href="#icon-whatsapp" />
+            </svg>
+            <svg id="calc-cta-spinner" class="hidden animate-spin w-5 h-5 text-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span id="calc-cta-text">Solicitar Cotización B2B</span>
+            <svg id="calc-cta-arrow" class="w-4 h-4 text-navy/70 group-hover:text-navy group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+          <div id="calc-announcement" class="sr-only" aria-live="polite"></div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<script>
+  (function() {
+    function initCalculadora() {
+      const selectEquipo = document.getElementById('calc-equipo') as HTMLSelectElement | null;
+      const radioCriticidad = document.querySelectorAll('input[name="calc-criticidad"]') as NodeListOf<HTMLInputElement>;
+      const criticidadOptions = document.querySelectorAll('.calc-criticidad-option');
+      const inputCantidad = document.getElementById('calc-cantidad') as HTMLInputElement | null;
+      const decBtn = document.getElementById('calc-dec-btn');
+      const incBtn = document.getElementById('calc-inc-btn');
+
+      const badgeFrecuencia = document.getElementById('calc-badge-frecuencia');
+      const frecuenciaTexto = document.getElementById('calc-frecuencia-texto');
+      const frecuenciaDesc = document.getElementById('calc-frecuencia-desc');
+      const totalIntervenciones = document.getElementById('calc-total-intervenciones');
+
+      const ctaBtn = document.getElementById('calc-cta-btn') as HTMLButtonElement | null;
+      const ctaText = document.getElementById('calc-cta-text');
+      const ctaIconWa = document.getElementById('calc-cta-icon-wa');
+      const ctaArrow = document.getElementById('calc-cta-arrow');
+      const ctaSpinner = document.getElementById('calc-cta-spinner');
+      const announcement = document.getElementById('calc-announcement');
+
+      if (!selectEquipo || !inputCantidad || !ctaBtn) return () => {};
+
+      const CONFIG_CRITICIDAD: Record<string, {
+        titulo: string;
+        badgeText: string;
+        badgeClass: string;
+        frecuenciaNum: number;
+        frecuenciaTexto: string;
+        frecuenciaDesc: string;
+      }> = {
+        alta: {
+          titulo: 'Alta (UTI / Guardia)',
+          badgeText: 'Trimestral',
+          badgeClass: 'px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-red-500/20 text-red-300 border border-red-500/30',
+          frecuenciaNum: 4,
+          frecuenciaTexto: '4 revisiones al año (Cada 3 meses)',
+          frecuenciaDesc: 'Recomendado para áreas críticas con alta demanda operativa (UTI / Guardia / Emergencias).'
+        },
+        media: {
+          titulo: 'Media (Quirófano)',
+          badgeText: 'Semestral',
+          badgeClass: 'px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30',
+          frecuenciaNum: 2,
+          frecuenciaTexto: '2 revisiones al año (Cada 6 meses)',
+          frecuenciaDesc: 'Recomendado para áreas quirúrgicas y salas de hospitalización de mediana complejidad.'
+        },
+        estandar: {
+          titulo: 'Estándar (Consultorios)',
+          badgeText: 'Anual',
+          badgeClass: 'px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-blue-light/20 text-blue-light border border-blue-light/30',
+          frecuenciaNum: 1,
+          frecuenciaTexto: '1 revisión al año (Anual)',
+          frecuenciaDesc: 'Recomendado para equipos en consultorios externos y atención ambulatoria de baja intensidad.'
+        }
+      };
+
+      const updateRadioSelectionStyles = () => {
+        criticidadOptions.forEach((option) => {
+          const input = option.querySelector('input[type="radio"]') as HTMLInputElement | null;
+          if (input && input.checked) {
+            option.classList.add('border-blue', 'bg-blue-pale/40', 'shadow-sm');
+            option.classList.remove('border-border', 'bg-off-white/50');
+          } else {
+            option.classList.remove('border-blue', 'bg-blue-pale/40', 'shadow-sm');
+            option.classList.add('border-border', 'bg-off-white/50');
+          }
+        });
+      };
+
+      const calculatePlan = () => {
+        let criticidadValue = 'alta';
+        radioCriticidad.forEach((radio) => {
+          if (radio.checked) criticidadValue = radio.value;
+        });
+
+        const cfg = CONFIG_CRITICIDAD[criticidadValue] || CONFIG_CRITICIDAD.alta;
+        const cantidad = Math.max(1, Math.min(100, parseInt(inputCantidad.value, 10) || 1));
+        const total = cantidad * cfg.frecuenciaNum;
+
+        if (badgeFrecuencia) {
+          badgeFrecuencia.textContent = cfg.badgeText;
+          badgeFrecuencia.className = cfg.badgeClass;
+        }
+
+        if (frecuenciaTexto) frecuenciaTexto.textContent = cfg.frecuenciaTexto;
+        if (frecuenciaDesc) frecuenciaDesc.textContent = cfg.frecuenciaDesc;
+
+        if (totalIntervenciones) {
+          totalIntervenciones.textContent = `${total} ${total === 1 ? 'intervención técnica' : 'intervenciones técnicas'} / año`;
+        }
+
+        updateRadioSelectionStyles();
+      };
+
+      const handleDec = () => {
+        const val = parseInt(inputCantidad.value, 10) || 1;
+        if (val > 1) {
+          inputCantidad.value = String(val - 1);
+          calculatePlan();
+        }
+      };
+
+      const handleInc = () => {
+        const val = parseInt(inputCantidad.value, 10) || 1;
+        if (val < 100) {
+          inputCantidad.value = String(val + 1);
+          calculatePlan();
+        }
+      };
+
+      const handleCantidadInput = () => {
+        calculatePlan();
+      };
+
+      let isRedirecting = false;
+
+      const handleCtaClick = (e: MouseEvent) => {
+        e.preventDefault();
+        if (isRedirecting) return;
+
+        let criticidadValue = 'alta';
+        radioCriticidad.forEach((radio) => {
+          if (radio.checked) criticidadValue = radio.value;
+        });
+        const cfg = CONFIG_CRITICIDAD[criticidadValue] || CONFIG_CRITICIDAD.alta;
+        const equipo = selectEquipo.value;
+        const cantidad = Math.max(1, Math.min(100, parseInt(inputCantidad.value, 10) || 1));
+        const total = cantidad * cfg.frecuenciaNum;
+
+        const mensaje = `Hola TechHealth! Deseo solicitar una cotización formal para un Plan de Mantenimiento Preventivo B2B:\n*Equipo:* ${equipo}\n*Cantidad:* ${cantidad} unidades\n*Criticidad:* ${cfg.titulo}\n*Frecuencia recomendada:* ${cfg.frecuenciaTexto}\n*Estimación anual:* ${total} intervenciones.`;
+
+        const waNumber = (ctaBtn.dataset.whatsapp || '').replace(/\D/g, '');
+        const targetUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(mensaje)}`;
+
+        // Security check on domain target URL
+        if (!/^https:\/\/(wa\.me|api\.whatsapp\.com)\//.test(targetUrl)) return;
+
+        isRedirecting = true;
+        if (ctaText) ctaText.textContent = 'Redirigiendo...';
+        if (ctaIconWa) ctaIconWa.classList.add('hidden');
+        if (ctaArrow) ctaArrow.classList.add('hidden');
+        if (ctaSpinner) ctaSpinner.classList.remove('hidden');
+        if (announcement) announcement.textContent = 'Redirigiendo a WhatsApp para solicitar cotización...';
+
+        ctaBtn.setAttribute('aria-busy', 'true');
+        ctaBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+        // Safe window.open popup blocker fallback pattern
+        const openedWin = window.open(targetUrl, '_blank');
+        if (openedWin) {
+          openedWin.opener = null;
+        } else {
+          window.location.href = targetUrl;
+        }
+
+        setTimeout(() => {
+          isRedirecting = false;
+          if (ctaText) ctaText.textContent = 'Solicitar Cotización B2B';
+          if (ctaIconWa) ctaIconWa.classList.remove('hidden');
+          if (ctaArrow) ctaArrow.classList.remove('hidden');
+          if (ctaSpinner) ctaSpinner.classList.add('hidden');
+          if (announcement) announcement.textContent = '';
+          if (ctaBtn) {
+            ctaBtn.removeAttribute('aria-busy');
+            ctaBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          }
+        }, 3000);
+      };
+
+      selectEquipo.addEventListener('change', calculatePlan);
+      radioCriticidad.forEach((radio) => radio.addEventListener('change', calculatePlan));
+      inputCantidad.addEventListener('input', handleCantidadInput);
+      decBtn?.addEventListener('click', handleDec);
+      incBtn?.addEventListener('click', handleInc);
+      ctaBtn.addEventListener('click', handleCtaClick as EventListener);
+
+      calculatePlan();
+
+      return () => {
+        selectEquipo.removeEventListener('change', calculatePlan);
+        radioCriticidad.forEach((radio) => radio.removeEventListener('change', calculatePlan));
+        inputCantidad.removeEventListener('input', handleCantidadInput);
+        decBtn?.removeEventListener('click', handleDec);
+        incBtn?.removeEventListener('click', handleInc);
+        ctaBtn.removeEventListener('click', handleCtaClick as EventListener);
+      };
+    }
+
+    let cleanup = initCalculadora();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initCalculadora();
+    });
+  })();
+</script>
