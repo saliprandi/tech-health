@@ -18,9 +18,13 @@ test.describe('Diferenciales Micro-UX & Accessibility', () => {
       const card = cards.nth(i);
       await expect(card).toHaveClass(/hover:-translate-y-1/);
       await expect(card).toHaveClass(/focus-within:-translate-y-1/);
-      await expect(card).toHaveClass(/focus-within:ring-2/);
-      await expect(card).toHaveClass(/focus-within:ring-blue/);
-      await expect(card).toHaveClass(/focus-within:ring-offset-2/);
+
+      const link = card.locator('a[href="#contacto"]');
+      await expect(link).toBeVisible();
+      await expect(link).toHaveAttribute('aria-label', /^Consultar por /);
+      await expect(link).toHaveAttribute('title', /^Consultar por /);
+      await expect(link).toHaveClass(/focus-visible:ring-2/);
+      await expect(link).toHaveClass(/focus-visible:ring-blue/);
     }
   });
 });

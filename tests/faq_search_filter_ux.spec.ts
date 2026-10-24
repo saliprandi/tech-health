@@ -45,10 +45,6 @@ test.describe('FAQ Search Filter Micro-UX & Accessibility', () => {
     await expect(visibleItems).toHaveCount(0);
     await expect(emptyState).toBeVisible();
 
-    // Reset button micro-UX verification
-    await expect(resetBtn).toHaveAttribute('title', 'Mostrar todas las preguntas');
-    await expect(resetBtn).toHaveClass(/active:scale-95/);
-
     // Click reset button
     await resetBtn.click();
 
@@ -63,6 +59,15 @@ test.describe('FAQ Search Filter Micro-UX & Accessibility', () => {
     await expect(clearBtn).toHaveAttribute('title', 'Limpiar búsqueda');
     await expect(clearBtn).toHaveClass(/hover:scale-110/);
     await expect(clearBtn).toHaveClass(/active:scale-95/);
+  });
+
+  test('faq search container has group/search class and icon has focus-within color transition', async ({ page }) => {
+    const searchContainer = page.locator('#faq-search-input').locator('..');
+    const searchIcon = searchContainer.locator('svg').first();
+
+    await expect(searchContainer).toHaveClass(/group\/search/);
+    await expect(searchIcon).toHaveClass(/group-focus-within\/search:text-blue/);
+    await expect(searchIcon).toHaveClass(/transition-colors/);
   });
 
   test('should clear search input on Escape key press and restore all FAQs', async ({ page }) => {

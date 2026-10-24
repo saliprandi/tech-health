@@ -25,12 +25,13 @@ const modalData = CONFIG.servicios.map(servicio => ({
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]" data-modal-data={JSON.stringify(modalData)} data-whatsapp={CONFIG.contacto.whatsapp}>
       {CONFIG.servicios.map((servicio, index) => (
         <div
-          class="service-card group relative bg-off-white border border-transparent rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover hover:-translate-y-1 focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:-translate-y-1 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue"
+          class="service-card group relative bg-off-white border border-transparent rounded-card p-8 transition-all duration-300 hover:bg-white hover:shadow-card-hover hover:-translate-y-1 focus-visible:bg-white focus-visible:shadow-card-hover focus-visible:-translate-y-1 active:scale-[0.98] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue"
           data-index={index}
           tabindex="0"
           role="button"
           aria-haspopup="dialog"
           aria-label={`Ver detalles: ${servicio.titulo}`}
+          title={`Ver detalles: ${servicio.titulo}`}
         >
           <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-navy to-blue origin-left scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-500 ease-out"></div>
 
@@ -166,7 +167,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
             ${servicio.items.map((item: string) => `<li class="flex items-start gap-4 font-body text-[15px] text-text-soft"><span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>${escapeHtml(item)}</li>`).join('')}
           </ul>
           <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
-            <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark transition-all shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta">
+            <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark active:scale-[0.98] transition-all shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta" title="Consultar por este servicio en WhatsApp">
               <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true"><use href="#icon-whatsapp" /></svg>
               <span id="modal-cta-text">Consultar por este servicio</span>
               <svg class="w-4 h-4 text-white/70 group-hover:text-white group-focus-visible:text-white group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -174,7 +175,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
               </svg>
               <span id="modal-cta-announcement" class="sr-only" aria-live="polite"></span>
             </a>
-            <button type="button" id="modal-close-secondary" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy px-4 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">Cerrar</button>
+            <button type="button" id="modal-close-secondary" title="Cerrar detalles del servicio" class="w-full sm:w-auto text-text-soft font-body font-medium hover:text-navy active:scale-95 px-4 py-2 transition-all focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md">Cerrar</button>
           </div>
         `;
 

@@ -19,7 +19,7 @@ import { CONFIG } from '../data/config';
         <div class="flex flex-col gap-4">
           <!-- WhatsApp Card -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white focus-within:bg-off-white border border-transparent hover:border-border focus-within:border-border transition-colors">
-            <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-inset" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
+            <a href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-inset" aria-label={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`} title={`Contactar por WhatsApp: ${CONFIG.contacto.whatsapp_display}`}></a>
             <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-within:scale-110 pointer-events-none">
               <svg class="w-5 h-5 group-hover:animate-heartbeat group-focus-within:animate-heartbeat" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-whatsapp" />
@@ -41,7 +41,7 @@ import { CONFIG } from '../data/config';
 
           <!-- Laboratorio Card -->
           <div class="group relative flex items-start gap-4 p-4 rounded-[12px] hover:bg-off-white focus-within:bg-off-white border border-transparent hover:border-border focus-within:border-border transition-colors">
-            <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-inset" aria-label={`Ver en Google Maps: ${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}></a>
+            <a href={CONFIG.contacto.maps_url} target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 rounded-[12px] outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-inset" aria-label={`Ver en Google Maps: ${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`} title={`Ver en Google Maps: ${CONFIG.contacto.direccion}, ${CONFIG.contacto.ciudad_completa}`}></a>
             <div class="relative z-10 w-10 h-10 rounded-full bg-blue-pale text-blue flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-focus-within:scale-110 pointer-events-none">
               <svg class="w-5 h-5" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <use href="#icon-map-pin" />
@@ -132,7 +132,7 @@ import { CONFIG } from '../data/config';
 
           <p class="font-body text-[12px] text-white/50 text-center">El mensaje le redirigirá a WhatsApp</p>
 
-          <button type="submit" id="f-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-blue-light outline-none">
+          <button type="submit" id="f-submit" title="Enviar consulta por WhatsApp" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-blue-light outline-none">
             <svg id="f-submit-icon" class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
               <use href="#icon-whatsapp" />
             </svg>
@@ -167,12 +167,20 @@ import { CONFIG } from '../data/config';
                   <span id="copy-ticket-text" class="pointer-events-none">Copiar ticket</span>
                 </button>
               </div>
-              <a id="ticket-confirmation-link" href="/estado" class="inline-flex items-center gap-1.5 font-body font-medium text-[13px] text-blue hover:text-navy focus-visible:text-navy underline-offset-4 hover:underline focus-visible:underline outline-none rounded-sm focus-visible:ring-2 focus-visible:ring-blue transition-all">
-                <span>Ver estado de mi reparación</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
+              <div class="flex items-center flex-wrap gap-3">
+                <a id="ticket-confirmation-link" href="/estado" class="group inline-flex items-center gap-1.5 font-body font-medium text-[13px] text-blue hover:text-navy focus-visible:text-navy underline-offset-4 hover:underline focus-visible:underline outline-none rounded-sm focus-visible:ring-2 focus-visible:ring-blue transition-all" title="Ver estado de mi reparación" aria-label="Ver estado de mi reparación">
+                  <span>Ver estado de mi reparación</span>
+                  <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+                <button type="button" id="reset-contact-form" title="Reiniciar formulario para enviar otra consulta" class="group inline-flex items-center gap-1 font-body font-medium text-[12px] text-text-soft hover:text-navy focus-visible:text-navy active:scale-95 transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm px-1.5 py-0.5 bg-white border border-border" aria-label="Reiniciar formulario para enviar otra consulta">
+                  <svg class="w-3.5 h-3.5 text-text-soft group-hover:text-navy group-focus-visible:text-navy group-hover:rotate-180 group-focus-visible:rotate-180 transition-all duration-300" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  <span>Nueva consulta</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -497,6 +505,23 @@ import { CONFIG } from '../data/config';
       };
       desc?.addEventListener('keydown', handleDescKeydown);
 
+      const resetContactBtn = document.getElementById('reset-contact-form');
+      const handleResetContact = () => {
+        form.reset();
+        updateCounter();
+        const ticketBanner = document.getElementById('ticket-confirmation');
+        if (ticketBanner) ticketBanner.classList.add('hidden');
+        if (redirectAnnouncement) {
+          redirectAnnouncement.textContent = 'Formulario reiniciado para una nueva consulta';
+        }
+        const firstInput = document.getElementById('f-nombre') as HTMLInputElement | null;
+        firstInput?.focus();
+        setTimeout(() => {
+          if (redirectAnnouncement) redirectAnnouncement.textContent = '';
+        }, 2000);
+      };
+      resetContactBtn?.addEventListener('click', handleResetContact);
+
       const cleanupPhone = setupCopy('copy-phone', 'copy-phone-text', 'copy-phone-icon-use', 'phone-text', 'Teléfono copiado');
       const cleanupAddress = setupCopy('copy-address', 'copy-address-text', 'copy-address-icon-use', 'address-text', 'Dirección copiada');
       const cleanupTicket = setupCopy('copy-ticket', 'copy-ticket-text', 'copy-ticket-icon-use', 'ticket-confirmation-number', 'Número de ticket copiado');
@@ -512,6 +537,7 @@ import { CONFIG } from '../data/config';
         cleanupPhone();
         cleanupAddress();
         cleanupTicket();
+        resetContactBtn?.removeEventListener('click', handleResetContact);
         form.removeEventListener('submit', handleSubmit);
         form.removeEventListener('input', handleInput);
         form.removeEventListener('invalid', handleInvalid, true);

@@ -6,12 +6,12 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 	<!-- Nav simplificado -->
 	<nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border" aria-label="Navegación de consulta">
 		<div class="container-custom h-full px-[5%] flex items-center justify-between">
-			<a href="/" class="flex items-center group outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-sm" aria-label="TechHealth Home">
+			<a href="/" class="flex items-center group outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-sm" aria-label="TechHealth Home" title="Ir al inicio - TechHealth">
 				<!-- Performance Optimization: fetchpriority="high" prioritizes above-the-fold logo rendering for better LCP -->
 				<img src="/logo-name.svg" alt="TechHealth Medical Engineering" width="228" height="56" loading="eager" decoding="async" fetchpriority="high" class="h-[56px] w-auto group-hover:scale-105 group-focus-visible:scale-105 transition-transform duration-300" />
 			</a>
-			<a href="/" class="group inline-flex items-center gap-1.5 font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-sm px-2.5 py-1.5" aria-label="Volver a la página principal">
-				<svg class="w-4 h-4 text-text-soft group-hover:text-navy group-hover:-translate-x-0.5 group-focus-visible:-translate-x-0.5 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+			<a href="/" class="group inline-flex items-center gap-1.5 font-body font-medium text-[14px] text-text-soft hover:text-navy active:scale-95 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-sm px-2.5 py-1.5" aria-label="Volver a la página principal" title="Volver a la página principal">
+				<svg class="w-4 h-4 text-text-soft group-hover:text-navy group-focus-visible:text-navy group-hover:-translate-x-0.5 group-focus-visible:-translate-x-0.5 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
 				</svg>
 				<span>Volver al inicio</span>
@@ -63,7 +63,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 						</div>
 						<p id="ticket-input-hint" class="font-body text-[12px] text-white/50">Formato: letras y números (ej. TH-2026-1234)</p>
 					</div>
-					<button type="submit" id="estado-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-light">
+					<button type="submit" id="estado-submit" title="Consultar estado de reparación" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-light">
 						<svg id="estado-spinner" class="hidden w-5 h-5 animate-spin text-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
 							<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
 							<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>

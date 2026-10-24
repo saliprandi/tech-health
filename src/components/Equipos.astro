@@ -19,15 +19,28 @@ import { CONFIG } from '../data/config';
     <!-- Grid -->
     <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" role="list" aria-label="Equipos médicos que atendemos">
       {CONFIG.equipos_atendidos.map(equipo => (
-        <li class="group flex items-center gap-4 bg-white/5 border border-white/10 rounded-[12px] p-4 hover:bg-white/10 focus-within:bg-white/10 hover:border-white/20 hover:scale-[1.02] focus-within:scale-[1.02] focus-within:border-white/20 transition-all duration-300">
-          <!-- ECG Icon -->
-          <svg class="w-[28px] h-[28px] text-blue-light flex-shrink-0 group-hover:animate-heartbeat group-focus-within:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
-            <use href="#icon-ecg" />
-          </svg>
-          <!-- Text -->
-          <span class="font-body font-medium text-[13px] text-white/85 group-hover:text-white group-focus-within:text-white group-focus-visible:text-white leading-tight transition-colors duration-300">
-            {equipo}
-          </span>
+        <li class="group bg-white/5 border border-white/10 rounded-[12px] hover:bg-white/10 focus-within:bg-white/10 hover:border-white/20 hover:scale-[1.02] focus-within:scale-[1.02] focus-within:border-white/20 transition-all duration-300">
+          <a
+            href="#contacto"
+            class="flex items-center justify-between gap-3 p-4 w-full outline-none focus-visible:ring-2 focus-visible:ring-blue-light focus-visible:ring-offset-2 focus-visible:ring-offset-navy rounded-[12px] active:scale-95 transition-all duration-200"
+            aria-label={`Consultar servicio técnico para ${equipo}`}
+            title={`Consultar servicio técnico para ${equipo}`}
+          >
+            <div class="flex items-center gap-3.5">
+              <!-- ECG Icon -->
+              <svg class="w-[26px] h-[26px] text-blue-light flex-shrink-0 group-hover:animate-heartbeat group-focus-within:animate-heartbeat" aria-hidden="true">
+                <use href="#icon-ecg" />
+              </svg>
+              <!-- Text -->
+              <span class="font-body font-medium text-[13px] text-white/85 group-hover:text-white group-focus-within:text-white leading-tight transition-colors duration-300">
+                {equipo}
+              </span>
+            </div>
+            <!-- Arrow Icon -->
+            <svg class="w-4 h-4 text-blue-light/70 group-hover:text-blue-light group-focus-within:text-blue-light group-hover:translate-x-0.5 group-focus-within:translate-x-0.5 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
         </li>
       ))}
     </ul>

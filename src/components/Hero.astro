@@ -35,7 +35,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
 
       <!-- Buttons -->
       <div class="flex flex-wrap items-center gap-4 mt-2">
-        <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" class="btn-primary gap-2 group">
+        <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" title="Solicitar servicio técnico por WhatsApp" class="btn-primary gap-2 group">
           <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
             <use href="#icon-whatsapp" />
           </svg>
@@ -45,9 +45,9 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
           </svg>
           <span id="hero-cta-announcement" class="sr-only" aria-live="polite"></span>
         </a>
-        <a href="#servicios" class="btn-secondary gap-2 group">
+        <a href="#servicios" title="Ver catálogo de servicios" class="btn-secondary gap-2 group">
           <span>Ver servicios</span>
-          <svg class="w-4 h-4 text-navy/70 group-hover:text-navy group-hover:translate-y-0.5 group-focus-visible:translate-y-0.5 transition-transform duration-300" fill="none" stroke="currentColor" aria-hidden="true">
+          <svg class="w-4 h-4 text-navy/70 group-hover:text-navy group-focus-visible:text-navy group-hover:translate-y-0.5 group-focus-visible:translate-y-0.5 transition-all duration-300" fill="none" stroke="currentColor" aria-hidden="true">
             <use href="#icon-chevron-down" />
           </svg>
         </a>
@@ -72,11 +72,23 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         <!-- Equipos List -->
         <div>
           <h4 class="font-heading font-bold text-navy text-[16px] mb-4">Equipos que atendemos:</h4>
-          <ul class="flex flex-col gap-3" role="list" aria-label="Equipos destacados que atendemos">
+          <ul class="flex flex-col gap-2.5" role="list" aria-label="Equipos destacados que atendemos">
             {equiposHero.map(equipo => (
-              <li class="group flex items-start gap-3 font-body text-text-soft text-[15px] hover:text-navy transition-colors duration-200">
-                <span class="w-1.5 h-1.5 rounded-full bg-blue mt-2 flex-shrink-0 group-hover:scale-125 group-hover:bg-blue-light transition-all duration-200" aria-hidden="true"></span>
-                {equipo}
+              <li class="group/item">
+                <a
+                  href="#contacto"
+                  class="flex items-center justify-between gap-3 p-1.5 -mx-1.5 rounded-md font-body text-text-soft hover:text-navy focus-visible:text-navy hover:bg-slate-50 focus-within:bg-slate-50 transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 active:scale-[0.98]"
+                  aria-label={`Consultar servicio técnico para ${equipo}`}
+                  title={`Consultar servicio técnico para ${equipo}`}
+                >
+                  <span class="flex items-center gap-2.5 text-[14px]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue flex-shrink-0 group-hover/item:scale-125 group-focus-within/item:scale-125 group-hover/item:bg-blue-light group-focus-within/item:bg-blue-light transition-all duration-200" aria-hidden="true"></span>
+                    <span>{equipo}</span>
+                  </span>
+                  <svg class="w-3.5 h-3.5 text-blue/70 group-hover/item:text-navy group-focus-within/item:text-navy group-hover/item:translate-x-0.5 group-focus-within/item:translate-x-0.5 transition-all duration-300 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
               </li>
             ))}
           </ul>
@@ -101,6 +113,8 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         const originalText = heroCtaText.textContent;
         heroCtaText.textContent = 'Redirigiendo...';
         if (heroCtaAnnouncement) heroCtaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
+        heroCta.setAttribute('aria-busy', 'true');
+        heroCta.setAttribute('aria-disabled', 'true');
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = heroCta.getAttribute('href');
@@ -111,7 +125,11 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         setTimeout(() => {
           if (heroCtaText) heroCtaText.textContent = originalText;
           if (heroCtaAnnouncement) heroCtaAnnouncement.textContent = '';
-          if (heroCta) heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          if (heroCta) {
+            heroCta.removeAttribute('aria-busy');
+            heroCta.removeAttribute('aria-disabled');
+            heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          }
         }, 3000);
       };
 

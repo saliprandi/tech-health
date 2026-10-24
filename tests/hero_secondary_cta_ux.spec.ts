@@ -10,6 +10,7 @@ test.describe('Hero CTA UX & Directional Icons', () => {
 
     await expect(primaryBtn).toBeVisible();
     await expect(primaryBtn).toContainText('Solicitar servicio');
+    await expect(primaryBtn).toHaveAttribute('title', 'Solicitar servicio técnico por WhatsApp');
     await expect(primaryBtn).toHaveClass(/group/);
 
     const arrowIcon = primaryBtn.locator('svg').filter({ has: page.locator('path[d="M9 5l7 7-7 7"]') });
@@ -24,6 +25,7 @@ test.describe('Hero CTA UX & Directional Icons', () => {
 
     await expect(secondaryBtn).toBeVisible();
     await expect(secondaryBtn).toContainText('Ver servicios');
+    await expect(secondaryBtn).toHaveAttribute('title', 'Ver catálogo de servicios');
     await expect(secondaryBtn).toHaveClass(/group/);
     await expect(secondaryBtn).toHaveClass(/gap-2/);
 
