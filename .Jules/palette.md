@@ -129,3 +129,7 @@
 ## 2026-03-30 - Animación de rotación y armonía de color por foco en botones de reinicio de formulario
 **Learning:** En acciones secundarias de reinicio de formulario (como `#reset-contact-form`), equipar el botón contenedor con la clase Tailwind `group` e integrar micro-animaciones pareadas de rotación de 180 grados (`group-hover:rotate-180 group-focus-visible:rotate-180 transition-all duration-300`) junto con sincronización de color del ícono (`group-hover:text-navy group-focus-visible:text-navy`) provee una respuesta táctil y visual evidente que comunica claramente la acción de refresco/reinicio tanto para usuarios de ratón como de teclado.
 **Action:** Equipar siempre los íconos embebidos en botones de reinicio con clases `group-hover:rotate-180 group-focus-visible:rotate-180` y sincronización de color por foco.
+
+## 2026-03-30 - Micro-UX táctil e indicación de tooltips en enlaces de barra de navegación principal
+**Learning:** Equipar enlaces de navegación en cabeceras fijas (`.nav-link` y `.mobile-link` en `Nav.astro`) con atributos nativos `title` descriptivos e incorporar animaciones de escalado táctil activo (`active:scale-95 transition-all`) proporciona retroalimentación táctil inmediata al ser presionados en dispositivos móviles y de escritorio, además de ofrecer tooltips contextuales nativos al posar el cursor.
+**Action:** Acompañar siempre los enlaces de navegación con atributos `title` explícitos e incluir utilidades Tailwind `active:scale-95 transition-all` para garantizar affordance interactivo completo.
