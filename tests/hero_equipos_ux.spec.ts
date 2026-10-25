@@ -5,6 +5,23 @@ test.describe('Hero Featured Equipment Micro-UX & Accessibility', () => {
     await page.goto('http://localhost:4321');
   });
 
+  test('should render hero stats grid as semantic description list with dt/dd ordering and aria-label', async ({ page }) => {
+    const dl = page.locator('dl[aria-label="Métricas y estadísticas de servicio"]');
+    await expect(dl).toBeVisible();
+
+    const dtElements = dl.locator('dt');
+    const ddElements = dl.locator('dd');
+
+    await expect(dtElements).toHaveCount(2);
+    await expect(ddElements).toHaveCount(2);
+
+    const firstDd = ddElements.first();
+    const firstDt = dtElements.first();
+
+    await expect(firstDd).toHaveClass(/order-1/);
+    await expect(firstDt).toHaveClass(/order-2/);
+  });
+
   test('should render featured equipment list items as interactive links with accessibility and micro-UX attributes', async ({ page }) => {
     const list = page.locator('ul[aria-label="Equipos destacados que atendemos"]');
     await expect(list).toBeVisible();
