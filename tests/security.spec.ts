@@ -236,3 +236,40 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('contact form redirection validates WhatsApp URL scheme before opening popup with noopener features', async ({ page }) => {
+  let openedPopupUrl: string | null = null;
+  let openedPopupFeatures: string | null = null;
+
+  await page.route('**/webhook/techhealth-solicitud*', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ success: true, ticket_number: 'TH-2026-TEST' })
+    });
+  });
+
+  await page.addInitScript(() => {
+    window.open = (url?: string | URL, _target?: string, features?: string) => {
+      (window as any).__lastOpenedUrl = String(url);
+      (window as any).__lastOpenedFeatures = String(features);
+      return { opener: null } as any;
+    };
+  });
+
+  await page.goto('http://localhost:4321/#contacto');
+  await page.fill('#f-nombre', 'Cliente Seguro');
+  await page.fill('#f-tel', '123456789');
+  await page.fill('#f-desc', 'Consulta de seguridad');
+
+  await page.click('#f-submit');
+
+  await page.waitForFunction(() => (window as any).__lastOpenedUrl !== undefined, { timeout: 5000 });
+
+  openedPopupUrl = await page.evaluate(() => (window as any).__lastOpenedUrl);
+  openedPopupFeatures = await page.evaluate(() => (window as any).__lastOpenedFeatures);
+
+  expect(openedPopupUrl).toMatch(/^https:\/\/wa\.me\//i);
+  expect(openedPopupFeatures).toContain('noopener');
+  expect(openedPopupFeatures).toContain('noreferrer');
+});

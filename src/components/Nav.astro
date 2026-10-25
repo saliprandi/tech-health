@@ -226,7 +226,7 @@ import { CONFIG } from '../data/config';
         }
 
         const href = cta.getAttribute('href');
-        if (href) {
+        if (href && /^https:\/\/wa\.me\//i.test(href)) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 
