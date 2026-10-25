@@ -56,6 +56,20 @@ test.describe('Navigation UX', () => {
     await expect(logoLink).toBeVisible();
     await expect(logoLink).toHaveClass(/focus-visible:ring-2/);
     await expect(logoLink).toHaveClass(/focus-visible:ring-navy/);
+    await expect(logoLink).toHaveAttribute('title', 'Volver al inicio - TechHealth');
+    await expect(logoLink).toHaveClass(/active:scale-95/);
+  });
+
+  test('navigation links should have title tooltips and active scale micro-animations', async ({ page }) => {
+    const desktopLinks = page.locator('nav ul li a.nav-link');
+    const count = await desktopLinks.count();
+    expect(count).toBeGreaterThan(0);
+
+    for (let i = 0; i < count; i++) {
+      const link = desktopLinks.nth(i);
+      await expect(link).toHaveAttribute('title');
+      await expect(link).toHaveClass(/active:scale-95/);
+    }
   });
 
   test('reading progress bar should update on scroll', async ({ page }) => {
