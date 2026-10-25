@@ -225,8 +225,9 @@ import { CONFIG } from '../data/config';
           redirectionAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         }
 
-        const href = cta.getAttribute('href');
-        if (href) {
+        // Security: Validate DOM-derived href against allowed WhatsApp domains to prevent open redirects and DOM XSS
+        const href = cta.getAttribute('href')?.trim();
+        if (href && /^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i.test(href)) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 
