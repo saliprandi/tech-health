@@ -193,4 +193,20 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora: {
+    titulo: "Estimador Plan de Mantenimiento Preventivo B2B",
+    subtitulo: "Calcule la frecuencia de servicio técnico idónea para su centro médico u hospital según su volumen operativo",
+    tipos_institucion: [
+      { id: "clinica", nombre: "Sanatorio / Clínica Alta Complejidad", factor: 1.5, desc: "Soporte intensivo 24/7 y áreas de cuidados críticos" },
+      { id: "centro", nombre: "Centro de Diagnóstico / Consultorios", factor: 1.0, desc: "Flujo medio-alto de pacientes programados" },
+      { id: "laboratorio", nombre: "Laboratorio / Especialidades", factor: 0.8, desc: "Equipamiento analítico y de soporte especializado" },
+    ],
+    rangos_equipos: [
+      { min: 1, max: 5, label: "1 a 5 equipos", visitasAnualesBase: 2 },
+      { min: 6, max: 15, label: "6 a 15 equipos", visitasAnualesBase: 4 },
+      { min: 16, max: 30, label: "16 a 30 equipos", visitasAnualesBase: 6 },
+      { min: 31, max: 100, label: "Más de 30 equipos", visitasAnualesBase: 12 },
+    ]
+  },
 };

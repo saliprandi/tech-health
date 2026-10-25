@@ -1,0 +1,234 @@
+---
+import { CONFIG } from '../data/config';
+
+const { titulo, subtitulo, tipos_institucion, rangos_equipos } = CONFIG.calculadora;
+---
+
+<section id="estimador" class="scroll-mt-20 py-20 bg-slate-50 relative overflow-hidden border-y border-border">
+  <div class="container-custom section-padding relative z-10">
+
+    <!-- Header -->
+    <div class="text-center max-w-[700px] mx-auto mb-12">
+      <div class="inline-flex items-center gap-2 bg-blue-pale text-blue font-heading font-bold text-[12px] uppercase tracking-wider py-1.5 px-3.5 rounded-full mb-3" aria-label="Herramienta B2B">
+        <svg class="w-3.5 h-3.5 text-blue" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <use href="#icon-circuit" />
+        </svg>
+        <span>Herramienta para Instituciones</span>
+      </div>
+      <h2 class="font-heading font-extrabold text-[32px] md:text-[40px] text-navy leading-tight mb-4">
+        {titulo}
+      </h2>
+      <p class="font-body text-text-soft text-[16px] leading-relaxed">
+        {subtitulo}
+      </p>
+    </div>
+
+    <!-- Interactive Card Grid -->
+    <div class="max-w-4xl mx-auto bg-white rounded-card shadow-hero-card p-6 md:p-10 border border-border">
+      <form id="calc-form" class="space-y-8">
+
+        <!-- Step 1: Tipo de Institución -->
+        <div>
+          <label class="block font-heading font-bold text-navy text-[16px] mb-3">
+            1. Seleccione el tipo de establecimiento médico:
+          </label>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4" role="radiogroup" aria-label="Tipo de institución médica">
+            {tipos_institucion.map((inst, idx) => (
+              <div
+                tabindex="0"
+                role="radio"
+                aria-checked={idx === 0 ? "true" : "false"}
+                data-factor={inst.factor}
+                data-id={inst.id}
+                data-nombre={inst.nombre}
+                class={`inst-card cursor-pointer p-4 rounded-xl border-2 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 active:scale-95 ${
+                  idx === 0 ? "border-blue bg-blue-pale/30 shadow-sm" : "border-border hover:border-blue/50 bg-white"
+                }`}
+              >
+                <div class="flex items-center justify-between mb-2">
+                  <span class="font-heading font-bold text-navy text-[15px]">{inst.nombre}</span>
+                  <span class="radio-indicator w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors border-blue bg-blue" aria-hidden="true">
+                    <span class="inner-dot w-1.5 h-1.5 rounded-full bg-white"></span>
+                  </span>
+                </div>
+                <p class="font-body text-[12px] text-text-soft leading-snug">{inst.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Step 2: Cantidad de Equipos -->
+        <div>
+          <label class="block font-heading font-bold text-navy text-[16px] mb-3">
+            2. Volumen estimado de equipamiento médico activo:
+          </label>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3" role="radiogroup" aria-label="Cantidad de equipos médicos">
+            {rangos_equipos.map((rango, idx) => (
+              <div
+                tabindex="0"
+                role="radio"
+                aria-checked={idx === 1 ? "true" : "false"}
+                data-base={rango.visitasAnualesBase}
+                data-label={rango.label}
+                class={`equip-card cursor-pointer p-3.5 rounded-xl border-2 text-center transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 active:scale-95 ${
+                  idx === 1 ? "border-blue bg-blue-pale/30 shadow-sm" : "border-border hover:border-blue/50 bg-white"
+                }`}
+              >
+                <div class="font-heading font-semibold text-navy text-[14px]">{rango.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Result Box -->
+        <div class="bg-navy text-white rounded-xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md" aria-live="polite" id="calc-result-box">
+          <div class="space-y-2 text-center md:text-left">
+            <span class="inline-block text-blue-light font-heading font-bold text-[12px] uppercase tracking-wider">
+              Plan Preventivo Sugerido
+            </span>
+            <div class="font-heading font-extrabold text-[28px] md:text-[34px] leading-tight text-white" id="calc-summary">
+              6 Visitas Técnicas Anuales
+            </div>
+            <p class="font-body text-[13px] text-white/80 max-w-lg" id="calc-details">
+              Recomendado para Sanatorio / Clínica Alta Complejidad con 6 a 15 equipos para garantizar continuidad operativa y normas de bioseguridad.
+            </p>
+          </div>
+
+          <a
+            id="calc-wa-btn"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Solicitar propuesta personalizada por WhatsApp"
+            class="btn-primary flex-shrink-0 bg-blue hover:bg-blue-light text-white font-heading font-bold text-[14px] py-3 px-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 active:scale-95 outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy flex items-center gap-2"
+          >
+            <svg class="w-4 h-4 fill-current" aria-hidden="true">
+              <use href="#icon-whatsapp" />
+            </svg>
+            <span>Solicitar Propuesta B2B</span>
+          </a>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  import { CONFIG } from '../data/config';
+
+  (function() {
+    function initCalculadora() {
+      const instCards = document.querySelectorAll('.inst-card');
+      const equipCards = document.querySelectorAll('.equip-card');
+      const calcSummary = document.getElementById('calc-summary');
+      const calcDetails = document.getElementById('calc-details');
+      const calcWaBtn = document.getElementById('calc-wa-btn') as HTMLAnchorElement | null;
+
+      if (!instCards.length || !equipCards.length || !calcSummary || !calcDetails || !calcWaBtn) return () => {};
+
+      let selectedFactor = 1.5;
+      let selectedInstNombre = "Sanatorio / Clínica Alta Complejidad";
+      let selectedBase = 4;
+      let selectedEquipLabel = "6 a 15 equipos";
+
+      const updateCalculation = () => {
+        const visitas = Math.round(selectedBase * selectedFactor);
+        const frecuenciaText = visitas >= 12 ? 'Mensual (12 visitas/año)' :
+                               visitas >= 6 ? 'Bimensual (6 visitas/año)' :
+                               visitas >= 4 ? 'Trimestral (4 visitas/año)' : 'Semestral (2 visitas/año)';
+
+        calcSummary.textContent = `${visitas} Visitas Técnicas / Año`;
+        calcDetails.textContent = `Esquema de mantenimiento ${frecuenciaText} diseñado para ${selectedInstNombre} con ${selectedEquipLabel}. Mantiene trazabilidad y previene paradas no programadas.`;
+
+        const waMessage = `Hola TechHealth, quisiera solicitar una propuesta de Mantenimiento Preventivo B2B para ${selectedInstNombre} (${selectedEquipLabel}). Plan estimado: ${visitas} visitas/año.`;
+        const phone = CONFIG.contacto.whatsapp.replace(/\D/g, '');
+        calcWaBtn.href = `https://wa.me/${phone}?text=${encodeURIComponent(waMessage)}`;
+      };
+
+      const handleInstSelect = (card: Element) => {
+        instCards.forEach(c => {
+          c.setAttribute('aria-checked', 'false');
+          c.classList.remove('border-blue', 'bg-blue-pale/30', 'shadow-sm');
+          c.classList.add('border-border', 'bg-white');
+          const indicator = c.querySelector('.radio-indicator');
+          if (indicator) {
+            indicator.classList.remove('border-blue', 'bg-blue');
+            indicator.classList.add('border-slate-300', 'bg-transparent');
+          }
+        });
+
+        card.setAttribute('aria-checked', 'true');
+        card.classList.remove('border-border', 'bg-white');
+        card.classList.add('border-blue', 'bg-blue-pale/30', 'shadow-sm');
+        const activeIndicator = card.querySelector('.radio-indicator');
+        if (activeIndicator) {
+          activeIndicator.classList.remove('border-slate-300', 'bg-transparent');
+          activeIndicator.classList.add('border-blue', 'bg-blue');
+        }
+
+        selectedFactor = parseFloat(card.getAttribute('data-factor') || '1.0');
+        selectedInstNombre = card.getAttribute('data-nombre') || '';
+        updateCalculation();
+      };
+
+      const handleEquipSelect = (card: Element) => {
+        equipCards.forEach(c => {
+          c.setAttribute('aria-checked', 'false');
+          c.classList.remove('border-blue', 'bg-blue-pale/30', 'shadow-sm');
+          c.classList.add('border-border', 'bg-white');
+        });
+
+        card.setAttribute('aria-checked', 'true');
+        card.classList.remove('border-border', 'bg-white');
+        card.classList.add('border-blue', 'bg-blue-pale/30', 'shadow-sm');
+
+        selectedBase = parseInt(card.getAttribute('data-base') || '4', 10);
+        selectedEquipLabel = card.getAttribute('data-label') || '';
+        updateCalculation();
+      };
+
+      instCards.forEach(card => {
+        card.addEventListener('click', () => handleInstSelect(card));
+        card.addEventListener('keydown', (e: Event) => {
+          const kEvent = e as KeyboardEvent;
+          if (kEvent.key === 'Enter' || kEvent.key === ' ') {
+            kEvent.preventDefault();
+            handleInstSelect(card);
+          }
+        });
+      });
+
+      equipCards.forEach(card => {
+        card.addEventListener('click', () => handleEquipSelect(card));
+        card.addEventListener('keydown', (e: Event) => {
+          const kEvent = e as KeyboardEvent;
+          if (kEvent.key === 'Enter' || kEvent.key === ' ') {
+            kEvent.preventDefault();
+            handleEquipSelect(card);
+          }
+        });
+      });
+
+      // Security validation for WhatsApp redirect on click
+      calcWaBtn.addEventListener('click', (e: MouseEvent) => {
+        e.preventDefault();
+        const url = calcWaBtn.getAttribute('href');
+        if (url && /^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i.test(url)) {
+          window.open(url, '_blank', 'noopener,noreferrer');
+        }
+      });
+
+      updateCalculation();
+
+      return () => {};
+    }
+
+    let cleanup = initCalculadora();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initCalculadora();
+    });
+  })();
+</script>
