@@ -39,4 +39,17 @@ test.describe('Hero CTA UX & Directional Icons', () => {
     await expect(icon).toHaveClass(/group-hover:translate-y-0\.5/);
     await expect(icon).toHaveClass(/group-focus-visible:translate-y-0\.5/);
   });
+
+  test('should render company stats in a semantic description list with accessible aria-label', async ({ page }) => {
+    const statsList = page.locator('dl[aria-label="Estadísticas de la empresa"]');
+    await expect(statsList).toBeVisible();
+
+    const dtElements = statsList.locator('dt');
+    const ddElements = statsList.locator('dd');
+
+    await expect(dtElements.first()).toBeVisible();
+    await expect(ddElements.first()).toBeVisible();
+    expect(await dtElements.count()).toBeGreaterThan(0);
+    expect(await ddElements.count()).toBeGreaterThan(0);
+  });
 });
