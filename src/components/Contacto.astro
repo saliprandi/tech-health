@@ -486,11 +486,14 @@ import { CONFIG } from '../data/config';
           }, 3000);
         }
 
-        const openedWin = window.open(url, '_blank');
-        if (openedWin) {
-          openedWin.opener = null;
-        } else {
-          window.location.href = url;
+        const isValidWaUrl = /^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i.test(url);
+        if (isValidWaUrl) {
+          const openedWin = window.open(url, '_blank');
+          if (openedWin) {
+            openedWin.opener = null;
+          } else {
+            window.location.href = url;
+          }
         }
       };
 
