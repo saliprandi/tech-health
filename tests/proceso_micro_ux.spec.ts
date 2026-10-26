@@ -100,6 +100,10 @@ test.describe('Proceso Ticket Search Form Micro-UX', () => {
       await expect(card).toHaveClass(/hover:-translate-y-1/);
       await expect(card).toHaveClass(/focus-within:-translate-y-1/);
       await expect(card).toHaveClass(/focus-within:shadow-card-hover/);
+
+      const title = card.locator('h3');
+      await expect(title).toHaveClass(/group-hover:text-blue/);
+      await expect(title).toHaveClass(/group-focus-within:text-blue/);
     }
   });
 

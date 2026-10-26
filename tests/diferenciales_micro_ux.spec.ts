@@ -19,6 +19,10 @@ test.describe('Diferenciales Micro-UX & Accessibility', () => {
       await expect(card).toHaveClass(/hover:-translate-y-1/);
       await expect(card).toHaveClass(/focus-within:-translate-y-1/);
 
+      const title = card.locator('h3');
+      await expect(title).toHaveClass(/group-hover:text-blue/);
+      await expect(title).toHaveClass(/group-focus-within:text-blue/);
+
       const link = card.locator('a[href="#contacto"]');
       await expect(link).toBeVisible();
       await expect(link).toHaveAttribute('aria-label', /^Consultar por /);
