@@ -83,4 +83,19 @@ test.describe('FAQ Search Filter Micro-UX & Accessibility', () => {
     await expect(searchInput).toHaveValue('');
     expect(await visibleItems.count()).toBe(initialCount);
   });
+
+  test('faq trigger accordion buttons have active press scale utilities and clear search announces to screen reader', async ({ page }) => {
+    const firstTrigger = page.locator('.faq-trigger').first();
+    await expect(firstTrigger).toHaveClass(/active:scale-\[0\.99\]/);
+
+    const searchInput = page.locator('#faq-search-input');
+    const clearBtn = page.locator('#clear-faq-search');
+    const liveCounter = page.locator('#faq-search-counter');
+
+    await searchInput.fill('mantenimiento');
+    await expect(clearBtn).toBeVisible();
+
+    await clearBtn.click();
+    await expect(liveCounter).toHaveText('Búsqueda limpiada. Mostrando todas las preguntas.');
+  });
 });
