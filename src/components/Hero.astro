@@ -117,9 +117,9 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         heroCta.setAttribute('aria-disabled', 'true');
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
-        // Security: Enforce strict allowlist check (https://wa.me/) for WhatsApp CTA redirection
+        // Security: Enforce strict allowlist check for official WhatsApp domains (wa.me and api.whatsapp.com)
         const href = heroCta.getAttribute('href');
-        if (href && href.startsWith('https://wa.me/')) {
+        if (href && /^https:\/\/(wa\.me|api\.whatsapp\.com)\//.test(href.trim())) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 

@@ -225,9 +225,9 @@ import { CONFIG } from '../data/config';
           redirectionAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         }
 
-        // Security: Enforce strict allowlist check (https://wa.me/) for WhatsApp CTA redirection
+        // Security: Enforce strict allowlist check for official WhatsApp domains (wa.me and api.whatsapp.com)
         const href = cta.getAttribute('href');
-        if (href && href.startsWith('https://wa.me/')) {
+        if (href && /^https:\/\/(wa\.me|api\.whatsapp\.com)\//.test(href.trim())) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 
