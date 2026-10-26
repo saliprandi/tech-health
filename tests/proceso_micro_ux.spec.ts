@@ -102,4 +102,25 @@ test.describe('Proceso Ticket Search Form Micro-UX', () => {
       await expect(card).toHaveClass(/focus-within:shadow-card-hover/);
     }
   });
+
+  test('proceso step cards include interactive consultation action links with micro-UX attributes', async ({ page }) => {
+    const list = page.locator('ol[aria-label="Pasos del proceso de servicio técnico"]');
+    await expect(list).toBeVisible();
+
+    const links = list.locator('a[href="#contacto"]');
+    const count = await links.count();
+    expect(count).toEqual(4);
+
+    for (let i = 0; i < count; i++) {
+      const link = links.nth(i);
+      await expect(link).toHaveAttribute('aria-label', /Consultar sobre la etapa de/);
+      await expect(link).toHaveAttribute('title', /Consultar sobre la etapa de/);
+      await expect(link).toHaveClass(/active:scale-95/);
+      await expect(link).toHaveClass(/focus-visible:ring-2/);
+
+      const arrow = link.locator('svg');
+      await expect(arrow).toHaveClass(/group-hover:translate-x-0.5/);
+      await expect(arrow).toHaveClass(/group-focus-within:translate-x-0.5/);
+    }
+  });
 });
