@@ -237,7 +237,7 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
 
-test('contact form window.open dynamic redirection validates URL scheme and passes noopener,noreferrer', async ({ page }) => {
+test('contact form window.open dynamic redirection validates URL scheme and disowns opener safely', async ({ page }) => {
   await page.goto('http://localhost:4321/#contacto');
 
   const popupPromise = page.waitForEvent('popup');
