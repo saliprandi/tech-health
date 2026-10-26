@@ -40,7 +40,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
               <use href={`#icon-${servicio.icono}`} />
             </svg>
           </div>
-          <h3 class="font-heading font-bold text-[22px] text-navy mb-3">{servicio.titulo}</h3>
+          <h3 class="font-heading font-bold text-[22px] text-navy mb-3 group-hover:text-blue group-focus-visible:text-blue transition-colors duration-300">{servicio.titulo}</h3>
           <p class="font-body font-light text-[15px] text-text-soft mb-6">{servicio.descripcion}</p>
           <ul class="flex flex-col gap-3">
             {servicio.items.slice(0, 3).map(item => (
