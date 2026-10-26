@@ -237,7 +237,7 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
 
-test('CTA click handlers validate href using allowlist and reject untrusted or dangerous schemes', async ({ page }) => {
+test('CTA click handlers validate href using allowlist and reject untrusted schemes or protocol-relative URLs', async ({ page }) => {
   await page.goto('http://localhost:4321/', { waitUntil: 'networkidle' });
 
   // Inject dangerous javascript: href on hero CTA
@@ -250,4 +250,18 @@ test('CTA click handlers validate href using allowlist and reject untrusted or d
 
   const xssTriggered = await page.evaluate(() => (window as any).xssTriggered);
   expect(xssTriggered).toBeUndefined();
+
+  // Verify protocol-relative URLs are rejected
+  await page.evaluate(() => {
+    const heroCta = document.getElementById('hero-cta');
+    if (heroCta) heroCta.setAttribute('href', '//evil.com');
+  });
+
+  let openedUrl = '';
+  page.on('popup', (popup) => {
+    openedUrl = popup.url();
+  });
+
+  await page.click('#hero-cta');
+  expect(openedUrl).not.toContain('evil.com');
 });
