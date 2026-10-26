@@ -240,8 +240,12 @@ import { CONFIG } from '../data/config';
 
       const handleClear = () => {
         if (searchInput) {
+          const hadValue = searchInput.value.length > 0;
           searchInput.value = '';
           filterFAQs();
+          if (hadValue && counterEl) {
+            counterEl.textContent = 'Búsqueda limpiada. Mostrando todas las preguntas';
+          }
           searchInput.focus();
         }
       };
