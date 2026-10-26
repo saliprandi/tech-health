@@ -27,6 +27,7 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     const helperText = page.locator('#ticket-input-hint');
     await expect(helperText).toBeVisible();
     await expect(helperText).toHaveText(/Formato: letras y números/);
+    await expect(helperText).toHaveClass(/group-focus-within\/field:text-white\/80/);
 
     // 2. Check submit button focus styling and directional arrow icon
     const submitBtn = page.locator('#estado-submit');
