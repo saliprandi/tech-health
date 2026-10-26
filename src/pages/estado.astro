@@ -63,7 +63,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 						</div>
 						<p id="ticket-input-hint" class="font-body text-[12px] text-white/50">Formato: letras y números (ej. TH-2026-1234)</p>
 					</div>
-					<button type="submit" id="estado-submit" title="Consultar estado de reparación" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-light">
+					<button type="submit" id="estado-submit" title="Consultar estado de reparación" aria-label="Consultar estado de reparación" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-light">
 						<svg id="estado-spinner" class="hidden w-5 h-5 animate-spin text-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
 							<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
 							<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -180,7 +180,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 
 				<!-- Botón nueva consulta -->
 				<div class="text-center mt-6">
-					<button type="button" id="nueva-consulta" title="Consultar otro número de ticket" class="group inline-flex items-center gap-2 font-body font-medium text-[14px] text-white/70 hover:text-white active:scale-95 transition-all outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy rounded-md px-4 py-2">
+					<button type="button" id="nueva-consulta" title="Consultar otro número de ticket" aria-label="Consultar otro número de ticket" class="group inline-flex items-center gap-2 font-body font-medium text-[14px] text-white/70 hover:text-white active:scale-95 transition-all outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy rounded-md px-4 py-2">
 						<svg class="w-4 h-4 text-white/70 group-hover:text-white group-hover:rotate-180 group-focus-visible:rotate-180 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
 							<path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
 						</svg>
