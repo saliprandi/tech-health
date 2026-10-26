@@ -490,12 +490,7 @@ import { CONFIG } from '../data/config';
         const WA_URL_REGEX = /^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i;
         if (!WA_URL_REGEX.test(url)) return;
 
-        const openedWin = window.open(url, '_blank', 'noopener,noreferrer');
-        if (openedWin) {
-          openedWin.opener = null;
-        } else {
-          window.location.href = url;
-        }
+        window.open(url, '_blank', 'noopener,noreferrer');
       };
 
       updateCounter();
