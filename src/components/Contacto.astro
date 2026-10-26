@@ -343,7 +343,7 @@ import { CONFIG } from '../data/config';
           navigator.clipboard.writeText(contentToCopy).then(() => {
             text.textContent = '¡Copiado!';
             iconUse.setAttribute('href', '#icon-check');
-            btn.classList.add('text-blue', 'scale-105');
+            btn.classList.add('text-blue', 'scale-110');
             btn.setAttribute('aria-label', announcementMsg);
             btn.setAttribute('title', announcementMsg);
             if (copyAnnouncement) copyAnnouncement.textContent = announcementMsg;
@@ -351,7 +351,7 @@ import { CONFIG } from '../data/config';
             setTimeout(() => {
               text.textContent = originalText;
               iconUse.setAttribute('href', originalIcon || '#icon-copy');
-              btn.classList.remove('text-blue', 'scale-105');
+              btn.classList.remove('text-blue', 'scale-110');
               if (originalAriaLabel) {
                 btn.setAttribute('aria-label', originalAriaLabel);
               } else {

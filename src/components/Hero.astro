@@ -35,7 +35,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
 
       <!-- Buttons -->
       <div class="flex flex-wrap items-center gap-4 mt-2">
-        <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" title="Solicitar servicio técnico por WhatsApp" class="btn-primary gap-2 group">
+        <a id="hero-cta" href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" title="Solicitar servicio técnico por WhatsApp" aria-label="Solicitar servicio técnico por WhatsApp" class="btn-primary gap-2 group">
           <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
             <use href="#icon-whatsapp" />
           </svg>
@@ -45,7 +45,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
           </svg>
           <span id="hero-cta-announcement" class="sr-only" aria-live="polite"></span>
         </a>
-        <a href="#servicios" title="Ver catálogo de servicios" class="btn-secondary gap-2 group active:scale-[0.98]">
+        <a href="#servicios" title="Ver catálogo de servicios" aria-label="Ver catálogo de servicios" class="btn-secondary gap-2 group active:scale-[0.98]">
           <span>Ver servicios</span>
           <svg class="w-4 h-4 text-navy/70 group-hover:text-navy group-focus-visible:text-navy group-hover:translate-y-0.5 group-focus-visible:translate-y-0.5 transition-all duration-300" fill="none" stroke="currentColor" aria-hidden="true">
             <use href="#icon-chevron-down" />
@@ -111,7 +111,9 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       const handleCtaClick = (e: MouseEvent) => {
         e.preventDefault();
         const originalText = heroCtaText.textContent;
+        const originalAriaLabel = heroCta.getAttribute('aria-label') || 'Solicitar servicio técnico por WhatsApp';
         heroCtaText.textContent = 'Redirigiendo...';
+        heroCta.setAttribute('aria-label', 'Redirigiendo a WhatsApp');
         if (heroCtaAnnouncement) heroCtaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         heroCta.setAttribute('aria-busy', 'true');
         heroCta.setAttribute('aria-disabled', 'true');
@@ -126,6 +128,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
           if (heroCtaText) heroCtaText.textContent = originalText;
           if (heroCtaAnnouncement) heroCtaAnnouncement.textContent = '';
           if (heroCta) {
+            heroCta.setAttribute('aria-label', originalAriaLabel);
             heroCta.removeAttribute('aria-busy');
             heroCta.removeAttribute('aria-disabled');
             heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
