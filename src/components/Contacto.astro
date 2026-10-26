@@ -486,7 +486,11 @@ import { CONFIG } from '../data/config';
           }, 3000);
         }
 
-        const openedWin = window.open(url, '_blank');
+        // Security: Validate WhatsApp URL protocol and domain to prevent reverse tabnabbing and open redirect vulnerabilities
+        const WA_URL_REGEX = /^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i;
+        if (!WA_URL_REGEX.test(url)) return;
+
+        const openedWin = window.open(url, '_blank', 'noopener,noreferrer');
         if (openedWin) {
           openedWin.opener = null;
         } else {
