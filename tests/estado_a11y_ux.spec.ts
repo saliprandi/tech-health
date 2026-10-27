@@ -41,7 +41,7 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     const announcement = page.locator('#estado-announcement');
     await expect(announcement).toHaveAttribute('aria-live', 'polite');
 
-    // 3. Check ARIA attributes on error container and result container
+    // 3. Check ARIA attributes on error container, result container, and history timeline list
     const errorContainer = page.locator('#estado-error');
     await expect(errorContainer).toHaveAttribute('role', 'alert');
     await expect(errorContainer).toHaveAttribute('aria-live', 'assertive');
@@ -49,6 +49,10 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     const resultContainer = page.locator('#estado-result');
     await expect(resultContainer).toHaveAttribute('role', 'status');
     await expect(resultContainer).toHaveAttribute('aria-live', 'polite');
+
+    const historialList = page.locator('#result-historial');
+    await expect(historialList).toHaveAttribute('role', 'list');
+    await expect(historialList).toHaveAttribute('aria-label', 'Historial de cambios de estado');
 
     // 4. Check "Consultar otro ticket" reset button attributes and styling
     const resetBtn = page.locator('#nueva-consulta');
@@ -98,6 +102,15 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
             tecnico: 'Juan Pérez',
             created_at: '2026-03-30T10:00:00Z',
           },
+          historial: [
+            {
+              estado_anterior: 'recepcion',
+              estado_nuevo: 'diagnostico',
+              fecha: '2026-03-30T10:30:00Z',
+              tecnico: 'Juan Pérez',
+              nota: 'Inicio de diagnóstico',
+            },
+          ],
         }),
       });
     });
@@ -133,6 +146,10 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await shareBtn.click();
     await expect(page.locator('#share-ticket-text')).toHaveText('¡Enlace copiado!');
     await expect(shareBtn).toHaveAttribute('aria-label', 'Enlace directo del ticket copiado al portapapeles');
+
+    // Verify history timeline renders as semantic <li> item inside <ol role="list">
+    const historialItem = page.locator('#result-historial > li');
+    await expect(historialItem).toHaveCount(1);
   });
 
   test('should handle ticket search error and set aria-live announcement', async ({ page }) => {
