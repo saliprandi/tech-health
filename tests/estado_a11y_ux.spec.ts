@@ -50,6 +50,10 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await expect(resultContainer).toHaveAttribute('role', 'status');
     await expect(resultContainer).toHaveAttribute('aria-live', 'polite');
 
+    const historialContainer = page.locator('#result-historial');
+    await expect(historialContainer).toHaveAttribute('role', 'list');
+    await expect(historialContainer).toHaveAttribute('aria-label', 'Historial de cambios de estado');
+
     // 4. Check "Consultar otro ticket" reset button attributes and styling
     const resetBtn = page.locator('#nueva-consulta');
     await expect(resetBtn).toHaveAttribute('type', 'button');
