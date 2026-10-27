@@ -63,7 +63,12 @@ const { emergencia, contacto } = CONFIG;
       const handleCtaClick = (e: MouseEvent) => {
         e.preventDefault();
         const originalText = ctaText.textContent;
+        const originalAriaLabel = cta.getAttribute('aria-label') || 'Solicitar atención de emergencia por WhatsApp';
+        const originalTitle = cta.getAttribute('title') || 'Solicitar atención de emergencia por WhatsApp';
+
         ctaText.textContent = 'Redirigiendo...';
+        cta.setAttribute('aria-label', 'Redirigiendo a WhatsApp...');
+        cta.setAttribute('title', 'Redirigiendo a WhatsApp...');
         if (ctaAnnouncement) ctaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         cta.setAttribute('aria-busy', 'true');
         cta.setAttribute('aria-disabled', 'true');
@@ -71,13 +76,20 @@ const { emergencia, contacto } = CONFIG;
 
         const href = cta.getAttribute('href');
         if (href && href.startsWith('https://wa.me/')) {
-          window.open(href, '_blank', 'noopener,noreferrer');
+          const openedWin = window.open(href, '_blank');
+          if (openedWin) {
+            openedWin.opener = null;
+          } else {
+            window.location.href = href;
+          }
         }
 
         setTimeout(() => {
           if (ctaText) ctaText.textContent = originalText;
           if (ctaAnnouncement) ctaAnnouncement.textContent = '';
           if (cta) {
+            cta.setAttribute('aria-label', originalAriaLabel);
+            cta.setAttribute('title', originalTitle);
             cta.removeAttribute('aria-busy');
             cta.removeAttribute('aria-disabled');
             cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
