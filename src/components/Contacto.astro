@@ -101,7 +101,8 @@ import { CONFIG } from '../data/config';
             <label for="f-tel" class="font-body font-medium text-[13px] text-white/80 group-focus-within/field:text-blue-light transition-colors">
               Teléfono / WhatsApp <span class="text-blue-light" aria-hidden="true">*</span>
             </label>
-            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-\(\)]*" autocomplete="tel" placeholder="Ej: +54 9 381 1234567" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light aria-invalid:border-red-400/80 aria-invalid:ring-1 aria-invalid:ring-red-400 outline-none" />
+            <input type="tel" id="f-tel" name="telefono" required maxlength="20" pattern="[0-9+ \-\(\)]*" autocomplete="tel" placeholder="Ej: +54 9 381 1234567" aria-describedby="f-tel-hint" class="bg-white/10 border border-white/20 rounded-[8px] px-4 py-3 text-white w-full placeholder:text-white/30 focus-visible:ring-2 focus-visible:ring-blue-light aria-invalid:border-red-400/80 aria-invalid:ring-1 aria-invalid:ring-red-400 outline-none" />
+            <p id="f-tel-hint" class="font-body text-[12px] text-white/50 group-focus-within/field:text-white/80 transition-colors">Código de área y número (ej. +54 9 381 1234567)</p>
           </div>
 
           <div class="flex flex-col gap-1.5 group/select">
@@ -343,7 +344,7 @@ import { CONFIG } from '../data/config';
           navigator.clipboard.writeText(contentToCopy).then(() => {
             text.textContent = '¡Copiado!';
             iconUse.setAttribute('href', '#icon-check');
-            btn.classList.add('text-blue', 'scale-105');
+            btn.classList.add('text-blue', 'scale-110');
             btn.setAttribute('aria-label', announcementMsg);
             btn.setAttribute('title', announcementMsg);
             if (copyAnnouncement) copyAnnouncement.textContent = announcementMsg;
@@ -351,7 +352,7 @@ import { CONFIG } from '../data/config';
             setTimeout(() => {
               text.textContent = originalText;
               iconUse.setAttribute('href', originalIcon || '#icon-copy');
-              btn.classList.remove('text-blue', 'scale-105');
+              btn.classList.remove('text-blue', 'scale-110');
               if (originalAriaLabel) {
                 btn.setAttribute('aria-label', originalAriaLabel);
               } else {
