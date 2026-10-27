@@ -1,0 +1,340 @@
+---
+import { CONFIG } from '../data/config';
+
+const { titulo, subtitulo, categorias } = CONFIG.calculadora_b2b;
+---
+
+<section id="calculadora" class="section-padding bg-slate-50 border-t border-border scroll-mt-20 relative overflow-hidden">
+  <div class="container-custom">
+
+    <!-- Section Header -->
+    <div class="text-center max-w-[720px] mx-auto mb-12">
+      <div class="inline-flex items-center gap-2 bg-blue-pale text-blue font-heading font-bold text-[12px] uppercase tracking-wider py-1.5 px-3.5 rounded-full mb-4">
+        <svg class="w-4 h-4 text-blue" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+        <span>Herramienta para Instituciones</span>
+      </div>
+      <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,42px)] text-navy leading-tight tracking-tight mb-4">
+        {titulo}
+      </h2>
+      <p class="font-body text-text-soft text-[16px] md:text-[17px] leading-relaxed">
+        {subtitulo}
+      </p>
+    </div>
+
+    <!-- Estimator Container -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <!-- Left Column: Equipment Category Selectors -->
+      <div class="lg:col-span-7 bg-white rounded-card p-6 md:p-8 shadow-card border border-border flex flex-col gap-6">
+        <h3 class="font-heading font-bold text-navy text-[18px] pb-3 border-b border-border flex items-center justify-between">
+          <span>Seleccione su Parque de Equipos</span>
+          <span class="text-[13px] font-normal text-text-soft">Paso 1 de 2</span>
+        </h3>
+
+        <div class="flex flex-col gap-5">
+          {categorias.map((cat) => (
+            <div class="group/field p-4 rounded-xl border border-border/80 hover:border-blue/30 focus-within:border-blue/50 transition-colors duration-200 bg-slate-50/50">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="flex flex-col">
+                  <label for={`calc-count-${cat.id}`} class="font-heading font-bold text-navy text-[15px] group-focus-within/field:text-blue transition-colors">
+                    {cat.nombre}
+                  </label>
+                  <span class="font-body text-[13px] text-text-soft">{cat.descripcion}</span>
+                </div>
+
+                <!-- Counter Control -->
+                <div class="flex items-center gap-2 self-start sm:self-center bg-white border border-border rounded-lg p-1 shadow-sm">
+                  <button
+                    type="button"
+                    class="calc-btn-minus w-8 h-8 rounded flex items-center justify-center text-navy hover:bg-slate-100 focus-visible:bg-slate-100 active:scale-95 transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue"
+                    data-cat-id={cat.id}
+                    aria-label={`Disminuir cantidad de ${cat.nombre}`}
+                    title={`Disminuir cantidad de ${cat.nombre}`}
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
+                    </svg>
+                  </button>
+
+                  <input
+                    type="number"
+                    id={`calc-count-${cat.id}`}
+                    class="calc-input w-12 text-center font-heading font-bold text-navy text-[16px] bg-transparent outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    value={cat.defaultCount}
+                    min={cat.min}
+                    max={cat.max}
+                    data-cat-id={cat.id}
+                    data-cat-name={cat.nombre}
+                    aria-label={`Cantidad de ${cat.nombre}`}
+                  />
+
+                  <button
+                    type="button"
+                    class="calc-btn-plus w-8 h-8 rounded flex items-center justify-center text-navy hover:bg-slate-100 focus-visible:bg-slate-100 active:scale-95 transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue"
+                    data-cat-id={cat.id}
+                    aria-label={`Aumentar cantidad de ${cat.nombre}`}
+                    title={`Aumentar cantidad de ${cat.nombre}`}
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Right Column: Result Summary & CTA Card -->
+      <div class="lg:col-span-5 bg-navy text-white rounded-card p-6 md:p-8 shadow-hero-card flex flex-col justify-between h-full relative overflow-hidden">
+        <!-- Background accent -->
+        <div class="absolute -bottom-10 -right-10 w-48 h-48 rounded-full bg-blue/20 blur-2xl pointer-events-none" aria-hidden="true"></div>
+
+        <div>
+          <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+            <span class="font-heading font-bold text-[13px] uppercase tracking-wider text-blue-light">Resumen del Estimador</span>
+            <span class="bg-blue/30 text-blue-light text-[11px] font-semibold px-2.5 py-0.5 rounded-full">Sugerencia B2B</span>
+          </div>
+
+          <!-- Total Equipment Counter -->
+          <div class="mb-6">
+            <span class="block font-body text-[13px] text-white/70 uppercase tracking-wider mb-1">Total de Equipos Estimados</span>
+            <div class="flex items-baseline gap-2">
+              <span id="calc-total-equipos" class="font-heading font-extrabold text-[44px] text-white leading-none">11</span>
+              <span class="font-body text-[14px] text-white/80">unidades registradas</span>
+            </div>
+          </div>
+
+          <!-- Recommended Plan Badge & Details -->
+          <div class="bg-white/5 border border-white/10 rounded-xl p-5 mb-6 backdrop-blur-sm">
+            <span class="block font-body text-[12px] text-white/70 uppercase tracking-wider mb-1">Plan de Mantenimiento Recomendado</span>
+            <h4 id="calc-plan-nombre" class="font-heading font-bold text-[20px] text-blue-light mb-2">
+              Plan Preventivo Semestral
+            </h4>
+            <p id="calc-plan-desc" class="font-body text-[14px] text-white/80 leading-relaxed mb-3">
+              Recomendado para parques con equipos de soporte vital y monitoreo continuos. Incluye 2 inspecciones anuales, calibración y reporte de auditoría.
+            </p>
+            <ul class="flex flex-col gap-2 font-body text-[13px] text-white/90">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-blue-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <span>Inspección funcional y verificación eléctrica</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-blue-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <span>Informe técnico apto para auditorías médicas</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-blue-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <span>Descuento preferencial en diagnóstico de placas</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Visually Hidden Live Region for Screen Readers -->
+          <div id="calc-live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+        </div>
+
+        <!-- Action CTA -->
+        <div class="mt-4 pt-4 border-t border-white/10">
+          <a
+            id="calc-whatsapp-btn"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-primary w-full justify-center gap-2 group py-3.5 shadow-lg active:scale-[0.98]"
+            title="Solicitar presupuesto formal por WhatsApp con este cálculo"
+            aria-label="Solicitar propuesta formal para el parque de equipos vía WhatsApp"
+          >
+            <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat" aria-hidden="true">
+              <use href="#icon-whatsapp" />
+            </svg>
+            <span id="calc-cta-text">Solicitar Propuesta Personalizada</span>
+            <svg class="w-4 h-4 text-white/80 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+          <span id="calc-cta-announcement" class="sr-only" aria-live="polite"></span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<script>
+  import { CONFIG } from '../data/config';
+
+  (function() {
+    function initCalculadora() {
+      const inputs = document.querySelectorAll<HTMLInputElement>('.calc-input');
+      const minusBtns = document.querySelectorAll<HTMLButtonElement>('.calc-btn-minus');
+      const plusBtns = document.querySelectorAll<HTMLButtonElement>('.calc-btn-plus');
+      const totalEl = document.getElementById('calc-total-equipos');
+      const planNombreEl = document.getElementById('calc-plan-nombre');
+      const planDescEl = document.getElementById('calc-plan-desc');
+      const liveRegion = document.getElementById('calc-live-region');
+      const waBtn = document.getElementById('calc-whatsapp-btn') as HTMLAnchorElement | null;
+      const ctaText = document.getElementById('calc-cta-text');
+      const ctaAnnouncement = document.getElementById('calc-cta-announcement');
+
+      if (!inputs.length || !totalEl || !waBtn) return () => {};
+
+      function calculate() {
+        let totalCount = 0;
+        let hasCritical = false;
+        const details: string[] = [];
+
+        inputs.forEach((input) => {
+          let val = parseInt(input.value, 10);
+          if (isNaN(val) || val < 0) val = 0;
+          const max = parseInt(input.getAttribute('max') || '100', 10);
+          if (val > max) val = max;
+          input.value = String(val);
+
+          totalCount += val;
+
+          const catId = input.dataset.catId;
+          const catName = input.dataset.catName || catId;
+
+          if (catId === 'criticos' && val > 0) {
+            hasCritical = true;
+          }
+
+          if (val > 0) {
+            details.push(`${val} ${catName}`);
+          }
+        });
+
+        if (totalEl) totalEl.textContent = String(totalCount);
+
+        let planNombre = 'Plan Preventivo Semestral';
+        let planDesc = 'Recomendado para parques con equipos de soporte vital y monitoreo continuos. Incluye 2 inspecciones anuales, calibración y reporte de auditoría.';
+
+        if (totalCount === 0) {
+          planNombre = 'Plan Personalizado a Medida';
+          planDesc = 'Seleccione al menos un equipo en las categorías superiores para estimar la frecuencia ideal de mantenimiento preventivo.';
+        } else if (hasCritical || totalCount >= 15) {
+          planNombre = 'Plan Intensivo Trimestral (Alta Complejidad)';
+          planDesc = 'Recomendado para instituciones con alta carga asistencial y soportes vitales. Inspecciones cada 3 meses para prevención proactiva de fallas.';
+        } else if (totalCount <= 4) {
+          planNombre = 'Plan Preventivo Anual (Básico)';
+          planDesc = 'Ideal para consultorios o clínicas con parque reducido. Inspección integral programada una vez al año con certificación de seguridad.';
+        }
+
+        if (planNombreEl) planNombreEl.textContent = planNombre;
+        if (planDescEl) planDescEl.textContent = planDesc;
+
+        if (liveRegion) {
+          liveRegion.textContent = `Actualizado: total ${totalCount} equipos. ${planNombre}.`;
+        }
+
+        // Build WhatsApp pre-filled text
+        const phone = CONFIG.contacto.whatsapp.replace(/\D/g, '');
+        const summaryText = details.length > 0 ? details.join(', ') : 'Servicio técnico electromédico';
+        const msg = `Hola TechHealth, quisiera solicitar un presupuesto personalizado para el ${planNombre}. Parque estimado: ${summaryText} (Total: ${totalCount} equipos).`;
+        const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+
+        // Validate protocol
+        if (waBtn && /^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i.test(waUrl)) {
+          waBtn.href = waUrl;
+        }
+      }
+
+      function handleBtnClick(btn: HTMLButtonElement, isPlus: boolean) {
+        const catId = btn.dataset.catId;
+        if (!catId) return;
+        const input = document.querySelector<HTMLInputElement>(`#calc-count-${catId}`);
+        if (!input) return;
+
+        let val = parseInt(input.value, 10);
+        if (isNaN(val)) val = 0;
+        const min = parseInt(input.getAttribute('min') || '0', 10);
+        const max = parseInt(input.getAttribute('max') || '100', 10);
+
+        if (isPlus && val < max) {
+          input.value = String(val + 1);
+        } else if (!isPlus && val > min) {
+          input.value = String(val - 1);
+        }
+
+        calculate();
+      }
+
+      const minusListeners: [Element, EventListener][] = [];
+      minusBtns.forEach((btn) => {
+        const handler = () => handleBtnClick(btn, false);
+        btn.addEventListener('click', handler);
+        minusListeners.push([btn, handler]);
+      });
+
+      const plusListeners: [Element, EventListener][] = [];
+      plusBtns.forEach((btn) => {
+        const handler = () => handleBtnClick(btn, true);
+        btn.addEventListener('click', handler);
+        plusListeners.push([btn, handler]);
+      });
+
+      const inputListeners: [Element, EventListener][] = [];
+      inputs.forEach((input) => {
+        const handler = () => calculate();
+        input.addEventListener('input', handler);
+        inputListeners.push([input, handler]);
+      });
+
+      const handleCtaClick = (e: MouseEvent) => {
+        e.preventDefault();
+        const href = waBtn.getAttribute('href');
+        if (!href || href === '#') return;
+
+        const originalText = ctaText ? ctaText.textContent : '';
+        if (ctaText) ctaText.textContent = 'Redirigiendo...';
+        if (ctaAnnouncement) ctaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
+        waBtn.setAttribute('aria-busy', 'true');
+        waBtn.setAttribute('aria-disabled', 'true');
+        waBtn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+        const openedWin = window.open(href, '_blank');
+        if (openedWin) {
+          openedWin.opener = null;
+        }
+
+        setTimeout(() => {
+          if (ctaText && originalText) ctaText.textContent = originalText;
+          if (ctaAnnouncement) ctaAnnouncement.textContent = '';
+          waBtn.removeAttribute('aria-busy');
+          waBtn.removeAttribute('aria-disabled');
+          waBtn.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+        }, 3000);
+      };
+
+      waBtn.addEventListener('click', handleCtaClick);
+
+      // Initial calculation
+      calculate();
+
+      return () => {
+        minusListeners.forEach(([btn, handler]) => btn.removeEventListener('click', handler));
+        plusListeners.forEach(([btn, handler]) => btn.removeEventListener('click', handler));
+        inputListeners.forEach(([input, handler]) => input.removeEventListener('input', handler));
+        waBtn.removeEventListener('click', handleCtaClick);
+      };
+    }
+
+    let cleanup = initCalculadora();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initCalculadora();
+    });
+  })();
+</script>
