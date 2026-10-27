@@ -494,6 +494,11 @@ import { CONFIG } from '../data/config';
           } else {
             window.location.href = url;
           }
+        } else {
+          console.error('Invalid WhatsApp redirection URL:', url);
+          if (redirectAnnouncement) {
+            redirectAnnouncement.textContent = 'Error: URL de redirección no válida.';
+          }
         }
       };
 
