@@ -141,3 +141,7 @@
 ## 2026-03-30 - Transición de color por foco y censo en títulos de tarjetas de sección
 **Learning:** En tarjetas de contenido interactivo (`.service-card` y tarjetas de proceso, diferenciales o miembros del equipo), aplicar utilidades de transición de color en los títulos (`group-hover:text-blue`, `group-focus-within:text-blue` o `group-focus-visible:text-blue` junto con `transition-colors duration-300`) ilumina visualmente el texto principal en el color de la marca al posar el cursor o navegar por teclado, coordinando el título con las animaciones del ícono y borde de la tarjeta.
 **Action:** Equipar los encabezados de tarjetas con la clase `group-hover:text-blue` pareada con `group-focus-within:text-blue` / `group-focus-visible:text-blue` para ofrecer una retroalimentación visual unificada.
+
+## 2026-03-30 - Gestión de estado ARIA dinámico en botones CTA de barra de navegación principal
+**Learning:** En botones de llamada a la acción en la barra de navegación principal (`Nav.astro`), incorporar un atributo `aria-label` explícito y alternar dinámicamente `aria-busy="true"`, `aria-disabled="true"` y actualizar el `aria-label` a "Redirigiendo a WhatsApp" durante el estado de redirección asíncrona garantiza que los usuarios de lectores de pantalla reciban información precisa sobre el progreso y la intención del enlace en tiempo real.
+**Action:** Asignar atributos `aria-label` explícitos en botones CTA de navegación principal y alternar `aria-busy`, `aria-disabled` y la descripción ARIA durante transiciones de redirección.
