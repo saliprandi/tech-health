@@ -175,7 +175,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 				<!-- Historial -->
 				<div id="result-historial-section" class="bg-white rounded-[16px] p-8 shadow-lg">
 					<h2 class="font-heading font-bold text-[18px] text-navy mb-4">Historial de cambios</h2>
-					<div id="result-historial" class="flex flex-col gap-4"></div>
+					<div id="result-historial"></div>
 				</div>
 
 				<!-- Botón nueva consulta -->
@@ -511,13 +511,13 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 				if (historial.length === 0) {
 					historialEl.innerHTML = '<p class="text-text-soft text-[14px]">Sin cambios registrados</p>';
 				} else {
-					historialEl.innerHTML = historial.map((h: any) => {
+					historialEl.innerHTML = `<ol class="flex flex-col gap-4 list-none p-0 m-0" role="list" aria-label="Historial de cambios del ticket">` + historial.map((h: any) => {
 						const cfgAnt = getEstadoCfg(h.estado_anterior);
 						const cfgNuevo = getEstadoCfg(h.estado_nuevo);
 						const nota = h.nota ? `<div class="text-[13px] text-navy mt-1 italic">"${escapeHtml(h.nota)}"</div>` : '';
 						const tecnico = h.tecnico ? ' · ' + escapeHtml(h.tecnico) : '';
 						return `
-							<div class="flex items-start gap-3 pb-4 border-b border-border last:border-0 last:pb-0">
+							<li class="flex items-start gap-3 pb-4 border-b border-border last:border-0 last:pb-0">
 								<div class="flex-shrink-0 w-8 h-8 rounded-full ${cfgNuevo.bg} ${cfgNuevo.color} flex items-center justify-center">
 									<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="${cfgNuevo.icon}"></path></svg>
 								</div>
@@ -530,9 +530,9 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 									<div class="text-[12px] text-text-soft">${escapeHtml(formatDate(h.fecha))}${tecnico}</div>
 									${nota}
 								</div>
-							</div>
+							</li>
 						`;
-					}).join('');
+					}).join('') + `</ol>`;
 				}
 			}
 			if (historialSection && historial.length === 0) {
