@@ -193,4 +193,52 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadoraB2B: {
+    titulo: "Estimador B2B de Mantenimiento Preventivo",
+    subtitulo: "Calcule la frecuencia recomendada y el plan ideal de mantenimiento para el parque tecnológico de su institución de salud.",
+    categorias: [
+      {
+        id: "critico",
+        nombre: "Soporte Vital y Quirófano",
+        ejemplos: "Respiradores, Monitores multiparamétricos, Desfibriladores, Electrobisturís",
+        frecuencia: "Trimestral (4 veces al año)",
+        criticidad: "Alta Criticidad",
+        recomendacion: "Requiere inspecciones periódicas de seguridad eléctrica, verificación de alarmas y calibración exhaustiva de parámetros vitales.",
+        badgeColor: "bg-red-100 text-red-800 border-red-200"
+      },
+      {
+        id: "diagnostico",
+        nombre: "Diagnóstico e Imágenes",
+        ejemplos: "Ecógrafos, Electrocardiógrafos, Monitores de ecografía",
+        frecuencia: "Semestral (2 veces al año)",
+        criticidad: "Criticidad Media-Alta",
+        recomendacion: "Verificación de transductores, tarjetas de adquisición de señal, fuentes de alimentación y calidad de imagen.",
+        badgeColor: "bg-amber-100 text-amber-800 border-amber-200"
+      },
+      {
+        id: "infusion",
+        nombre: "Terapia e Infusión",
+        ejemplos: "Bombas de infusión volumétricas, Bombas a jeringa, Capnógrafos",
+        frecuencia: "Semestral (2 veces al año)",
+        criticidad: "Criticidad Media",
+        recomendacion: "Ajuste de caudales, sensores de oclusión, verificación de sensores de aire y estado de baterías internas.",
+        badgeColor: "bg-blue-100 text-blue-800 border-blue-200"
+      },
+      {
+        id: "general",
+        nombre: "Esterilización y Laboratorio",
+        ejemplos: "Autoclaves, Centrífugas, Camas electromecánicas, Incubadoras",
+        frecuencia: "Anual o Semestral según uso",
+        criticidad: "Criticidad Regular",
+        recomendacion: "Inspección de hermeticidad, resistencias, control de temperatura/presión, placas de potencia y lubricación.",
+        badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-200"
+      }
+    ],
+    rangosEquipos: [
+      { id: "1-5", label: "1 a 5 equipos", descripcion: "Consultorios, centros odontológicos y policonsultorios" },
+      { id: "6-15", label: "6 a 15 equipos", descripcion: "Centros médicos especializados y servicios de guardia" },
+      { id: "16+", label: "Más de 15 equipos", descripcion: "Sanatorios, clínicas integrales y centros quirúrgicos" }
+    ]
+  }
 };
