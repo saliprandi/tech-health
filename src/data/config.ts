@@ -193,4 +193,82 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora: {
+    titulo: "Estimador de Mantenimiento Preventivo B2B",
+    subtitulo: "Calcule la frecuencia recomendada de inspección y calibración técnica según el tipo de equipamiento médico y su régimen de uso institucional.",
+    equipos: [
+      {
+        id: "monitores",
+        nombre: "Monitores de Signos Vitales",
+        criticidad: "Alta (Soporte Vital / Quirófano)",
+        frecuenciaBaseMeses: 3,
+        recomendaciones: [
+          "Prueba de seguridad eléctrica según norma IEC 60601",
+          "Calibración de módulos NIBP, SpO2 y ECG",
+          "Verificación y reemplazo preventivo de baterías de respaldo",
+        ],
+      },
+      {
+        id: "respiradores",
+        nombre: "Respiradores y Ventiladores",
+        criticidad: "Crítica (Unidad de Terapia Intensiva)",
+        frecuenciaBaseMeses: 2,
+        recomendaciones: [
+          "Calibración de celdas de O2 y sensores de flujo",
+          "Inspección de válvulas de exhalación y filtros HEPA",
+          "Prueba de estanqueidad y alarmas de presión",
+        ],
+      },
+      {
+        id: "ecografos",
+        nombre: "Ecógrafos y Diagnóstico por Imagen",
+        criticidad: "Media-Alta (Diagnóstico)",
+        frecuenciaBaseMeses: 6,
+        recomendaciones: [
+          "Inspección acústica y de conectores de transductores",
+          "Limpieza de filtros de aire y sistema de refrigeración",
+          "Prueba de linealidad y calibración de software",
+        ],
+      },
+      {
+        id: "desfibriladores",
+        nombre: "Desfibriladores y Electrocardiógrafos",
+        criticidad: "Crítica (Emergencias / UCO)",
+        frecuenciaBaseMeses: 3,
+        recomendaciones: [
+          "Medición de descarga de energía en julios exactos con simulador",
+          "Verificación de parches y paletas de desfibrilación",
+          "Autotesteo de circuitos internos y batería principal",
+        ],
+      },
+      {
+        id: "bombas",
+        nombre: "Bombas de Infusión y Jeringa",
+        criticidad: "Alta (Farmacología Crítica)",
+        frecuenciaBaseMeses: 4,
+        recomendaciones: [
+          "Prueba de precisión de flujo y detección de oclusión",
+          "Calibración de mecanismo peristáltico y sensor de burbujas",
+          "Inspección de carcasa y conectores de alimentación",
+        ],
+      },
+      {
+        id: "electrocirugia",
+        nombre: "Electrocirugía y Bisturí Eléctrico",
+        criticidad: "Crítica (Quirófano)",
+        frecuenciaBaseMeses: 3,
+        recomendaciones: [
+          "Prueba de fuga de radiofrecuencia (RF) y potencia de salida",
+          "Verificación del sistema de monitoreo de placa neutra (REM)",
+          "Inspección de pedales e instrumental monopolar/bipolar",
+        ],
+      },
+    ],
+    usos: [
+      { id: "intensivo", nombre: "Uso Intensivo / Quirófano (24/7)", factorMeses: 0.75 },
+      { id: "moderado", nombre: "Uso Hospitalario Moderado (Piso / Guardia)", factorMeses: 1.0 },
+      { id: "consultorio", nombre: "Uso Periódico (Consultorio / Ambulatorio)", factorMeses: 1.5 },
+    ],
+  },
 };
