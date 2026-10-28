@@ -38,7 +38,7 @@ test.describe('Navigation UX', () => {
     await expect(mobileMenu).toBeVisible();
 
     // Click outside menu (on position below menu)
-    await page.mouse.click(10, 500);
+    await page.mouse.click(10, 620);
     await expect(mobileMenu).not.toBeVisible();
     await expect(menuToggle).toHaveAttribute('aria-expanded', 'false');
 
@@ -56,6 +56,21 @@ test.describe('Navigation UX', () => {
     await expect(logoLink).toBeVisible();
     await expect(logoLink).toHaveClass(/focus-visible:ring-2/);
     await expect(logoLink).toHaveClass(/focus-visible:ring-navy/);
+  });
+
+  test('mobile navigation links should have focus-visible ring, text parity, and active press scale styles', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+    const mobileLinks = page.locator('.mobile-link');
+    const count = await mobileLinks.count();
+    expect(count).toBeGreaterThan(0);
+
+    for (let i = 0; i < count; i++) {
+      const link = mobileLinks.nth(i);
+      await expect(link).toHaveClass(/focus-visible:ring-2/);
+      await expect(link).toHaveClass(/focus-visible:ring-navy/);
+      await expect(link).toHaveClass(/focus-visible:text-navy/);
+      await expect(link).toHaveClass(/active:scale-95/);
+    }
   });
 
   test('reading progress bar should update on scroll', async ({ page }) => {
