@@ -1,0 +1,117 @@
+---
+import { CONFIG } from '../data/config';
+
+const { titulo, subtitulo, zonas } = CONFIG.cobertura;
+---
+
+<section id="cobertura" class="section-padding bg-white border-t border-border scroll-mt-20 relative">
+  <div class="container-custom">
+
+    <!-- Header -->
+    <div class="text-center max-w-[720px] mx-auto mb-14">
+      <div class="inline-flex items-center gap-2 bg-blue-pale text-blue font-heading font-bold text-[12px] uppercase tracking-wider py-1.5 px-3.5 rounded-full mb-4">
+        <svg class="w-4 h-4 text-blue" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span>Alcance Geográfico y Tiempos de Respuesta</span>
+      </div>
+      <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,42px)] text-navy leading-tight tracking-tight mb-4">
+        {titulo}
+      </h2>
+      <p class="font-body text-text-soft text-[16px] md:text-[17px] leading-relaxed">
+        {subtitulo}
+      </p>
+    </div>
+
+    <!-- SLA Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {zonas.map((zona) => (
+        <div class={`group rounded-card p-6 md:p-8 flex flex-col justify-between transition-all duration-300 relative border ${zona.destacada ? 'bg-navy text-white border-navy shadow-hero-card focus-within:-translate-y-1' : 'bg-slate-50 text-navy border-border hover:border-blue/30 focus-within:border-blue/50 shadow-card hover:shadow-card-hover focus-within:-translate-y-1'}`}>
+
+          <div>
+            <!-- Badge & SLA Header -->
+            <div class="flex items-center justify-between gap-2 mb-6">
+              <span class={`font-heading font-bold text-[12px] uppercase tracking-wider py-1 px-3 rounded-full ${zona.destacada ? 'bg-blue/30 text-blue-light' : 'bg-blue-pale text-blue'}`}>
+                {zona.badge}
+              </span>
+              <div class="flex items-center gap-1.5 text-[13px] font-medium">
+                <svg class={`w-4 h-4 ${zona.destacada ? 'text-blue-light' : 'text-blue'}`} fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class={zona.destacada ? 'text-white/90' : 'text-text-soft'}>{zona.sla}</span>
+              </div>
+            </div>
+
+            <!-- Zone Title -->
+            <h3 class={`font-heading font-bold text-[22px] mb-3 group-hover:text-blue group-focus-within:text-blue transition-colors duration-300 ${zona.destacada ? 'text-white group-hover:text-blue-light group-focus-within:text-blue-light' : 'text-navy'}`}>
+              {zona.zona}
+            </h3>
+
+            <!-- Description -->
+            <p class={`font-body text-[14px] leading-relaxed mb-6 ${zona.destacada ? 'text-white/80' : 'text-text-soft'}`}>
+              {zona.descripcion}
+            </p>
+
+            <!-- Feature Points -->
+            <ul class="flex flex-col gap-3 mb-8 font-body text-[13px]" role="list">
+              {zona.puntos.map((punto) => (
+                <li class="flex items-start gap-2.5">
+                  <svg class={`w-4 h-4 mt-0.5 flex-shrink-0 ${zona.destacada ? 'text-blue-light' : 'text-blue'}`} fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span class={zona.destacada ? 'text-white/90' : 'text-navy/90'}>{punto}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Card Action CTA -->
+          <div class="pt-4 border-t border-border/60">
+            <a
+              href="#contacto"
+              class={`inline-flex items-center justify-between w-full p-3 rounded-lg font-heading font-bold text-[14px] transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 active:scale-95 ${zona.destacada ? 'bg-blue text-white hover:bg-blue-light group-focus-within:bg-blue-light' : 'bg-white text-navy hover:text-blue border border-border hover:border-blue/40 shadow-sm'}`}
+              title={`Consultar cobertura técnica para ${zona.zona}`}
+              aria-label={`Consultar cobertura técnica para ${zona.zona}`}
+            >
+              <span>Coordinar servicio in-situ</span>
+              <svg class="w-4 h-4 group-hover:translate-x-1 group-focus-within:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+
+        </div>
+      ))}
+    </div>
+
+    <!-- Emergency Note Banner -->
+    <div class="mt-12 bg-blue-pale/60 rounded-2xl p-6 border border-blue/20 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span class="w-10 h-10 rounded-full bg-blue text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </span>
+        <div>
+          <h4 class="font-heading font-bold text-navy text-[15px]">¿Urgencia con equipo de soporte vital?</h4>
+          <p class="font-body text-text-soft text-[13px]">Disponemos de canal prioritario de guardia para clínicas y sanatorios de Tucumán.</p>
+        </div>
+      </div>
+      <a
+        href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('Hola TechHealth, necesito atención de guardia prioritaria por urgencia médica en equipo.')}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-primary text-[13px] py-2.5 px-5 gap-2 flex-shrink-0 active:scale-95"
+        title="Contactar guardia de emergencia 24/7 por WhatsApp"
+        aria-label="Contactar guardia de emergencia 24/7 por WhatsApp"
+      >
+        <svg class="w-4 h-4 fill-current" aria-hidden="true">
+          <use href="#icon-whatsapp" />
+        </svg>
+        <span>Guardia 24/7</span>
+      </a>
+    </div>
+
+  </div>
+</section>

@@ -193,4 +193,77 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora_b2b: {
+    titulo: "Estimador B2B de Mantenimiento Preventivo",
+    subtitulo: "Estime la frecuencia ideal de mantenimiento y garantice la continuidad operativa de su institución médica.",
+    categorias: [
+      {
+        id: "monitores",
+        nombre: "Monitores y Electrocardiografía",
+        descripcion: "Monitores multiparamétricos, ECG, Holter y capnógrafos",
+        defaultCount: 3,
+        min: 0,
+        max: 20
+      },
+      {
+        id: "criticos",
+        nombre: "Soporte Vital y Terapia",
+        descripcion: "Respiradores, desfibriladores, servocunas y bisturís eléctricos",
+        defaultCount: 2,
+        min: 0,
+        max: 15
+      },
+      {
+        id: "infusion",
+        nombre: "Bombas de Infusión y Jeringa",
+        descripcion: "Bombas de infusión volumétrica y bombas de jeringa",
+        defaultCount: 5,
+        min: 0,
+        max: 30
+      },
+      {
+        id: "diagnostico",
+        nombre: "Diagnóstico por Imagen y Laboratorio",
+        descripcion: "Ecógrafos, centrífugas, microscopios y autoclaves",
+        defaultCount: 1,
+        min: 0,
+        max: 10
+      }
+    ]
+  },
+
+  cobertura: {
+    titulo: "Cobertura Regional y Tiempos de Respuesta (SLA)",
+    subtitulo: "Respuesta rápida presencial en Tucumán y soporte de diagnóstico en laboratorio para todo el NOA.",
+    zonas: [
+      {
+        id: "capital",
+        zona: "San Miguel de Tucumán",
+        badge: "Guardia Directa",
+        sla: "Menos de 2 horas",
+        descripcion: "Soporte de urgencia in-situ e inspección de equipos en clínicas, sanatorios y centros de salud del área metropolitana.",
+        destacada: true,
+        puntos: ["Atención prioritaria 24/7 para equipos críticos", "Diagnóstico in-situ e informe de factibilidad", "Servicio exprés de retiro y devolución"]
+      },
+      {
+        id: "gran-tucuman",
+        zona: "Gran Tucumán e Interior",
+        badge: "Atención Programada",
+        sla: "4 a 6 horas",
+        descripcion: "Desplazamiento técnico para mantenimientos preventivos y diagnósticos en Yerba Buena, Tafí Viejo, Concepción y Monteros.",
+        destacada: false,
+        puntos: ["Planes de mantenimiento preventivo semestrales", "Evaluación técnica de parques de equipos", "Traslado seguro a laboratorio en Capital"]
+      },
+      {
+        id: "noa",
+        zona: "Región NOA (Salta, Jujuy, Santiago, Catamarca)",
+        badge: "Laboratorio Especializado",
+        sla: "24 horas",
+        descripcion: "Recepción de módulos y placas electrónicas de alta complejidad en laboratorio central para diagnóstico y reparación a nivel SMD.",
+        destacada: false,
+        puntos: ["Recepción por encomienda/cadetería especializada", "Diagnóstico electrónico en 24-48 horas", "Pruebas simuladas pre-despacho y garantía de 90 días"]
+      }
+    ]
+  }
 };
