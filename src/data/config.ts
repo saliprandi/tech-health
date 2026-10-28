@@ -193,4 +193,48 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora: {
+    badge: "Estimación B2B",
+    titulo: "Calculadora de Plan de Mantenimiento Preventivo",
+    subtitulo: "Seleccione la cantidad de equipos de su institución para calcular la recomendación técnica personalizada e informe de auditoría.",
+    categorias: [
+      {
+        id: "criticos",
+        nombre: "Soporte Vital y Quirófano",
+        descripcion: "Respiradores, Monitores de Signos Vitales, Desfibriladores, Electrobisturíes.",
+        icono: "shield",
+        frecuenciaRecomendada: "Trimestral (4 revisiones / año)",
+        checklist: [
+          "Ensayos de Seguridad Eléctrica (IEC 62353)",
+          "Calibración de flujo, presión y parámetros vitales",
+          "Test de autonomía de baterías y fuentes de respaldo",
+        ],
+      },
+      {
+        id: "diagnostico",
+        nombre: "Diagnóstico e Infusión",
+        descripcion: "Ecógrafos, Bombas de Infusión/Jeringa, Electrocardiógrafos, Oxímetros.",
+        icono: "circuit",
+        frecuenciaRecomendada: "Semestral (2 revisiones / año)",
+        checklist: [
+          "Control de exactitud de volumen y tasa de infusión",
+          "Verificación de transductores y señales biomédicas",
+          "Limpieza profunda y calibración de sensores",
+        ],
+      },
+      {
+        id: "esterilizacion",
+        nombre: "Esterilización y Laboratorio",
+        descripcion: "Autoclaves, Centrífugas, Microscopios, Balanzas y Equipos de Muestra.",
+        icono: "tool",
+        frecuenciaRecomendada: "Semestral (2 revisiones / año)",
+        checklist: [
+          "Verificación de sellado hermético y presiones",
+          "Calibración de sensores térmicos y ciclos",
+          "Inspección de desgaste mecánico y motores",
+        ],
+      },
+    ],
+  },
 };
