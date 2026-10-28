@@ -1,0 +1,231 @@
+---
+import { CONFIG } from '../data/config';
+
+const { calculadoraB2B } = CONFIG;
+---
+
+<section id="calculadora" class="py-20 bg-slate-50 border-t border-border scroll-mt-20" aria-labelledby="calculadora-heading">
+  <div class="container-custom px-[5%]">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <span class="inline-block text-blue font-heading font-semibold text-[14px] uppercase tracking-wider mb-2">Planificación e Inversión Técnica</span>
+      <h2 id="calculadora-heading" class="text-3xl md:text-4xl font-heading font-bold text-navy mb-4">
+        {calculadoraB2B.titulo}
+      </h2>
+      <p class="text-text-soft font-body text-base md:text-lg">
+        {calculadoraB2B.subtitulo}
+      </p>
+    </div>
+
+    <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-card border border-border p-6 md:p-10 transition-all duration-300 hover:shadow-card-hover focus-within:shadow-card-hover">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+        <!-- Controles de la Calculadora -->
+        <div class="lg:col-span-7 space-y-6">
+
+          <!-- Cantidad de Equipos -->
+          <div class="group/field bg-slate-50 p-5 rounded-xl border border-border/80 focus-within:border-blue transition-colors">
+            <div class="flex justify-between items-center mb-3">
+              <label for="cant-equipos" class="font-heading font-bold text-navy text-sm md:text-base group-focus-within/field:text-blue transition-colors">
+                Cantidad estimada de equipos
+              </label>
+              <span id="cant-equipos-val" class="font-heading font-bold text-blue text-lg bg-blue/10 px-3 py-1 rounded-md">
+                10
+              </span>
+            </div>
+            <input
+              type="range"
+              id="cant-equipos"
+              min="1"
+              max="50"
+              value="10"
+              class="w-full accent-blue cursor-pointer h-2 bg-border rounded-lg appearance-none focus:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
+              aria-describedby="range-hint"
+            />
+            <p id="range-hint" class="text-xs text-text-soft mt-2 group-focus-within/field:text-navy transition-colors">
+              Deslice para seleccionar el volumen total de su parque tecnológico (1 a 50+ unidades).
+            </p>
+          </div>
+
+          <!-- Tipo de Mantenimiento -->
+          <div class="group/field bg-slate-50 p-5 rounded-xl border border-border/80 focus-within:border-blue transition-colors">
+            <label for="tipo-servicio" class="block font-heading font-bold text-navy text-sm md:text-base mb-2 group-focus-within/field:text-blue transition-colors">
+              Modalidad de Servicio Requerida
+            </label>
+            <select
+              id="tipo-servicio"
+              class="w-full bg-white border border-border rounded-lg px-4 py-3 font-body text-navy text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 cursor-pointer transition-colors"
+            >
+              {calculadoraB2B.tiposServicio.map((tipo) => (
+                <option value={tipo.id}>{tipo.nombre}</option>
+              ))}
+            </select>
+            <p class="text-xs text-text-soft mt-2 group-focus-within/field:text-navy transition-colors">
+              Seleccione el nivel de cobertura operativa según la criticidad de su institución.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Panel de Resultados y Recomendaciones -->
+        <div class="lg:col-span-5 bg-navy text-white rounded-xl p-6 flex flex-col justify-between shadow-md">
+          <div>
+            <h3 class="font-heading font-bold text-lg md:text-xl text-white mb-4 border-b border-white/10 pb-3 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-light" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Estimación de Servicio
+            </h3>
+
+            <!-- Dynamic Live Region for Results -->
+            <div id="calc-live-results" aria-live="polite" class="space-y-4">
+              <div class="bg-white/5 p-4 rounded-lg border border-white/10">
+                <span class="block text-xs text-white/70 uppercase tracking-wider font-semibold mb-1">Frecuencia de Inspección</span>
+                <p id="res-frecuencia" class="text-base font-heading font-bold text-blue-light">Cada 3 meses (4 visitas/año)</p>
+              </div>
+
+              <div class="bg-white/5 p-4 rounded-lg border border-white/10">
+                <span class="block text-xs text-white/70 uppercase tracking-wider font-semibold mb-1">SLA de Respuesta Estimado</span>
+                <p id="res-sla" class="text-base font-heading font-bold text-white">24-48 hs</p>
+              </div>
+
+              <div class="bg-white/5 p-4 rounded-lg border border-white/10">
+                <span class="block text-xs text-white/70 uppercase tracking-wider font-semibold mb-1">Impacto en Disponibilidad</span>
+                <p id="res-disponibilidad" class="text-base font-heading font-bold text-emerald-400"> +95% Continuidad Operativa</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA Solicitud de Cotización Directa -->
+          <div class="mt-6 pt-4 border-t border-white/10">
+            <a
+              id="calc-whatsapp-btn"
+              href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full inline-flex items-center justify-center gap-2 bg-blue text-white font-heading font-bold text-sm py-3.5 px-4 rounded-lg hover:bg-blue-light hover:text-navy active:scale-95 transition-all shadow-md focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy outline-none"
+            >
+              <svg class="calc-spinner hidden w-4 h-4 animate-spin text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span class="calc-btn-text">Solicitar Cotización B2B</span>
+              <svg class="calc-btn-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <use href="#icon-external" />
+              </svg>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="calc-redirection-announcement" class="sr-only" aria-live="polite"></div>
+</section>
+
+<script>
+  import { CONFIG } from '../data/config';
+
+  (function() {
+    function initCalculadora() {
+      const rangeInput = document.getElementById('cant-equipos') as HTMLInputElement | null;
+      const cantDisplay = document.getElementById('cant-equipos-val');
+      const selectServicio = document.getElementById('tipo-servicio') as HTMLSelectElement | null;
+      const resFrecuencia = document.getElementById('res-frecuencia');
+      const resSla = document.getElementById('res-sla');
+      const resDisponibilidad = document.getElementById('res-disponibilidad');
+      const btnWhatsApp = document.getElementById('calc-whatsapp-btn') as HTMLAnchorElement | null;
+      const redirectionAnnouncement = document.getElementById('calc-redirection-announcement');
+
+      if (!rangeInput || !cantDisplay || !selectServicio || !resFrecuencia || !resSla || !resDisponibilidad || !btnWhatsApp) {
+        return () => {};
+      }
+
+      const updateCalculations = () => {
+        const cantidad = parseInt(rangeInput.value, 10) || 1;
+        cantDisplay.textContent = cantidad.toString();
+
+        const servicioId = selectServicio.value;
+        const configServicios = CONFIG.calculadoraB2B.tiposServicio;
+        const servicioSeleccionado = configServicios.find(s => s.id === servicioId) || configServicios[0];
+
+        const visitasAno = Math.round(12 / servicioSeleccionado.inspeccionMeses);
+        resFrecuencia.textContent = `Cada ${servicioSeleccionado.inspeccionMeses} meses (${visitasAno} visitas/año)`;
+        resSla.textContent = servicioSeleccionado.factorSla;
+
+        if (cantidad >= 20 || servicioId === 'integral') {
+          resDisponibilidad.textContent = '+98% Continuidad Operativa Prioritaria';
+        } else if (cantidad >= 10) {
+          resDisponibilidad.textContent = '+95% Continuidad Operativa';
+        } else {
+          resDisponibilidad.textContent = '+90% Prevención de Fallas Críticas';
+        }
+
+        // Update WhatsApp link with encoded parameters safely
+        const baseWa = `https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`;
+        const mensajeText = `Hola TechHealth, quisiera solicitar cotización B2B para una flota de ${cantidad} equipos médicos (${servicioSeleccionado.nombre}).`;
+        btnWhatsApp.href = `${baseWa}?text=${encodeURIComponent(mensajeText)}`;
+      };
+
+      const handleCtaClick = (e: MouseEvent) => {
+        e.preventDefault();
+        const spanText = btnWhatsApp.querySelector('.calc-btn-text');
+        const spinner = btnWhatsApp.querySelector('.calc-spinner');
+        const icon = btnWhatsApp.querySelector('.calc-btn-icon');
+
+        if (!spanText || !spinner || !icon) return;
+
+        const originalText = spanText.textContent;
+        spanText.textContent = 'Redirigiendo a WhatsApp...';
+        spinner.classList.remove('hidden');
+        icon.classList.add('hidden');
+        btnWhatsApp.setAttribute('aria-busy', 'true');
+        btnWhatsApp.setAttribute('aria-disabled', 'true');
+        btnWhatsApp.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+
+        if (redirectionAnnouncement) {
+          redirectionAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
+        }
+
+        const targetUrl = btnWhatsApp.href;
+        const validWaPattern = /^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i;
+        if (validWaPattern.test(targetUrl)) {
+          const openedWin = window.open(targetUrl, '_blank');
+          if (openedWin) {
+            openedWin.opener = null;
+          }
+        }
+
+        setTimeout(() => {
+          if (spanText) spanText.textContent = originalText;
+          if (spinner) spinner.classList.add('hidden');
+          if (icon) icon.classList.remove('hidden');
+          btnWhatsApp.removeAttribute('aria-busy');
+          btnWhatsApp.removeAttribute('aria-disabled');
+          btnWhatsApp.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+          if (redirectionAnnouncement) redirectionAnnouncement.textContent = '';
+        }, 3000);
+      };
+
+      rangeInput.addEventListener('input', updateCalculations);
+      selectServicio.addEventListener('change', updateCalculations);
+      btnWhatsApp.addEventListener('click', handleCtaClick as EventListener);
+
+      // Initial calculation setup
+      updateCalculations();
+
+      return () => {
+        rangeInput.removeEventListener('input', updateCalculations);
+        selectServicio.removeEventListener('change', updateCalculations);
+        btnWhatsApp.removeEventListener('click', handleCtaClick as EventListener);
+      };
+    }
+
+    let cleanup = initCalculadora();
+    document.addEventListener('astro:after-swap', () => {
+      if (cleanup) cleanup();
+      cleanup = initCalculadora();
+    });
+  })();
+</script>

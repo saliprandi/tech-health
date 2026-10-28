@@ -193,4 +193,13 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadoraB2B: {
+    titulo: "Estimador de Mantenimiento B2B",
+    subtitulo: "Planifique la gestión técnica de su parque de equipamiento médico con estimaciones de frecuencia, tiempo de respuesta y continuidad operativa.",
+    tiposServicio: [
+      { id: "preventivo", nombre: "Mantenimiento Preventivo Programado", factorSla: "24-48 hs", inspeccionMeses: 3 },
+      { id: "integral", nombre: "Mantenimiento Integral + Diagnóstico de Placas", factorSla: "Respuesta Prioritaria 12-24 hs", inspeccionMeses: 2 },
+    ],
+  },
 };
