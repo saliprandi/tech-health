@@ -141,3 +141,7 @@
 ## 2026-03-30 - Transición de color por foco y censo en títulos de tarjetas de sección
 **Learning:** En tarjetas de contenido interactivo (`.service-card` y tarjetas de proceso, diferenciales o miembros del equipo), aplicar utilidades de transición de color en los títulos (`group-hover:text-blue`, `group-focus-within:text-blue` o `group-focus-visible:text-blue` junto con `transition-colors duration-300`) ilumina visualmente el texto principal en el color de la marca al posar el cursor o navegar por teclado, coordinando el título con las animaciones del ícono y borde de la tarjeta.
 **Action:** Equipar los encabezados de tarjetas con la clase `group-hover:text-blue` pareada con `group-focus-within:text-blue` / `group-focus-visible:text-blue` para ofrecer una retroalimentación visual unificada.
+
+## 2026-03-30 - Paridad de foco y contraste en instrucciones de teclado y enlaces de cabecera
+**Learning:** En controles de formulario con pistas de atajos de teclado (ej. `#f-desc-shortcut`), asociar `group-focus-within/field:text-white/80 transition-colors` coordina el contraste visual de las instrucciones de teclado con la etiqueta cuando el campo recibe foco. Asimismo, los enlaces de navegación con ícono direccional deben incluir `focus-visible:text-navy` en el texto de enlace para asegurar paridad de color entre estados `:hover` y `:focus-visible`.
+**Action:** Aplicar utilidades de contraste coordinado `group-focus-within` en pistas de teclado y garantizar paridad de color `focus-visible` en textos de enlace de cabecera.
