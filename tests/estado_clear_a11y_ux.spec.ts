@@ -12,6 +12,11 @@ test.describe('Estado Ticket Search Clear Button Accessibility & ARIA-Invalid UX
 
     await input.fill('TH-2026-9999');
     await expect(clearBtn).toBeVisible();
+    await expect(clearBtn).toHaveClass(/group/);
+
+    const clearIcon = clearBtn.locator('svg');
+    await expect(clearIcon).toHaveClass(/group-hover:rotate-90/);
+    await expect(clearIcon).toHaveClass(/group-focus-visible:rotate-90/);
 
     await clearBtn.click();
 
