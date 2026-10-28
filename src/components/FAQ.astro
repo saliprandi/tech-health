@@ -35,10 +35,10 @@ import { CONFIG } from '../data/config';
             type="button"
             id="clear-faq-search"
             title="Limpiar búsqueda"
-            class="hidden absolute right-3 top-1/2 -translate-y-1/2 p-1 text-text-soft hover:text-navy hover:scale-110 active:scale-95 focus-visible:text-navy rounded-full outline-none focus-visible:ring-2 focus-visible:ring-blue transition-all duration-200 cursor-pointer"
+            class="group/clear hidden absolute right-3 top-1/2 -translate-y-1/2 p-1 text-text-soft hover:text-navy hover:scale-110 active:scale-95 focus-visible:text-navy rounded-full outline-none focus-visible:ring-2 focus-visible:ring-blue transition-all duration-200 cursor-pointer"
             aria-label="Limpiar búsqueda"
           >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <svg class="w-4 h-4 group-hover/clear:rotate-90 group-focus-visible/clear:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
