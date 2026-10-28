@@ -53,10 +53,10 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 								type="button"
 								id="clear-ticket-input"
 								title="Limpiar número de ticket"
-								class="hidden absolute right-3 top-1/2 -translate-y-1/2 p-1 text-white/50 hover:text-white hover:scale-110 active:scale-95 focus-visible:text-white rounded-md focus-visible:ring-2 focus-visible:ring-blue-light outline-none transition-all duration-200"
+								class="group hidden absolute right-3 top-1/2 -translate-y-1/2 p-1 text-white/50 hover:text-white hover:scale-110 active:scale-95 focus-visible:text-white rounded-md focus-visible:ring-2 focus-visible:ring-blue-light outline-none transition-all duration-200"
 								aria-label="Limpiar número de ticket"
 							>
-								<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+								<svg class="w-4 h-4 group-hover:rotate-90 group-focus-visible:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
 								</svg>
 							</button>
@@ -517,14 +517,14 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 						const nota = h.nota ? `<div class="text-[13px] text-navy mt-1 italic">"${escapeHtml(h.nota)}"</div>` : '';
 						const tecnico = h.tecnico ? ' · ' + escapeHtml(h.tecnico) : '';
 						return `
-							<li class="flex items-start gap-3 pb-4 border-b border-border last:border-0 last:pb-0">
+							<li class="group/item flex items-start gap-3 pb-4 border-b border-border last:border-0 last:pb-0 hover:bg-slate-50/80 focus-within:bg-slate-50/80 transition-colors duration-200 rounded-lg p-2 -mx-2">
 								<div class="flex-shrink-0 w-8 h-8 rounded-full ${cfgNuevo.bg} ${cfgNuevo.color} flex items-center justify-center">
 									<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="${cfgNuevo.icon}"></path></svg>
 								</div>
 								<div class="flex-grow">
 									<div class="flex items-center gap-2 mb-1">
 										<span class="text-[12px] font-medium ${cfgAnt.color}">${cfgAnt.titulo}</span>
-										<svg class="w-3 h-3 text-text-soft" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+										<svg class="w-3 h-3 text-text-soft group-hover/item:translate-x-0.5 group-focus-within/item:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
 										<span class="text-[12px] font-bold ${cfgNuevo.color}">${cfgNuevo.titulo}</span>
 									</div>
 									<div class="text-[12px] text-text-soft">${escapeHtml(formatDate(h.fecha))}${tecnico}</div>
