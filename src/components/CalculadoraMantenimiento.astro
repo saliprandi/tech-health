@@ -1,0 +1,317 @@
+---
+import { CONFIG } from '../data/config';
+
+const calc = CONFIG.calculadora_mantenimiento;
+const whatsappNum = CONFIG.contacto.whatsapp;
+---
+
+<section id="calculadora" class="py-20 pt-28 scroll-mt-16 bg-gradient-to-b from-navy to-navy-dark text-white relative overflow-hidden" aria-labelledby="calc-heading">
+  <!-- Background subtle pattern decoration -->
+  <div class="absolute inset-0 bg-[radial-gradient(#2563A8_1px,transparent_1px)] [background-size:24px_24px] opacity-10 pointer-events-none" aria-hidden="true"></div>
+
+  <div class="container-custom px-[5%] relative z-10 max-w-6xl mx-auto">
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue/20 border border-blue-light/30 text-blue-light font-heading text-xs font-semibold uppercase tracking-wider mb-4">
+        <svg class="w-4 h-4 text-blue-light" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+        </svg>
+        <span>{calc.subtitulo}</span>
+      </div>
+      <h2 id="calc-heading" class="font-heading font-extrabold text-[clamp(28px,4vw,40px)] leading-tight text-white mb-4">
+        {calc.titulo}
+      </h2>
+      <p class="font-body text-[16px] text-white/70 max-w-2xl mx-auto">
+        {calc.descripcion}
+      </p>
+    </div>
+
+    <!-- Main Interactive Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Left Panel: Form Controls -->
+      <div class="lg:col-span-7 bg-white/5 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/10 shadow-xl">
+        <form id="calc-form" class="flex flex-col gap-6" onsubmit="return false;">
+          <!-- Tipo de Institución -->
+          <div class="flex flex-col gap-2">
+            <label for="calc-institucion" class="font-body font-semibold text-sm text-white/90 flex items-center justify-between">
+              <span>Tipo de Institución Médica <span class="text-blue-light">*</span></span>
+              <span class="text-xs text-white/50 font-normal">Ponderación por nivel de uso</span>
+            </label>
+            <div class="relative group/select">
+              <select
+                id="calc-institucion"
+                name="institucion"
+                class="w-full bg-navy-dark/90 border border-white/20 rounded-xl px-4 py-3.5 text-white font-body text-sm appearance-none outline-none focus-visible:ring-2 focus-visible:ring-blue-light focus-visible:border-blue-light transition-all cursor-pointer pr-10"
+              >
+                {calc.tipos_institucion.map((inst) => (
+                  <option value={inst.id} data-factor={inst.factor_riesgo}>
+                    {inst.nombre}
+                  </option>
+                ))}
+              </select>
+              <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-white/60 group-focus-within/select:rotate-180 group-focus-within/select:text-blue-light transition-transform duration-200" aria-hidden="true">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Categorías de Equipos -->
+          <div class="space-y-4 pt-2">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2">
+              <span class="font-heading font-bold text-sm text-white">Parque Tecnológico (Cantidad)</span>
+              <span class="font-body text-xs text-white/50">Ajuste las unidades</span>
+            </div>
+
+            {calc.categorias_equipos.map((cat) => (
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-white/5 hover:bg-white/10 rounded-xl transition-colors border border-white/5">
+                <div class="flex-grow">
+                  <label for={`cat-${cat.id}`} class="font-body text-sm font-medium text-white block">
+                    {cat.nombre}
+                  </label>
+                  <span class="inline-flex items-center gap-1.5 text-[11px] text-white/60 mt-0.5">
+                    Nivel de criticidad:
+                    <span class={`font-semibold ${cat.riesgo === 'Crítico' ? 'text-amber-400' : cat.riesgo === 'Alto' ? 'text-blue-light' : 'text-emerald-400'}`}>
+                      {cat.riesgo}
+                    </span>
+                  </span>
+                </div>
+
+                <!-- Number Input with Controls -->
+                <div class="flex items-center gap-2 self-start sm:self-center">
+                  <button
+                    type="button"
+                    class="calc-btn-minus w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 text-white flex items-center justify-center font-bold outline-none focus-visible:ring-2 focus-visible:ring-blue-light transition-all"
+                    data-target={`cat-${cat.id}`}
+                    aria-label={`Reducir cantidad de ${cat.nombre}`}
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    id={`cat-${cat.id}`}
+                    name={cat.id}
+                    min="0"
+                    max="99"
+                    value={cat.default_cantidad}
+                    data-peso={cat.peso}
+                    data-nombre={cat.nombre}
+                    class="calc-qty-input w-14 bg-navy-dark border border-white/20 rounded-lg py-1.5 text-center text-white font-mono font-bold text-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-light"
+                  />
+                  <button
+                    type="button"
+                    class="calc-btn-plus w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 text-white flex items-center justify-center font-bold outline-none focus-visible:ring-2 focus-visible:ring-blue-light transition-all"
+                    data-target={`cat-${cat.id}`}
+                    aria-label={`Aumentar cantidad de ${cat.nombre}`}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </form>
+      </div>
+
+      <!-- Right Panel: Dynamic Results & Action -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/15 shadow-2xl relative overflow-hidden">
+          <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
+            <h3 class="font-heading font-bold text-lg text-white">Diagnóstico de Servicio</h3>
+            <span id="calc-total-badge" class="px-3 py-1 rounded-full bg-blue/30 text-blue-light font-mono text-xs font-bold border border-blue-light/30">
+              12 Equipos
+            </span>
+          </div>
+
+          <div class="space-y-5">
+            <!-- Frecuencia Sugerida -->
+            <div class="bg-navy-dark/80 rounded-xl p-4 border border-white/10">
+              <span class="text-xs text-white/60 uppercase font-heading tracking-wider font-semibold block mb-1">
+                Frecuencia Preventiva Recomendada
+              </span>
+              <div id="calc-frecuencia" class="font-heading font-extrabold text-xl text-blue-light flex items-center gap-2">
+                Trimestral (4 visitas / año)
+              </div>
+              <p id="calc-frecuencia-desc" class="text-xs text-white/70 mt-1">
+                Ideal para mantener cobertura operativa y prevención de fallas imprevistas.
+              </p>
+            </div>
+
+            <!-- Pruebas de Seguridad Eléctrica -->
+            <div class="bg-navy-dark/80 rounded-xl p-4 border border-white/10">
+              <span class="text-xs text-white/60 uppercase font-heading tracking-wider font-semibold block mb-1">
+                Norma IEC 62353 & Trazabilidad
+              </span>
+              <div id="calc-norma" class="font-heading font-bold text-base text-white flex items-center gap-2">
+                <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>Inspección visual + Seguridad Eléctrica</span>
+              </div>
+              <p class="text-xs text-white/70 mt-1">
+                Incluye protocolo con certificado apto para auditorías de salud provincial.
+              </p>
+            </div>
+
+            <!-- Resumen de Parque -->
+            <div class="text-xs text-white/60 space-y-1 pt-1">
+              <div class="flex justify-between">
+                <span>Índice de Carga Biomédica:</span>
+                <span id="calc-indice" class="font-mono text-white font-semibold">16.2 pts</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Respuesta prioritaria ante urgencias:</span>
+                <span class="font-semibold text-emerald-400">Garantizada (&lt; 24h)</span>
+              </div>
+            </div>
+
+            <!-- Botón WhatsApp -->
+            <a
+              id="calc-wa-btn"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group/wa w-full bg-emerald-600 hover:bg-emerald-500 text-white font-heading font-bold py-4 px-6 rounded-xl transition-all duration-300 shadow-lg shadow-emerald-900/30 hover:shadow-emerald-900/50 flex items-center justify-center gap-3 outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy mt-4"
+              aria-label="Solicitar cotización personalizada por WhatsApp"
+            >
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.122.552 4.195 1.6 6.01L.06 23.94l5.986-1.57a11.96 11.96 0 005.985 1.581h.005c6.645 0 12.03-5.385 12.03-12.03C24.066 5.385 18.676 0 12.031 0zm0 22.012h-.004a9.932 9.932 0 01-5.062-1.39l-.363-.216-3.758.986.999-3.662-.236-.378a9.927 9.927 0 01-1.522-5.321c0-5.483 4.46-9.943 9.946-9.943 5.486 0 9.943 4.46 9.943 9.943 0 5.486-4.457 9.981-9.943 9.981zm5.452-7.464c-.299-.149-1.771-.874-2.045-.973-.274-.1-.474-.149-.673.149-.2.298-.772.973-.946 1.173-.174.199-.348.224-.647.075-.299-.149-1.263-.465-2.406-1.485-.889-.793-1.489-1.773-1.663-2.072-.174-.299-.019-.461.13-.61.135-.134.299-.348.448-.522.149-.174.199-.299.299-.498.1-.199.05-.373-.025-.522-.075-.149-.673-1.62-.922-2.217-.242-.581-.487-.502-.673-.512l-.573-.01c-.199 0-.523.075-.797.373s-1.046 1.022-1.046 2.493c0 1.471 1.071 2.89 1.221 3.089.149.199 2.109 3.22 5.109 4.516.714.309 1.271.494 1.706.632.716.228 1.368.196 1.883.119.575-.086 1.771-.723 2.02-1.42.249-.697.249-1.295.174-1.42-.075-.125-.274-.199-.573-.348z" />
+              </svg>
+              <span>Solicitar Plan Personalizado</span>
+              <svg class="w-4 h-4 group-hover/wa:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live region for screen reader announcements -->
+  <div id="calc-announcement" class="sr-only" aria-live="polite"></div>
+</section>
+
+<script is:inline define:vars={{ whatsappNum }}>
+  const instSelect = document.getElementById('calc-institucion');
+  const qtyInputs = document.querySelectorAll('.calc-qty-input');
+  const btnMinuses = document.querySelectorAll('.calc-btn-minus');
+  const btnPluses = document.querySelectorAll('.calc-btn-plus');
+
+  const badgeTotal = document.getElementById('calc-total-badge');
+  const frecuenciaEl = document.getElementById('calc-frecuencia');
+  const frecuenciaDesc = document.getElementById('calc-frecuencia-desc');
+  const indiceEl = document.getElementById('calc-indice');
+  const waBtn = document.getElementById('calc-wa-btn');
+  const announcement = document.getElementById('calc-announcement');
+
+  if (instSelect && badgeTotal && frecuenciaEl && waBtn) {
+    function calculate() {
+      let totalEquipos = 0;
+      let indiceCarga = 0;
+      const detalles = [];
+
+      const selectedOption = instSelect.options[instSelect.selectedIndex];
+      const factorInst = parseFloat(selectedOption?.dataset?.factor || '1.0');
+      const nombreInst = selectedOption?.text?.trim() || 'Institución Médica';
+
+      qtyInputs.forEach((input) => {
+        const qty = parseInt(input.value, 10) || 0;
+        const peso = parseFloat(input.dataset.peso || '1.0');
+        const nombreCat = input.dataset.nombre || 'Equipo';
+
+        if (qty > 0) {
+          totalEquipos += qty;
+          indiceCarga += qty * peso;
+          detalles.push(`${qty}x ${nombreCat}`);
+        }
+      });
+
+      const indiceFinal = (indiceCarga * factorInst).toFixed(1);
+
+      // Determinación de frecuencia sugerida
+      let frecuencia = 'Bimestral (6 visitas / año)';
+      let desc = 'Recomendado para parques biomédicos medianos con flujo constante de pacientes.';
+
+      if (totalEquipos === 0) {
+        frecuencia = 'Seleccione al menos 1 equipo';
+        desc = 'Ingrese las cantidades de su parque para recibir la sugerencia de mantenimiento.';
+      } else if (parseFloat(indiceFinal) < 8) {
+        frecuencia = 'Trimestral (4 visitas / año)';
+        desc = 'Frecuencia óptima para mantenimiento de baja y media complejidad.';
+      } else if (parseFloat(indiceFinal) >= 20) {
+        frecuencia = 'Mensual (12 visitas / año)';
+        desc = 'Plan de alta prioridad para centros quirúrgicos y de cuidados intensivos.';
+      }
+
+      // Actualizar UI
+      badgeTotal.textContent = `${totalEquipos} ${totalEquipos === 1 ? 'Equipo' : 'Equipos'}`;
+      frecuenciaEl.textContent = frecuencia;
+      if (frecuenciaDesc) frecuenciaDesc.textContent = desc;
+      if (indiceEl) indiceEl.textContent = `${indiceFinal} pts`;
+
+      // Formatear mensaje para WhatsApp
+      const mensajeWA = `Hola TechHealth, quisiera solicitar una cotización de mantenimiento preventivo para *${nombreInst}*.\n\n*Parque de equipos (${totalEquipos} unidades):*\n${detalles.length > 0 ? '- ' + detalles.join('\n- ') : 'Sin especificar'}\n\n*Diagnóstico sugerido:* ${frecuencia} (Índice: ${indiceFinal} pts).\n\nQuedo a la espera de su asesoramiento. Gracias.`;
+
+      const waUrl = `https://wa.me/${whatsappNum}?text=${encodeURIComponent(mensajeWA)}`;
+      waBtn.setAttribute('href', waUrl);
+
+      if (announcement) {
+        announcement.textContent = `Cálculo actualizado: ${totalEquipos} equipos. Frecuencia recomendada: ${frecuencia}.`;
+      }
+    }
+
+    // Direct event listener setup
+    instSelect.addEventListener('change', calculate);
+
+    qtyInputs.forEach((input) => {
+      input.addEventListener('input', () => {
+        let val = parseInt(input.value, 10);
+        if (isNaN(val) || val < 0) input.value = '0';
+        if (val > 99) input.value = '99';
+        calculate();
+      });
+    });
+
+    btnMinuses.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.dataset.target;
+        if (!targetId) return;
+        const targetInput = document.getElementById(targetId);
+        if (!targetInput) return;
+        let current = parseInt(targetInput.value, 10) || 0;
+        if (current > 0) {
+          targetInput.value = (current - 1).toString();
+          calculate();
+        }
+      });
+    });
+
+    btnPluses.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.dataset.target;
+        if (!targetId) return;
+        const targetInput = document.getElementById(targetId);
+        if (!targetInput) return;
+        let current = parseInt(targetInput.value, 10) || 0;
+        if (current < 99) {
+          targetInput.value = (current + 1).toString();
+          calculate();
+        }
+      });
+    });
+
+    // Validar origen de URL antes de redirección en click de WhatsApp
+    waBtn.addEventListener('click', (e) => {
+      const href = waBtn.getAttribute('href') || '';
+      if (!href.startsWith('https://wa.me/')) {
+        e.preventDefault();
+        alert('Enlace de comunicación no válido.');
+      }
+    });
+
+    // Initial calculation call
+    calculate();
+  }
+</script>
