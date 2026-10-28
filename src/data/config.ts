@@ -193,4 +193,81 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora_roi: {
+    titulo: "Estimador de Mantenimiento Preventivo & ROI",
+    subtitulo: "Calcule la reducción de paradas no programadas y la optimización de vida útil para su institución de salud.",
+    tipos_institucion: [
+      { id: "clinica", nombre: "Clínica / Sanatorio Privado", factorDowntime: 18, factorAhorro: 0.85 },
+      { id: "diagnostico", nombre: "Centro de Diagnóstico e Imágenes", factorDowntime: 24, factorAhorro: 0.90 },
+      { id: "laboratorio", nombre: "Laboratorio / Maternidad", factorDowntime: 14, factorAhorro: 0.80 },
+    ],
+    rangos_equipos: [
+      { min: 1, max: 5, label: "1 a 5 equipos", promedio: 3 },
+      { min: 6, max: 15, label: "6 a 15 equipos", promedio: 10 },
+      { min: 16, max: 35, label: "16 a 35 equipos", promedio: 25 },
+      { min: 36, max: 100, label: "+35 equipos (Alta Complejidad)", promedio: 50 },
+    ],
+  },
+
+  cobertura: {
+    titulo: "Red de Cobertura Geográfica NOA",
+    subtitulo: "Asistencia técnica especializada in-situ y logística de laboratorio rápida en Tucumán y provincias vecinas.",
+    zonas: [
+      {
+        id: "smt",
+        nombre: "San Miguel de Tucumán",
+        tiempoRespuesta: "< 2 horas",
+        tipoServicio: "Guardia 24h & Laboratorio Central",
+        descripcion: "Atención prioritaria inmediata in-situ y retiro directo para intervenciones en laboratorio de microelectrónica.",
+        localidades: ["Centro", "Barrio Norte", "Sur", "Yerba Buena", "Tafí Viejo", "Banda del Río Salí"],
+        icono: "map-pin",
+      },
+      {
+        id: "gran_tucuman",
+        nombre: "Interior de Tucumán",
+        tiempoRespuesta: "< 4 a 12 horas",
+        tipoServicio: "Visitas Programadas & Guardia Especial",
+        descripcion: "Desplazamiento técnico para mantenimiento preventivo en centros de salud e instituciones del interior.",
+        localidades: ["Concepción", "Monteros", "Aguilares", "Lules", "Bella Vista", "Tafí del Valle"],
+        icono: "navigation",
+      },
+      {
+        id: "noa",
+        nombre: "Provincias del NOA",
+        tiempoRespuesta: "< 24 a 48 horas",
+        tipoServicio: "Soporte Programado & Logística Protegida",
+        descripcion: "Cobertura regional en el Noroeste Argentino coordinando diagnósticos y reparación a nivel de placa.",
+        localidades: ["Salta", "Jujuy", "Catamarca", "Santiago del Estero"],
+        icono: "globe",
+      },
+    ],
+  },
+
+  garantia_normativa: {
+    titulo: "Garantía de Calidad & Cumplimiento Normativo",
+    subtitulo: "Respaldamos cada intervención bajo estrictas normas de bioseguridad, trazabilidad de componentes e informes aptos para auditorías sanitarias.",
+    pilares: [
+      {
+        icono: "file-check",
+        titulo: "Informes Aprobados para Auditoría",
+        descripcion: "Documentación técnica estandarizada detallando calibración, mediciones y estado final del equipamiento médico para presentaciones ante autoridades de salud.",
+      },
+      {
+        icono: "shield-check",
+        titulo: "Garantía Escrita de 90 Días",
+        descripcion: "Respaldo integral sobre el trabajo técnico efectuado y los componentes reemplazados a nivel de placa o módulo.",
+      },
+      {
+        icono: "cpu",
+        titulo: "Trazabilidad en Componentes",
+        descripcion: "Utilización exclusiva de repuestos de grado médico y componentes probados bajo ensayos de laboratorio electrónico.",
+      },
+      {
+        icono: "award",
+        titulo: "Laboratorio Especializado en Tucumán",
+        descripcion: "Infraestructura local en San Miguel de Tucumán equipada con instrumental calibrado para diagnóstico de alta precisión.",
+      },
+    ],
+  },
 };
