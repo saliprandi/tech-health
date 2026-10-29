@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Equipos Section Micro-UX & Keyboard Parity', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    await page.goto('http://localhost:4321');
   });
 
   test('should feature group-focus-visible classes on child elements of equipos items', async ({ page }) => {
