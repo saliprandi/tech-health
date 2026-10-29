@@ -107,16 +107,20 @@ import { CONFIG } from '../data/config';
         btn.setAttribute('aria-disabled', 'true');
         btn.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
-        const href = btn.getAttribute('href');
-        if (href) {
-          // Performance Optimization: Use window.open instead of dynamic DOM element allocation and insertion
-          const url = new URL(href);
-          const phone = url.pathname.split('/').pop() || '';
-          const sanitizedPhone = phone.replace(/\D/g, '');
-          const text = url.searchParams.get('text') || '';
-          const sanitizedHref = `https://wa.me/${sanitizedPhone}${text ? '?text=' + encodeURIComponent(text) : ''}`;
+        // Security: Validate DOM-derived href against allowed WhatsApp domains to prevent open redirects and DOM XSS
+        const href = btn.getAttribute('href')?.trim();
+        if (href && /^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i.test(href)) {
+          try {
+            const url = new URL(href);
+            const phone = url.pathname.split('/').pop() || '';
+            const sanitizedPhone = phone.replace(/\D/g, '');
+            const text = url.searchParams.get('text') || '';
+            const sanitizedHref = `https://wa.me/${sanitizedPhone}${text ? '?text=' + encodeURIComponent(text) : ''}`;
 
-          window.open(sanitizedHref, '_blank', 'noopener,noreferrer');
+            window.open(sanitizedHref, '_blank', 'noopener,noreferrer');
+          } catch {
+            window.open(href, '_blank', 'noopener,noreferrer');
+          }
         }
 
         if (feedbackTimer) clearTimeout(feedbackTimer);
