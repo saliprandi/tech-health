@@ -193,4 +193,22 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadora: {
+    titulo: "Calculadora de Plan Preventivo & Disponibilidad B2B",
+    subtitulo: "Estime la optimización operativa de su parque electromédico",
+    descripcion:
+      "Seleccione el tipo de centro de salud y la cantidad aproximada de equipos para obtener un diagnóstico de frecuencia preventiva y reducción de fallas.",
+    tipos_institucion: [
+      { id: "clinica", nombre: "Clínica / Sanatorio Privado", factorUrgencia: 1.2 },
+      { id: "hospital", nombre: "Hospital / Centro de Complejidad", factorUrgencia: 1.5 },
+      { id: "consultorio", nombre: "Centro de Diagnóstico / Consultorios", factorUrgencia: 1.0 },
+    ],
+    categorias_equipos: [
+      { id: "soporte_vital", nombre: "Respiradores / Monitores Multiparamétricos", horasFallaEvitada: 48, freqMeses: 3 },
+      { id: "diagnostico", nombre: "Ecógrafos / Electrocardiógrafos / Rx", horasFallaEvitada: 36, freqMeses: 6 },
+      { id: "quirofano", nombre: "Electrobisturíes / Desfibriladores", horasFallaEvitada: 40, freqMeses: 4 },
+      { id: "laboratorio", nombre: "Centrífugas / Autoclaves / Bombas Infusión", horasFallaEvitada: 24, freqMeses: 6 },
+    ],
+  },
 };
