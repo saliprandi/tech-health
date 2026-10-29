@@ -230,6 +230,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			if (!input) return;
 			input.value = '';
 			input.removeAttribute('aria-invalid');
+			input.setAttribute('aria-describedby', 'ticket-input-hint');
 			toggleClearButton();
 			errorDiv?.classList.add('hidden');
 			resultDiv?.classList.add('hidden');
@@ -365,6 +366,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 				}
 				input.setAttribute('aria-invalid', 'true');
+				input.setAttribute('aria-describedby', 'estado-error ticket-input-hint');
 				input.focus();
 				input.select();
 				return;
@@ -405,6 +407,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 						errorDiv.textContent = err instanceof Error ? err.message : 'Error al consultar el ticket';
 					}
 					input.setAttribute('aria-invalid', 'true');
+					input.setAttribute('aria-describedby', 'estado-error ticket-input-hint');
 					errorDiv.classList.remove('hidden');
 					errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 					input.focus();
@@ -559,6 +562,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			toggleClearButton();
 			if (input.hasAttribute('aria-invalid')) {
 				input.removeAttribute('aria-invalid');
+				input.setAttribute('aria-describedby', 'ticket-input-hint');
 			}
 			if (errorDiv && !errorDiv.classList.contains('hidden')) {
 				errorDiv.classList.add('hidden');
@@ -569,6 +573,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			if (e.key === 'Escape' && input.value) {
 				input.value = '';
 				input.removeAttribute('aria-invalid');
+				input.setAttribute('aria-describedby', 'ticket-input-hint');
 				toggleClearButton();
 				errorDiv?.classList.add('hidden');
 				resultDiv?.classList.add('hidden');
@@ -585,6 +590,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			if (input) {
 				input.value = '';
 				input.removeAttribute('aria-invalid');
+				input.setAttribute('aria-describedby', 'ticket-input-hint');
 				toggleClearButton();
 				input.focus();
 			}

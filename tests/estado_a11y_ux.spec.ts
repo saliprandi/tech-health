@@ -157,12 +157,14 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await expect(errorContainer).toBeVisible();
     await expect(errorContainer).toHaveText('Ticket no encontrado');
     await expect(input).toHaveAttribute('aria-invalid', 'true');
+    await expect(input).toHaveAttribute('aria-describedby', 'estado-error ticket-input-hint');
     await expect(input).toBeFocused();
 
-    // Verify dynamic error dismissal and aria-invalid cleanup on typing
+    // Verify dynamic error dismissal and aria-invalid / aria-describedby cleanup on typing
     await input.pressSequentially('X');
     await expect(errorContainer).toBeHidden();
     await expect(input).not.toHaveAttribute('aria-invalid');
+    await expect(input).toHaveAttribute('aria-describedby', 'ticket-input-hint');
   });
 
   test('should clear ticket input on Escape key press and announce to screen reader', async ({ page }) => {
