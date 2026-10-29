@@ -486,7 +486,7 @@ import { CONFIG } from '../data/config';
           }, 3000);
         }
 
-        if (/^https:\/\/wa\.me\//i.test(url)) {
+        if (/^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i.test(url)) {
           const openedWin = window.open(url, '_blank', 'noopener,noreferrer');
           if (!openedWin) {
             window.location.href = url;
