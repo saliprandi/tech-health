@@ -283,6 +283,21 @@ import { CONFIG } from '../data/config';
 			});
 		});
 
+		// WhatsApp ticket inquiry link event handler
+		const waTicketBtn = document.getElementById('wa-ticket-btn') as HTMLAnchorElement | null;
+		waTicketBtn?.addEventListener('click', (e) => {
+			e.preventDefault();
+			const href = waTicketBtn.getAttribute('href');
+			if (href && /^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i.test(href)) {
+				const openedWin = window.open(href, '_blank');
+				if (openedWin) {
+					openedWin.opener = null;
+				} else {
+					window.location.href = href;
+				}
+			}
+		});
+
 		// Copy share link event handler
 		shareTicketBtn?.addEventListener('click', (e) => {
 			e.preventDefault();
