@@ -47,9 +47,9 @@ import { CONFIG } from '../data/config';
       </div>
 
       <!-- Empty State -->
-      <div id="faq-empty-state" class="hidden text-center py-8 px-4 bg-off-white border border-border rounded-[16px] mb-6">
+      <div id="faq-empty-state" role="status" aria-live="polite" class="hidden text-center py-8 px-4 bg-off-white border border-border rounded-[16px] mb-6">
         <p class="font-body text-[15px] text-text-soft mb-3">No se encontraron preguntas que coincidan con su búsqueda.</p>
-        <button type="button" id="faq-reset-btn" title="Mostrar todas las preguntas" class="font-heading font-bold text-[13px] text-blue hover:text-navy active:scale-95 transition-all underline outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm px-2 py-1 cursor-pointer">
+        <button type="button" id="faq-reset-btn" title="Mostrar todas las preguntas" class="font-heading font-bold text-[13px] text-blue hover:text-navy focus-visible:text-navy active:scale-95 transition-all underline outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm px-2 py-1 cursor-pointer">
           Mostrar todas las preguntas
         </button>
       </div>
