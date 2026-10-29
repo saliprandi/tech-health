@@ -257,6 +257,16 @@ import { CONFIG } from '../data/config';
           return;
         }
 
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
+          if (visibleItems.length > 0) {
+            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
+            trigger?.focus();
+          }
+          return;
+        }
+
         if (e.key === 'Enter' && searchInput && searchInput.value.trim()) {
           e.preventDefault();
           const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
