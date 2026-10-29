@@ -58,7 +58,7 @@ import { CONFIG } from '../data/config';
         {CONFIG.faqs.map((faq, index) => (
           <div class="faq-item group border border-border rounded-[16px] bg-off-white overflow-hidden transition-all duration-300 hover:bg-white focus-within:bg-white hover:shadow-card-hover focus-within:shadow-card-hover">
             <button
-              class="faq-trigger group/trigger w-full flex items-center justify-between p-6 text-left focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-inset outline-none cursor-pointer"
+              class="faq-trigger group/trigger w-full flex items-center justify-between p-6 text-left focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-inset outline-none cursor-pointer active:scale-[0.99] transition-all duration-200"
               aria-expanded="false"
               aria-controls={`faq-answer-${index}`}
               id={`faq-question-${index}`}
