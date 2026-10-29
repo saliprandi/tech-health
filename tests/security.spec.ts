@@ -236,3 +236,40 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('CTA redirection buttons enforce trusted URL origin prefix before window.open', async ({ page }) => {
+  // Monitor window.open calls
+  await page.addInitScript(() => {
+    (window as any).__openedUrls = [];
+    window.open = function(url?: string | URL) {
+      if (url) {
+        (window as any).__openedUrls.push(url.toString());
+      }
+      return null;
+    };
+  });
+
+  await page.goto('http://localhost:4321/');
+
+  const heroCta = page.locator('#hero-cta');
+  await expect(heroCta).toBeVisible();
+
+  // Test 1: Untrusted/Modified href is NOT opened
+  await heroCta.evaluate((el) => el.setAttribute('href', 'https://malicious-domain.com/phishing'));
+  await heroCta.click({ force: true });
+  await page.waitForTimeout(300);
+  let urls: string[] = await page.evaluate(() => (window as any).__openedUrls);
+  expect(urls).not.toContain('https://malicious-domain.com/phishing');
+
+  // Reset pointer-events / redirection state for test setup
+  await heroCta.evaluate((el) => {
+    el.classList.remove('pointer-events-none', 'opacity-70', 'cursor-not-allowed');
+    el.setAttribute('href', 'https://wa.me/5493811234567');
+  });
+
+  // Test 2: Valid trusted href IS opened
+  await heroCta.click({ force: true });
+  await page.waitForTimeout(300);
+  urls = await page.evaluate(() => (window as any).__openedUrls);
+  expect(urls).toContain('https://wa.me/5493811234567');
+});
