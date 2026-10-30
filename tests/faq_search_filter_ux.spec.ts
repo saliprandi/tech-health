@@ -83,4 +83,16 @@ test.describe('FAQ Search Filter Micro-UX & Accessibility', () => {
     await expect(searchInput).toHaveValue('');
     expect(await visibleItems.count()).toBe(initialCount);
   });
+
+  test('should link search input to counter via aria-describedby and transfer focus to reset button on Enter with 0 results', async ({ page }) => {
+    const searchInput = page.locator('#faq-search-input');
+    const resetBtn = page.locator('#faq-reset-btn');
+
+    await expect(searchInput).toHaveAttribute('aria-describedby', 'faq-search-counter');
+
+    await searchInput.fill('nonexistentterm123');
+    await searchInput.press('Enter');
+
+    await expect(resetBtn).toBeFocused();
+  });
 });

@@ -25,8 +25,9 @@ import { CONFIG } from '../data/config';
             id="faq-search-input"
             inputmode="search"
             placeholder="Buscar pregunta o palabra clave..."
-            class="w-full bg-off-white border border-border rounded-full py-2.5 pl-11 pr-10 font-body text-[14px] text-navy placeholder:text-text-soft/60 focus:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue transition-all [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
             aria-label="Buscar en preguntas frecuentes"
+            aria-describedby="faq-search-counter"
+            class="w-full bg-off-white border border-border rounded-full py-2.5 pl-11 pr-10 font-body text-[14px] text-navy placeholder:text-text-soft/60 focus:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue transition-all [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
           />
           <svg class="w-4 h-4 text-text-soft group-focus-within/search:text-blue transition-colors absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -270,7 +271,9 @@ import { CONFIG } from '../data/config';
         if (e.key === 'Enter' && searchInput && searchInput.value.trim()) {
           e.preventDefault();
           const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
-          if (visibleItems.length === 1) {
+          if (visibleItems.length === 0 && resetBtn && emptyState && !emptyState.classList.contains('hidden')) {
+            resetBtn.focus();
+          } else if (visibleItems.length === 1) {
             const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
             if (trigger) {
               if (trigger.getAttribute('aria-expanded') !== 'true') {
