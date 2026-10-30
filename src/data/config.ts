@@ -193,4 +193,100 @@ export const CONFIG = {
     "Medtronic",
     "Siemens Healthineers",
   ],
+
+  calculadoraB2B: {
+    titulo: "Estimador de Mantenimiento B2B",
+    subtitulo: "Calcule la frecuencia e impacto del mantenimiento preventivo para su institución",
+    descripcion:
+      "Configure el tamaño de su parque tecnológico para obtener una recomendación técnica personalizada y solicitar un plan de mantenimiento a medida.",
+    categorias: [
+      {
+        id: "monitores",
+        nombre: "Monitores y Electrocardiógrafos",
+        icono: "ecg",
+        defecto: 4,
+        min: 0,
+        max: 50,
+      },
+      {
+        id: "respiradores",
+        nombre: "Respiradores y Anestesia",
+        icono: "shield",
+        defecto: 2,
+        min: 0,
+        max: 30,
+      },
+      {
+        id: "ecografos",
+        nombre: "Ecógrafos y Diagnóstico por Imagen",
+        icono: "microscope",
+        defecto: 1,
+        min: 0,
+        max: 20,
+      },
+      {
+        id: "bombas",
+        nombre: "Bombas de Infusión y Electrocirugía",
+        icono: "circuit",
+        defecto: 5,
+        min: 0,
+        max: 100,
+      },
+    ],
+    beneficios: [
+      "Reducción de hasta un 70% en fallas imprevistas",
+      "Informes técnicos aptos para auditorías de salud (ANMAT / SIPROSA)",
+      "Prioridad en atención de urgencias y respuesta en <24hs",
+      "Garantía escrita de 90 días por intervención",
+    ],
+  },
+
+  coberturaNOA: {
+    titulo: "Cobertura Regional NOA",
+    subtitulo: "Infraestructura técnica y capacidad de respuesta en el Noroeste Argentino",
+    descripcion:
+      "Brindamos servicios de ingeniería clínica y soporte técnico con base operativa central en San Miguel de Tucumán y despliegue programado en las principales provincias del NOA.",
+    provincias: [
+      {
+        id: "tucuman",
+        nombre: "Tucumán",
+        base: "Base Central - San Miguel de Tucumán",
+        sla: "Respuesta Inmediata / Guardia 24hs",
+        tiempo_atencion: "Atención prioritaria en <2hs para urgencias",
+        destacado: true,
+      },
+      {
+        id: "salta",
+        nombre: "Salta",
+        base: "Cobertura NOA Central",
+        sla: "Visitas programadas y atención en <24hs",
+        tiempo_atencion: "Mantenimiento preventivo y urgencias",
+        destacado: false,
+      },
+      {
+        id: "jujuy",
+        nombre: "Jujuy",
+        base: "Cobertura NOA Norte",
+        sla: "Visitas programadas y respuesta en <24-48hs",
+        tiempo_atencion: "Servicio técnico e inspecciones",
+        destacado: false,
+      },
+      {
+        id: "catamarca",
+        nombre: "Catamarca",
+        base: "Cobertura NOA Sur",
+        sla: "Visitas programadas y respuesta en <24hs",
+        tiempo_atencion: "Diagnóstico y mantenimiento B2B",
+        destacado: false,
+      },
+      {
+        id: "santiago",
+        nombre: "Santiago del Estero",
+        base: "Cobertura NOA Este",
+        sla: "Visitas programadas y atención en <24hs",
+        tiempo_atencion: "Calibración e informes técnicos",
+        destacado: false,
+      },
+    ],
+  },
 };
