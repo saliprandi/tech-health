@@ -236,3 +236,29 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('CSP meta tag specifies valid directives and omits ignored directives', async ({ page }) => {
+  await page.goto('http://localhost:4321/');
+  const cspMeta = page.locator('meta[http-equiv="Content-Security-Policy"]');
+  await expect(cspMeta).toHaveCount(1);
+  const cspContent = await cspMeta.getAttribute('content');
+
+  expect(cspContent).toContain("base-uri 'none'");
+  expect(cspContent).toContain('upgrade-insecure-requests');
+  expect(cspContent).not.toContain('frame-ancestors');
+
+  const permPolicyMeta = page.locator('meta[http-equiv="Permissions-Policy"]');
+  await expect(permPolicyMeta).toHaveCount(0);
+});
+
+test('Hero and Nav CTAs validate WhatsApp URL protocol prefix before redirection', async ({ page }) => {
+  await page.goto('http://localhost:4321/');
+  const heroCta = page.locator('#hero-cta');
+  const navCta = page.locator('#nav-cta');
+
+  const heroHref = await heroCta.getAttribute('href');
+  const navHref = await navCta.getAttribute('href');
+
+  expect(heroHref).toMatch(/^https:\/\/wa\.me\/\d+/);
+  expect(navHref).toMatch(/^https:\/\/wa\.me\/\d+/);
+});
