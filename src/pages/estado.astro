@@ -1,5 +1,8 @@
 ---
 import EstadoLayout from '../layouts/EstadoLayout.astro';
+import { CONFIG } from '../data/config';
+
+const cleanWhatsapp = CONFIG.contacto.whatsapp.replace(/\D/g, '');
 ---
 
 <EstadoLayout title="Consultar Estado | TechHealth Medical Engineering">
@@ -111,6 +114,21 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 									</svg>
 									<span id="share-ticket-text" class="pointer-events-none">Copiar enlace</span>
 								</button>
+								<a
+									id="wa-ticket-btn"
+									href={`https://wa.me/${cleanWhatsapp}`}
+									target="_blank"
+									rel="noopener noreferrer"
+									title="Consultar sobre este ticket por WhatsApp"
+									class="inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-emerald-700 hover:text-emerald-800 focus-visible:text-emerald-800 active:scale-95 transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5 bg-emerald-50 border border-emerald-200/60"
+									aria-label="Consultar sobre este ticket por WhatsApp"
+									data-whatsapp={cleanWhatsapp}
+								>
+									<svg class="w-3.5 h-3.5 fill-current text-emerald-600" aria-hidden="true">
+										<use href="#icon-whatsapp" />
+									</svg>
+									<span class="pointer-events-none">Consultar WhatsApp</span>
+								</a>
 								<div id="copy-ticket-announcement" class="sr-only" aria-live="polite"></div>
 							</div>
 						</div>
@@ -435,10 +453,18 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			// Header
 			const ticketEl = document.getElementById('result-ticket-number');
 			const badgeEl = document.getElementById('result-estado-badge');
+			const waTicketBtn = document.getElementById('wa-ticket-btn') as HTMLAnchorElement | null;
 			if (ticketEl) ticketEl.textContent = ticket.ticket_number;
 			if (badgeEl) {
 				badgeEl.textContent = cfg.titulo;
 				badgeEl.className = `px-4 py-2 rounded-full text-[14px] font-bold ${cfg.color} ${cfg.bg}`;
+			}
+			if (waTicketBtn) {
+				const waNum = waTicketBtn.dataset.whatsapp || '';
+				const waMsg = encodeURIComponent(`Hola TechHealth! Quisiera consultar sobre el estado de mi ticket ${ticket.ticket_number}.`);
+				waTicketBtn.setAttribute('href', `https://wa.me/${waNum}?text=${waMsg}`);
+				waTicketBtn.setAttribute('aria-label', `Consultar sobre el ticket ${ticket.ticket_number} por WhatsApp`);
+				waTicketBtn.setAttribute('title', `Consultar sobre el ticket ${ticket.ticket_number} por WhatsApp`);
 			}
 
 			// Datos
