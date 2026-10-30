@@ -194,6 +194,16 @@ import { CONFIG } from '../data/config';
         trigger.addEventListener('keydown', handleKeydown);
       });
 
+      // Performance Optimization: Cache lowercased text and child DOM node references upfront.
+      // Pre-caching prevents DOM tree traversals (textContent & querySelector) on every input keystroke.
+      const cachedItems = Array.from(items).map(item => ({
+        element: item as HTMLElement,
+        text: item.textContent?.toLowerCase() || '',
+        trigger: item.querySelector('.faq-trigger') as HTMLButtonElement | null,
+        container: item.querySelector('.faq-answer-container') as HTMLElement | null,
+        icon: item.querySelector('.faq-icon') as HTMLElement | null,
+      }));
+
       // --- FAQ Search Filter Logic ---
       const filterFAQs = () => {
         if (!searchInput) return;
@@ -205,21 +215,17 @@ import { CONFIG } from '../data/config';
           else clearBtn.classList.add('hidden');
         }
 
-        items.forEach(item => {
-          const text = item.textContent?.toLowerCase() || '';
-          if (!query || text.includes(query)) {
-            item.classList.remove('hidden');
+        cachedItems.forEach(item => {
+          if (!query || item.text.includes(query)) {
+            item.element.classList.remove('hidden');
             visibleCount++;
           } else {
-            item.classList.add('hidden');
+            item.element.classList.add('hidden');
             // Close if hidden
-            const trigger = item.querySelector('.faq-trigger') as HTMLButtonElement | null;
-            const container = item.querySelector('.faq-answer-container') as HTMLElement | null;
-            const icon = item.querySelector('.faq-icon');
-            if (trigger?.getAttribute('aria-expanded') === 'true') {
-              trigger.setAttribute('aria-expanded', 'false');
-              icon?.classList.remove('rotate-180');
-              if (container) closeContainer(container);
+            if (item.trigger?.getAttribute('aria-expanded') === 'true') {
+              item.trigger.setAttribute('aria-expanded', 'false');
+              item.icon?.classList.remove('rotate-180');
+              if (item.container) closeContainer(item.container);
             }
           }
         });
@@ -259,29 +265,28 @@ import { CONFIG } from '../data/config';
 
         if (e.key === 'ArrowDown') {
           e.preventDefault();
-          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
-          if (visibleItems.length > 0) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
-            trigger?.focus();
+          const firstVisible = cachedItems.find(item => !item.element.classList.contains('hidden'));
+          if (firstVisible && firstVisible.trigger) {
+            firstVisible.trigger.focus();
           }
           return;
         }
 
         if (e.key === 'Enter' && searchInput && searchInput.value.trim()) {
           e.preventDefault();
-          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
-          if (visibleItems.length === 1) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
-            if (trigger) {
-              if (trigger.getAttribute('aria-expanded') !== 'true') {
-                trigger.click();
+          const visibleList = cachedItems.filter(item => !item.element.classList.contains('hidden'));
+          if (visibleList.length === 1) {
+            const first = visibleList[0];
+            if (first.trigger) {
+              if (first.trigger.getAttribute('aria-expanded') !== 'true') {
+                first.trigger.click();
               }
-              trigger.focus();
+              first.trigger.focus();
             }
-          } else if (visibleItems.length > 1) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
-            if (trigger) {
-              trigger.focus();
+          } else if (visibleList.length > 1) {
+            const first = visibleList[0];
+            if (first.trigger) {
+              first.trigger.focus();
             }
           }
         }
