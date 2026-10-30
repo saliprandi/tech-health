@@ -91,10 +91,10 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 									type="button"
 									id="copy-ticket-btn"
 									title="Copiar número de ticket al portapapeles"
-									class="inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue active:scale-95 transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
+									class="group/copy inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue active:scale-95 transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
 									aria-label="Copiar número de ticket al portapapeles"
 								>
-									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true">
+									<svg class="w-3.5 h-3.5 text-text-soft group-hover/copy:text-blue group-focus-visible/copy:text-blue transition-colors duration-200" fill="none" stroke="currentColor" aria-hidden="true">
 										<use id="copy-ticket-icon-use" href="#icon-copy" />
 									</svg>
 									<span id="copy-ticket-text" class="pointer-events-none">Copiar</span>
@@ -103,10 +103,10 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 									type="button"
 									id="share-ticket-btn"
 									title="Copiar enlace directo del ticket al portapapeles"
-									class="inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue active:scale-95 transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
+									class="group/share inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue active:scale-95 transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
 									aria-label="Copiar enlace directo del ticket al portapapeles"
 								>
-									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true">
+									<svg class="w-3.5 h-3.5 text-text-soft group-hover/share:text-blue group-focus-visible/share:text-blue transition-colors duration-200" fill="none" stroke="currentColor" aria-hidden="true">
 										<use id="share-ticket-icon-use" href="#icon-external" />
 									</svg>
 									<span id="share-ticket-text" class="pointer-events-none">Copiar enlace</span>
@@ -556,7 +556,15 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			}, 100);
 		};
 
+		const handleInvalid = (e: Event) => {
+			const target = e.target as HTMLElement | null;
+			if (target) {
+				target.setAttribute('aria-invalid', 'true');
+			}
+		};
+
 		form.addEventListener('submit', handleSubmit);
+		form.addEventListener('invalid', handleInvalid, true);
 
 		input.addEventListener('input', () => {
 			toggleClearButton();
