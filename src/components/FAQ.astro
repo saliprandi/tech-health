@@ -194,6 +194,16 @@ import { CONFIG } from '../data/config';
         trigger.addEventListener('keydown', handleKeydown);
       });
 
+      // Performance Optimization: Pre-cache lowercased item text content and child DOM element references upfront
+      // to eliminate repeated DOM tree traversals (textContent) and querySelector lookups on every search input keypress
+      const faqData = Array.from(items).map(item => ({
+        element: item as HTMLElement,
+        text: (item.textContent || '').toLowerCase(),
+        trigger: item.querySelector('.faq-trigger') as HTMLButtonElement | null,
+        container: item.querySelector('.faq-answer-container') as HTMLElement | null,
+        icon: item.querySelector('.faq-icon') as HTMLElement | null,
+      }));
+
       // --- FAQ Search Filter Logic ---
       const filterFAQs = () => {
         if (!searchInput) return;
@@ -205,17 +215,13 @@ import { CONFIG } from '../data/config';
           else clearBtn.classList.add('hidden');
         }
 
-        items.forEach(item => {
-          const text = item.textContent?.toLowerCase() || '';
+        faqData.forEach(({ element, text, trigger, container, icon }) => {
           if (!query || text.includes(query)) {
-            item.classList.remove('hidden');
+            element.classList.remove('hidden');
             visibleCount++;
           } else {
-            item.classList.add('hidden');
+            element.classList.add('hidden');
             // Close if hidden
-            const trigger = item.querySelector('.faq-trigger') as HTMLButtonElement | null;
-            const container = item.querySelector('.faq-answer-container') as HTMLElement | null;
-            const icon = item.querySelector('.faq-icon');
             if (trigger?.getAttribute('aria-expanded') === 'true') {
               trigger.setAttribute('aria-expanded', 'false');
               icon?.classList.remove('rotate-180');
@@ -259,30 +265,24 @@ import { CONFIG } from '../data/config';
 
         if (e.key === 'ArrowDown') {
           e.preventDefault();
-          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
-          if (visibleItems.length > 0) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
-            trigger?.focus();
-          }
+          const firstVisible = faqData.find(item => !item.element.classList.contains('hidden'));
+          firstVisible?.trigger?.focus();
           return;
         }
 
         if (e.key === 'Enter' && searchInput && searchInput.value.trim()) {
           e.preventDefault();
-          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
-          if (visibleItems.length === 1) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
+          const visible = faqData.filter(item => !item.element.classList.contains('hidden'));
+          if (visible.length === 1) {
+            const { trigger } = visible[0];
             if (trigger) {
               if (trigger.getAttribute('aria-expanded') !== 'true') {
                 trigger.click();
               }
               trigger.focus();
             }
-          } else if (visibleItems.length > 1) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
-            if (trigger) {
-              trigger.focus();
-            }
+          } else if (visible.length > 1) {
+            visible[0].trigger?.focus();
           }
         }
       };
