@@ -236,3 +236,19 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('CSP meta tags do not include unsupported frame-ancestors directive and allow trycloudflare connect-src', async ({ page }) => {
+  await page.goto('http://localhost:4321/');
+  const mainCsp = await page.locator('meta[http-equiv="Content-Security-Policy"]').getAttribute('content');
+  expect(mainCsp).not.toBeNull();
+  expect(mainCsp).not.toContain('frame-ancestors');
+  expect(mainCsp).toContain('https://*.trycloudflare.com');
+  expect(mainCsp).toContain('upgrade-insecure-requests');
+
+  await page.goto('http://localhost:4321/estado');
+  const estadoCsp = await page.locator('meta[http-equiv="Content-Security-Policy"]').getAttribute('content');
+  expect(estadoCsp).not.toBeNull();
+  expect(estadoCsp).not.toContain('frame-ancestors');
+  expect(estadoCsp).toContain('https://*.trycloudflare.com');
+  expect(estadoCsp).toContain('upgrade-insecure-requests');
+});
