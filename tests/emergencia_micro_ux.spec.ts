@@ -8,6 +8,7 @@ test.describe('Emergencia CTA Micro-UX & Accessibility', () => {
   test('should render emergency CTA button with directional arrow icon and group hover/focus micro-animation', async ({ page }) => {
     const cta = page.locator('#emergencia-cta');
     await expect(cta).toBeVisible();
+    await expect(cta).toHaveAttribute('title', 'Solicitar atención de emergencia por WhatsApp');
 
     // Verify WhatsApp icon and directional arrow icon are present with aria-hidden="true"
     const svgIcons = cta.locator('svg[aria-hidden="true"]');
