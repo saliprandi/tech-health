@@ -1,5 +1,6 @@
 ---
 import EstadoLayout from '../layouts/EstadoLayout.astro';
+import { CONFIG } from '../data/config';
 ---
 
 <EstadoLayout title="Consultar Estado | TechHealth Medical Engineering">
@@ -111,6 +112,21 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 									</svg>
 									<span id="share-ticket-text" class="pointer-events-none">Copiar enlace</span>
 								</button>
+								<a
+									id="wa-ticket-btn"
+									href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`}
+									target="_blank"
+									rel="noopener noreferrer"
+									data-wa-base={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`}
+									title="Consultar por este ticket en WhatsApp"
+									aria-label="Consultar por este ticket en WhatsApp"
+									class="group inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-emerald-600 hover:text-emerald-700 focus-visible:text-emerald-700 active:scale-95 transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
+								>
+									<svg class="w-3.5 h-3.5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
+										<use href="#icon-whatsapp" />
+									</svg>
+									<span>Consultar por WhatsApp</span>
+								</a>
 								<div id="copy-ticket-announcement" class="sr-only" aria-live="polite"></div>
 							</div>
 						</div>
@@ -542,6 +558,16 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 				historialSection.classList.add('hidden');
 			} else if (historialSection) {
 				historialSection.classList.remove('hidden');
+			}
+
+			// Actualizar enlace de consulta por WhatsApp
+			const waTicketBtn = document.getElementById('wa-ticket-btn') as HTMLAnchorElement | null;
+			if (waTicketBtn) {
+				const waBase = waTicketBtn.dataset.waBase || 'https://wa.me';
+				const msg = `Hola TechHealth! Deseo realizar una consulta sobre mi ticket de reparación ${ticket.ticket_number}.`;
+				waTicketBtn.href = `${waBase}?text=${encodeURIComponent(msg)}`;
+				waTicketBtn.setAttribute('aria-label', `Consultar por el ticket ${ticket.ticket_number} en WhatsApp`);
+				waTicketBtn.setAttribute('title', `Consultar por el ticket ${ticket.ticket_number} en WhatsApp`);
 			}
 
 			// Actualizar URL para compartir/guardar en marcadores
