@@ -236,3 +236,35 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('CTA buttons enforce WhatsApp domain whitelist before opening links', async ({ page }) => {
+  await page.goto('http://localhost:4321/');
+
+  // Intercept window.open calls
+  let openedUrl = '';
+  await page.exposeFunction('mockWindowOpen', (url: string) => {
+    openedUrl = url;
+  });
+  await page.evaluate(() => {
+    window.open = (url?: string | URL) => {
+      (window as any).mockWindowOpen(String(url));
+      return null;
+    };
+  });
+
+  // Verify hero CTA opens valid whatsapp link
+  await page.click('#hero-cta');
+  await page.waitForTimeout(200);
+  expect(openedUrl).toMatch(/^https:\/\/wa\.me\//);
+
+  // Now manipulate href attribute to untrusted domain and click again
+  openedUrl = '';
+  await page.evaluate(() => {
+    const heroCta = document.getElementById('hero-cta');
+    if (heroCta) heroCta.setAttribute('href', 'javascript:alert(1)');
+  });
+  await page.click('#hero-cta');
+  await page.waitForTimeout(200);
+  // Expect window.open WAS NOT called with javascript pseudoprotocol
+  expect(openedUrl).toBe('');
+});
