@@ -236,3 +236,17 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('contact form window.open dynamic redirection validates URL scheme and disowns opener safely', async ({ page }) => {
+  await page.goto('http://localhost:4321/#contacto');
+
+  const popupPromise = page.waitForEvent('popup');
+  await page.fill('#f-nombre', 'Cliente Valido');
+  await page.fill('#f-tel', '+54 9 381 5551234');
+  await page.fill('#f-desc', 'Consulta de prueba de seguridad');
+
+  await page.click('#f-submit');
+
+  const popup = await popupPromise;
+  expect(popup.url()).toMatch(/^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//);
+});
