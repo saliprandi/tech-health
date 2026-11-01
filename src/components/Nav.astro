@@ -226,7 +226,8 @@ import { CONFIG } from '../data/config';
         }
 
         const href = cta.getAttribute('href');
-        if (href) {
+        // Security: Validate against dangerous pseudoprotocols (javascript:, data:, vbscript:) before window.open to prevent DOM XSS
+        if (href && !/^(javascript|data|vbscript):/i.test(href.trim())) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 
