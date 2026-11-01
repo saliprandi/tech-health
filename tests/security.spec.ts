@@ -236,3 +236,35 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('CTA window.open handlers validate trusted wa.me origin prefix', async ({ page }) => {
+  await page.goto('http://localhost:4321/');
+
+  // Intercept window.open calls
+  let openedUrl: string | null = null;
+  await page.evaluate(() => {
+    window.open = (url) => {
+      (window as any)._openedUrl = url;
+      return null;
+    };
+  });
+
+  // Click Hero CTA
+  await page.click('#hero-cta');
+  openedUrl = await page.evaluate(() => (window as any)._openedUrl);
+  expect(openedUrl).not.toBeNull();
+  expect(openedUrl).toMatch(/^https:\/\/wa\.me\//);
+
+  // Test modified untrusted link attribute is blocked
+  await page.evaluate(() => {
+    (window as any)._openedUrl = null;
+    const cta = document.getElementById('hero-cta');
+    if (cta) {
+      cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+      cta.setAttribute('href', 'https://untrusted-malicious-site.com');
+    }
+  });
+  await page.click('#hero-cta');
+  openedUrl = await page.evaluate(() => (window as any)._openedUrl);
+  expect(openedUrl).toBeNull();
+});
