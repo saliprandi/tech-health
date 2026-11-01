@@ -236,3 +236,17 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('CTA links validate href.startsWith("https://wa.me/") before calling window.open', async ({ page }) => {
+  await page.goto('http://localhost:4321/', { waitUntil: 'networkidle' });
+
+  const heroCta = page.locator('#hero-cta');
+  const navCta = page.locator('#nav-cta');
+
+  await expect(heroCta).toBeVisible();
+  const heroHref = await heroCta.getAttribute('href');
+  expect(heroHref?.startsWith('https://wa.me/')).toBe(true);
+
+  const navHref = await navCta.getAttribute('href');
+  expect(navHref?.startsWith('https://wa.me/')).toBe(true);
+});
