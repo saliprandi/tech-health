@@ -195,6 +195,15 @@ import { CONFIG } from '../data/config';
         trigger.addEventListener('keydown', handleKeydown);
       });
 
+      // Performance Optimization: Pre-caching text content and DOM child references avoids repeated DOM traversal, text serialization, and querySelector lookups on every keystroke
+      const cachedItems = Array.from(items).map(item => ({
+        element: item as HTMLElement,
+        text: (item.textContent || '').toLowerCase(),
+        trigger: item.querySelector('.faq-trigger') as HTMLButtonElement | null,
+        container: item.querySelector('.faq-answer-container') as HTMLElement | null,
+        icon: item.querySelector('.faq-icon') as HTMLElement | null,
+      }));
+
       // --- FAQ Search Filter Logic ---
       const filterFAQs = () => {
         if (!searchInput) return;
@@ -206,17 +215,13 @@ import { CONFIG } from '../data/config';
           else clearBtn.classList.add('hidden');
         }
 
-        items.forEach(item => {
-          const text = item.textContent?.toLowerCase() || '';
+        cachedItems.forEach(({ element, text, trigger, container, icon }) => {
           if (!query || text.includes(query)) {
-            item.classList.remove('hidden');
+            element.classList.remove('hidden');
             visibleCount++;
           } else {
-            item.classList.add('hidden');
+            element.classList.add('hidden');
             // Close if hidden
-            const trigger = item.querySelector('.faq-trigger') as HTMLButtonElement | null;
-            const container = item.querySelector('.faq-answer-container') as HTMLElement | null;
-            const icon = item.querySelector('.faq-icon');
             if (trigger?.getAttribute('aria-expanded') === 'true') {
               trigger.setAttribute('aria-expanded', 'false');
               icon?.classList.remove('rotate-180');
@@ -260,32 +265,28 @@ import { CONFIG } from '../data/config';
 
         if (e.key === 'ArrowDown') {
           e.preventDefault();
-          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
-          if (visibleItems.length > 0) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
-            trigger?.focus();
+          const visible = cachedItems.filter(ci => !ci.element.classList.contains('hidden'));
+          if (visible.length > 0) {
+            visible[0].trigger?.focus();
           }
           return;
         }
 
         if (e.key === 'Enter' && searchInput && searchInput.value.trim()) {
           e.preventDefault();
-          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
-          if (visibleItems.length === 0 && resetBtn && emptyState && !emptyState.classList.contains('hidden')) {
+          const visible = cachedItems.filter(ci => !ci.element.classList.contains('hidden'));
+          if (visible.length === 0 && resetBtn && emptyState && !emptyState.classList.contains('hidden')) {
             resetBtn.focus();
-          } else if (visibleItems.length === 1) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
-            if (trigger) {
-              if (trigger.getAttribute('aria-expanded') !== 'true') {
-                trigger.click();
+          } else if (visible.length === 1) {
+            const firstTrigger = visible[0].trigger;
+            if (firstTrigger) {
+              if (firstTrigger.getAttribute('aria-expanded') !== 'true') {
+                firstTrigger.click();
               }
-              trigger.focus();
+              firstTrigger.focus();
             }
-          } else if (visibleItems.length > 1) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
-            if (trigger) {
-              trigger.focus();
-            }
+          } else if (visible.length > 1) {
+            visible[0].trigger?.focus();
           }
         }
       };
