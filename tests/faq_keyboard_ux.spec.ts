@@ -40,9 +40,17 @@ test.describe('FAQ Accordion Keyboard Navigation & ARIA Accessibility UX', () =>
     await expect(triggers.nth(count - 1)).toBeFocused();
   });
 
-  test('should have descriptive aria-label on Equipos grid list', async ({ page }) => {
+  test('should have descriptive aria-label and hover/focus micro-UX on Equipos grid list', async ({ page }) => {
     const list = page.locator('#equipos ul[role="list"]');
     await expect(list).toBeVisible();
     await expect(list).toHaveAttribute('aria-label', 'Equipos médicos que atendemos');
+
+    const firstItem = list.locator('li').first();
+    await expect(firstItem).toHaveClass(/hover:bg-white\/10/);
+    await expect(firstItem).toHaveClass(/focus-within:bg-white\/10/);
+
+    const firstItemText = firstItem.locator('span');
+    await expect(firstItemText).toHaveClass(/group-hover:text-white/);
+    await expect(firstItemText).toHaveClass(/group-focus-within:text-white/);
   });
 });

@@ -65,4 +65,46 @@ test.describe('Contacto UX Enhancements', () => {
     await nameInput.fill('Juan Perez');
     await expect(nameInput).not.toHaveAttribute('aria-invalid');
   });
+
+  test('should have focus-within classes on contact info cards for keyboard focus parity', async ({ page }) => {
+    const waCard = page.locator('.group.relative:has(#phone-text)');
+    const labCard = page.locator('.group.relative:has(#address-text)');
+    const horarioCard = page.locator('#horario-card');
+
+    await expect(waCard).toHaveClass(/focus-within:bg-off-white/);
+    await expect(waCard).toHaveClass(/focus-within:border-border/);
+
+    await expect(labCard).toHaveClass(/focus-within:bg-off-white/);
+    await expect(labCard).toHaveClass(/focus-within:border-border/);
+
+    await expect(horarioCard).toHaveClass(/focus-within:bg-off-white/);
+    await expect(horarioCard).toHaveClass(/focus-within:border-border/);
+  });
+
+  test('should support Ctrl + Enter keyboard submission and include shortcut hint description', async ({ page }) => {
+    const textarea = page.locator('#f-desc');
+    const shortcutHint = page.locator('#f-desc-shortcut');
+    const nameInput = page.locator('#f-nombre');
+
+    await expect(shortcutHint).toContainText('Ctrl + Enter para enviar');
+    await expect(textarea).toHaveAttribute('aria-describedby', /f-desc-shortcut/);
+
+    await textarea.focus();
+    await textarea.press('Control+Enter');
+
+    // Submitting form without required fields triggers validation setting aria-invalid
+    await expect(nameInput).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  test('should highlight form field labels on input focus-within', async ({ page }) => {
+    const nameInput = page.locator('#f-nombre');
+    const nameLabel = page.locator('label[for="f-nombre"]');
+
+    await expect(nameLabel).toHaveClass(/group-focus-within\/field:text-blue-light/);
+
+    await nameInput.click();
+    await page.waitForTimeout(350);
+    const color = await nameLabel.evaluate((el) => getComputedStyle(el).color);
+    expect(color).toBe('rgb(74, 144, 217)');
+  });
 });

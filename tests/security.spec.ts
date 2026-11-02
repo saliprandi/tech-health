@@ -146,6 +146,44 @@ test('ticket status page enforces maxlength and truncates oversized inputs', asy
   expect(requestedTicket).toBe(('TH-2026-' + 'A'.repeat(50)).slice(0, 30));
 });
 
+test('ticket status page validates input against whitelist regex and rejects injection payloads', async ({ page }) => {
+  let requestSent = false;
+  await page.route('**/webhook/techhealth-estado*', async (route) => {
+    requestSent = true;
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ success: true, ticket: { ticket_number: 'VALID' } })
+    });
+  });
+
+  await page.goto('http://localhost:4321/estado');
+  const ticketInput = page.locator('#ticket-input');
+  const errorDiv = page.locator('#estado-error');
+
+  // Fill with invalid injection payload containing HTML/script symbols
+  await ticketInput.fill('TH<script>alert(1)</script>');
+  await page.click('#estado-submit');
+
+  // Verify webhook request was NOT sent and accessible error is displayed
+  expect(requestSent).toBe(false);
+  await expect(errorDiv).toBeVisible();
+  await expect(errorDiv).toContainText('Formato de ticket inválido');
+  await expect(ticketInput).toHaveAttribute('aria-invalid', 'true');
+});
+
+test('proceso ticket search form validates input against whitelist regex and prevents submission on malformed input', async ({ page }) => {
+  await page.goto('http://localhost:4321/');
+  const procesoInput = page.locator('#proceso-ticket-input');
+  const submitBtn = page.locator('#proceso-estado-submit');
+
+  await procesoInput.fill('INVALID $CHAR!');
+  await submitBtn.click();
+
+  await expect(procesoInput).toHaveAttribute('aria-invalid', 'true');
+  expect(page.url()).not.toContain('/estado?ticket=');
+});
+
 test('contact form submission truncates oversized field inputs in payload', async ({ page }) => {
   let capturedPayload: any = null;
   await page.route('**/webhook/techhealth-solicitud*', async (route) => {
@@ -179,4 +217,22 @@ test('contact form submission truncates oversized field inputs in payload', asyn
   expect(capturedPayload.nombre.length).toBeLessThanOrEqual(100);
   expect(capturedPayload.telefono.length).toBeLessThanOrEqual(20);
   expect(capturedPayload.mensaje.length).toBeLessThanOrEqual(500);
+});
+
+test('ticket status page handles malformed ticket payload gracefully without crashing', async ({ page }) => {
+  await page.route('**/webhook/techhealth-estado*', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ success: true, ticket: null })
+    });
+  });
+
+  await page.goto('http://localhost:4321/estado');
+  await page.fill('#ticket-input', 'TH-2026-MALFORMED');
+  await page.click('#estado-submit');
+
+  const errorDiv = page.locator('#estado-error');
+  await expect(errorDiv).toBeVisible();
+  await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
