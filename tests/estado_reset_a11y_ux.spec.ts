@@ -28,10 +28,13 @@ test.describe('Estado Ticket Search Reset and Clear Micro-UX', () => {
     await expect(clearBtn).toHaveClass(/hover:scale-110/);
     await expect(clearBtn).toHaveClass(/active:scale-95/);
 
-    // 2. Verify "Consultar otro ticket" button title and press scale classes
+    // 2. Verify "Consultar otro ticket" button title, press scale classes, and SVG rotation micro-animation
     const resetBtn = page.locator('#nueva-consulta');
     await expect(resetBtn).toHaveAttribute('title', 'Consultar otro número de ticket');
     await expect(resetBtn).toHaveClass(/active:scale-95/);
+    const resetSvg = resetBtn.locator('svg');
+    await expect(resetSvg).toHaveClass(/group-hover:rotate-180/);
+    await expect(resetSvg).toHaveClass(/group-focus-visible:rotate-180/);
 
     // 3. Fill ticket search and submit to show results
     const input = page.locator('#ticket-input');
