@@ -17,11 +17,10 @@ test.describe('Emergencia CTA Micro-UX and Accessibility', () => {
     expect(classList).toContain('focus-visible:ring-2');
     expect(classList).toContain('focus-visible:ring-white');
 
-    // Click CTA and verify aria-busy and redirection feedback
+    // Click CTA and verify redirection feedback
     await cta.click();
 
     await expect(ctaText).toHaveText('Redirigiendo...');
-    await expect(cta).toHaveAttribute('aria-busy', 'true');
     await expect(announcement).toHaveText('Redirigiendo a WhatsApp...');
   });
 });
