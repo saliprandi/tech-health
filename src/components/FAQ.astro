@@ -106,6 +106,23 @@ import { CONFIG } from '../data/config';
 
       const transitionTimers = new Map<HTMLElement, ReturnType<typeof setTimeout>>();
 
+      // Performance Optimization: Pre-cache lowercased text and child DOM references to avoid repeated DOM tree traversals, string allocations, and querySelector lookups on every keystroke
+      interface FAQCache {
+        item: HTMLElement;
+        text: string;
+        trigger: HTMLButtonElement | null;
+        container: HTMLElement | null;
+        icon: Element | null;
+      }
+
+      const faqData: FAQCache[] = Array.from(items).map(item => ({
+        item: item as HTMLElement,
+        text: item.textContent?.toLowerCase() || '',
+        trigger: item.querySelector('.faq-trigger') as HTMLButtonElement | null,
+        container: item.querySelector('.faq-answer-container') as HTMLElement | null,
+        icon: item.querySelector('.faq-icon')
+      }));
+
       const closeContainer = (container: HTMLElement) => {
         if (!container) return;
 
@@ -131,14 +148,10 @@ import { CONFIG } from '../data/config';
         const icon = item?.querySelector('.faq-icon');
         const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
 
-        items.forEach(otherItem => {
+        faqData.forEach(({ item: otherItem, trigger: otherTrigger, container: otherContainer, icon: otherIcon }) => {
           if (otherItem !== item) {
-            const otherTrigger = otherItem.querySelector('.faq-trigger');
-            const otherContainer = otherItem.querySelector('.faq-answer-container') as HTMLElement;
-            const otherIcon = otherItem.querySelector('.faq-icon');
-
             if (otherTrigger?.getAttribute('aria-expanded') === 'true') {
-              otherTrigger?.setAttribute('aria-expanded', 'false');
+              otherTrigger.setAttribute('aria-expanded', 'false');
               otherIcon?.classList.remove('rotate-180');
               if (otherContainer) closeContainer(otherContainer);
             }
@@ -166,7 +179,7 @@ import { CONFIG } from '../data/config';
         }
       };
 
-      const triggers = Array.from(document.querySelectorAll<HTMLButtonElement>('.faq-trigger'));
+      const triggers = faqData.map(d => d.trigger).filter((t): t is HTMLButtonElement => t !== null);
 
       const handleKeydown = (e: KeyboardEvent) => {
         const target = e.currentTarget as HTMLButtonElement;
@@ -206,17 +219,13 @@ import { CONFIG } from '../data/config';
           else clearBtn.classList.add('hidden');
         }
 
-        items.forEach(item => {
-          const text = item.textContent?.toLowerCase() || '';
+        faqData.forEach(({ item, text, trigger, container, icon }) => {
           if (!query || text.includes(query)) {
             item.classList.remove('hidden');
             visibleCount++;
           } else {
             item.classList.add('hidden');
             // Close if hidden
-            const trigger = item.querySelector('.faq-trigger') as HTMLButtonElement | null;
-            const container = item.querySelector('.faq-answer-container') as HTMLElement | null;
-            const icon = item.querySelector('.faq-icon');
             if (trigger?.getAttribute('aria-expanded') === 'true') {
               trigger.setAttribute('aria-expanded', 'false');
               icon?.classList.remove('rotate-180');
@@ -260,32 +269,26 @@ import { CONFIG } from '../data/config';
 
         if (e.key === 'ArrowDown') {
           e.preventDefault();
-          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
-          if (visibleItems.length > 0) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
-            trigger?.focus();
-          }
+          const firstVisible = faqData.find(d => !d.item.classList.contains('hidden'));
+          firstVisible?.trigger?.focus();
           return;
         }
 
         if (e.key === 'Enter' && searchInput && searchInput.value.trim()) {
           e.preventDefault();
-          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
-          if (visibleItems.length === 0 && resetBtn && emptyState && !emptyState.classList.contains('hidden')) {
+          const visibleFaqs = faqData.filter(d => !d.item.classList.contains('hidden'));
+          if (visibleFaqs.length === 0 && resetBtn && emptyState && !emptyState.classList.contains('hidden')) {
             resetBtn.focus();
-          } else if (visibleItems.length === 1) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
+          } else if (visibleFaqs.length === 1) {
+            const trigger = visibleFaqs[0].trigger;
             if (trigger) {
               if (trigger.getAttribute('aria-expanded') !== 'true') {
                 trigger.click();
               }
               trigger.focus();
             }
-          } else if (visibleItems.length > 1) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
-            if (trigger) {
-              trigger.focus();
-            }
+          } else if (visibleFaqs.length > 1) {
+            visibleFaqs[0].trigger?.focus();
           }
         }
       };
