@@ -236,3 +236,28 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('CSP meta tags enforce valid hardening directives without unsupported directives', async ({ page }) => {
+  const pagesToTest = ['http://localhost:4321/', 'http://localhost:4321/estado'];
+
+  for (const pageUrl of pagesToTest) {
+    await page.goto(pageUrl, { waitUntil: 'domcontentloaded' });
+
+    const cspMeta = page.locator('meta[http-equiv="Content-Security-Policy"]');
+    await expect(cspMeta).toHaveCount(1);
+
+    const cspContent = (await cspMeta.getAttribute('content')) || '';
+
+    // Valid hardening directives present
+    expect(cspContent).toContain("base-uri 'none'");
+    expect(cspContent).toContain('upgrade-insecure-requests');
+    expect(cspContent).toContain("object-src 'none'");
+
+    // Unsupported/ignored directives absent from meta tags
+    expect(cspContent).not.toContain('frame-ancestors');
+
+    // Permissions-Policy should not exist in http-equiv meta tags
+    const permissionsMeta = page.locator('meta[http-equiv="Permissions-Policy"]');
+    await expect(permissionsMeta).toHaveCount(0);
+  }
+});
