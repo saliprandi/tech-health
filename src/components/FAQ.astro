@@ -2,11 +2,11 @@
 import { CONFIG } from '../data/config';
 ---
 
-<section id="faq" class="bg-white section-padding content-visibility-auto">
+<section id="faq" class="bg-white section-padding content-visibility-auto scroll-mt-20">
   <div class="container-custom">
 
     <div class="max-w-3xl mx-auto">
-      <div class="text-center mb-12">
+      <div class="text-center mb-10">
         <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Preguntas Frecuentes</div>
         <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,38px)] text-navy mb-4">
           Dudas comunes sobre nuestro servicio
@@ -16,11 +16,50 @@ import { CONFIG } from '../data/config';
         </p>
       </div>
 
+      <!-- FAQ Search Filter Input -->
+      <div class="mb-8 relative max-w-md mx-auto">
+        <label for="faq-search-input" class="sr-only">Buscar en preguntas frecuentes</label>
+        <div class="relative group/search">
+          <input
+            type="text"
+            id="faq-search-input"
+            inputmode="search"
+            placeholder="Buscar pregunta o palabra clave..."
+            aria-label="Buscar en preguntas frecuentes"
+            aria-describedby="faq-search-counter"
+            class="w-full bg-off-white border border-border rounded-full py-2.5 pl-11 pr-10 font-body text-[14px] text-navy placeholder:text-text-soft/60 focus:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue transition-all [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
+          />
+          <svg class="w-4 h-4 text-text-soft group-focus-within/search:text-blue transition-colors absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <button
+            type="button"
+            id="clear-faq-search"
+            title="Limpiar búsqueda"
+            class="group/clear hidden absolute right-3 top-1/2 -translate-y-1/2 p-1 text-text-soft hover:text-navy hover:scale-110 active:scale-95 focus-visible:text-navy rounded-full outline-none focus-visible:ring-2 focus-visible:ring-blue transition-all duration-200 cursor-pointer"
+            aria-label="Limpiar búsqueda"
+          >
+            <svg class="w-4 h-4 group-hover/clear:rotate-90 group-focus-visible/clear:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div id="faq-search-counter" class="sr-only" aria-live="polite"></div>
+      </div>
+
+      <!-- Empty State -->
+      <div id="faq-empty-state" role="status" aria-live="polite" class="hidden text-center py-8 px-4 bg-off-white border border-border rounded-[16px] mb-6">
+        <p class="font-body text-[15px] text-text-soft mb-3">No se encontraron preguntas que coincidan con su búsqueda.</p>
+        <button type="button" id="faq-reset-btn" title="Mostrar todas las preguntas" class="font-heading font-bold text-[13px] text-blue hover:text-navy focus-visible:text-navy active:scale-95 transition-all underline outline-none focus-visible:ring-2 focus-visible:ring-blue rounded-sm px-2 py-1 cursor-pointer">
+          Mostrar todas las preguntas
+        </button>
+      </div>
+
       <div class="flex flex-col gap-4">
         {CONFIG.faqs.map((faq, index) => (
           <div class="faq-item group border border-border rounded-[16px] bg-off-white overflow-hidden transition-all duration-300 hover:bg-white focus-within:bg-white hover:shadow-card-hover focus-within:shadow-card-hover">
             <button
-              class="faq-trigger group/trigger w-full flex items-center justify-between p-6 text-left focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-inset outline-none"
+              class="faq-trigger group/trigger w-full flex items-center justify-between p-6 text-left focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-inset outline-none cursor-pointer active:scale-[0.99] transition-all duration-200"
               aria-expanded="false"
               aria-controls={`faq-answer-${index}`}
               id={`faq-question-${index}`}
@@ -58,6 +97,12 @@ import { CONFIG } from '../data/config';
     function initFAQ() {
       const items = document.querySelectorAll('.faq-item');
       if (!items.length) return () => {};
+
+      const searchInput = document.getElementById('faq-search-input') as HTMLInputElement | null;
+      const clearBtn = document.getElementById('clear-faq-search') as HTMLButtonElement | null;
+      const counterEl = document.getElementById('faq-search-counter');
+      const emptyState = document.getElementById('faq-empty-state');
+      const resetBtn = document.getElementById('faq-reset-btn');
 
       const transitionTimers = new Map<HTMLElement, ReturnType<typeof setTimeout>>();
 
@@ -150,6 +195,106 @@ import { CONFIG } from '../data/config';
         trigger.addEventListener('keydown', handleKeydown);
       });
 
+      // --- FAQ Search Filter Logic ---
+      const filterFAQs = () => {
+        if (!searchInput) return;
+        const query = searchInput.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        if (clearBtn) {
+          if (query.length > 0) clearBtn.classList.remove('hidden');
+          else clearBtn.classList.add('hidden');
+        }
+
+        items.forEach(item => {
+          const text = item.textContent?.toLowerCase() || '';
+          if (!query || text.includes(query)) {
+            item.classList.remove('hidden');
+            visibleCount++;
+          } else {
+            item.classList.add('hidden');
+            // Close if hidden
+            const trigger = item.querySelector('.faq-trigger') as HTMLButtonElement | null;
+            const container = item.querySelector('.faq-answer-container') as HTMLElement | null;
+            const icon = item.querySelector('.faq-icon');
+            if (trigger?.getAttribute('aria-expanded') === 'true') {
+              trigger.setAttribute('aria-expanded', 'false');
+              icon?.classList.remove('rotate-180');
+              if (container) closeContainer(container);
+            }
+          }
+        });
+
+        if (emptyState) {
+          if (visibleCount === 0 && query.length > 0) emptyState.classList.remove('hidden');
+          else emptyState.classList.add('hidden');
+        }
+
+        if (counterEl) {
+          if (query.length > 0) {
+            counterEl.textContent = `${visibleCount} ${visibleCount === 1 ? 'pregunta encontrada' : 'preguntas encontradas'}`;
+          } else {
+            counterEl.textContent = 'Mostrando todas las preguntas';
+          }
+        }
+      };
+
+      const handleClear = () => {
+        if (searchInput) {
+          const hadValue = searchInput.value.length > 0;
+          searchInput.value = '';
+          filterFAQs();
+          if (hadValue && counterEl) {
+            counterEl.textContent = 'Búsqueda limpiada. Mostrando todas las preguntas';
+          }
+          searchInput.focus();
+        }
+      };
+
+      const handleSearchKeydown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape' && searchInput && searchInput.value) {
+          e.preventDefault();
+          handleClear();
+          return;
+        }
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
+          if (visibleItems.length > 0) {
+            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
+            trigger?.focus();
+          }
+          return;
+        }
+
+        if (e.key === 'Enter' && searchInput && searchInput.value.trim()) {
+          e.preventDefault();
+          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
+          if (visibleItems.length === 0 && resetBtn && emptyState && !emptyState.classList.contains('hidden')) {
+            resetBtn.focus();
+          } else if (visibleItems.length === 1) {
+            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
+            if (trigger) {
+              if (trigger.getAttribute('aria-expanded') !== 'true') {
+                trigger.click();
+              }
+              trigger.focus();
+            }
+          } else if (visibleItems.length > 1) {
+            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
+            if (trigger) {
+              trigger.focus();
+            }
+          }
+        }
+      };
+
+      searchInput?.addEventListener('input', filterFAQs);
+      searchInput?.addEventListener('keydown', handleSearchKeydown);
+      clearBtn?.addEventListener('click', handleClear);
+      resetBtn?.addEventListener('click', handleClear);
+
       return () => {
         transitionTimers.forEach(timer => clearTimeout(timer));
         transitionTimers.clear();
@@ -157,6 +302,10 @@ import { CONFIG } from '../data/config';
           trigger.removeEventListener('click', handleToggle);
           trigger.removeEventListener('keydown', handleKeydown);
         });
+        searchInput?.removeEventListener('input', filterFAQs);
+        searchInput?.removeEventListener('keydown', handleSearchKeydown);
+        clearBtn?.removeEventListener('click', handleClear);
+        resetBtn?.removeEventListener('click', handleClear);
       };
     }
 
