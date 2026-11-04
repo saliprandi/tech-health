@@ -19,7 +19,7 @@
 **Action:** Utilizar named groups para animaciones de foco en íconos embebidos en inputs/selects y equipar contadores de caracteres con regiones `aria-live="polite"` para garantizar feedback visual y por voz.
 
 ## 2026-03-30 - Fallback de redirección transparente para bloqueadores de ventanas emergentes en envíos de formulario
-**Learning:** En manejadores de envíos de formularios que abren enlaces externos (ej. WhatsApp) tras procesar eventos de cliente, `window.open(url, '_blank', 'noopener,noreferrer')` puede ser bloqueado en navegadores estrictos o webviews móviles. Evaluar la referencia resultante (`const openedWin = window.open(...)`) y aplicar `if (!openedWin) window.location.href = url` garantiza la navegación sin parpadeos de pestañas en blanco ni interrupciones silenciosas de UX.
+**Learning:** En manejadores de envíos de formularios que abren enlaces externos (ej. WhatsApp) tras procesar eventos de cliente, `window.open(url, '_blank', 'noopener,noreferrer')` puede ser bloqueado en navegadores strictly o webviews móviles. Evaluar la referencia resultante (`const openedWin = window.open(...)`) y aplicar `if (!openedWin) window.location.href = url` garantiza la navegación sin parpadeos de pestañas en blanco ni interrupciones silenciosas de UX.
 **Action:** Usar asignación condicional `if (!openedWin) window.location.href = url` al abrir enlaces en manejadores de formularios para asegurar redundancia ante bloqueadores de popups.
 
 ## 2026-03-30 - Sincronización dinámica de atributos ARIA label en botones de copia y acción
@@ -68,7 +68,7 @@
 
 ## 2026-03-30 - Recuperación de errores con enfoque y selección automática en campos de búsqueda
 **Learning:** En formularios de consulta asíncrona o búsqueda de estado (ej. `estado.astro`), invocar `input.focus()` y `input.select()` tras detectar errores de validación o fallos en la consulta permite a usuarios de teclado, lectores de pantalla y pantallas táctiles corregir inmediatamente su entrada escribiendo de nuevo, sin requerir pulsaciones repetidas de retroceso o selección manual.
-**Action:** Invocar siempre `input.focus()` and `input.select()` en los bloques de captura de errores de formularios de búsqueda para ofrecer una recuperación de errores fluida.
+**Action:** Invocar siempre `input.focus()` y `input.select()` en los bloques de captura de errores de formularios de búsqueda para ofrecer una recuperación de errores fluida.
 
 ## 2026-03-30 - Desambiguación accesible de puntos de referencia de navegación (nav landmark aria-labels)
 **Learning:** Cuando una aplicación web contiene múltiples elementos `<nav>` (por ejemplo, barra principal de navegación y navegación secundaria de estado o menú móvil), omitir los atributos `aria-label` hace que los lectores de pantalla anuncien simplemente "Navegación" repetidamente. Proveer etiquetas concisas e intencionales (`aria-label="Navegación principal"` y `aria-label="Navegación de consulta"`) permite a usuarios de tecnologías de asistencia identificar y saltar directamente al punto de referencia de navegación deseado.
@@ -102,7 +102,7 @@
 **Learning:** En modales de servicio generados dinámicamente (`Servicios.astro`), equipar el botón principal de llamada a la acción con la clase `group`, animación heartbeat en el ícono de WhatsApp e incluir un ícono direccional SVG secundario (`aria-hidden="true"`) con micro-animaciones pareadas (`group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-transform duration-300`) ofrece una indicación clara de avance hacia la redirección externa que beneficia tanto a usuarios de ratón como de teclado.
 **Action:** Equipar siempre los botones de llamada a la acción en modales y diálogos con la clase `group`, ícono direccional SVG y animaciones pareadas de desplazamiento en `:hover` y `:focus-visible`.
 
-## 2026-03-30 - Sincronización dinámicade title y aria-label con feedback activo en el botón toggle de menú móvil
+## 2026-03-30 - Sincronización dinámica de title y aria-label con feedback activo en el botón toggle de menú móvil
 **Learning:** Los botones conmutadores de menú móvil (`#menu-toggle` en `src/components/Nav.astro`) deben sincronizar el atributo nativo `title` (ej. `title="Abrir menú"` / `title="Cerrar menú"`) junto con `aria-label` al alternar el estado del menú, proporcionando tooltips visuales a usuarios de ratón. Acompañar el botón con clases de escala activa (`active:scale-95 transition-transform duration-200`) brinda retroalimentación táctil inmediata al ser presionado.
 **Action:** Sincronizar siempre `title` y `aria-label` en scripts de conmutación de menús y equipar activadores móviles con utilidades de escalado activo (`active:scale-95`).
 
@@ -113,6 +113,42 @@
 ## 2026-03-30 - Retroalimentación visual coordinada por foco en etiquetas sobre fondos oscuros
 **Learning:** En formularios sobre fondos oscuros (`bg-navy`), agrupar la etiqueta `<label>` y el control de entrada (`<input>`, `<textarea>`, `<select>`) dentro de un contenedor con Tailwind `group/field` (o `group/select`) y aplicar `group-focus-within/field:text-blue-light transition-colors` en la etiqueta coordina la respuesta visual cuando el campo recibe foco, destacando sutilmente la etiqueta asociada en sincronía con el anillo de enfoque.
 **Action:** Agrupar siempre controles e instrucciones en contenedores `group/field` y sincronizar transiciones de color en etiquetas con `group-focus-within/field:text-blue-light`.
+
+## 2026-03-30 - Botón de reinicio de formulario y gestión accesible de foco tras confirmación de ticket
+**Learning:** Tras la recepción exitosa de una solicitud de contacto asíncrona, proporcionar un botón de reinicio ("Nueva consulta") dentro del panel de confirmación de ticket permite al usuario iniciar una nueva solicitud sin necesidad de borrar manualmente los campos o recargar la página. Combinar la limpieza de los controles (`form.reset()`) y contadores con la transferencia directa de foco al primer campo (`#f-nombre`) y un anuncio en regiones `aria-live="polite"` garantiza una transición fluida y totalmente accesible tanto para navegación por teclado como para lectores de pantalla.
+**Action:** Incluir siempre acciones de reinicio con foco administrado y anuncios `aria-live` en banners de confirmación de formularios asíncronos.
+
+## 2026-03-30 - Enlaces accesibles de consulta por especialidad en tarjetas de equipo
+**Learning:** En secciones de presentación de equipo con tarjetas informativas de especialidad (`Nosotros.astro`), incluir enlaces de acción accesibles ("Consultar especialidad") dirigidos al formulario de contacto (`#contacto`) activa la navegación por teclado dentro del contenedor (`focus-within:*`), proporcionando atributos `aria-label` descriptivos, tooltips nativos `title`, anillos de enfoque visibles (`focus-visible:ring-2`), escalado activo táctil y micro-animaciones direccionales.
+**Action:** Equipar siempre las tarjetas de miembros de equipo con enlaces interactivos dirigidos a formularios de consulta con atributos ARIA completos y feedback por foco.
+
+## 2026-03-30 - Tooltips nativos title y animación táctil activa en capas superpuestas y botones flotantes
+**Learning:** En enlaces y capas interactivas superpuestas (`a.absolute.inset-0`) o botones flotantes de acción rápida (`#wa-float-btn`), omitir los atributos `title` priva a los usuarios de ratón de tooltips visuales nativos al posar el cursor sobre la tarjeta. Equipar los enlaces superpuestos con atributos `title` explícitos pareados con su `aria-label` e incorporar animaciones de escala activa táctil (`active:scale-95 transition-all duration-200`) en botones flotantes y enlaces de navegación simplificada enriquece la experiencia interactiva tanto en escritorio como en dispositivos móviles.
+**Action:** Asignar siempre atributos `title` descriptivos en enlaces de tarjetas superpuestas y equipar botones flotantes con feedback de presión táctil activa (`active:scale-95`).
+
+## 2026-03-30 - Animación de rotación y armonía de color por foco en botones de reinicio de formulario
+**Learning:** En acciones secundarias de reinicio de formulario (como `#reset-contact-form`), equipar el botón contenedor con la clase Tailwind `group` e integrar micro-animaciones pareadas de rotación de 180 grados (`group-hover:rotate-180 group-focus-visible:rotate-180 transition-all duration-300`) junto con sincronización de color del ícono (`group-hover:text-navy group-focus-visible:text-navy`) provee una respuesta táctil y visual evidente que comunica claramente la acción de refresco/reinicio tanto para usuarios de ratón como de teclado.
+**Action:** Equipar siempre los íconos embebidos en botones de reinicio con clases `group-hover:rotate-180 group-focus-visible:rotate-180` y sincronización de color por foco.
+
+## 2026-03-30 - Lista de descripción semántica dl/dt/dd y ordenación flex en grillas de estadísticas
+**Learning:** Las grillas de estadísticas y métricas clave (como en `Hero.astro`) deben estructurarse usando listas de descripción semánticas (`<dl>`) con un atributo `aria-label` explícito ("Métricas y estadísticas de servicio"), donde la etiqueta/término (`<dt>`) precede al valor (`<dd>`) en el orden del documento HTML para cumplir la especificación HTML5 y ser anunciado correctamente por lectores de pantalla. La aplicación de ordenación CSS flexbox (`order-1` en `<dd>`, `order-2` en `<dt>`) dentro de un contenedor `.flex.flex-col` mantiene la jerarquía visual de valor grande arriba y texto explicativo abajo sin alterar la semántica HTML5.
+**Action:** Utilizar siempre listas de descripción semánticas (`<dl>`) con `<dt>` antes de `<dd>` in el DOM y utilidades flex `order-*` para la presentación visual de datos estadísticos.
+
+## 2026-03-30 - Enlaces accesibles de consulta de etapa en tarjetas de proceso técnico
+**Learning:** Las tarjetas de pasos de proceso (como en `src/components/Proceso.astro`) que poseen utilidades de elevación de foco (`focus-within:-translate-y-1 focus-within:shadow-card-hover`) se convierten en elementos interactivos reales para usuarios de teclado al integrar enlaces de acción explícitos ("Consultar etapa") hacia el formulario de contacto. Equipar estos enlaces con la clase `group/link` u operar bajo el `group` contenedor garantiza que las micro-animaciones vectoriales de dirección (`group-hover:translate-x-0.5 group-focus-within:translate-x-0.5`) respondan fluidamente tanto al pasar el cursor como al navegar por teclado.
+**Action:** Incluir siempre enlaces de consulta explicativos con atributos ARIA completos, tooltips `title` y micro-animaciones direccionales pareadas en tarjetas de flujo de trabajo.
+
+## 2026-03-30 - Transición de color por foco y censo en títulos de tarjetas de sección
+**Learning:** En tarjetas de contenido interactivo (`.service-card` y tarjetas de proceso, diferenciales o miembros del equipo), aplicar utilidades de transición de color en los títulos (`group-hover:text-blue`, `group-focus-within:text-blue` o `group-focus-visible:text-blue` junto con `transition-colors duration-300`) ilumina visualmente el texto principal en el color de la marca al posar el cursor o navegar por teclado, coordinando el título con las animaciones del ícono y borde de la tarjeta.
+**Action:** Equipar los encabezados de tarjetas con la clase `group-hover:text-blue` pareada con `group-focus-within:text-blue` / `group-focus-visible:text-blue` para ofrecer una retroalimentación visual unificada.
+
+## 2026-03-30 - Paridad de foco y contraste en instrucciones de teclado y enlaces de cabecera
+**Learning:** En controles de formulario con pistas de atajos de teclado (ej. `#f-desc-shortcut`), asociar `group-focus-within/field:text-white/80 transition-colors` coordina el contraste visual de las instrucciones de teclado con la etiqueta cuando el campo recibe foco. Asimismo, los enlaces de navegación con ícono direccional deben incluir `focus-visible:text-navy` en el texto de enlace para asegurar paridad de color entre estados `:hover` y `:focus-visible`.
+**Action:** Aplicar utilidades de contraste coordinado `group-focus-within` en pistas de teclado y garantizar paridad de color `focus-visible` en textos de enlace de cabecera.
+
+## 2026-03-30 - Paridad de retroalimentación por teclado en contenedores group-focus-visible
+**Learning:** En tarjetas interactivas que utilizan la clase `group` en el contenedor `<li>` o `<a>` (ej. `Equipos.astro`), aplicar utilidades únicamente a `group-hover:*` y `group-focus-within:*` omite la respuesta visual cuando el elemento recibe foco directo por teclado (`:focus-visible`). Incorporar utilidades pareadas `group-focus-visible:*` (`group-focus-visible:animate-heartbeat`, `group-focus-visible:text-white`, `group-focus-visible:translate-x-0.5`) en elementos hijos (íconos y textos) garantiza una experiencia interactiva idéntica sin importar el método de entrada.
+**Action:** Acompañar siempre las utilidades `group-hover:*` y `group-focus-within:*` con sus equivalentes `group-focus-visible:*` en elementos hijos de tarjetas interactivas.
 
 ## 2026-03-30 - Sincronización de aria-invalid en la captura del evento HTML5 invalid en formularios de consulta
 **Learning:** En formularios de consulta con validación nativa de HTML5 (atributos `required`, `pattern`, etc.), la validación del navegador se ejecuta antes del evento `submit` e impide su disparo cuando falla. Escuchar explícitamente el evento `invalid` en el formulario (`form.addEventListener('invalid', handleInvalid, true)`) para asignar `aria-invalid="true"` garantiza que las tecnologías de asistencia y los estilos de alto contraste (`aria-invalid:*`) reflejen inmediatamente el error visual y semánticamente.
