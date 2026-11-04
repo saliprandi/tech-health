@@ -236,3 +236,23 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('pages include valid W3C compliant CSP meta tags without ignored directives', async ({ page }) => {
+  for (const path of ['/', '/estado']) {
+    await page.goto(`http://localhost:4321${path}`, { waitUntil: 'domcontentloaded' });
+    const cspMeta = page.locator('meta[http-equiv="Content-Security-Policy"]');
+    await expect(cspMeta).toHaveCount(1);
+
+    const content = await cspMeta.getAttribute('content');
+    expect(content).not.toBeNull();
+    // base-uri and upgrade-insecure-requests must be present
+    expect(content).toContain("base-uri 'none'");
+    expect(content).toContain("upgrade-insecure-requests");
+    // frame-ancestors is ignored in meta tags per W3C spec and must not be present
+    expect(content).not.toContain("frame-ancestors");
+
+    // meta http-equiv="Permissions-Policy" is ignored per spec and should not be present
+    const permMeta = page.locator('meta[http-equiv="Permissions-Policy"]');
+    await expect(permMeta).toHaveCount(0);
+  }
+});
