@@ -96,6 +96,18 @@ test.describe('Contacto UX Enhancements', () => {
     await expect(nameInput).toHaveAttribute('aria-invalid', 'true');
   });
 
+  test('should highlight form field labels on input focus-within', async ({ page }) => {
+    const nameInput = page.locator('#f-nombre');
+    const nameLabel = page.locator('label[for="f-nombre"]');
+
+    await expect(nameLabel).toHaveClass(/group-focus-within\/field:text-blue-light/);
+
+    await nameInput.click();
+    await page.waitForTimeout(350);
+    const color = await nameLabel.evaluate((el) => getComputedStyle(el).color);
+    expect(color).toBe('rgb(74, 144, 217)');
+  });
+
   test('should render ticket confirmation link with group hover and directional arrow micro-UX classes', async ({ page }) => {
     const confirmationLink = page.locator('#ticket-confirmation-link');
     const directionalIcon = confirmationLink.locator('svg');
