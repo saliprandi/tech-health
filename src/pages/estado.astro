@@ -111,6 +111,20 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 									</svg>
 									<span id="share-ticket-text" class="pointer-events-none">Copiar enlace</span>
 								</button>
+								<a
+									id="wa-ticket-btn"
+									href="https://wa.me/5493815658239"
+									target="_blank"
+									rel="noopener noreferrer"
+									title="Consultar sobre este ticket por WhatsApp"
+									aria-label="Consultar sobre este ticket por WhatsApp"
+									class="group/wa inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-emerald-600 focus-visible:text-emerald-600 active:scale-95 transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
+								>
+									<svg class="w-3.5 h-3.5 text-text-soft group-hover/wa:text-emerald-600 group-focus-visible/wa:text-emerald-600 group-hover/wa:animate-heartbeat group-focus-visible/wa:animate-heartbeat transition-colors duration-200" fill="none" stroke="currentColor" aria-hidden="true">
+										<use href="#icon-whatsapp" />
+									</svg>
+									<span>Consultar por WhatsApp</span>
+								</a>
 								<div id="copy-ticket-announcement" class="sr-only" aria-live="polite"></div>
 							</div>
 						</div>
@@ -435,7 +449,12 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			// Header
 			const ticketEl = document.getElementById('result-ticket-number');
 			const badgeEl = document.getElementById('result-estado-badge');
+			const waTicketBtn = document.getElementById('wa-ticket-btn') as HTMLAnchorElement | null;
 			if (ticketEl) ticketEl.textContent = ticket.ticket_number;
+			if (waTicketBtn && ticket.ticket_number) {
+				const waMsg = `Hola TechHealth! Consulto por mi ticket ${ticket.ticket_number}`;
+				waTicketBtn.href = `https://wa.me/5493815658239?text=${encodeURIComponent(waMsg)}`;
+			}
 			if (badgeEl) {
 				badgeEl.textContent = cfg.titulo;
 				badgeEl.className = `px-4 py-2 rounded-full text-[14px] font-bold ${cfg.color} ${cfg.bg}`;
