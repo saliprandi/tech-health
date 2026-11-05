@@ -54,6 +54,22 @@ test.describe('FAQ Search Filter Micro-UX & Accessibility', () => {
     expect(await visibleItems.count()).toBeGreaterThan(0);
   });
 
+  test('faq search clear button has native title tooltip and micro-animation styling', async ({ page }) => {
+    const clearBtn = page.locator('#clear-faq-search');
+    await expect(clearBtn).toHaveAttribute('title', 'Limpiar búsqueda');
+    await expect(clearBtn).toHaveClass(/hover:scale-110/);
+    await expect(clearBtn).toHaveClass(/active:scale-95/);
+  });
+
+  test('faq search container has group/search class and icon has focus-within color transition', async ({ page }) => {
+    const searchContainer = page.locator('#faq-search-input').locator('..');
+    const searchIcon = searchContainer.locator('svg').first();
+
+    await expect(searchContainer).toHaveClass(/group\/search/);
+    await expect(searchIcon).toHaveClass(/group-focus-within\/search:text-blue/);
+    await expect(searchIcon).toHaveClass(/transition-colors/);
+  });
+
   test('should clear search input on Escape key press and restore all FAQs', async ({ page }) => {
     const searchInput = page.locator('#faq-search-input');
     const visibleItems = page.locator('.faq-item:not(.hidden)');
@@ -66,5 +82,17 @@ test.describe('FAQ Search Filter Micro-UX & Accessibility', () => {
 
     await expect(searchInput).toHaveValue('');
     expect(await visibleItems.count()).toBe(initialCount);
+  });
+
+  test('should link search input to counter via aria-describedby and transfer focus to reset button on Enter with 0 results', async ({ page }) => {
+    const searchInput = page.locator('#faq-search-input');
+    const resetBtn = page.locator('#faq-reset-btn');
+
+    await expect(searchInput).toHaveAttribute('aria-describedby', 'faq-search-counter');
+
+    await searchInput.fill('nonexistentterm123');
+    await searchInput.press('Enter');
+
+    await expect(resetBtn).toBeFocused();
   });
 });

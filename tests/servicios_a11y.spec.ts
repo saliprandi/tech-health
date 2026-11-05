@@ -19,17 +19,14 @@ test.describe('Servicios Modal CTA Accessibility', () => {
     await expect(announcement).toBeAttached();
     await expect(announcement).toHaveAttribute('aria-live', 'polite');
 
-    const arrow = page.locator('#modal-cta-arrow');
-    await expect(arrow).toBeVisible();
-    const arrowClass = await arrow.getAttribute('class');
-    expect(arrowClass).toContain('group-hover:translate-x-1');
-    expect(arrowClass).toContain('group-focus-visible:translate-x-1');
+    const arrowSvg = modalCta.locator('svg[stroke="currentColor"]');
+    await expect(arrowSvg).toBeVisible();
 
     await modalCta.click();
 
     await expect(page.locator('#modal-cta-text')).toHaveText('Redirigiendo...');
     await expect(announcement).toHaveText('Redirigiendo a WhatsApp...');
-    await expect(arrow).toHaveClass(/hidden/);
+    await expect(arrowSvg).toHaveClass(/hidden/);
   });
 
   test('modal close button has enhanced aria-label and focus-visible styling', async ({ page }) => {
@@ -39,11 +36,31 @@ test.describe('Servicios Modal CTA Accessibility', () => {
     const closeBtn = page.locator('#close-modal');
     await expect(closeBtn).toBeVisible();
     await expect(closeBtn).toHaveAttribute('aria-label', 'Cerrar detalles del servicio');
+    await expect(closeBtn).toHaveAttribute('title', 'Cerrar detalles del servicio');
 
     const classList = await closeBtn.getAttribute('class');
     expect(classList).toContain('focus-visible:ring-2');
     expect(classList).toContain('focus-visible:ring-navy');
     expect(classList).toContain('hover:scale-110');
     expect(classList).toContain('focus-visible:scale-110');
+  });
+
+  test('modal CTA includes directional arrow SVG and group hover/focus micro-animations', async ({ page }) => {
+    const serviceCard = page.locator('.service-card').first();
+    await serviceCard.click();
+
+    const modalCta = page.locator('#modal-cta');
+    await expect(modalCta).toBeVisible();
+
+    const classList = await modalCta.getAttribute('class');
+    expect(classList).toContain('group');
+
+    const arrowSvg = modalCta.locator('svg[stroke="currentColor"]');
+    await expect(arrowSvg).toBeVisible();
+    await expect(arrowSvg).toHaveAttribute('aria-hidden', 'true');
+
+    const arrowClass = await arrowSvg.getAttribute('class');
+    expect(arrowClass).toContain('group-hover:translate-x-1');
+    expect(arrowClass).toContain('group-focus-visible:translate-x-1');
   });
 });
