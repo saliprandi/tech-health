@@ -236,3 +236,23 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('both landing and ticket status pages enforce valid and consistent meta CSP directives without invalid frame-ancestors', async ({ page }) => {
+  for (const path of ['/', '/estado']) {
+    await page.goto(`http://localhost:4321${path}`, { waitUntil: 'domcontentloaded' });
+    const cspMeta = page.locator('meta[http-equiv="Content-Security-Policy"]');
+    await expect(cspMeta).toHaveCount(1);
+
+    const cspContent = await cspMeta.getAttribute('content');
+    expect(cspContent).not.toBeNull();
+    // Valid directives present
+    expect(cspContent).toContain("base-uri 'none'");
+    expect(cspContent).toContain('upgrade-insecure-requests');
+    // Invalid directives that browsers ignore in <meta> tags must be absent
+    expect(cspContent).not.toContain('frame-ancestors');
+
+    // Permissions-Policy via meta http-equiv is invalid in HTML standards and must not be present
+    const permissionsMeta = page.locator('meta[http-equiv="Permissions-Policy"]');
+    await expect(permissionsMeta).toHaveCount(0);
+  }
+});
