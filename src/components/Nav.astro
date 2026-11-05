@@ -227,8 +227,8 @@ import { CONFIG } from '../data/config';
 
         const rawHref = cta.getAttribute('href') || '';
         const href = rawHref.trim();
-        // Security: Strict allowlist ensures CTA only navigates to secure HTTPS or safe relative URLs (disallowing // protocol-relative paths)
-        if (href && (href.startsWith('https://') || (href.startsWith('/') && !href.startsWith('//')) || href.startsWith('#'))) {
+        // Security: Allow safe external (https://, http://), relative, anchor, and communication protocols (tel:, mailto:) while blocking dangerous pseudoprotocols (javascript:, data:, vbscript:)
+        if (href && (href.startsWith('https://') || href.startsWith('http://') || href.startsWith('tel:') || href.startsWith('mailto:') || (href.startsWith('/') && !href.startsWith('//')) || href.startsWith('#'))) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 
