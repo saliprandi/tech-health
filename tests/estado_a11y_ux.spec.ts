@@ -67,6 +67,14 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await expect(shareBtn).toHaveAttribute('aria-label', 'Copiar enlace directo del ticket al portapapeles');
     await expect(shareBtn).toHaveClass(/focus-visible:ring-blue/);
 
+    // 5c. Check WhatsApp consultation action link attributes, focus styling, and micro-UX classes
+    const waTicketBtn = page.locator('#wa-ticket-btn');
+    await expect(waTicketBtn).toBeAttached();
+    await expect(waTicketBtn).toHaveAttribute('target', '_blank');
+    await expect(waTicketBtn).toHaveAttribute('rel', 'noopener noreferrer');
+    await expect(waTicketBtn).toHaveClass(/focus-visible:ring-emerald-600/);
+    await expect(waTicketBtn).toHaveClass(/active:scale-95/);
+
     // 6. Check quick clear button attributes, visibility toggle, and focus restoration
     const clearBtn = page.locator('#clear-ticket-input');
     await expect(clearBtn).toBeHidden();
@@ -133,6 +141,13 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await shareBtn.click();
     await expect(page.locator('#share-ticket-text')).toHaveText('¡Enlace copiado!');
     await expect(shareBtn).toHaveAttribute('aria-label', 'Enlace directo del ticket copiado al portapapeles');
+
+    // Test WhatsApp consultation action link dynamic attributes
+    const waTicketBtn = page.locator('#wa-ticket-btn');
+    await expect(waTicketBtn).toBeVisible();
+    await expect(waTicketBtn).toHaveAttribute('href', /https:\/\/wa\.me\/5493815658239\?text=.*TH-2026-1234/);
+    await expect(waTicketBtn).toHaveAttribute('aria-label', 'Consultar por el ticket TH-2026-1234 en WhatsApp');
+    await expect(waTicketBtn).toHaveAttribute('title', 'Consultar por el ticket TH-2026-1234 en WhatsApp');
   });
 
   test('should handle ticket search error and set aria-live announcement', async ({ page }) => {
