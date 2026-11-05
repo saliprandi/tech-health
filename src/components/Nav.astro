@@ -226,7 +226,7 @@ import { CONFIG } from '../data/config';
         }
 
         const href = cta.getAttribute('href');
-        if (href && !/^(javascript|data|vbscript):/i.test(href.trim())) {
+        if (href && href.startsWith('https://wa.me/')) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 
