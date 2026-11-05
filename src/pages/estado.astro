@@ -1,5 +1,6 @@
 ---
 import EstadoLayout from '../layouts/EstadoLayout.astro';
+import { CONFIG } from '../data/config';
 ---
 
 <EstadoLayout title="Consultar Estado | TechHealth Medical Engineering">
@@ -79,7 +80,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			</div>
 
 			<!-- Resultado -->
-			<div id="estado-result" role="status" aria-live="polite" class="hidden mt-8">
+			<div id="estado-result" role="status" aria-live="polite" class="hidden mt-8" data-whatsapp={CONFIG.contacto.whatsapp}>
 				<!-- Header del ticket -->
 				<div class="bg-white rounded-[16px] p-8 shadow-lg mb-6">
 					<div class="flex items-center justify-between mb-6">
@@ -111,6 +112,20 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 									</svg>
 									<span id="share-ticket-text" class="pointer-events-none">Copiar enlace</span>
 								</button>
+								<a
+									id="wa-ticket-btn"
+									href={`https://wa.me/${CONFIG.contacto.whatsapp.replace(/\D/g, '')}`}
+									target="_blank"
+									rel="noopener noreferrer"
+									title="Consultar por este ticket en WhatsApp"
+									class="group/wa inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-emerald-700 hover:text-emerald-800 focus-visible:text-emerald-800 active:scale-95 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
+									aria-label="Consultar por este ticket en WhatsApp"
+								>
+									<svg class="w-3.5 h-3.5 fill-current text-emerald-600 group-hover/wa:text-emerald-700 group-focus-visible/wa:text-emerald-700 group-hover/wa:animate-heartbeat group-focus-visible/wa:animate-heartbeat transition-colors duration-200" aria-hidden="true">
+										<use href="#icon-whatsapp" />
+									</svg>
+									<span id="wa-ticket-text">WhatsApp</span>
+								</a>
 								<div id="copy-ticket-announcement" class="sr-only" aria-live="polite"></div>
 							</div>
 						</div>
@@ -542,6 +557,14 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 				historialSection.classList.add('hidden');
 			} else if (historialSection) {
 				historialSection.classList.remove('hidden');
+			}
+
+			// Actualizar botón de WhatsApp del ticket
+			const waTicketBtn = document.getElementById('wa-ticket-btn') as HTMLAnchorElement | null;
+			if (waTicketBtn && resultDiv) {
+				const waNumber = (resultDiv.dataset.whatsapp || '').replace(/\D/g, '');
+				const waMsg = `Hola TechHealth! Deseo consultar sobre el estado de mi ticket ${ticket.ticket_number}.`;
+				waTicketBtn.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMsg)}`;
 			}
 
 			// Actualizar URL para compartir/guardar en marcadores
