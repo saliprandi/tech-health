@@ -236,3 +236,36 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('pages define valid Content-Security-Policy meta tags without ignored directives', async ({ page }) => {
+  const consoleErrors: string[] = [];
+  page.on('console', msg => {
+    if (msg.type() === 'error') {
+      consoleErrors.push(msg.text());
+    }
+  });
+
+  // Verify homepage CSP
+  await page.goto('http://localhost:4321/', { waitUntil: 'networkidle' });
+  const homeCsp = await page.locator('meta[http-equiv="Content-Security-Policy"]').getAttribute('content');
+  expect(homeCsp).not.toBeNull();
+  expect(homeCsp).toContain("base-uri 'none'");
+  expect(homeCsp).toContain('upgrade-insecure-requests');
+  expect(homeCsp).not.toContain('frame-ancestors');
+
+  // Verify Permissions-Policy is not delivered via meta tag
+  const permissionsMeta = await page.locator('meta[http-equiv="Permissions-Policy"]').count();
+  expect(permissionsMeta).toBe(0);
+
+  // Verify estado page CSP
+  await page.goto('http://localhost:4321/estado', { waitUntil: 'networkidle' });
+  const estadoCsp = await page.locator('meta[http-equiv="Content-Security-Policy"]').getAttribute('content');
+  expect(estadoCsp).not.toBeNull();
+  expect(estadoCsp).toContain("base-uri 'none'");
+  expect(estadoCsp).toContain('upgrade-insecure-requests');
+  expect(estadoCsp).not.toContain('frame-ancestors');
+
+  // Verify no CSP browser warnings/errors are emitted
+  const cspErrors = consoleErrors.filter(err => err.toLowerCase().includes('content security policy'));
+  expect(cspErrors).toHaveLength(0);
+});
