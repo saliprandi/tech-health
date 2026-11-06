@@ -97,18 +97,22 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       if (!heroCta || !heroCtaText) return () => {};
 
       const handleCtaClick = (e: MouseEvent) => {
+        const rawHref = heroCta.getAttribute('href') || '';
+        const href = rawHref.trim();
+        // Security: Allow safe external (https://, http://), relative, anchor, and communication protocols (tel:, mailto:) while blocking dangerous pseudoprotocols (javascript:, data:, vbscript:) and protocol-relative URLs
+        const isSafe = href && (href.startsWith('https://') || href.startsWith('http://') || href.startsWith('tel:') || href.startsWith('mailto:') || (href.startsWith('/') && !href.startsWith('//')) || href.startsWith('#'));
+        if (!isSafe) {
+          e.preventDefault();
+          return;
+        }
+
         e.preventDefault();
         const originalText = heroCtaText.textContent;
         heroCtaText.textContent = 'Redirigiendo...';
         if (heroCtaAnnouncement) heroCtaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
-        const rawHref = heroCta.getAttribute('href') || '';
-        const href = rawHref.trim();
-        // Security: Allow safe external (https://, http://), relative, anchor, and communication protocols (tel:, mailto:) while blocking dangerous pseudoprotocols (javascript:, data:, vbscript:)
-        if (href && (href.startsWith('https://') || href.startsWith('http://') || href.startsWith('tel:') || href.startsWith('mailto:') || (href.startsWith('/') && !href.startsWith('//')) || href.startsWith('#'))) {
-          window.open(href, '_blank', 'noopener,noreferrer');
-        }
+        window.open(href, '_blank', 'noopener,noreferrer');
 
         setTimeout(() => {
           if (heroCtaText) heroCtaText.textContent = originalText;

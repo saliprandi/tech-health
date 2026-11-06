@@ -206,9 +206,18 @@ import { CONFIG } from '../data/config';
       const handleToggleClick = () => toggleMenu();
 
       const handleCtaClick = (e: MouseEvent) => {
+        const cta = e.currentTarget as HTMLElement;
+        const rawHref = cta?.getAttribute('href') || '';
+        const href = rawHref.trim();
+        // Security: Allow safe external (https://, http://), relative, anchor, and communication protocols (tel:, mailto:) while blocking dangerous pseudoprotocols (javascript:, data:, vbscript:) and protocol-relative URLs
+        const isSafe = href && (href.startsWith('https://') || href.startsWith('http://') || href.startsWith('tel:') || href.startsWith('mailto:') || (href.startsWith('/') && !href.startsWith('//')) || href.startsWith('#'));
+        if (!isSafe) {
+          e.preventDefault();
+          return;
+        }
+
         e.preventDefault();
         isRedirecting = true;
-        const cta = e.currentTarget as HTMLElement;
         const span = cta.querySelector('.nav-cta-text');
         const spinner = cta.querySelector('.nav-spinner');
         const icon = cta.querySelector('.nav-cta-icon');
@@ -225,12 +234,7 @@ import { CONFIG } from '../data/config';
           redirectionAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         }
 
-        const rawHref = cta.getAttribute('href') || '';
-        const href = rawHref.trim();
-        // Security: Allow safe external (https://, http://), relative, anchor, and communication protocols (tel:, mailto:) while blocking dangerous pseudoprotocols (javascript:, data:, vbscript:)
-        if (href && (href.startsWith('https://') || href.startsWith('http://') || href.startsWith('tel:') || href.startsWith('mailto:') || (href.startsWith('/') && !href.startsWith('//')) || href.startsWith('#'))) {
-          window.open(href, '_blank', 'noopener,noreferrer');
-        }
+        window.open(href, '_blank', 'noopener,noreferrer');
 
         setTimeout(() => {
           isRedirecting = false;
