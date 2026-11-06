@@ -118,7 +118,9 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
         const href = heroCta.getAttribute('href');
-        if (href) {
+        // Security: Validate protocol and target domain before opening external window to prevent open redirect
+        const WA_URL_PATTERN = /^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i;
+        if (href && WA_URL_PATTERN.test(href)) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 
