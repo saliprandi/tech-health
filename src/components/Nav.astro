@@ -226,7 +226,9 @@ import { CONFIG } from '../data/config';
         }
 
         const href = cta.getAttribute('href');
-        if (href) {
+        // Security: Validate protocol and target domain before opening external window to prevent open redirect
+        const WA_URL_PATTERN = /^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i;
+        if (href && WA_URL_PATTERN.test(href)) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 

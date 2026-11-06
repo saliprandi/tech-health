@@ -54,6 +54,27 @@ test('emergency CTA link is sanitized and has rel="noopener noreferrer"', async 
   expect(href).toMatch(/^https:\/\/wa\.me\/\d+(\?.*)?$/);
 });
 
+test('hero and nav CTA links are sanitized with secure WhatsApp URLs and rel="noopener noreferrer"', async ({ page }) => {
+  await page.goto('http://localhost:4321/', { waitUntil: 'networkidle' });
+
+  const heroCta = page.locator('#hero-cta');
+  await expect(heroCta).toBeVisible();
+  const heroHref = await heroCta.getAttribute('href');
+  const heroRel = await heroCta.getAttribute('rel');
+
+  expect(heroRel).toContain('noopener');
+  expect(heroRel).toContain('noreferrer');
+  expect(heroHref).toMatch(/^https:\/\/wa\.me\/\d+(\?.*)?$/);
+
+  const navCta = page.locator('#nav-cta');
+  const navHref = await navCta.getAttribute('href');
+  const navRel = await navCta.getAttribute('rel');
+
+  expect(navRel).toContain('noopener');
+  expect(navRel).toContain('noreferrer');
+  expect(navHref).toMatch(/^https:\/\/wa\.me\/\d+(\?.*)?$/);
+});
+
 test('ticket status page sanitizes XSS payloads in history response', async ({ page }) => {
   await page.route('**/webhook/techhealth-estado*', async (route) => {
     await route.fulfill({
