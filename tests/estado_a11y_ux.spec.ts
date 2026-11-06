@@ -67,6 +67,15 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await expect(shareBtn).toHaveAttribute('aria-label', 'Copiar enlace directo del ticket al portapapeles');
     await expect(shareBtn).toHaveClass(/focus-visible:ring-blue/);
 
+    // 5c. Check ticket WhatsApp inquiry button attributes, title, and focus styling (inside initially hidden result container)
+    const waTicketBtn = page.locator('#wa-ticket-btn');
+    await expect(waTicketBtn).toHaveAttribute('target', '_blank');
+    await expect(waTicketBtn).toHaveAttribute('rel', 'noopener noreferrer');
+    await expect(waTicketBtn).toHaveAttribute('aria-label', 'Consultar por este ticket en WhatsApp');
+    await expect(waTicketBtn).toHaveAttribute('title', 'Consultar por este ticket en WhatsApp');
+    await expect(waTicketBtn).toHaveClass(/focus-visible:ring-emerald-600/);
+    await expect(waTicketBtn).toHaveClass(/active:scale-95/);
+
     // 6. Check quick clear button attributes, visibility toggle, and focus restoration
     const clearBtn = page.locator('#clear-ticket-input');
     await expect(clearBtn).toBeHidden();
@@ -133,6 +142,15 @@ test.describe('Estado Ticket Search Accessibility and Micro-UX', () => {
     await shareBtn.click();
     await expect(page.locator('#share-ticket-text')).toHaveText('¡Enlace copiado!');
     await expect(shareBtn).toHaveAttribute('aria-label', 'Enlace directo del ticket copiado al portapapeles');
+
+    // Test WhatsApp consultation link dynamic message update
+    const waTicketBtn = page.locator('#wa-ticket-btn');
+    await expect(waTicketBtn).toBeVisible();
+    await expect(waTicketBtn).toHaveAttribute('aria-label', 'Consultar por el ticket TH-2026-1234 en WhatsApp');
+    await expect(waTicketBtn).toHaveAttribute('title', 'Consultar por el ticket TH-2026-1234 en WhatsApp');
+    const waHref = await waTicketBtn.getAttribute('href');
+    expect(waHref).toContain('https://wa.me/5493815658239?text=');
+    expect(waHref).toContain(encodeURIComponent('TH-2026-1234'));
   });
 
   test('should handle ticket search error and set aria-live announcement', async ({ page }) => {
