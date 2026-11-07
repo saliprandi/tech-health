@@ -42,7 +42,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
           </div>
           <h3 class="font-heading font-bold text-[22px] text-navy mb-3 group-hover:text-blue group-focus-visible:text-blue transition-colors duration-300">{servicio.titulo}</h3>
           <p class="font-body font-light text-[15px] text-text-soft mb-6">{servicio.descripcion}</p>
-          <ul class="flex flex-col gap-3">
+          <ul class="flex flex-col gap-3" role="list" aria-label="Características del servicio">
             {servicio.items.slice(0, 3).map(item => (
               <li class="flex items-start gap-3 font-body text-[14px] text-text-soft">
                 <span class="w-[6px] h-[6px] rounded-full bg-blue-light mt-2 flex-shrink-0"></span>
@@ -163,7 +163,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
           <p class="font-body font-light text-[17px] text-text-soft mb-8 leading-relaxed">${escapeHtml(servicio.descripcion)}</p>
 
           <h4 class="font-heading font-bold text-[16px] text-navy mb-4">Detalle de tareas incluidas:</h4>
-          <ul class="flex flex-col gap-4 mb-10">
+          <ul class="flex flex-col gap-4 mb-10" role="list" aria-label="Detalles y alcance del servicio">
             ${servicio.items.map((item: string) => `<li class="flex items-start gap-4 font-body text-[15px] text-text-soft"><span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>${escapeHtml(item)}</li>`).join('')}
           </ul>
           <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
