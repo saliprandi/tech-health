@@ -444,8 +444,9 @@ import { CONFIG } from '../data/config';
             });
             if (res.ok) {
               const data = await res.json();
-              if (data && data.ticket_number) {
-                ticketNumber = data.ticket_number;
+              // Security: Validate ticket_number type and strict format before rendering or linking
+              if (data && typeof data.ticket_number === 'string' && /^[A-Z0-9\-_]{1,30}$/i.test(data.ticket_number.trim())) {
+                ticketNumber = data.ticket_number.trim().toUpperCase();
               }
             }
           } catch {
@@ -487,11 +488,10 @@ import { CONFIG } from '../data/config';
           }, 3000);
         }
 
-        const openedWin = window.open(url, '_blank');
-        if (openedWin) {
-          openedWin.opener = null;
-        } else {
-          window.location.href = url;
+        // Security: Validate WhatsApp URL protocol and domain before redirection, and pass noopener,noreferrer
+        const WA_URL_REGEX = /^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i;
+        if (WA_URL_REGEX.test(url)) {
+          window.open(url, '_blank', 'noopener,noreferrer');
         }
       };
 
