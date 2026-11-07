@@ -102,8 +102,6 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         heroCtaText.textContent = 'Redirigiendo...';
         if (heroCtaAnnouncement) heroCtaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-        heroCta.setAttribute('aria-busy', 'true');
-        heroCta.setAttribute('aria-disabled', 'true');
 
         const href = heroCta.getAttribute('href');
         if (href) {
@@ -113,11 +111,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         setTimeout(() => {
           if (heroCtaText) heroCtaText.textContent = originalText;
           if (heroCtaAnnouncement) heroCtaAnnouncement.textContent = '';
-          if (heroCta) {
-            heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
-            heroCta.removeAttribute('aria-busy');
-            heroCta.removeAttribute('aria-disabled');
-          }
+          if (heroCta) heroCta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
         }, 3000);
       };
 
