@@ -444,15 +444,17 @@ import { CONFIG } from '../data/config';
             });
             if (res.ok) {
               const data = await res.json();
-              if (data && data.ticket_number) {
-                ticketNumber = data.ticket_number;
+              // Security: Validate ticket_number format with strict whitelist regex to prevent untrusted input injection
+              const TICKET_REGEX = /^[A-Z0-9\-_]{1,30}$/i;
+              if (data && typeof data.ticket_number === 'string' && TICKET_REGEX.test(data.ticket_number.trim())) {
+                ticketNumber = data.ticket_number.trim();
               }
             }
           } catch {
             // Silencioso: si el webhook falla, igual abre WhatsApp
           }
 
-          // Mostrar el ticket generado si llegó
+          // Mostrar el ticket generado si llegó y fue validado
           if (ticketNumber) {
             const ticketBanner = document.getElementById('ticket-confirmation');
             const ticketLink = document.getElementById('ticket-confirmation-link');
@@ -487,12 +489,8 @@ import { CONFIG } from '../data/config';
           }, 3000);
         }
 
-        const openedWin = window.open(url, '_blank');
-        if (openedWin) {
-          openedWin.opener = null;
-        } else {
-          window.location.href = url;
-        }
+        // Security: Open external WhatsApp window with noopener,noreferrer to prevent reverse tabnabbing and opener leakage
+        window.open(url, '_blank', 'noopener,noreferrer');
       };
 
       updateCounter();
