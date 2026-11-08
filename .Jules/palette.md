@@ -153,3 +153,7 @@
 ## 2026-03-30 - Sincronización de íconos direccionales durante estados de redirección asíncrona
 **Learning:** En botones de llamada a la acción primarios que integran íconos SVG direccionales (ej. `#modal-cta` en `Servicios.astro`), ocultar visualmente el ícono SVG de la flecha (`ctaArrow.classList.add('hidden')`) mientras se muestra el mensaje de progreso ("Redirigiendo...") evita la disonancia cognitiva de presentar una flecha activa junto al indicador textual de espera, restaurando su visibilidad de manera limpia tras completarse el temporizador de feedback.
 **Action:** En botones con estados de carga/redirección, alternar la clase `hidden` en los íconos de avance vectorial para mantener el foco visual exclusivamente en el mensaje de estado.
+
+## 2026-03-30 - Sincronización accesible aria-busy, aria-disabled y aria-label en botones de modal con redirección
+**Learning:** En botones de llamada a la acción dentro de diálogos modales dinámicos (`#modal-cta` en `Servicios.astro`), omitir `aria-busy="true"`, `aria-disabled="true"` y la sincronización dinámica del `aria-label` durante el estado de redirección externa deja a los lectores de pantalla y tecnologías de asistencia sin información explícita sobre la transición en curso.
+**Action:** Alternar siempre `aria-busy="true"` y `aria-disabled="true"` junto con un `aria-label` descriptivo transitorio durante el proceso de redirección, restaurando los valores originales tras el timeout de retroalimentación.
