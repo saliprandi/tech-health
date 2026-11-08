@@ -444,8 +444,10 @@ import { CONFIG } from '../data/config';
             });
             if (res.ok) {
               const data = await res.json();
-              if (data && data.ticket_number) {
-                ticketNumber = data.ticket_number;
+              // Security: Validate external webhook ticket against strict whitelist regex before DOM or URL injection
+              const TICKET_REGEX = /^[A-Z0-9\-_]{1,30}$/i;
+              if (data && typeof data.ticket_number === 'string' && TICKET_REGEX.test(data.ticket_number.trim())) {
+                ticketNumber = data.ticket_number.trim();
               }
             }
           } catch {
@@ -487,11 +489,9 @@ import { CONFIG } from '../data/config';
           }, 3000);
         }
 
-        const openedWin = window.open(url, '_blank');
-        if (openedWin) {
-          openedWin.opener = null;
-        } else {
-          window.location.href = url;
+        // Security: Validate WhatsApp URL protocol/origin and isolate browsing context with noopener,noreferrer
+        if (/^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i.test(url)) {
+          window.open(url, '_blank', 'noopener,noreferrer');
         }
       };
 
