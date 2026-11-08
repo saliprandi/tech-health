@@ -87,16 +87,49 @@ test.describe('Proceso Ticket Search Form Micro-UX', () => {
     await expect(input).toHaveAttribute('aria-invalid', 'true');
   });
 
-  test('proceso methodology step cards include hover and focus-within elevation micro-UX classes', async ({ page }) => {
-    const cards = page.locator('#proceso ol > li');
+  test('proceso step cards include hover and focus-within elevation micro-UX classes', async ({ page }) => {
+    const list = page.locator('ol[aria-label="Pasos del proceso de servicio técnico"]');
+    await expect(list).toBeVisible();
+
+    const cards = list.locator('li');
     const count = await cards.count();
     expect(count).toBeGreaterThan(0);
 
     for (let i = 0; i < count; i++) {
       const card = cards.nth(i);
       await expect(card).toHaveClass(/hover:-translate-y-1/);
-      await expect(card).toHaveClass(/focus-within:shadow-card-hover/);
       await expect(card).toHaveClass(/focus-within:-translate-y-1/);
+      await expect(card).toHaveClass(/focus-within:shadow-card-hover/);
+    }
+  });
+
+  test('proceso ticket search banner has group/proceso-banner class and icon scale micro-animation', async ({ page }) => {
+    const banner = page.locator('.group\\/proceso-banner');
+    await expect(banner).toBeVisible();
+
+    const iconWrapper = banner.locator('div.rounded-full').first();
+    await expect(iconWrapper).toHaveClass(/group-hover\/proceso-banner:scale-110/);
+    await expect(iconWrapper).toHaveClass(/group-focus-within\/proceso-banner:scale-110/);
+  });
+
+  test('proceso step cards include interactive consultation action links with micro-UX attributes', async ({ page }) => {
+    const list = page.locator('ol[aria-label="Pasos del proceso de servicio técnico"]');
+    await expect(list).toBeVisible();
+
+    const links = list.locator('a[href="#contacto"]');
+    const count = await links.count();
+    expect(count).toEqual(4);
+
+    for (let i = 0; i < count; i++) {
+      const link = links.nth(i);
+      await expect(link).toHaveAttribute('aria-label', /Consultar sobre la etapa de/);
+      await expect(link).toHaveAttribute('title', /Consultar sobre la etapa de/);
+      await expect(link).toHaveClass(/active:scale-95/);
+      await expect(link).toHaveClass(/focus-visible:ring-2/);
+
+      const arrow = link.locator('svg');
+      await expect(arrow).toHaveClass(/group-hover:translate-x-0.5/);
+      await expect(arrow).toHaveClass(/group-focus-within:translate-x-0.5/);
     }
   });
 });
