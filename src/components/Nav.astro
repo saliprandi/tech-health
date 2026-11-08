@@ -209,9 +209,10 @@ import { CONFIG } from '../data/config';
         const cta = e.currentTarget as HTMLElement;
         const rawHref = cta?.getAttribute('href') || '';
         const href = rawHref.trim();
-        // Security: Allow safe external (https://, http://), relative, anchor, and communication protocols (tel:, mailto:) while blocking dangerous pseudoprotocols (javascript:, data:, vbscript:) and protocol-relative URLs
-        const isSafe = href && (href.startsWith('https://') || href.startsWith('http://') || href.startsWith('tel:') || href.startsWith('mailto:') || (href.startsWith('/') && !href.startsWith('//')) || href.startsWith('#'));
+        // Security: Strict allowlist prevents insecure http://, dangerous pseudoprotocols (javascript:, data:, vbscript:), and protocol-relative URLs (//)
+        const isSafe = href && (href.startsWith('https://') || href.startsWith('tel:') || href.startsWith('mailto:') || (href.startsWith('/') && !href.startsWith('//')) || href.startsWith('#'));
         if (!isSafe) {
+          console.warn('[Security] Bloqueada redirección a protocolo o destino no seguro:', href);
           e.preventDefault();
           return;
         }
