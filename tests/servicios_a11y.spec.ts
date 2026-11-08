@@ -22,7 +22,22 @@ test.describe('Servicios Modal CTA Accessibility', () => {
     await modalCta.click();
 
     await expect(page.locator('#modal-cta-text')).toHaveText('Redirigiendo...');
+    await expect(modalCta).toHaveAttribute('aria-busy', 'true');
+    await expect(modalCta).toHaveAttribute('aria-disabled', 'true');
     await expect(announcement).toHaveText('Redirigiendo a WhatsApp...');
+  });
+
+  test('service cards and modal content contain semantic lists with role="list" and descriptive aria-label', async ({ page }) => {
+    const cardLists = page.locator('.service-card ul[role="list"]');
+    await expect(cardLists.first()).toBeVisible();
+    await expect(cardLists.first()).toHaveAttribute('aria-label', /^Tareas destacadas:/);
+
+    const serviceCard = page.locator('.service-card').first();
+    await serviceCard.click();
+
+    const modalList = page.locator('#modal-content ul[role="list"]');
+    await expect(modalList).toBeVisible();
+    await expect(modalList).toHaveAttribute('aria-label', 'Detalle de tareas incluidas');
   });
 
   test('modal close button has enhanced aria-label and focus-visible styling', async ({ page }) => {
