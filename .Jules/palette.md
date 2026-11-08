@@ -153,3 +153,7 @@
 ## 2026-10-10 - Preservación de semántica role="list" en listas y modales de servicios
 **Learning:** Al utilizar viñetas estilizadas personalizadas (`<span>` circulares con `rounded-full`) dentro de elementos `<ul>` en componentes como `Servicios.astro`, ciertos lectores de pantalla (como VoiceOver en Safari y WebKit) suprimen la semántica nativa de lista y el conteo de ítems. Incorporar explícitamente `role="list"` junto con un `aria-label` descriptivo tanto en las tarjetas del catálogo como en el contenido dinámico del modal de detalles preserva la jerarquía accesible y la navegación estruturada por listas.
 **Action:** Añadir siempre `role="list"` y un `aria-label` descriptivo en elementos `<ul>` y `<ol>` que reemplacen las viñetas nativas por elementos gráficos personalizados.
+
+## 2026-03-30 - Sincronización accesible aria-busy, aria-disabled y aria-label en botones de modal con redirección
+**Learning:** En botones de llamada a la acción dentro de diálogos modales dinámicos (`#modal-cta` en `Servicios.astro`), omitir `aria-busy="true"`, `aria-disabled="true"` y la sincronización dinámica del `aria-label` durante el estado de redirección externa deja a los lectores de pantalla y tecnologías de asistencia sin información explícita sobre la transición en curso.
+**Action:** Alternar siempre `aria-busy="true"` y `aria-disabled="true"` junto con un `aria-label` descriptivo transitorio durante el proceso de redirección, restaurando los valores originales tras el timeout de retroalimentación.

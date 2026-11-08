@@ -167,7 +167,7 @@ const modalData = CONFIG.servicios.map(servicio => ({
             ${servicio.items.map((item: string) => `<li class="flex items-start gap-4 font-body text-[15px] text-text-soft"><span class="w-[8px] h-[8px] rounded-full bg-blue mt-2 flex-shrink-0"></span>${escapeHtml(item)}</li>`).join('')}
           </ul>
           <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center gap-4">
-            <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark active:scale-[0.98] transition-all shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta" title="Consultar por este servicio en WhatsApp">
+            <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy text-white font-heading font-bold py-3 px-8 rounded-lg hover:bg-navy-dark active:scale-[0.98] transition-all shadow-sm focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2" id="modal-cta" aria-label="Consultar por este servicio en WhatsApp" title="Consultar por este servicio en WhatsApp">
               <svg class="w-5 h-5 fill-current group-hover:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true"><use href="#icon-whatsapp" /></svg>
               <span id="modal-cta-text">Consultar por este servicio</span>
               <svg class="w-4 h-4 text-white/70 group-hover:text-white group-focus-visible:text-white group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -210,7 +210,11 @@ const modalData = CONFIG.servicios.map(servicio => ({
         if (cta && ctaText) {
           e.preventDefault();
           const originalText = ctaText.textContent;
+          const originalAriaLabel = cta.getAttribute('aria-label') || 'Consultar por este servicio en WhatsApp';
           ctaText.textContent = 'Redirigiendo...';
+          cta.setAttribute('aria-label', 'Redirigiendo a WhatsApp...');
+          cta.setAttribute('aria-busy', 'true');
+          cta.setAttribute('aria-disabled', 'true');
           if (ctaAnnouncement) ctaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
           cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
@@ -222,7 +226,12 @@ const modalData = CONFIG.servicios.map(servicio => ({
           setTimeout(() => {
             if (ctaText) ctaText.textContent = originalText;
             if (ctaAnnouncement) ctaAnnouncement.textContent = '';
-            if (cta) cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+            if (cta) {
+              cta.setAttribute('aria-label', originalAriaLabel);
+              cta.removeAttribute('aria-busy');
+              cta.removeAttribute('aria-disabled');
+              cta.classList.remove('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
+            }
           }, 3000);
         }
       };
