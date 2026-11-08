@@ -103,6 +103,15 @@ test.describe('Proceso Ticket Search Form Micro-UX', () => {
     }
   });
 
+  test('proceso ticket search banner has group/proceso-banner class and icon scale micro-animation', async ({ page }) => {
+    const banner = page.locator('.group\\/proceso-banner');
+    await expect(banner).toBeVisible();
+
+    const iconWrapper = banner.locator('div.rounded-full').first();
+    await expect(iconWrapper).toHaveClass(/group-hover\/proceso-banner:scale-110/);
+    await expect(iconWrapper).toHaveClass(/group-focus-within\/proceso-banner:scale-110/);
+  });
+
   test('proceso step cards include interactive consultation action links with micro-UX attributes', async ({ page }) => {
     const list = page.locator('ol[aria-label="Pasos del proceso de servicio técnico"]');
     await expect(list).toBeVisible();

@@ -28,16 +28,16 @@ import { CONFIG } from '../data/config';
           >
             <div class="flex items-center gap-3.5">
               <!-- ECG Icon -->
-              <svg class="w-[26px] h-[26px] text-blue-light flex-shrink-0 group-hover:animate-heartbeat group-focus-within:animate-heartbeat" aria-hidden="true">
+              <svg class="w-[26px] h-[26px] text-blue-light flex-shrink-0 group-hover:animate-heartbeat group-focus-within:animate-heartbeat group-focus-visible:animate-heartbeat" aria-hidden="true">
                 <use href="#icon-ecg" />
               </svg>
               <!-- Text -->
-              <span class="font-body font-medium text-[13px] text-white/85 group-hover:text-white group-focus-within:text-white leading-tight transition-colors duration-300">
+              <span class="font-body font-medium text-[13px] text-white/85 group-hover:text-white group-focus-within:text-white group-focus-visible:text-white leading-tight transition-colors duration-300">
                 {equipo}
               </span>
             </div>
             <!-- Arrow Icon -->
-            <svg class="w-4 h-4 text-blue-light/70 group-hover:text-blue-light group-focus-within:text-blue-light group-hover:translate-x-0.5 group-focus-within:translate-x-0.5 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 text-blue-light/70 group-hover:text-blue-light group-focus-within:text-blue-light group-focus-visible:text-blue-light group-hover:translate-x-0.5 group-focus-within:translate-x-0.5 group-focus-visible:translate-x-0.5 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </a>
