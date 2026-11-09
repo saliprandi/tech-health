@@ -153,3 +153,7 @@
 ## 2026-03-30 - Sincronización accesible aria-busy, aria-disabled y aria-label en botones de modal con redirección
 **Learning:** En botones de llamada a la acción dentro de diálogos modales dinámicos (`#modal-cta` en `Servicios.astro`), omitir `aria-busy="true"`, `aria-disabled="true"` y la sincronización dinámica del `aria-label` durante el estado de redirección externa deja a los lectores de pantalla y tecnologías de asistencia sin información explícita sobre la transición en curso.
 **Action:** Alternar siempre `aria-busy="true"` y `aria-disabled="true"` junto con un `aria-label` descriptivo transitorio durante el proceso de redirección, restaurando los valores originales tras el timeout de retroalimentación.
+
+## 2026-03-30 - Enlace de consulta directa por WhatsApp con parámetros contextuales en tarjetas de ticket
+**Learning:** En vistas de consulta de estado de órdenes o tickets (`estado.astro`), proveer un botón directo de consulta por WhatsApp (`#wa-ticket-btn`) junto a las acciones de copia reduce la fricción de soporte. Actualizar dinámicamente el mensaje prellenado en la URL y sincronizar los atributos descriptivos `aria-label` y `title` con el número de ticket específico al desplegar el resultado asegura coherencia y accesibilidad inmediata para usuarios de ratón, teclado y lectores de pantalla.
+**Action:** Equipar siempre las tarjetas de consulta de estado con enlaces de acción directa sincronizados con el identificador del recurso tanto en URL como en atributos `aria-label` y `title`.
