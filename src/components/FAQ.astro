@@ -98,6 +98,15 @@ import { CONFIG } from '../data/config';
       const items = document.querySelectorAll('.faq-item');
       if (!items.length) return () => {};
 
+      // Performance Optimization: Pre-cache text and DOM references to eliminate repeated DOM traversals and string allocations on keystrokes
+      const faqRecords = Array.from(items).map(item => ({
+        item,
+        text: (item.textContent || '').toLowerCase(),
+        trigger: item.querySelector('.faq-trigger') as HTMLButtonElement | null,
+        container: item.querySelector('.faq-answer-container') as HTMLElement | null,
+        icon: item.querySelector('.faq-icon'),
+      }));
+
       const searchInput = document.getElementById('faq-search-input') as HTMLInputElement | null;
       const clearBtn = document.getElementById('clear-faq-search') as HTMLButtonElement | null;
       const counterEl = document.getElementById('faq-search-counter');
@@ -126,22 +135,16 @@ import { CONFIG } from '../data/config';
 
       const handleToggle = (e: Event) => {
         const trigger = e.currentTarget as HTMLButtonElement;
-        const item = trigger.closest('.faq-item');
-        const container = item?.querySelector('.faq-answer-container') as HTMLElement;
-        const icon = item?.querySelector('.faq-icon');
+        const currentRecord = faqRecords.find(r => r.trigger === trigger);
+        const container = currentRecord?.container;
+        const icon = currentRecord?.icon;
         const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
 
-        items.forEach(otherItem => {
-          if (otherItem !== item) {
-            const otherTrigger = otherItem.querySelector('.faq-trigger');
-            const otherContainer = otherItem.querySelector('.faq-answer-container') as HTMLElement;
-            const otherIcon = otherItem.querySelector('.faq-icon');
-
-            if (otherTrigger?.getAttribute('aria-expanded') === 'true') {
-              otherTrigger?.setAttribute('aria-expanded', 'false');
-              otherIcon?.classList.remove('rotate-180');
-              if (otherContainer) closeContainer(otherContainer);
-            }
+        faqRecords.forEach(otherRecord => {
+          if (otherRecord !== currentRecord && otherRecord.trigger?.getAttribute('aria-expanded') === 'true') {
+            otherRecord.trigger.setAttribute('aria-expanded', 'false');
+            otherRecord.icon?.classList.remove('rotate-180');
+            if (otherRecord.container) closeContainer(otherRecord.container);
           }
         });
 
@@ -206,21 +209,17 @@ import { CONFIG } from '../data/config';
           else clearBtn.classList.add('hidden');
         }
 
-        items.forEach(item => {
-          const text = item.textContent?.toLowerCase() || '';
-          if (!query || text.includes(query)) {
-            item.classList.remove('hidden');
+        faqRecords.forEach(record => {
+          if (!query || record.text.includes(query)) {
+            record.item.classList.remove('hidden');
             visibleCount++;
           } else {
-            item.classList.add('hidden');
+            record.item.classList.add('hidden');
             // Close if hidden
-            const trigger = item.querySelector('.faq-trigger') as HTMLButtonElement | null;
-            const container = item.querySelector('.faq-answer-container') as HTMLElement | null;
-            const icon = item.querySelector('.faq-icon');
-            if (trigger?.getAttribute('aria-expanded') === 'true') {
-              trigger.setAttribute('aria-expanded', 'false');
-              icon?.classList.remove('rotate-180');
-              if (container) closeContainer(container);
+            if (record.trigger?.getAttribute('aria-expanded') === 'true') {
+              record.trigger.setAttribute('aria-expanded', 'false');
+              record.icon?.classList.remove('rotate-180');
+              if (record.container) closeContainer(record.container);
             }
           }
         });
@@ -260,32 +259,26 @@ import { CONFIG } from '../data/config';
 
         if (e.key === 'ArrowDown') {
           e.preventDefault();
-          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
-          if (visibleItems.length > 0) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
-            trigger?.focus();
-          }
+          const firstVisible = faqRecords.find(r => !r.item.classList.contains('hidden'));
+          firstVisible?.trigger?.focus();
           return;
         }
 
         if (e.key === 'Enter' && searchInput && searchInput.value.trim()) {
           e.preventDefault();
-          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
-          if (visibleItems.length === 0 && resetBtn && emptyState && !emptyState.classList.contains('hidden')) {
+          const visibleRecords = faqRecords.filter(r => !r.item.classList.contains('hidden'));
+          if (visibleRecords.length === 0 && resetBtn && emptyState && !emptyState.classList.contains('hidden')) {
             resetBtn.focus();
-          } else if (visibleItems.length === 1) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
+          } else if (visibleRecords.length === 1) {
+            const trigger = visibleRecords[0].trigger;
             if (trigger) {
               if (trigger.getAttribute('aria-expanded') !== 'true') {
                 trigger.click();
               }
               trigger.focus();
             }
-          } else if (visibleItems.length > 1) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
-            if (trigger) {
-              trigger.focus();
-            }
+          } else if (visibleRecords.length > 1) {
+            visibleRecords[0].trigger?.focus();
           }
         }
       };
