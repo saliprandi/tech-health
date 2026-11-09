@@ -6,12 +6,12 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 	<!-- Nav simplificado -->
 	<nav class="fixed top-0 left-0 w-full z-[100] h-[68px] bg-white/95 backdrop-blur-md border-b border-border" aria-label="Navegación de consulta">
 		<div class="container-custom h-full px-[5%] flex items-center justify-between">
-			<a href="/" class="flex items-center group outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-sm" aria-label="TechHealth Home">
+			<a href="/" class="flex items-center group outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-sm" aria-label="TechHealth Home" title="Ir al inicio - TechHealth">
 				<!-- Performance Optimization: fetchpriority="high" prioritizes above-the-fold logo rendering for better LCP -->
 				<img src="/logo-name.svg" alt="TechHealth Medical Engineering" width="228" height="56" loading="eager" decoding="async" fetchpriority="high" class="h-[56px] w-auto group-hover:scale-105 group-focus-visible:scale-105 transition-transform duration-300" />
 			</a>
-			<a href="/" class="group inline-flex items-center gap-1.5 font-body font-medium text-[14px] text-text-soft hover:text-navy transition-colors outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-sm px-2.5 py-1.5" aria-label="Volver a la página principal">
-				<svg class="w-4 h-4 text-text-soft group-hover:text-navy group-hover:-translate-x-0.5 group-focus-visible:-translate-x-0.5 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+			<a href="/" class="group inline-flex items-center gap-1.5 font-body font-medium text-[14px] text-text-soft hover:text-navy focus-visible:text-navy active:scale-95 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-sm px-2.5 py-1.5" aria-label="Volver a la página principal" title="Volver a la página principal">
+				<svg class="w-4 h-4 text-text-soft group-hover:text-navy group-focus-visible:text-navy group-hover:-translate-x-0.5 group-focus-visible:-translate-x-0.5 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
 				</svg>
 				<span>Volver al inicio</span>
@@ -33,8 +33,8 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			<!-- Formulario de búsqueda -->
 			<div class="bg-white/10 backdrop-blur-sm rounded-[16px] p-8 border border-white/10">
 				<form id="estado-form" class="flex flex-col gap-4">
-					<div class="flex flex-col gap-2">
-						<label for="ticket-input" class="font-body font-medium text-[13px] text-white/80">
+					<div class="flex flex-col gap-2 group/field">
+						<label for="ticket-input" class="font-body font-medium text-[13px] text-white/80 group-focus-within/field:text-blue-light transition-colors">
 							Número de ticket <span class="text-blue-light">*</span>
 						</label>
 						<div class="relative w-full">
@@ -52,17 +52,18 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 							<button
 								type="button"
 								id="clear-ticket-input"
-								class="hidden absolute right-3 top-1/2 -translate-y-1/2 p-1 text-white/50 hover:text-white focus-visible:text-white rounded-md focus-visible:ring-2 focus-visible:ring-blue-light outline-none transition-colors"
+								title="Limpiar número de ticket"
+								class="group/clear hidden absolute right-3 top-1/2 -translate-y-1/2 p-1 text-white/50 hover:text-white hover:scale-110 active:scale-95 focus-visible:text-white rounded-md focus-visible:ring-2 focus-visible:ring-blue-light outline-none transition-all duration-200"
 								aria-label="Limpiar número de ticket"
 							>
-								<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
+								<svg class="w-4 h-4 group-hover/clear:rotate-90 group-focus-visible/clear:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
 								</svg>
 							</button>
 						</div>
-						<p id="ticket-input-hint" class="font-body text-[12px] text-white/50">Formato: letras y números (ej. TH-2026-1234)</p>
+						<p id="ticket-input-hint" class="font-body text-[12px] text-white/50 group-focus-within/field:text-white/80 transition-colors">Formato: letras y números (ej. TH-2026-1234)</p>
 					</div>
-					<button type="submit" id="estado-submit" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-light">
+					<button type="submit" id="estado-submit" title="Consultar estado de reparación" aria-label="Consultar estado de reparación" class="group w-full bg-white text-navy font-heading font-bold py-4 rounded-[8px] transition-all hover:bg-white/90 active:scale-[0.98] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-light">
 						<svg id="estado-spinner" class="hidden w-5 h-5 animate-spin text-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
 							<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
 							<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -89,10 +90,11 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 								<button
 									type="button"
 									id="copy-ticket-btn"
-									class="inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
+									title="Copiar número de ticket al portapapeles"
+									class="group/copy inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue active:scale-95 transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
 									aria-label="Copiar número de ticket al portapapeles"
 								>
-									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true">
+									<svg class="w-3.5 h-3.5 text-text-soft group-hover/copy:text-blue group-focus-visible/copy:text-blue transition-colors duration-200" fill="none" stroke="currentColor" aria-hidden="true">
 										<use id="copy-ticket-icon-use" href="#icon-copy" />
 									</svg>
 									<span id="copy-ticket-text" class="pointer-events-none">Copiar</span>
@@ -100,10 +102,11 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 								<button
 									type="button"
 									id="share-ticket-btn"
-									class="inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
+									title="Copiar enlace directo del ticket al portapapeles"
+									class="group/share inline-flex items-center gap-1.5 font-body font-medium text-[12px] text-text-soft hover:text-blue focus-visible:text-blue active:scale-95 transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 rounded-sm px-1.5 py-0.5"
 									aria-label="Copiar enlace directo del ticket al portapapeles"
 								>
-									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" aria-hidden="true">
+									<svg class="w-3.5 h-3.5 text-text-soft group-hover/share:text-blue group-focus-visible/share:text-blue transition-colors duration-200" fill="none" stroke="currentColor" aria-hidden="true">
 										<use id="share-ticket-icon-use" href="#icon-external" />
 									</svg>
 									<span id="share-ticket-text" class="pointer-events-none">Copiar enlace</span>
@@ -172,13 +175,13 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 				<!-- Historial -->
 				<div id="result-historial-section" class="bg-white rounded-[16px] p-8 shadow-lg">
 					<h2 class="font-heading font-bold text-[18px] text-navy mb-4">Historial de cambios</h2>
-					<div id="result-historial" class="flex flex-col gap-4"></div>
+					<div id="result-historial"></div>
 				</div>
 
 				<!-- Botón nueva consulta -->
 				<div class="text-center mt-6">
-					<button type="button" id="nueva-consulta" class="group inline-flex items-center gap-2 font-body font-medium text-[14px] text-white/70 hover:text-white transition-colors outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy rounded-md px-4 py-2">
-						<svg class="w-4 h-4 text-white/70 group-hover:text-white group-hover:-translate-y-0.5 group-focus-visible:-translate-y-0.5 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+					<button type="button" id="nueva-consulta" title="Consultar otro número de ticket" aria-label="Consultar otro número de ticket" class="group inline-flex items-center gap-2 font-body font-medium text-[14px] text-white/70 hover:text-white active:scale-95 transition-all outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy rounded-md px-4 py-2">
+						<svg class="w-4 h-4 text-white/70 group-hover:text-white group-hover:rotate-180 group-focus-visible:rotate-180 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
 							<path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
 						</svg>
 						<span>Consultar otro ticket</span>
@@ -227,6 +230,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			if (!input) return;
 			input.value = '';
 			input.removeAttribute('aria-invalid');
+			input.setAttribute('aria-describedby', 'ticket-input-hint');
 			toggleClearButton();
 			errorDiv?.classList.add('hidden');
 			resultDiv?.classList.add('hidden');
@@ -245,11 +249,13 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			if (!ticketNum || !navigator.clipboard) return;
 
 			const originalAriaLabel = copyTicketBtn.getAttribute('aria-label') || 'Copiar número de ticket al portapapeles';
+			const originalTitle = copyTicketBtn.getAttribute('title') || 'Copiar número de ticket al portapapeles';
 			navigator.clipboard.writeText(ticketNum).then(() => {
 				if (copyTicketText) copyTicketText.textContent = '¡Copiado!';
 				if (copyTicketIcon) copyTicketIcon.setAttribute('href', '#icon-check');
 				copyTicketBtn.classList.add('text-blue', 'scale-105');
 				copyTicketBtn.setAttribute('aria-label', 'Número de ticket copiado al portapapeles');
+				copyTicketBtn.setAttribute('title', 'Número de ticket copiado al portapapeles');
 				if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = 'Número de ticket copiado al portapapeles';
 
 				setTimeout(() => {
@@ -257,6 +263,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					if (copyTicketIcon) copyTicketIcon.setAttribute('href', '#icon-copy');
 					copyTicketBtn.classList.remove('text-blue', 'scale-105');
 					copyTicketBtn.setAttribute('aria-label', originalAriaLabel);
+					copyTicketBtn.setAttribute('title', originalTitle);
 					if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = '';
 				}, 2000);
 			});
@@ -270,12 +277,14 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			if (!ticketNum || !navigator.clipboard) return;
 
 			const originalAriaLabel = shareTicketBtn.getAttribute('aria-label') || 'Copiar enlace directo del ticket al portapapeles';
+			const originalTitle = shareTicketBtn.getAttribute('title') || 'Copiar enlace directo del ticket al portapapeles';
 			const shareUrl = `${window.location.origin}${window.location.pathname}?ticket=${encodeURIComponent(ticketNum)}`;
 			navigator.clipboard.writeText(shareUrl).then(() => {
 				if (shareTicketText) shareTicketText.textContent = '¡Enlace copiado!';
 				if (shareTicketIcon) shareTicketIcon.setAttribute('href', '#icon-check');
 				shareTicketBtn.classList.add('text-blue', 'scale-105');
 				shareTicketBtn.setAttribute('aria-label', 'Enlace directo del ticket copiado al portapapeles');
+				shareTicketBtn.setAttribute('title', 'Enlace directo del ticket copiado al portapapeles');
 				if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = 'Enlace directo del ticket copiado al portapapeles';
 
 				setTimeout(() => {
@@ -283,6 +292,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					if (shareTicketIcon) shareTicketIcon.setAttribute('href', '#icon-external');
 					shareTicketBtn.classList.remove('text-blue', 'scale-105');
 					shareTicketBtn.setAttribute('aria-label', originalAriaLabel);
+					shareTicketBtn.setAttribute('title', originalTitle);
 					if (copyTicketAnnouncement) copyTicketAnnouncement.textContent = '';
 				}, 2000);
 			});
@@ -356,6 +366,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 					errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 				}
 				input.setAttribute('aria-invalid', 'true');
+				input.setAttribute('aria-describedby', 'estado-error ticket-input-hint');
 				input.focus();
 				input.select();
 				return;
@@ -396,6 +407,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 						errorDiv.textContent = err instanceof Error ? err.message : 'Error al consultar el ticket';
 					}
 					input.setAttribute('aria-invalid', 'true');
+					input.setAttribute('aria-describedby', 'estado-error ticket-input-hint');
 					errorDiv.classList.remove('hidden');
 					errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 					input.focus();
@@ -502,13 +514,13 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 				if (historial.length === 0) {
 					historialEl.innerHTML = '<p class="text-text-soft text-[14px]">Sin cambios registrados</p>';
 				} else {
-					historialEl.innerHTML = historial.map((h: any) => {
+					historialEl.innerHTML = `<ol class="flex flex-col gap-4 list-none p-0 m-0" role="list" aria-label="Historial de cambios del ticket">` + historial.map((h: any) => {
 						const cfgAnt = getEstadoCfg(h.estado_anterior);
 						const cfgNuevo = getEstadoCfg(h.estado_nuevo);
 						const nota = h.nota ? `<div class="text-[13px] text-navy mt-1 italic">"${escapeHtml(h.nota)}"</div>` : '';
 						const tecnico = h.tecnico ? ' · ' + escapeHtml(h.tecnico) : '';
 						return `
-							<div class="flex items-start gap-3 pb-4 border-b border-border last:border-0 last:pb-0">
+							<li class="flex items-start gap-3 pb-4 border-b border-border last:border-0 last:pb-0">
 								<div class="flex-shrink-0 w-8 h-8 rounded-full ${cfgNuevo.bg} ${cfgNuevo.color} flex items-center justify-center">
 									<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="${cfgNuevo.icon}"></path></svg>
 								</div>
@@ -521,9 +533,9 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 									<div class="text-[12px] text-text-soft">${escapeHtml(formatDate(h.fecha))}${tecnico}</div>
 									${nota}
 								</div>
-							</div>
+							</li>
 						`;
-					}).join('');
+					}).join('') + `</ol>`;
 				}
 			}
 			if (historialSection && historial.length === 0) {
@@ -544,12 +556,21 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			}, 100);
 		};
 
+		const handleInvalid = (e: Event) => {
+			const target = e.target as HTMLElement | null;
+			if (target) {
+				target.setAttribute('aria-invalid', 'true');
+			}
+		};
+
 		form.addEventListener('submit', handleSubmit);
+		form.addEventListener('invalid', handleInvalid, true);
 
 		input.addEventListener('input', () => {
 			toggleClearButton();
 			if (input.hasAttribute('aria-invalid')) {
 				input.removeAttribute('aria-invalid');
+				input.setAttribute('aria-describedby', 'ticket-input-hint');
 			}
 			if (errorDiv && !errorDiv.classList.contains('hidden')) {
 				errorDiv.classList.add('hidden');
@@ -560,6 +581,7 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			if (e.key === 'Escape' && input.value) {
 				input.value = '';
 				input.removeAttribute('aria-invalid');
+				input.setAttribute('aria-describedby', 'ticket-input-hint');
 				toggleClearButton();
 				errorDiv?.classList.add('hidden');
 				resultDiv?.classList.add('hidden');
@@ -576,12 +598,17 @@ import EstadoLayout from '../layouts/EstadoLayout.astro';
 			if (input) {
 				input.value = '';
 				input.removeAttribute('aria-invalid');
+				input.setAttribute('aria-describedby', 'ticket-input-hint');
 				toggleClearButton();
 				input.focus();
 			}
+			if (announcement) announcement.textContent = 'Formulario reiniciado para una nueva consulta';
 			const cleanUrl = window.location.pathname;
 			window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
 			window.scrollTo({ top: 0, behavior: 'smooth' });
+			setTimeout(() => {
+				if (announcement) announcement.textContent = '';
+			}, 2000);
 		});
 
 		// Auto-llenar desde URL
