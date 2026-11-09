@@ -30,7 +30,106 @@ test.describe('Proceso Ticket Search Form Micro-UX', () => {
     await expect(spinner).toBeVisible();
     await expect(arrowIcon).toBeHidden();
     await expect(submitBtn).toHaveAttribute('aria-busy', 'true');
-    await expect(submitBtn).toBeDisabled();
+    await expect(submitBtn).toHaveAttribute('aria-disabled', 'true');
     await expect(announcement).toHaveText('Buscando estado de ticket...');
+  });
+
+  test('proceso ticket clear button has native title tooltip and micro-animation styling', async ({ page }) => {
+    const clearBtn = page.locator('#proceso-clear-ticket-input');
+    await expect(clearBtn).toHaveAttribute('title', 'Limpiar número de ticket');
+    await expect(clearBtn).toHaveClass(/hover:scale-110/);
+    await expect(clearBtn).toHaveClass(/active:scale-95/);
+  });
+
+  test('clears proceso ticket input on Escape key press and announces to screen reader', async ({ page }) => {
+    const section = page.locator('#proceso');
+    await section.scrollIntoViewIfNeeded();
+
+    const input = page.locator('#proceso-ticket-input');
+    const clearBtn = page.locator('#proceso-clear-ticket-input');
+    const announcement = page.locator('#proceso-estado-announcement');
+
+    await input.fill('TH-2026-1234');
+    await expect(clearBtn).toBeVisible();
+    await expect(clearBtn).toHaveAttribute('title', 'Limpiar número de ticket');
+    await expect(clearBtn).toHaveClass(/hover:scale-110/);
+    await expect(clearBtn).toHaveClass(/active:scale-95/);
+
+    await input.press('Escape');
+
+    await expect(input).toHaveValue('');
+    await expect(clearBtn).toBeHidden();
+    await expect(input).not.toHaveAttribute('aria-invalid');
+    await expect(announcement).toHaveText('Campo de número de ticket limpiado');
+  });
+
+  test('proceso clear ticket button has title tooltip and hover/active micro-animation utilities', async ({ page }) => {
+    const section = page.locator('#proceso');
+    await section.scrollIntoViewIfNeeded();
+
+    const clearBtn = page.locator('#proceso-clear-ticket-input');
+    await expect(clearBtn).toHaveAttribute('title', 'Limpiar número de ticket');
+    await expect(clearBtn).toHaveClass(/hover:scale-110/);
+    await expect(clearBtn).toHaveClass(/active:scale-95/);
+  });
+
+  test('proceso form validation error triggers input focus and text selection for recovery', async ({ page }) => {
+    const section = page.locator('#proceso');
+    await section.scrollIntoViewIfNeeded();
+
+    const input = page.locator('#proceso-ticket-input');
+    const submitBtn = page.locator('#proceso-estado-submit');
+
+    await input.fill('###INVALID###');
+    await submitBtn.click();
+
+    await expect(input).toBeFocused();
+    await expect(input).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  test('proceso step cards include hover and focus-within elevation micro-UX classes', async ({ page }) => {
+    const list = page.locator('ol[aria-label="Pasos del proceso de servicio técnico"]');
+    await expect(list).toBeVisible();
+
+    const cards = list.locator('li');
+    const count = await cards.count();
+    expect(count).toBeGreaterThan(0);
+
+    for (let i = 0; i < count; i++) {
+      const card = cards.nth(i);
+      await expect(card).toHaveClass(/hover:-translate-y-1/);
+      await expect(card).toHaveClass(/focus-within:-translate-y-1/);
+      await expect(card).toHaveClass(/focus-within:shadow-card-hover/);
+    }
+  });
+
+  test('proceso ticket search banner has group/proceso-banner class and icon scale micro-animation', async ({ page }) => {
+    const banner = page.locator('.group\\/proceso-banner');
+    await expect(banner).toBeVisible();
+
+    const iconWrapper = banner.locator('div.rounded-full').first();
+    await expect(iconWrapper).toHaveClass(/group-hover\/proceso-banner:scale-110/);
+    await expect(iconWrapper).toHaveClass(/group-focus-within\/proceso-banner:scale-110/);
+  });
+
+  test('proceso step cards include interactive consultation action links with micro-UX attributes', async ({ page }) => {
+    const list = page.locator('ol[aria-label="Pasos del proceso de servicio técnico"]');
+    await expect(list).toBeVisible();
+
+    const links = list.locator('a[href="#contacto"]');
+    const count = await links.count();
+    expect(count).toEqual(4);
+
+    for (let i = 0; i < count; i++) {
+      const link = links.nth(i);
+      await expect(link).toHaveAttribute('aria-label', /Consultar sobre la etapa de/);
+      await expect(link).toHaveAttribute('title', /Consultar sobre la etapa de/);
+      await expect(link).toHaveClass(/active:scale-95/);
+      await expect(link).toHaveClass(/focus-visible:ring-2/);
+
+      const arrow = link.locator('svg');
+      await expect(arrow).toHaveClass(/group-hover:translate-x-0.5/);
+      await expect(arrow).toHaveClass(/group-focus-within:translate-x-0.5/);
+    }
   });
 });

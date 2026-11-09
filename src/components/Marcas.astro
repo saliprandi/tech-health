@@ -2,7 +2,7 @@
 import { CONFIG } from '../data/config';
 ---
 
-<section id="marcas" class="bg-white py-14 border-y border-border/40 content-visibility-auto">
+<section id="marcas" class="bg-white py-14 border-y border-border/40 content-visibility-auto scroll-mt-20">
   <div class="container-custom">
     <div class="text-center mb-10">
       <h3 class="font-heading font-bold text-navy/40 uppercase tracking-[0.15em] text-[12px]">
@@ -10,12 +10,19 @@ import { CONFIG } from '../data/config';
       </h3>
     </div>
 
-    <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-y-10 gap-x-4 items-center list-none p-0 m-0" aria-label="Marcas de equipos médicos soportadas">
+    <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-y-6 gap-x-4 items-center list-none p-0 m-0" role="list" aria-label="Marcas de equipos médicos soportadas">
       {CONFIG.marcas.map(marca => (
-        <li class="flex items-center justify-center px-4 group">
-          <span class="font-heading font-extrabold text-[17px] text-navy/50 group-hover:text-navy transition-all duration-500 cursor-default select-none text-center leading-tight tracking-tighter transform group-hover:scale-105">
-            {marca}
-          </span>
+        <li class="flex items-center justify-center rounded-lg group hover:bg-slate-50/80 focus-within:bg-slate-50/80 transition-all duration-300">
+          <a
+            href="#contacto"
+            class="flex items-center justify-center px-3 py-2 w-full font-heading font-extrabold text-[17px] text-navy/50 group-hover:text-navy group-focus-within:text-navy group-focus-visible:text-navy transition-all duration-300 text-center leading-tight tracking-tighter outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 rounded-md active:scale-95"
+            aria-label={`Consultar servicio técnico para equipos marca ${marca}`}
+            title={`Consultar servicio técnico para equipos marca ${marca}`}
+          >
+            <span class="transform group-hover:scale-105 group-focus-within:scale-105 group-focus-visible:scale-105 transition-transform duration-300">
+              {marca}
+            </span>
+          </a>
         </li>
       ))}
     </ul>

@@ -21,6 +21,8 @@ const { title = "Consultar Estado | TechHealth Medical Engineering" } = Astro.pr
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<link rel="icon" type="image/svg+xml" href="/logo.svg" />
+		<!-- Performance Optimization: Preload LCP header logo image to eliminate network discovery delays -->
+		<link rel="preload" href="/logo-name.svg" as="image" type="image/svg+xml" fetchpriority="high" />
 
 		<!-- Google Fonts: Asynchronous non-render-blocking font stylesheet loading -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
