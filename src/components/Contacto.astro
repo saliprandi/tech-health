@@ -444,7 +444,8 @@ import { CONFIG } from '../data/config';
             });
             if (res.ok) {
               const data = await res.json();
-              if (data && data.ticket_number) {
+              // Security: Treat ticket_number from external webhooks as untrusted and validate against whitelist regex
+              if (data && typeof data.ticket_number === 'string' && /^[A-Z0-9\-_]{1,30}$/i.test(data.ticket_number)) {
                 ticketNumber = data.ticket_number;
               }
             }
@@ -487,12 +488,8 @@ import { CONFIG } from '../data/config';
           }, 3000);
         }
 
-        const openedWin = window.open(url, '_blank');
-        if (openedWin) {
-          openedWin.opener = null;
-        } else {
-          window.location.href = url;
-        }
+        // Security: Pass 'noopener,noreferrer' directly to prevent tabnabbing and window.opener access
+        window.open(url, '_blank', 'noopener,noreferrer');
       };
 
       updateCounter();
