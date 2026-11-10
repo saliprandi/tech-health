@@ -204,16 +204,16 @@ const modalData = CONFIG.servicios.map(servicio => ({
         const ctaText = document.getElementById('modal-cta-text');
         const ctaAnnouncement = document.getElementById('modal-cta-announcement');
         if (cta && ctaText) {
+          const href = cta.getAttribute('href');
+          if (!href || !href.startsWith('https://wa.me/')) return;
+
           e.preventDefault();
           const originalText = ctaText.textContent;
           ctaText.textContent = 'Redirigiendo...';
           if (ctaAnnouncement) ctaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
           cta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
-          const href = cta.getAttribute('href');
-          if (href && href.startsWith('https://wa.me/')) {
-            window.open(href, '_blank', 'noopener,noreferrer');
-          }
+          window.open(href, '_blank', 'noopener,noreferrer');
 
           setTimeout(() => {
             if (ctaText) ctaText.textContent = originalText;

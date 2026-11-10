@@ -97,16 +97,16 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       if (!heroCta || !heroCtaText) return () => {};
 
       const handleCtaClick = (e: MouseEvent) => {
+        const href = heroCta.getAttribute('href');
+        if (!href || !href.startsWith('https://wa.me/')) return;
+
         e.preventDefault();
         const originalText = heroCtaText.textContent;
         heroCtaText.textContent = 'Redirigiendo...';
         if (heroCtaAnnouncement) heroCtaAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
-        const href = heroCta.getAttribute('href');
-        if (href && href.startsWith('https://wa.me/')) {
-          window.open(href, '_blank', 'noopener,noreferrer');
-        }
+        window.open(href, '_blank', 'noopener,noreferrer');
 
         setTimeout(() => {
           if (heroCtaText) heroCtaText.textContent = originalText;

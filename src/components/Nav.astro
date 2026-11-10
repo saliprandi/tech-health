@@ -204,9 +204,12 @@ import { CONFIG } from '../data/config';
       const handleToggleClick = () => toggleMenu();
 
       const handleCtaClick = (e: MouseEvent) => {
+        const cta = e.currentTarget as HTMLElement;
+        const href = cta.getAttribute('href');
+        if (!href || !href.startsWith('https://wa.me/')) return;
+
         e.preventDefault();
         isRedirecting = true;
-        const cta = e.currentTarget as HTMLElement;
         const span = cta.querySelector('.nav-cta-text');
         const spinner = cta.querySelector('.nav-spinner');
         const icon = cta.querySelector('.nav-cta-icon');
@@ -223,10 +226,7 @@ import { CONFIG } from '../data/config';
           redirectionAnnouncement.textContent = 'Redirigiendo a WhatsApp...';
         }
 
-        const href = cta.getAttribute('href');
-        if (href && href.startsWith('https://wa.me/')) {
-          window.open(href, '_blank', 'noopener,noreferrer');
-        }
+        window.open(href, '_blank', 'noopener,noreferrer');
 
         setTimeout(() => {
           isRedirecting = false;
