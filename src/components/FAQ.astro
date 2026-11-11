@@ -98,6 +98,27 @@ import { CONFIG } from '../data/config';
       const items = document.querySelectorAll('.faq-item');
       if (!items.length) return () => {};
 
+      // Performance Optimization: Pre-cache DOM elements and lowercased text content upon initialization
+      // to eliminate repeated DOM tree traversals (textContent), child querySelector lookups, and string allocations on keystrokes
+      interface CachedFAQItem {
+        element: HTMLElement;
+        trigger: HTMLButtonElement | null;
+        container: HTMLElement | null;
+        icon: Element | null;
+        text: string;
+      }
+
+      const cachedItems: CachedFAQItem[] = Array.from(items).map(item => {
+        const el = item as HTMLElement;
+        return {
+          element: el,
+          trigger: el.querySelector('.faq-trigger'),
+          container: el.querySelector('.faq-answer-container'),
+          icon: el.querySelector('.faq-icon'),
+          text: (el.textContent || '').toLowerCase()
+        };
+      });
+
       const searchInput = document.getElementById('faq-search-input') as HTMLInputElement | null;
       const clearBtn = document.getElementById('clear-faq-search') as HTMLButtonElement | null;
       const counterEl = document.getElementById('faq-search-counter');
@@ -127,20 +148,17 @@ import { CONFIG } from '../data/config';
       const handleToggle = (e: Event) => {
         const trigger = e.currentTarget as HTMLButtonElement;
         const item = trigger.closest('.faq-item');
-        const container = item?.querySelector('.faq-answer-container') as HTMLElement;
-        const icon = item?.querySelector('.faq-icon');
+        const currentCached = cachedItems.find(c => c.element === item);
+        const container = currentCached?.container;
+        const icon = currentCached?.icon;
         const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
 
-        items.forEach(otherItem => {
-          if (otherItem !== item) {
-            const otherTrigger = otherItem.querySelector('.faq-trigger');
-            const otherContainer = otherItem.querySelector('.faq-answer-container') as HTMLElement;
-            const otherIcon = otherItem.querySelector('.faq-icon');
-
-            if (otherTrigger?.getAttribute('aria-expanded') === 'true') {
-              otherTrigger?.setAttribute('aria-expanded', 'false');
-              otherIcon?.classList.remove('rotate-180');
-              if (otherContainer) closeContainer(otherContainer);
+        cachedItems.forEach(cached => {
+          if (cached.element !== item) {
+            if (cached.trigger?.getAttribute('aria-expanded') === 'true') {
+              cached.trigger.setAttribute('aria-expanded', 'false');
+              cached.icon?.classList.remove('rotate-180');
+              if (cached.container) closeContainer(cached.container);
             }
           }
         });
@@ -166,7 +184,7 @@ import { CONFIG } from '../data/config';
         }
       };
 
-      const triggers = Array.from(document.querySelectorAll<HTMLButtonElement>('.faq-trigger'));
+      const triggers = cachedItems.map(c => c.trigger).filter((t): t is HTMLButtonElement => t !== null);
 
       const handleKeydown = (e: KeyboardEvent) => {
         const target = e.currentTarget as HTMLButtonElement;
@@ -206,21 +224,17 @@ import { CONFIG } from '../data/config';
           else clearBtn.classList.add('hidden');
         }
 
-        items.forEach(item => {
-          const text = item.textContent?.toLowerCase() || '';
-          if (!query || text.includes(query)) {
-            item.classList.remove('hidden');
+        cachedItems.forEach(cached => {
+          if (!query || cached.text.includes(query)) {
+            cached.element.classList.remove('hidden');
             visibleCount++;
           } else {
-            item.classList.add('hidden');
-            // Close if hidden
-            const trigger = item.querySelector('.faq-trigger') as HTMLButtonElement | null;
-            const container = item.querySelector('.faq-answer-container') as HTMLElement | null;
-            const icon = item.querySelector('.faq-icon');
-            if (trigger?.getAttribute('aria-expanded') === 'true') {
-              trigger.setAttribute('aria-expanded', 'false');
-              icon?.classList.remove('rotate-180');
-              if (container) closeContainer(container);
+            cached.element.classList.add('hidden');
+            // Close if hidden using pre-cached element references
+            if (cached.trigger?.getAttribute('aria-expanded') === 'true') {
+              cached.trigger.setAttribute('aria-expanded', 'false');
+              cached.icon?.classList.remove('rotate-180');
+              if (cached.container) closeContainer(cached.container);
             }
           }
         });
@@ -260,32 +274,26 @@ import { CONFIG } from '../data/config';
 
         if (e.key === 'ArrowDown') {
           e.preventDefault();
-          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
-          if (visibleItems.length > 0) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
-            trigger?.focus();
-          }
+          const firstVisible = cachedItems.find(cached => !cached.element.classList.contains('hidden'));
+          firstVisible?.trigger?.focus();
           return;
         }
 
         if (e.key === 'Enter' && searchInput && searchInput.value.trim()) {
           e.preventDefault();
-          const visibleItems = Array.from(items).filter(item => !item.classList.contains('hidden'));
-          if (visibleItems.length === 0 && resetBtn && emptyState && !emptyState.classList.contains('hidden')) {
+          const visibleCached = cachedItems.filter(cached => !cached.element.classList.contains('hidden'));
+          if (visibleCached.length === 0 && resetBtn && emptyState && !emptyState.classList.contains('hidden')) {
             resetBtn.focus();
-          } else if (visibleItems.length === 1) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
+          } else if (visibleCached.length === 1) {
+            const trigger = visibleCached[0].trigger;
             if (trigger) {
               if (trigger.getAttribute('aria-expanded') !== 'true') {
                 trigger.click();
               }
               trigger.focus();
             }
-          } else if (visibleItems.length > 1) {
-            const trigger = visibleItems[0].querySelector('.faq-trigger') as HTMLButtonElement | null;
-            if (trigger) {
-              trigger.focus();
-            }
+          } else if (visibleCached.length > 1) {
+            visibleCached[0].trigger?.focus();
           }
         }
       };
