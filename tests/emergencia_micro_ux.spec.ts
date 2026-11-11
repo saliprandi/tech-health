@@ -23,5 +23,14 @@ test.describe('Emergencia CTA Micro-UX & Accessibility', () => {
     const announcement = page.locator('#emergencia-cta-announcement');
     await cta.click();
     await expect(announcement).toHaveText('Redirigiendo a WhatsApp...');
+    await expect(cta).toHaveAttribute('aria-busy', 'true');
+    await expect(cta).toHaveAttribute('aria-disabled', 'true');
+    await expect(cta).toHaveAttribute('aria-label', 'Redirigiendo a WhatsApp...');
+
+    // Wait for feedback restoration
+    await expect(cta).not.toHaveAttribute('aria-busy', 'true', { timeout: 4500 });
+    await expect(cta).not.toHaveAttribute('aria-disabled', 'true');
+    await expect(cta).toHaveAttribute('aria-label', 'Solicitar atención de emergencia por WhatsApp');
+    await expect(announcement).toHaveText('');
   });
 });
