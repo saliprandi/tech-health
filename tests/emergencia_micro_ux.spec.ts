@@ -9,6 +9,7 @@ test.describe('Emergencia CTA Micro-UX & Accessibility', () => {
     const cta = page.locator('#emergencia-cta');
     await expect(cta).toBeVisible();
     await expect(cta).toHaveAttribute('title', 'Solicitar atención de emergencia por WhatsApp');
+    await expect(cta).toHaveAttribute('aria-label', 'Solicitar atención de emergencia por WhatsApp');
 
     // Verify WhatsApp icon and directional arrow icon are present with aria-hidden="true"
     const svgIcons = cta.locator('svg[aria-hidden="true"]');
@@ -19,9 +20,18 @@ test.describe('Emergencia CTA Micro-UX & Accessibility', () => {
     await expect(arrowIcon).toHaveClass(/group-hover:translate-x-1/);
     await expect(arrowIcon).toHaveClass(/group-focus-visible:translate-x-1/);
 
-    // Test click feedback and aria-live announcement
+    // Test click feedback, aria-busy, aria-disabled, and dynamic aria-label synchronization
     const announcement = page.locator('#emergencia-cta-announcement');
     await cta.click();
     await expect(announcement).toHaveText('Redirigiendo a WhatsApp...');
+    await expect(cta).toHaveAttribute('aria-busy', 'true');
+    await expect(cta).toHaveAttribute('aria-disabled', 'true');
+    await expect(cta).toHaveAttribute('aria-label', 'Redirigiendo a WhatsApp...');
+
+    // Wait for timeout (3s) and verify restoration of original aria-label and state
+    await page.waitForTimeout(3200);
+    await expect(cta).not.toHaveAttribute('aria-busy', 'true');
+    await expect(cta).not.toHaveAttribute('aria-disabled', 'true');
+    await expect(cta).toHaveAttribute('aria-label', 'Solicitar atención de emergencia por WhatsApp');
   });
 });
