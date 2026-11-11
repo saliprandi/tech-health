@@ -24,4 +24,21 @@ test.describe('Emergencia CTA Micro-UX & Accessibility', () => {
     await cta.click();
     await expect(announcement).toHaveText('Redirigiendo a WhatsApp...');
   });
+
+  test('emergency CTA includes initial aria-label and updates aria-busy, aria-disabled, and aria-label upon click', async ({ page }) => {
+    const cta = page.locator('#emergencia-cta');
+    await expect(cta).toBeVisible();
+
+    // Initial state check
+    await expect(cta).toHaveAttribute('aria-label', 'Solicitar atención de emergencia por WhatsApp');
+    await expect(cta).not.toHaveAttribute('aria-busy', 'true');
+    await expect(cta).not.toHaveAttribute('aria-disabled', 'true');
+
+    // Trigger click to verify active busy state
+    await cta.click();
+
+    await expect(cta).toHaveAttribute('aria-label', 'Redirigiendo a WhatsApp...');
+    await expect(cta).toHaveAttribute('aria-busy', 'true');
+    await expect(cta).toHaveAttribute('aria-disabled', 'true');
+  });
 });
