@@ -108,7 +108,12 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       const heroCtaAnnouncement = document.getElementById('hero-cta-announcement');
       if (!heroCta || !heroCtaText) return () => {};
 
+      const WA_URL_REGEX = /^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i;
+
       const handleCtaClick = (e: MouseEvent) => {
+        const href = heroCta.getAttribute('href');
+        if (!href || !WA_URL_REGEX.test(href)) return;
+
         e.preventDefault();
         const originalText = heroCtaText.textContent;
         const originalAriaLabel = heroCta.getAttribute('aria-label') || 'Solicitar servicio técnico por WhatsApp';
@@ -119,10 +124,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         heroCta.setAttribute('aria-disabled', 'true');
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
-        const href = heroCta.getAttribute('href');
-        if (href) {
-          window.open(href, '_blank', 'noopener,noreferrer');
-        }
+        window.open(href, '_blank', 'noopener,noreferrer');
 
         setTimeout(() => {
           if (heroCtaText) heroCtaText.textContent = originalText;
