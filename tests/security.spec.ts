@@ -236,3 +236,26 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('contact form redirects using safe WhatsApp URL domain validation', async ({ page }) => {
+  await page.addInitScript(() => {
+    (window as any).__openedUrls = [];
+    window.open = function (url?: string | URL) {
+      if (url) (window as any).__openedUrls.push(url.toString());
+      return { opener: null } as any;
+    };
+  });
+
+  await page.goto('http://localhost:4321/#contacto');
+
+  await page.fill('#f-nombre', 'Juan Perez');
+  await page.fill('#f-tel', '+54 9 381 1234567');
+  await page.fill('#f-desc', 'Consulta de seguridad');
+
+  await page.click('#f-submit');
+  await page.waitForTimeout(500);
+
+  const openedUrls = await page.evaluate(() => (window as any).__openedUrls || []);
+  expect(openedUrls.length).toBeGreaterThan(0);
+  expect(openedUrls[0]).toMatch(/^https:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i);
+});
