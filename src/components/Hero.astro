@@ -109,6 +109,16 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
       if (!heroCta || !heroCtaText) return () => {};
 
       const handleCtaClick = (e: MouseEvent) => {
+        const rawHref = heroCta.getAttribute('href') || '';
+        const href = rawHref.trim();
+        // Security: Strict allowlist prevents insecure http://, dangerous pseudoprotocols (javascript:, data:, vbscript:), and protocol-relative URLs (//)
+        const isSafe = href && (href.startsWith('https://') || href.startsWith('tel:') || href.startsWith('mailto:') || (href.startsWith('/') && !href.startsWith('//')) || href.startsWith('#'));
+        if (!isSafe) {
+          console.warn('[Security] Bloqueada redirección a protocolo o destino no seguro:', href);
+          e.preventDefault();
+          return;
+        }
+
         e.preventDefault();
         const originalText = heroCtaText.textContent;
         const originalAriaLabel = heroCta.getAttribute('aria-label') || 'Solicitar servicio técnico por WhatsApp';
@@ -119,10 +129,7 @@ const equiposHero = CONFIG.equipos_atendidos.slice(0, 5);
         heroCta.setAttribute('aria-disabled', 'true');
         heroCta.classList.add('opacity-70', 'cursor-not-allowed', 'pointer-events-none');
 
-        const href = heroCta.getAttribute('href');
-        if (href) {
-          window.open(href, '_blank', 'noopener,noreferrer');
-        }
+        window.open(href, '_blank', 'noopener,noreferrer');
 
         setTimeout(() => {
           if (heroCtaText) heroCtaText.textContent = originalText;
