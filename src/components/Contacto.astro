@@ -444,8 +444,13 @@ import { CONFIG } from '../data/config';
             });
             if (res.ok) {
               const data = await res.json();
-              if (data && data.ticket_number) {
-                ticketNumber = data.ticket_number;
+              // Security: Treat webhook response data as untrusted. Validate ticket_number against whitelist regex
+              const TICKET_REGEX = /^[A-Z0-9\-_]{1,30}$/i;
+              if (data && typeof data.ticket_number === 'string') {
+                const candidate = data.ticket_number.trim().slice(0, 30);
+                if (TICKET_REGEX.test(candidate)) {
+                  ticketNumber = candidate;
+                }
               }
             }
           } catch {

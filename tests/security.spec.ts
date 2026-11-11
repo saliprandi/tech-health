@@ -236,3 +236,27 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('contact form ignores malformed or injection payloads in ticket_number webhook response', async ({ page }) => {
+  await page.route('**/webhook/techhealth-solicitud*', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        success: true,
+        ticket_number: '<script>alert("xss")</script>',
+      }),
+    });
+  });
+
+  await page.goto('http://localhost:4321/#contacto');
+
+  await page.fill('#f-nombre', 'Cliente Seguro');
+  await page.fill('#f-tel', '+54 9 381 5551234');
+  await page.click('#f-submit');
+
+  await page.waitForTimeout(500);
+
+  const ticketConfirmation = page.locator('#ticket-confirmation');
+  await expect(ticketConfirmation).toBeHidden();
+});
