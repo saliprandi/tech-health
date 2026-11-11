@@ -236,3 +236,32 @@ test('ticket status page handles malformed ticket payload gracefully without cra
   await expect(errorDiv).toBeVisible();
   await expect(errorDiv).toContainText('Respuesta de ticket malformada o incompleta');
 });
+
+test('contact form rejects malformed or injection ticket_number from webhook response', async ({ page }) => {
+  await page.route('**/webhook/techhealth-solicitud*', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        success: true,
+        ticket_number: '<script>alert("xss")</script>'
+      })
+    });
+  });
+
+  await page.goto('http://localhost:4321/#contacto');
+
+  const nameInput = page.locator('#f-nombre');
+  const telInput = page.locator('#f-tel');
+  const submitBtn = page.locator('#f-submit');
+  const ticketBanner = page.locator('#ticket-confirmation');
+
+  await nameInput.fill('Usuario Test');
+  await telInput.fill('+54 9 381 1234567');
+  await submitBtn.click();
+
+  await page.waitForTimeout(600);
+
+  // Ticket confirmation banner must remain hidden because payload failed whitelist validation
+  await expect(ticketBanner).toBeHidden();
+});
