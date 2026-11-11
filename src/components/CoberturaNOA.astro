@@ -1,0 +1,132 @@
+---
+import { CONFIG } from '../data/config';
+
+const cob = CONFIG.coberturaNOA;
+const cleanWhatsapp = CONFIG.contacto.whatsapp.replace(/\D/g, '');
+---
+
+<section id="cobertura" class="bg-white section-padding content-visibility-auto scroll-mt-20">
+  <div class="container-custom">
+    <div class="max-w-2xl mx-auto text-center mb-12">
+      <div class="font-heading font-bold text-blue tracking-wide uppercase text-[12px] mb-3">Presencia Regional</div>
+      <h2 class="font-heading font-extrabold text-[clamp(28px,4vw,42px)] leading-[1.2] text-navy mb-4">
+        {cob.titulo}
+      </h2>
+      <p class="font-body text-[16px] text-text-soft">
+        {cob.descripcion}
+      </p>
+    </div>
+
+    <!-- Grid de Provincias -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto mb-12">
+      {cob.provincias.map((prov) => {
+        const provWaUrl = `https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent(`Hola TechHealth! Quisiera consultar sobre la cobertura técnica para una institución médica en ${prov.nombre}.`)}`;
+
+        return (
+          <div
+            class={`relative rounded-card p-6 border transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1 hover:shadow-card-hover focus-within:-translate-y-1 focus-within:shadow-card-hover ${
+              prov.destacado
+                ? 'bg-navy text-white border-navy shadow-card'
+                : 'bg-off-white text-navy border-border hover:border-blue/40'
+            }`}
+          >
+            <div>
+              <!-- Header de Tarjeta -->
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <div class={`w-8 h-8 rounded-full flex items-center justify-center font-heading font-bold text-[14px] ${
+                    prov.destacado ? 'bg-blue text-white' : 'bg-blue-pale text-blue'
+                  }`}>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <h3 class={`font-heading font-bold text-[20px] ${prov.destacado ? 'text-white' : 'text-navy'} group-hover:text-blue transition-colors`}>
+                    {prov.nombre}
+                  </h3>
+                </div>
+
+                {prov.destacado && (
+                  <span class="px-2.5 py-1 rounded-full bg-blue/30 text-blue-light font-heading text-[11px] font-bold uppercase tracking-wide">
+                    Sede Central
+                  </span>
+                )}
+              </div>
+
+              <div class={`text-[13px] font-body mb-4 ${prov.destacado ? 'text-white/80' : 'text-text-soft'}`}>
+                {prov.base}
+              </div>
+
+              <!-- SLA / Tiempo de atención -->
+              <div class={`p-3 rounded-lg mb-6 border ${
+                prov.destacado
+                  ? 'bg-white/10 border-white/10 text-white'
+                  : 'bg-white border-border/80 text-navy'
+              }`}>
+                <div class="flex items-center gap-2 font-heading font-bold text-[13px] mb-1">
+                  <svg class={`w-4 h-4 ${prov.destacado ? 'text-blue-light' : 'text-blue'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span>{prov.sla}</span>
+                </div>
+                <div class={`text-[12px] font-body ${prov.destacado ? 'text-white/70' : 'text-text-soft'}`}>
+                  {prov.tiempo_atencion}
+                </div>
+              </div>
+            </div>
+
+            <!-- Accion -->
+            <a
+              href={provWaUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={`Consultar cobertura en ${prov.nombre} por WhatsApp`}
+              aria-label={`Consultar servicio técnico y cobertura en ${prov.nombre} por WhatsApp`}
+              class={`inline-flex items-center justify-center gap-2 w-full font-heading font-bold text-[13px] py-2.5 px-4 rounded-lg active:scale-95 transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue ${
+                prov.destacado
+                  ? 'bg-blue text-white hover:bg-blue-light hover:text-navy focus-visible:ring-white'
+                  : 'bg-navy text-white hover:bg-navy-dark focus-visible:ring-navy'
+              }`}
+            >
+              <span>Consultar en {prov.nombre}</span>
+              <svg class="w-3.5 h-3.5 text-white/70 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- Banner de Garantía de Desplazamiento -->
+    <div class="max-w-4xl mx-auto bg-off-white rounded-2xl p-6 sm:p-8 border border-border flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-blue-pale flex items-center justify-center text-blue flex-shrink-0">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 0h-12" />
+          </svg>
+        </div>
+        <div>
+          <h4 class="font-heading font-bold text-[16px] text-navy mb-1">
+            Logística y Taller Móvil Equipado
+          </h4>
+          <p class="font-body text-[14px] text-text-soft">
+            Contamos con instrumental de calibración portátil para diagnósticos in-situ en cualquier punto del NOA.
+          </p>
+        </div>
+      </div>
+
+      <a
+        href="#contacto"
+        title="Coordinar visita técnica programada"
+        class="inline-flex items-center gap-2 font-heading font-bold text-[13px] text-navy hover:text-blue bg-white border border-border hover:border-blue/40 py-2.5 px-5 rounded-lg active:scale-95 transition-all whitespace-nowrap focus-visible:ring-2 focus-visible:ring-navy outline-none"
+      >
+        <span>Coordinar Visita</span>
+        <svg class="w-4 h-4 text-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
