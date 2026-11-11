@@ -230,7 +230,7 @@ import { CONFIG } from '../data/config';
         }
 
         const href = cta.getAttribute('href');
-        if (href) {
+        if (href && /^https?:\/\//i.test(href.trim())) {
           window.open(href, '_blank', 'noopener,noreferrer');
         }
 
